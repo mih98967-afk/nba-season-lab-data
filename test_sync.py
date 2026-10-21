@@ -31,7 +31,7 @@ class TestESPNFallback(unittest.TestCase):
             return {"athlete":{"displayName":name,"id":"1"},"stats":["30","8-16","2-5","2-4","1","4","5","7","2","1","3","2","20"]}
         sides=[]
         for club,prefix in [("PHI","A"),("NYK","B")]:
-            sides.append({"team":{"abbreviation":club},"statistics":[{"labels":names,"athletes":[player(prefix+str(i)) for i in range(7)]}]})
+            sides.append({"team":{"abbreviation":club},"statistics":[{"labels":names.copy(),"athletes":[player(prefix+str(i)) for i in range(7)]}]})
         return {"header":{"competitions":[{"competitors":[
                     {"homeAway":"home","team":{"abbreviation":"NYK"},"score":"100"},
                     {"homeAway":"away","team":{"abbreviation":"PHI"},"score":"110"}]}]},
