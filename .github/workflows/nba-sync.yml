@@ -1,6 +1,12 @@
 name: NBA public data sync
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'test_sync.py'
+      - '.github/workflows/nba-sync.yml'
   workflow_dispatch:
   schedule:
     - cron: '17 */4 * * *'
