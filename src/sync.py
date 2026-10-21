@@ -197,7 +197,7 @@ def refresh(fetch=http_json,now=None):
     needs=[g for g in finals if g["id"] not in complete or g["epoch"]>epoch(iso(now.isoformat()))-3*86400000]
     providers["espn_boxscores"]=0
     for g in needs[:42]:
-        gid=g.get("nba_game_id") or (g["id"] if re.fullmatch(r"002\\d{7}",g["id"]) else None)
+        gid=g.get("nba_game_id") or (g["id"] if re.fullmatch(r"002\d{7}",g["id"]) else None)
         box=None
         source=None
         source_url=None
