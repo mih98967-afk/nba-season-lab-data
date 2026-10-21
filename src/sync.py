@@ -8,6 +8,7 @@ import re
 import unicodedata
 import urllib.request
 from zoneinfo import ZoneInfo
+from src.espn_adapter import parse_summary, parse_scoreboard
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
@@ -194,14 +195,29 @@ def refresh(fetch=http_json,now=None):
     complete={gid for gid,pid in stored if pid and gid}
     # Catch up on uncached finals, and recheck recent matches for corrections.
     needs=[g for g in finals if g["id"] not in complete or g["epoch"]>epoch(iso(now.isoformat()))-3*86400000]
+    providers["espn_boxscores"]=0
     for g in needs[:42]:
-        gid=g.get("nba_game_id") or (g["id"] if re.fullmatch(r"002\d{7}",g["id"]) else None)
-        if not gid:continue
-        try:box=nba_box(fetch(NBA_BOX.format(gid)))
-        except Exception as e:
-            if len(warnings)<12:warnings.append("Boxscore "+str(gid)+": "+str(e)[:115])
-            continue
-        # Only publish a game if the official payload is complete.
+        gid=g.get("nba_game_id") or (g["id"] if re.fullmatch(r"002\\d{7}",g["id"]) else None)
+        box=None
+        source=None
+        source_url=None
+        if gid:
+            try:
+                box=nba_box(fetch(NBA_BOX.format(gid)))
+                source="NBA official boxscore"
+                source_url=NBA_BOX.format(gid)
+                providers["nba_boxscores"]+=1
+            except Exception as e:
+                if len(warnings)<12:warnings.append("Official boxscore "+str(gid)+": "+str(e)[:110])
+        if box is None and g.get("espn_id"):
+            source_url="https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event="+str(g["espn_id"])
+            try:
+                box=parse_summary(fetch(source_url),g)
+                source="ESPN final boxscore (fallback)"
+                providers["espn_boxscores"]+=1
+            except Exception as e:
+                if len(warnings)<12:warnings.append("ESPN boxscore "+str(g["espn_id"])+": "+str(e)[:110])
+        if box is None:continue
         matched=[]
         for b in box:
             pid=ids.get(norm(b["name"]))
@@ -209,20 +225,19 @@ def refresh(fetch=http_json,now=None):
                 if len(unseen)<20:unseen.append(b["name"])
                 continue
             matched.append({**b,"id":pid,"game_id":g["id"],"utc":g["utc"],
-                            "source":"NBA official boxscore","source_url":NBA_BOX.format(gid)})
+                            "source":source,"source_url":source_url})
         if not matched:continue
         for k in list(stored):
             if k[0]==g["id"]:del stored[k]
-        for r in matched:stored[r["game_id"],r["id"]]=r
-        g["matched_count"]=len(matched);g["source"]="NBA official boxscore";g["url"]=NBA_BOX.format(gid)
-        providers["nba_boxscores"]+=1
+        for row in matched:stored[row["game_id"],row["id"]]=row
+        g["matched_count"]=len(matched);g["source"]=source;g["url"]=source_url
     rows=sorted(stored.values(),key=lambda r:(r.get("utc",""),r["id"]))
     sources={"nba_schedule":NBA_SCHEDULE,"nba_boxscore":NBA_BOX.format("{gameId}"),"espn":ESPN.format("{YYYYMMDD}")}
     if not future and not count and not providers["nba_boxscores"] and not rows:
         raise RuntimeError("All NBA sources unavailable; refusing empty replacement")
-    is_live=bool(rows and len(rows)>2 and providers["nba_boxscores"])
+    is_live=bool(rows and len(rows)>2 and (providers["nba_boxscores"] or providers["espn_boxscores"]))
     stamp=now.isoformat(timespec="seconds").replace("+00:00","Z")
-    result={"schema_version":4,"updated_at_utc":stamp if count or providers["nba_boxscores"] else old.get("updated_at_utc",""),
+    result={"schema_version":4,"updated_at_utc":stamp if count or providers["nba_boxscores"] or providers["espn_boxscores"] else old.get("updated_at_utc",""),
             "mode":"live_sync" if is_live else "schedule_sync_only",
             "scoreboard_checked_at_utc":stamp if count else old.get("scoreboard_checked_at_utc"),
             "source_status":providers,"schedule_source":NBA_SCHEDULE if future else "last known",
