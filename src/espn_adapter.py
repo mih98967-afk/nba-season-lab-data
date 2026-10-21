@@ -64,7 +64,7 @@ def parse_summary(payload,game):
         home=code==sides["home"][0]
         won=sides["home"][1]>sides["away"][1] if home else sides["home"][1]<sides["away"][1]
         for group in side.get("statistics") or []:
-            names=group.get("names") or group.get("labels") or group.get("keys") or []
+            names=group.get("labels") or group.get("names") or group.get("keys") or []
             name_up=[str(n).upper().strip() for n in names]
             if not expected.issubset(name_up):
                 if group.get("athletes"):raise ValueError("ESPN stat schema missing mandatory columns")
