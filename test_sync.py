@@ -42,9 +42,21 @@ class TestESPNFallback(unittest.TestCase):
         self.assertEqual(rows[0]["fp"],22)
     def test_reject_missing_stats(self):
         p=self.payload()
-        p["boxscore"]["players"][0]["statistics"][0]["labels"][2]="wrong"
+        p["boxscore"]["players"][0]["statistics"][0]["labels"][7]="wrong"
         with self.assertRaises(ValueError):
             parse_summary(p,{"home":"NYK","away":"PHI"})
+    def test_optional_three_pointer_stat(self):
+        # The site's scoring uses total FGM/FGA and PTS, not 3PT separately.
+        p=self.payload()
+        for side in p["boxscore"]["players"]:
+            g=side["statistics"][0]
+            idx=g["labels"].index("3PT")
+            g["labels"].pop(idx)
+            for athlete in g["athletes"]:
+                athlete["stats"].pop(idx)
+        rows=parse_summary(p,{"home":"NYK","away":"PHI"})
+        self.assertEqual(len(rows),14)
+        self.assertEqual(rows[0]["fp"],22)
     def test_reject_wrong_teams(self):
         with self.assertRaises(ValueError):
             parse_summary(self.payload(),{"home":"BOS","away":"PHI"})
