@@ -23,6 +23,8 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Test scoring without network
+        run: python -m unittest -v test_sync
       - name: Fetch official NBA data
         run: python src/sync.py
       - name: Commit validated public dataset
