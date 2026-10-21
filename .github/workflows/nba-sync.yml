@@ -1,0 +1,36 @@
+name: NBA public data sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */4 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nba-season-lab-data-sync
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout data repo
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch official NBA data
+        run: python src/sync.py
+      - name: Commit validated public dataset
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/live.json data/catalog.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh NBA scores and schedule"
+            git push
+          fi
