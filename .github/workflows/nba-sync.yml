@@ -26,7 +26,7 @@ jobs:
       - name: Test scoring without network
         run: python -m unittest -v test_sync
       - name: Fetch official NBA data
-        run: python src/sync.py
+        run: python -m src.sync
       - name: Commit validated public dataset
         run: |
           git config user.name "nba-season-lab-bot"
