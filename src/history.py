@@ -7,6 +7,7 @@ Outputs only public aggregated player data, never Firebase profile information.
 from __future__ import annotations
 import collections
 import csv
+import gzip
 import datetime as dt
 import io
 import json
@@ -19,7 +20,7 @@ from src.sync import DATA, CATALOG, http_json, norm, minutes, fantasy_fp
 START_YEARS = (2024, 2025, 2026) # NBA season END years
 SEASONS = {2024:"2023/24",2025:"2024/25",2026:"2025/26"}
 BOXSCORES="https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_{}.csv"
-SCHEDULES="https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_{}.csv"
+SCHEDULES="https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_{}.csv.gz"
 
 FIELDS = {
     "game":("game_id","GAME_ID"),
@@ -56,6 +57,9 @@ def get_csv(url):
     with urllib.request.urlopen(req,timeout=90) as response:
         data=response.read(13_000_001)
         if len(data)>13_000_000:raise ValueError("Oversized historical response")
+    if url.endswith(".gz"):
+        data=gzip.decompress(data)
+        if len(data)>18_000_000:raise ValueError("Oversized decompressed schedule")
     return data.decode("utf-8-sig")
 
 def parse_schedule(text):
