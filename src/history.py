@@ -130,6 +130,7 @@ def parse_box(text,games,season):
             continue
         dedupe.add(dk)
         rows.append({"name":name,"nba_id":x(raw,"person"),"game":gid,"date":day,"team":team.upper(),
+                     "opponent":away if is_home else home,"home":is_home,
                      "fp":fp,"box":st})
         joined+=1
     if joined<12000:raise ValueError(f"Season {season}: only {joined} complete regular-season player-games")
@@ -164,15 +165,23 @@ def aggregate(season_rows,name_index):
             mean={k:round(statistics.fmean(r["box"][k] for r in rows),2) for k in ("min",)+STAT_KEYS}
             fps=[r["fp"] for r in rows]
             q=sorted(fps)
-            # Last35 is enough for UI; backtest uses all rows in memory.
-            last=[{"d":r["date"],"g":r["game"],"team":r["team"],
-                   **{k:round(r["box"][k],2) for k in ("min","pts","reb","ast","stl","blk","tov","fga","fgm")},
-                   "fp":r["fp"]} for r in rows[-35:]]
+            # Full verified regular-season game log for individual and opponent filters.
+            # The existing last35 field is retained for older deployed clients.
+            complete=[{"d":r["date"],"g":r["game"],"team":r["team"],
+                       "opp":r.get("opponent"),"home":r.get("home"),
+                       **{k:round(r["box"][k],2) for k in ("min","pts","reb","ast","stl","blk",
+                          "tov","pf","fga","fgm","fta","ftm")},
+                       "fp":r["fp"]} for r in rows]
             out.append({"season":season,"games":len(rows),"averages":mean,
                         "fp_avg":round(statistics.fmean(fps),2),
+                        "fp_median":round(statistics.median(fps),1),
+                        "fp_sd":round(statistics.stdev(fps),2) if len(fps)>1 else None,
+                        "fp_q10":round(q[int((len(q)-1)*.10)],1),
                         "fp_q20":round(q[int((len(q)-1)*.2)],1),
                         "fp_q80":round(q[int((len(q)-1)*.8)],1),
-                        "full_fp_games":len(fps),"last35":last})
+                        "fp_q90":round(q[int((len(q)-1)*.90)],1),
+                        "full_fp_games":len(fps),
+                        "last35":complete[-35:],"game_log":complete})
         players[pid]=out
     return {"players":players,"rows":sum(len(v) for x in grouped.values() for v in x.values()),
             "unmatched":unmatched,"raw":grouped}
