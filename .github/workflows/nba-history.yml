@@ -1,0 +1,38 @@
+name: NBA historical import
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '43 5 * * 1'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nba-season-lab-historical-import
+  cancel-in-progress: false
+
+jobs:
+  import-history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate history parsing and scoring
+        run: python -m unittest -v test_history test_sync
+      - name: Import historical NBA data and evaluate model
+        run: python -m src.history
+      - name: Commit validated historical data
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/nba_history.json data/model_report.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh three NBA seasons and model report"
+            git push
+          fi
