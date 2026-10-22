@@ -154,6 +154,14 @@ def refresh(fetch=http_json,now=None):
         if key in ids:ambiguous.add(key)
         ids[key]=p["id"]
     for k in ambiguous:ids.pop(k,None)
+    # History matching resolved missing Russian-English identities.
+    # Only confirmed high/medium-confidence mappings may reach live feed.
+    identity=load(DATA/"identity.json",{})
+    for key,metadata in (identity.get("players") or {}).items():
+        english=norm(metadata.get("english"))
+        if english and key in {p["id"] for p in base["players"]} and metadata.get("confidence") in ("high","medium"):
+            if english not in ambiguous and (english not in ids or ids[english]==key):
+                ids[english]=key
     warnings=[];providers={"nba_schedule":"unavailable","espn_scoreboard":"unavailable","nba_boxscores":0}
     try:
         future=nba_schedule(fetch(NBA_SCHEDULE))
