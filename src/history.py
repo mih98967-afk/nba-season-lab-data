@@ -16,6 +16,7 @@ import pathlib
 import statistics
 import urllib.request
 from src.sync import DATA, CATALOG, http_json, norm, minutes, fantasy_fp
+from src.identity import resolve
 
 START_YEARS = (2024, 2025, 2026) # NBA season END years
 SEASONS = {2024:"2023/24",2025:"2024/25",2026:"2025/26"}
@@ -142,7 +143,7 @@ def catalog():
     for p in players:
         name=norm(p.get("english"))
         if name:names[name].add(p["id"])
-    return {k:next(iter(v)) for k,v in names.items() if len(v)==1}
+    return base
 
 def aggregate(season_rows,name_index):
     grouped=collections.defaultdict(lambda:collections.defaultdict(list))
@@ -210,7 +211,7 @@ def backtest(grouped):
                            "Team changes/role changes may make historical averages less reliable"]}
 
 def run():
-    index=catalog()
+    base=catalog()
     season_rows={};checks={}
     for year in START_YEARS:
         season=SEASONS[year]
@@ -218,7 +219,12 @@ def run():
         box,rejected=parse_box(get_csv(BOXSCORES.format(year)),results,season)
         checks[season]={"final_games":len(results),"complete_player_games":len(box),"rejected":rejected}
         season_rows[season]=box
-    summary=aggregate(season_rows,index)
+    resolved_keys,resolved_names,identity=resolve(base,season_rows)
+    name_index={}
+    from src.identity import people_index, canon
+    for k,person in people_index(season_rows).items():
+        if k in resolved_keys:name_index[canon(person["name"])]=resolved_keys[k]
+    summary=aggregate(season_rows,name_index)
     report=backtest(summary["raw"])
     data={"schema_version":1,"status":"complete","source":"SportsDataverse/NBA Stats official boxscores",
           "source_url":"https://github.com/sportsdataverse/sportsdataverse-data/releases",
@@ -233,7 +239,8 @@ def run():
                 "seasons":checks}}
     if data["qa"]["matched_players"]<200 or summary["rows"]<30000:
         raise ValueError("History coverage validation failed: "+json.dumps({"matched_players":len(summary["players"]),"matched_rows":summary["rows"],"per_season":checks,"unmatched":summary["unmatched"].most_common(8)},ensure_ascii=False))
-    for name,obj in [("nba_history",data),("model_report",report)]:
+    data["qa"]["identity_resolution"]={"matched":identity["matched"],"unresolved":identity["unresolved"],"by_method":identity["by_method"]}
+    for name,obj in [("nba_history",data),("model_report",report),("identity",identity)]:
         dest=DATA/(name+".json")
         tmp=DATA/(name+".tmp")
         tmp.write_text(json.dumps(obj,ensure_ascii=False,separators=(",",":")),encoding="utf8")
