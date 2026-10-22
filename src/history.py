@@ -232,7 +232,7 @@ def run():
                 "unmatched_examples":summary["unmatched"].most_common(15),
                 "seasons":checks}}
     if data["qa"]["matched_players"]<220 or summary["rows"]<25000:
-        raise ValueError("Too few catalog-matched historical games; preserving previous snapshots")
+        raise ValueError("History coverage validation failed: "+json.dumps({"matched_players":len(summary["players"]),"matched_rows":summary["rows"],"per_season":checks,"unmatched":summary["unmatched"].most_common(8)},ensure_ascii=False))
     for name,obj in [("nba_history",data),("model_report",report)]:
         dest=DATA/(name+".json")
         tmp=DATA/(name+".tmp")
