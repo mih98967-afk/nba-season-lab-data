@@ -1,6 +1,12 @@
 name: Telegram injury signals
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/telegram_feed.py'
+      - 'test_telegram.py'
+      - '.github/workflows/telegram-injuries.yml'
   workflow_dispatch:
   schedule:
     - cron: '23 */4 * * *'
