@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "updated_at_utc": "2026-10-22T20:50:48.131506+00:00",
+  "development": "2024/25",
+  "holdout": "2025/26",
+  "scope": "Player-week NBA games, inferred team tenure; not an optimized Sports.ru fantasy roster",
+  "eligibility": "At least 14 previous appearances, >=12 team games, recent appearance <=16 days, established team tenure",
+  "calendar_week": "US calendar date proxy; not exact Sports.ru week",
+  "qa": {
+    "2024/25": {
+      "games": 1230,
+      "missing_utc_tipoffs": 1230,
+      "week_semantics": "US_date_proxy",
+      "fields_available": [
+        "game_id",
+        "season",
+        "season_type",
+        "game_date",
+        "matchup",
+        "home_team_id",
+        "home_team_abbreviation",
+        "home_team_name",
+        "home_pts",
+        "home_wl",
+        "away_team_id",
+        "away_team_abbreviation",
+        "away_team_name",
+        "away_pts",
+        "away_wl"
+      ],
+      "player_weeks": 5317,
+      "players": 341,
+      "scheduled_player_games": 17227,
+      "zero_appearance_pct": 9.82,
+      "excluded": {
+        "short_player_history": 2582,
+        "no_recent_team_activity": 343,
+        "new_team_tenure": 113,
+        "short_team_tenure": 17
+      },
+      "rejected_historical_lines": {}
+    },
+    "2025/26": {
+      "games": 1230,
+      "missing_utc_tipoffs": 1230,
+      "week_semantics": "US_date_proxy",
+      "fields_available": [
+        "game_id",
+        "season",
+        "season_type",
+        "game_date",
+        "matchup",
+        "home_team_id",
+        "home_team_abbreviation",
+        "home_team_name",
+        "home_pts",
+        "home_wl",
+        "away_team_id",
+        "away_team_abbreviation",
+        "away_team_name",
+        "away_pts",
+        "away_wl"
+      ],
+      "player_weeks": 5967,
+      "players": 380,
+      "scheduled_player_games": 19350,
+      "zero_appearance_pct": 9.67,
+      "excluded": {
+        "short_player_history": 3029,
+        "no_recent_team_activity": 340,
+        "new_team_tenure": 129,
+        "short_team_tenure": 11
+      },
+      "rejected_historical_lines": {}
+    }
+  },
+  "models": {
+    "naive_all_play": {
+      "formula": "last10 FP x team games",
+      "test_mae": 16.959
+    },
+    "availability_baseline": {
+      "params": [
+        10,
+        0.0,
+        false
+      ],
+      "dev": {
+        "mae": 16.142,
+        "rmse": 21.39,
+        "bias_prediction_minus_actual": 1.417
+      },
+      "test": {
+        "mae": 15.617,
+        "rmse": 20.758,
+        "bias_prediction_minus_actual": 1.111
+      }
+    },
+    "development_selected": {
+      "params": [
+        0,
+        0.5,
+        true
+      ],
+      "dev": {
+        "mae": 15.352,
+        "rmse": 20.521,
+        "bias_prediction_minus_actual": 0.815
+      },
+      "test": {
+        "mae": 14.93,
+        "rmse": 19.821,
+        "bias_prediction_minus_actual": 0.565
+      },
+      "test_improvement_pct": 4.4,
+      "gain_95pct_player_bootstrap": [
+        0.542,
+        0.843
+      ],
+      "adoption_gate_passed": true
+    },
+    "prediction_interval": {
+      "applied_params": [
+        0,
+        0.5,
+        true
+      ],
+      "train_standardized_P10_P90": [
+        -1.6098,
+        1.6891
+      ],
+      "holdout": {
+        "coverage_pct": 80.8,
+        "avg_width_fp": 48.2,
+        "by_games": {
+          "3 games": 81.2,
+          "4 games": 78.3,
+          "2 games": 85.4,
+          "1 games": 87.6,
+          "5 games": 79.1
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Exact weekly Moscow boundary cannot be claimed if archived schedule lacks tipoff UTC.",
+    "Team membership is inferred from player appearances, not historical active/injured rosters.",
+    "Long-term injured players and some trades are excluded by recent-appearance eligibility.",
+    "Future known games from final-season calendar may include rescheduling not known at prediction time.",
+    "No Sports.ru prices, transfers, individual matchup adjustments or lineups in evaluation.",
+    "Empirical 80pct interval is measured for this cohort only; not guaranteed for 2026/27."
+  ],
+  "adopt_on_site": false
+}
