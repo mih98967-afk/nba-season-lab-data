@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/history.py'
+      - 'src/publish_history.py'
       - 'src/identity.py'
       - 'test_history.py'
       - '.github/workflows/nba-history.yml'
@@ -34,11 +35,13 @@ jobs:
         run: python -m unittest -v test_history test_sync
       - name: Import historical NBA data and evaluate model
         run: python -m src.history
+      - name: Split audited history for fast browser requests
+        run: python -m src.publish_history
       - name: Commit validated historical data
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/nba_history.json data/model_report.json data/identity.json
+          git add data/nba_history.json data/model_report.json data/identity.json data/history/
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh three NBA seasons and model report"
             git pull --rebase origin main
