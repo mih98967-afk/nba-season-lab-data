@@ -1,6 +1,12 @@
 name: NBA historical import
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/history.py'
+      - 'test_history.py'
+      - '.github/workflows/nba-history.yml'
   workflow_dispatch:
   schedule:
     - cron: '43 5 * * 1'
