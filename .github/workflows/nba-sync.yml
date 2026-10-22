@@ -10,6 +10,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '17 */4 * * *'
+    - cron: '43 5 * * 1'
 
 permissions:
   contents: write
@@ -33,11 +34,18 @@ jobs:
         run: python -m unittest -v test_sync
       - name: Fetch official NBA data
         run: python -m src.sync
+      - name: Import three NBA seasons and evaluate model
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule == '43 5 * * 1'
+        continue-on-error: true
+        run: python -m src.history
       - name: Commit validated public dataset
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
           git add data/live.json data/catalog.json
+          for file in data/nba_history.json data/model_report.json; do
+            if test -f "$file"; then git add "$file"; fi
+          done
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh NBA scores and schedule"
             git push
