@@ -1,0 +1,37 @@
+name: Telegram injury signals
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */4 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+
+jobs:
+  telegram:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test extraction and name safeguards
+        run: python -m unittest -v test_telegram
+      - name: Read public Telegram preview
+        run: python -m src.telegram_feed
+      - name: Commit news only on successful fetch
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/telegram.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: update public Telegram signals"
+            git pull --rebase origin main
+            git push
+          fi
