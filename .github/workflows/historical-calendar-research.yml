@@ -1,0 +1,35 @@
+name: NBA historical UTC calendar research
+
+on:
+  push:
+    branches: [research/historical-msk-dnp-20261023]
+    paths:
+      - 'src/historical_calendar.py'
+      - 'test_historical_calendar.py'
+      - '.github/workflows/historical-calendar-research.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify UTC, ET and Moscow crossing
+        run: python -m unittest -v test_historical_calendar
+      - name: Fetch and reconcile historical regular season tipoffs
+        run: python -m src.historical_calendar
+      - name: Upload research report only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nba-historical-utc-research
+          path: data/historical_tipoffs.json
+          if-no-files-found: ignore
+          retention-days: 7
