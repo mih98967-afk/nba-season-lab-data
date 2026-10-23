@@ -1,0 +1,45 @@
+name: NBA UTC schedule validation
+
+on:
+  push:
+    branches: [main, feat/utc-msk-calendar-20261023]
+    paths:
+      - 'src/schedule_sync.py'
+      - 'test_schedule.py'
+      - '.github/workflows/nba-schedule.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '7 7 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+
+jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Calendar boundary and coverage tests
+        run: python -m unittest -v test_schedule
+      - name: Pull complete ESPN season and validate
+        run: python -m src.schedule_sync
+      - name: Publish validated public calendar on main only
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/schedule.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh verified UTC NBA calendar"
+            git push
+          fi
