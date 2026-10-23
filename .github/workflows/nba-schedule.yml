@@ -41,5 +41,6 @@ jobs:
           git add data/schedule.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh verified UTC NBA calendar"
-            git push
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
