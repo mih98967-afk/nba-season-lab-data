@@ -140,8 +140,8 @@ def refresh(fetch=fetch_json,now=None,force=False):
                 return {"result":"fresh_cache","games":len(old.get("games",[]))}
         except (KeyError,ValueError,TypeError):pass
     batches=[]
-    for first,last in segments():
-        query=urllib.parse.urlencode({"dates":first.strftime("%Y%m%d")+"-"+last.strftime("%Y%m%d"),"limit":250})
+    for first,last in segments(length=1):
+        query=urllib.parse.urlencode({"dates":first.strftime("%Y%m%d"),"limit":100})
         batches.append(fetch(ESPN+"?"+query))
     result=assemble(batches,now)
     OUTPUT.parent.mkdir(parents=True,exist_ok=True)
