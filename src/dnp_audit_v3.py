@@ -180,8 +180,10 @@ def execute(fetch=get_csv):
                 for g in (0.,.003,.007) for b in (0.,.02,.05)]
     best=min(candidates,key=lambda par:(scoring(dev,par,prior)["brier"],par))
     strict_base=scoring(hold,simple,prior);strict_cand=scoring(hold,best,prior)
-    sensitivity_base=scoring(unknown[2026],simple,prior)
-    sensitivity_cand=scoring(unknown[2026],best,prior)
+    # Unlisted team games have UNKNOWN participation, not negative labels.
+    # Report only how many predictions fall outside the verified population.
+    inferred_unknown={"n":len(unknown[2026]),"label":"unknown_not_scored",
+                      "prediction_mean":round(statistics.fmean(predict(r,best,prior) for r in unknown[2026]),4) if unknown[2026] else None}
     improvement=round(100*(strict_base["brier"]-strict_cand["brier"])/strict_base["brier"],2)
     report={"schema_version":1,"status":"research_only_not_deployed",
       "updated_at_utc":dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
@@ -189,15 +191,15 @@ def execute(fetch=get_csv):
       "development":"2024/25","holdout":"2025/26","population_prior":"2023/24 observed boxscore listings",
       "population_prior_play_pct":round(prior*100,2),"data_qa":audit,
       "baseline":{"parameters":simple,"holdout_verified":strict_base,
-                  "holdout_inferred_sensitivity":sensitivity_base},
+                  "holdout_unlisted_unknown":inferred_unknown},
       "candidate":{"parameters":best,"development":scoring(dev,best,prior),
                    "holdout_verified":strict_cand,
-                   "holdout_inferred_sensitivity":sensitivity_cand,
+                   "holdout_unlisted_unknown":inferred_unknown,
                    "brier_improvement_pct_on_listed":improvement,
                    "holdout_strata":strata(hold,best,prior)},
       "limitations":[
           "Missing boxscore row is UNKNOWN membership, not DNP or an injury diagnosis.",
-          "Inferred between-stint gaps are explicitly uncertain; Brier sensitivity only.",
+          "Inferred between-stint gaps are unknown and never scored as ground-truth DNP.",
           "Only within-team past boxscore listings become as-of features.",
           "Historical final game schedules are not contemporaneous schedule snapshots.",
           "True whole-roster fantasy p_play cannot be calibrated from listings alone.",
