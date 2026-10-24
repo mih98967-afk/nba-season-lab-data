@@ -1,0 +1,26 @@
+name: NBA injury snapshot PIT coverage
+on:
+  push:
+    branches: [research/injury-point-in-time-20261024]
+    paths: ['src/injury_pit_audit.py','.github/workflows/injury-pit-audit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Audit official report snapshot matches
+        run: python -m src.injury_pit_audit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: injury-snapshot-pit-coverage
+          path: data/injury_pit_audit.json
+          if-no-files-found: ignore
+          retention-days: 10
