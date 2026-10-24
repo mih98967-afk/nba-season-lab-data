@@ -1,0 +1,4 @@
+const test=require('node:test'),assert=require('node:assert/strict');const p=require('./site/v6_1/chain_planner.js');
+test('Moscow week boundary',()=>{assert.equal(new Date(p.mondayStartMoscow(Date.parse('2026-10-25T20:59:59Z'))).toISOString(),'2026-10-18T21:00:00.000Z');assert.equal(new Date(p.mondayStartMoscow(Date.parse('2026-10-25T21:00:00Z'))).toISOString(),'2026-10-25T21:00:00.000Z');});
+test('missing calendar refuses a fantasy route',()=>{let r=p.rank({out:'x',roster:Array(10).fill('x'),players:{x:{pos:'PG'}},nowEpoch:1,whenEpoch:2,horizonDays:21,opportunityPenalty:4,priceOf:()=>1,validateDraft:()=>({valid:true,roster:['x']}),project:()=>0,scorePlayer:()=>0,coverage:()=>({ok:false,reason:'NBA Cup'})});assert.equal(r.ready,false);assert.match(r.reason,/NBA Cup/);});
+test('does not accept unknown horizon or synthetic quota rule',()=>{assert.equal(p.rank({horizonDays:15,opportunityPenalty:4}).ready,false);});
