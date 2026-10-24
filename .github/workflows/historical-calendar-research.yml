@@ -22,14 +22,18 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verify UTC, ET and Moscow crossing
-        run: python -m unittest -v test_historical_calendar
+        run: python -m unittest -v test_historical_calendar test_telegram_archive
       - name: Fetch and reconcile historical regular season tipoffs
         run: python -m src.historical_calendar
+      - name: Archive public Telegram signals without hindsight
+        run: python -m src.telegram_archive
       - name: Upload research report only
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: nba-historical-utc-research
-          path: data/historical_tipoffs.json
+          path: |
+            data/historical_tipoffs.json
+            data/telegram_archive.json
           if-no-files-found: ignore
           retention-days: 7
