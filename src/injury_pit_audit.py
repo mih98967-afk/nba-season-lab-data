@@ -7,10 +7,11 @@ Assesses coverage, timing, deduplication and identity/fixture match quality.
 from __future__ import annotations
 import collections,csv,datetime as dt,io,json,re,unicodedata,urllib.request
 from src.history import get_csv,BOXSCORES,SCHEDULES,lookup
+from zoneinfo import ZoneInfo
 from src.sync import DATA
 
 URL="https://raw.githubusercontent.com/Torgo28/NBA_AI_Player_Analysis/main/data/rag/processed/injury_reports.csv"
-ET=dt.timezone(dt.timedelta(hours=-5))
+ET=ZoneInfo("America/New_York")
 ALIASES={"NY":"NYK","GS":"GSW","SA":"SAS","NO":"NOP","UTAH":"UTA","WSH":"WAS"}
 
 def norm(s):
@@ -80,7 +81,7 @@ def audit(ir_text,game_csv,box_csv):
         # Exact UTC tipoff from season fixture is required separately for any
         # decision-time evaluation. Here only same-day reports are allowed;
         # report earlier/later than game date cannot be called same-day.
-        if item["ts"].astimezone(dt.timezone(dt.timedelta(hours=-5))).date().isoformat()!=item["day"]:
+        if item["ts"].astimezone(ET).date().isoformat()!=item["day"]:
             counts["not_same_day"]+=1;continue
         rowkey=(gid,item["team"],item["name"])
         prev=selected.get(rowkey)
