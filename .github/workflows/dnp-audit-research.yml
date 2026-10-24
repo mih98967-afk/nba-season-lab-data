@@ -1,0 +1,32 @@
+name: NBA DNP coverage research
+on:
+  push:
+    branches: [research/dnp-verified-coverage-20261024]
+    paths:
+      - 'src/dnp_audit_v3.py'
+      - 'test_dnp_audit_v3.py'
+      - '.github/workflows/dnp-audit-research.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Offline label and PIT tests
+        run: python -m unittest -v test_dnp_audit_v3
+      - name: Run historical participation audit
+        run: python -m src.dnp_audit_v3
+      - name: Retain research result without production publishing
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nba-dnp-v3-research
+          path: data/dnp_audit_v3.json
+          if-no-files-found: ignore
+          retention-days: 10
