@@ -5,7 +5,9 @@ on:
     branches: [main]
     paths:
       - 'src/telegram_feed.py'
+      - 'src/telegram_archive.py'
       - 'test_telegram.py'
+      - 'test_telegram_archive.py'
       - '.github/workflows/telegram-injuries.yml'
   workflow_dispatch:
   schedule:
@@ -28,14 +30,16 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test extraction and name safeguards
-        run: python -m unittest -v test_telegram
+        run: python -m unittest -v test_telegram test_telegram_archive
       - name: Read public Telegram preview
         run: python -m src.telegram_feed
+      - name: Maintain point-in-time Telegram archive
+        run: python -m src.telegram_archive
       - name: Commit news only on successful fetch
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/telegram.json
+          git add data/telegram.json data/telegram_archive.json
           if ! git diff --cached --quiet; then
             git commit -m "data: update public Telegram signals"
             git pull --rebase origin main
