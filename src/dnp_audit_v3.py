@@ -216,5 +216,5 @@ if __name__=="__main__":
           "data_qa":v["data_qa"],"baseline_holdout":v["baseline"]["holdout_verified"],
           "candidate_params":v["candidate"]["parameters"],
           "candidate_holdout":v["candidate"]["holdout_verified"],
-          "sensitivity":v["candidate"]["holdout_inferred_sensitivity"],
+          "sensitivity":v["candidate"]["holdout_unlisted_unknown"],
           "improvement_pct":v["candidate"]["brier_improvement_pct_on_listed"]},ensure_ascii=False,indent=2))
