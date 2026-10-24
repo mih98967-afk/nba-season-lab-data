@@ -185,8 +185,10 @@ def execute(input_file=None,output_file=None,schedule_loader=None):
     if schedule_loader is None:
         schedule_loader=lambda season:get_csv(SCHEDULES.format(SEASONS[season]))
     utc_file=DATA/"historical_tipoffs.json"
-    historical_utc=json.loads(utc_file.read_text(encoding="utf8")) if utc_file.exists() else {}
-    if historical_utc and historical_utc.get("calendar_status")!="fully_matched_historical_tipoffs":
+    if not utc_file.exists():
+        raise ValueError("Missing verified historical UTC tipoffs; no US-date fallback allowed")
+    historical_utc=json.loads(utc_file.read_text(encoding="utf8"))
+    if historical_utc.get("calendar_status")!="fully_matched_historical_tipoffs":
         raise ValueError("Historical tipoffs are incomplete; refuse exact-week claims")
     data={};checks={}
     for period in SEASONS:
