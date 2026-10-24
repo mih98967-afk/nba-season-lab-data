@@ -1,0 +1,31 @@
+name: NBA pregame injury status holdout research
+on:
+  push:
+    branches: [research/injury-point-in-time-20261024]
+    paths:
+      - 'src/injury_status_backtest.py'
+      - 'test_injury_status_backtest.py'
+      - '.github/workflows/injury-status-backtest.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Temporal and identity regression tests
+        run: python -m unittest -v test_injury_status_backtest
+      - name: Evaluate 2024/25 development and 2025/26 untouched holdout
+        run: python -m src.injury_status_backtest
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-injury-status-research
+          path: data/injury_status_holdout.json
+          if-no-files-found: ignore
+          retention-days: 10
