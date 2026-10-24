@@ -25,6 +25,8 @@ jobs:
         run: python -m unittest -v test_historical_calendar test_telegram_archive
       - name: Fetch and reconcile historical regular season tipoffs
         run: python -m src.historical_calendar
+      - name: Retest weekly model with exact Moscow weeks
+        run: python -m src.weekly_model_validation
       - name: Archive public Telegram signals without hindsight
         run: python -m src.telegram_archive
       - name: Upload research report only
@@ -35,5 +37,6 @@ jobs:
           path: |
             data/historical_tipoffs.json
             data/telegram_archive.json
+            data/weekly_model_validation.json
           if-no-files-found: ignore
           retention-days: 7
