@@ -54,6 +54,9 @@ def games_espn(payload):
             code=str((item.get("team") or {}).get("abbreviation") or "").upper()
             if side in ("home","away"):teams[side]=ALIASES.get(code,code)
         if not teams.get("home") or not teams.get("away"):continue
+        # ESPN sometimes marks All-Star events as season type 2; exclude non-NBA clubs.
+        from src.schedule_sync import TEAMS
+        if teams["home"] not in TEAMS or teams["away"] not in TEAMS or teams["home"]==teams["away"]:continue
         try:t=iso_parse(ev.get("date"))
         except (ValueError,TypeError):continue
         event_id=str(ev.get("id") or "")
