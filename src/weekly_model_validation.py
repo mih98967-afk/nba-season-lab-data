@@ -30,7 +30,7 @@ def timestamp(raw,zone=None):
         return x.astimezone(timezone.utc) if x.tzinfo else None
     except ValueError:return None
 
-def schedule(text,season):
+def schedule(text,season,utc_map=None):
     reader=csv.DictReader(io.StringIO(text))
     out=[];missing=0
     for r in reader:
@@ -47,8 +47,12 @@ def schedule(text,season):
         if not text_date:continue
         try:day=date.fromisoformat(text_date[:10])
         except ValueError:continue
+        mapped=(utc_map or {}).get(game)
+        if mapped and (mapped.get("home")!=home or mapped.get("away")!=away or mapped.get("et_date")!=str(day)):
+            raise ValueError("Historical UTC reconciliation mismatch: "+game)
         utc=(timestamp(get(r,"game_date_time_utc","GAME_DATE_TIME_UTC"))
-             or timestamp(get(r,"game_date_time_est","GAME_DATE_TIME_EST"),ET))
+             or timestamp(get(r,"game_date_time_est","GAME_DATE_TIME_EST"),ET)
+             or timestamp(mapped.get("utc") if mapped else None))
         if utc is None:missing+=1
         out.append({"id":game,"home":home,"away":away,"day":day,"utc":utc})
     if len(out)<1100 or len({r["id"] for r in out})!=len(out):
@@ -180,9 +184,14 @@ def execute(input_file=None,output_file=None,schedule_loader=None):
         raise ValueError("Audited full three-season history required")
     if schedule_loader is None:
         schedule_loader=lambda season:get_csv(SCHEDULES.format(SEASONS[season]))
+    utc_file=DATA/"historical_tipoffs.json"
+    historical_utc=json.loads(utc_file.read_text(encoding="utf8")) if utc_file.exists() else {}
+    if historical_utc and historical_utc.get("calendar_status")!="fully_matched_historical_tipoffs":
+        raise ValueError("Historical tipoffs are incomplete; refuse exact-week claims")
     data={};checks={}
     for period in SEASONS:
-        fixture,clock=schedule(schedule_loader(period),period)
+        fixture,clock=schedule(schedule_loader(period),period,
+                               (historical_utc.get("seasons") or {}).get(period))
         rows,stats=cohort(fixture,root["players"],period)
         data[period]=rows;checks[period]={**clock,**stats}
     dev=data["2024/25"];test=data["2025/26"]
@@ -215,6 +224,7 @@ def execute(input_file=None,output_file=None,schedule_loader=None):
         "prediction_interval":{"applied_params":active,"train_standardized_P10_P90":[round(v,4) for v in limits],
             "holdout":interval}
       },
+      "historical_utc_source":historical_utc.get("source") if historical_utc else None,
       "limitations":[
         "Exact weekly Moscow boundary cannot be claimed if archived schedule lacks tipoff UTC.",
         "Team membership is inferred from player appearances, not historical active/injured rosters.",
