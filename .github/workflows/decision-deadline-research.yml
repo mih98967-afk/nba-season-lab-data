@@ -1,0 +1,28 @@
+name: NBA Monday cutoff decision research
+on:
+  push:
+    branches: [research/deadline-transfer-backtest-20261024]
+    paths: ['src/decision_deadline_backtest.py','test_decision_deadline.py','.github/workflows/decision-deadline-research.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  study:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate UTC cutoff and fail-closed logic
+        run: python -m unittest -v test_decision_deadline
+      - name: Recalculate as-of-deadline weekly decisions
+        run: python -m src.decision_deadline_backtest
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-deadline-decision-research
+          path: data/decision_deadline_research.json
+          retention-days: 10
+          if-no-files-found: ignore
