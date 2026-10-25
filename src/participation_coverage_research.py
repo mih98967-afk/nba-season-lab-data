@@ -108,7 +108,11 @@ def coverage(live, cohort, explicit, catalog, official, telegram, now):
             for p in sorted(clubs[team],key=lambda x:x["id"]):
                 pid=p["id"]
                 key=(gid,pid)
-                evid=labels.pop(key,None)
+                evid=labels.get(key)
+                if evid is not None and evid["team"] == team:
+                    labels.pop(key)
+                else:
+                    evid=None
                 outcome=(
                     "played_verified" if evid and evid["participation_label"]==1
                     else "explicit_dnp_verified" if evid else NOT_OBSERVED
