@@ -1,0 +1,18 @@
+name: NBA multi-slot transfer scenario checks
+on:
+  push:
+    branches: [feat/multi-slot-v62-20261025]
+    paths: ['site/v6_2/multi_planner.js','test_multi_slot_v62.cjs','.github/workflows/multi-slot-v62.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: node --check site/v6_2/multi_planner.js
+      - run: node --test test_multi_slot_v62.cjs
