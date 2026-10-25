@@ -136,8 +136,13 @@ def refresh(fetch=fetch_json,now=None,force=False):
     if not force and old and old.get("status")=="verified_public_calendar_with_known_gaps":
         try:
             age=now-dt.datetime.fromisoformat(old["updated_at_utc"].replace("Z","+00:00"))
-            if dt.timedelta(0)<=age<dt.timedelta(hours=20):
-                return {"result":"fresh_cache","games":len(old.get("games",[]))}
+            # Sync runs every four hours; a 12h TTL avoids repeatedly serving
+            # an old fixture calendar when the standalone scheduled job stalls.
+            if dt.timedelta(0)<=age<dt.timedelta(hours=12):
+                from src.live_calendar_fallback import verified_fallback
+                _,quality=verified_fallback(old,now)
+                return {"result":"fresh_cache","games":len(old.get("games",[])),
+                        "quality":quality}
         except (KeyError,ValueError,TypeError):pass
     batches=[]
     for first,last in segments(length=1):
