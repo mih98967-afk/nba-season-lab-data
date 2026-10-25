@@ -1,0 +1,40 @@
+name: NBA prospective played-FP shadow audit
+on:
+  push:
+    branches: [main, research/prospective-played-fp-shadow-20261025]
+    paths:
+      - 'src/played_fp_shadow.py'
+      - 'test_played_fp_shadow.py'
+      - '.github/workflows/played-fp-shadow.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '47 */4 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test no-hindsight and Sports.ru conditional FP
+        run: python -m unittest -v test_played_fp_shadow test_sync
+      - name: Issue frozen pre-game forecasts and audit past predictions
+        if: github.ref == 'refs/heads/main'
+        run: python -m src.played_fp_shadow
+      - name: Publish research-only data (no Firestore, no schedule writes)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/played_fp_shadow_predictions.json data/played_fp_shadow_audit.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: append prospective conditional-FP research and audit"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
