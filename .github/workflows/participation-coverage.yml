@@ -1,0 +1,37 @@
+name: NBA participation coverage denominator
+on:
+  push:
+    branches: [main, research/participation-unknown-denominator-20261025]
+    paths: ['src/participation_coverage_research.py','test_participation_coverage_research.py','.github/workflows/participation-coverage.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '47 */6 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Verify all unknown outcome protections
+        run: python -m unittest -v test_participation_coverage_research test_participation_cohort_research
+      - name: Capture current catalog proxy opportunity coverage
+        if: github.ref == 'refs/heads/main'
+        run: python -m src.participation_coverage_research
+      - name: Commit research-only summary
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/participation_coverage_research.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: research participation unknown coverage"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
