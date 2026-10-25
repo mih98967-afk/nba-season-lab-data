@@ -1,0 +1,40 @@
+name: NBA participation cohort QA
+on:
+  push:
+    branches: [main, research/participation-cohort-evidence-20261025]
+    paths:
+      - 'src/participation_cohort_research.py'
+      - 'test_participation_cohort_research.py'
+      - '.github/workflows/participation-cohort.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */4 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test labels and fail-closed conflicts
+        run: python -m unittest -v test_participation_cohort_research test_explicit_dnp_research
+      - name: Build research-only participation evidence cohort
+        if: github.ref == 'refs/heads/main'
+        run: python -m src.participation_cohort_research
+      - name: Commit public research cohort only
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/participation_cohort_research.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: research-only observed participation cohort"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
