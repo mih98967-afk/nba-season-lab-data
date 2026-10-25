@@ -32,6 +32,15 @@ class Tests(unittest.TestCase):
  def test_active_conflict_fails(self):
   live={"games":[GAME],"rows":[{"game_id":"espn_42","id":"n001","played":True}]}
   with self.assertRaises(ValueError):gather(live,IDENTITY,{},lambda _:payload(),NOW)
+ def test_verified_espn_identity_and_game_club(self):
+  from src.explicit_dnp_research import observed_active_espn_ids
+  live={"games":[GAME],"rows":[{"game_id":"espn_42","id":"n001","name":"Test Player","espn_person_id":"1234","team":"BOS","minutes":22,"played":True}]}
+  index=observed_active_espn_ids(live,IDENTITY)
+  self.assertEqual(index["1234"],"n001")
+  p=payload();p["boxscore"]["players"][0]["statistics"][0]["athletes"][0]["athlete"]["id"]="1234"
+  rows,qa=explicit_rows(p,GAME,IDENTITY,NOW,index)
+  self.assertEqual(rows[0]["identity_method"],"verified_espn_id_from_named_active_game")
+  self.assertEqual(rows[0]["team"],"BOS")
  def test_missing_is_unknown(self):
   live={"games":[GAME],"rows":[]}
   x,_=gather(live,IDENTITY,{},lambda _:payload(False),NOW)
