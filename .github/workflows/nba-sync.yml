@@ -2,10 +2,11 @@ name: NBA public data sync
 
 on:
   push:
-    branches: [main]
+    branches: [main, fix/live-schedule-provenance-20261025]
     paths:
       - 'src/**'
       - 'test_sync.py'
+      - 'test_live_schedule_provenance.py'
       - '.github/workflows/nba-sync.yml'
   workflow_dispatch:
   schedule:
@@ -30,10 +31,12 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test scoring without network
-        run: python -m unittest -v test_sync
+        run: python -m unittest -v test_sync test_live_schedule_provenance test_schedule_workflow_owner
       - name: Fetch official NBA data
+        if: github.ref == 'refs/heads/main'
         run: python -m src.sync
       - name: Commit validated public dataset
+        if: github.ref == 'refs/heads/main'
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"

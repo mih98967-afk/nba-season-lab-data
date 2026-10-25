@@ -2,6 +2,7 @@
 """NBA Season Lab: public official NBA game feed. No private accounts or tokens."""
 from __future__ import annotations
 import datetime as dt
+from collections import Counter
 import json
 import pathlib
 import re
@@ -9,7 +10,7 @@ import unicodedata
 import urllib.request
 from zoneinfo import ZoneInfo
 from src.espn_adapter import parse_summary, parse_scoreboard
-from src.live_calendar_fallback import verified_fallback
+from src.live_calendar_fallback import verified_fallback, TEAMS
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
@@ -138,6 +139,73 @@ def save(path,value):
     path.parent.mkdir(parents=True,exist_ok=True);tmp=path.with_suffix(".tmp")
     tmp.write_text(json.dumps(value,ensure_ascii=False,separators=(",",":")),encoding="utf8");tmp.replace(path)
 
+
+def official_calendar_quality(games, now):
+    """Validate a full NBA CDN regular-season schedule before replacing a known calendar.
+
+    'validated_at_utc' is the time *we checked* the feed, not an asserted
+    original NBA publication time.
+    """
+    if not 1100 <= len(games) <= 1230:
+        raise ValueError("NBA CDN calendar lacks full-season coverage")
+    ids=set(); matchups=set(); appearances=Counter()
+    for g in games:
+        gid=g.get("id")
+        if not isinstance(gid,str) or not re.fullmatch(r"002\\d{7}",gid) or gid in ids:
+            raise ValueError("Duplicate/invalid official NBA game ID")
+        ids.add(gid)
+        home,away=g.get("home"),g.get("away")
+        if home not in TEAMS or away not in TEAMS or home==away:
+            raise ValueError("Invalid official NBA matchup")
+        if g.get("status") not in ("scheduled","live","final"):
+            raise ValueError("Invalid official NBA game status")
+        moment=dt.datetime.fromisoformat(g["utc"].replace("Z","+00:00"))
+        if moment.utcoffset()!=dt.timedelta(0) or g.get("epoch")!=epoch(g["utc"]):
+            raise ValueError("Invalid official NBA UTC time/epoch")
+        matchup=(moment.astimezone(ET).date().isoformat(),home,away)
+        if matchup in matchups:raise ValueError("Duplicate same-day official NBA fixture")
+        matchups.add(matchup);appearances.update((home,away))
+    if set(appearances)!=TEAMS or min(appearances.values())<70:
+        raise ValueError("Official NBA calendar has missing clubs/season coverage")
+    gaps=max(0,1230-len(games))
+    stamp=now.astimezone(dt.timezone.utc).isoformat(timespec="seconds").replace("+00:00","Z")
+    return {"source":NBA_SCHEDULE,"validated_at_utc":stamp,"checked_at_utc":stamp,
+            "source_published_at_utc":None,"age_hours":0.0,"freshness":"fresh",
+            "games":len(games),"teams":len(appearances),"unassigned_games":gaps,
+            "complete":not gaps,"warning":"Unscheduled NBA Cup games are never invented"}
+
+
+def select_live_schedule(fetch, now, old, verified_calendar):
+    """Prefer current validated sources over nonempty old live.schedule.
+
+    Selection is read-only with respect to data/schedule.json. On total source
+    failure, keep the last known fixture list but explicitly mark it unverified.
+    """
+    warnings=[]
+    try:
+        official=nba_schedule(fetch(NBA_SCHEDULE))
+        quality=official_calendar_quality(official,now)
+        return official,NBA_SCHEDULE,quality,f"ok: {len(official)}",warnings
+    except Exception as exc:
+        warnings.append("NBA schedule: "+str(exc)[:150])
+    try:
+        verified,quality=verified_fallback(verified_calendar,now)
+        warnings.append("NBA CDN unavailable: validated ESPN calendar; age "
+                        +str(quality["age_hours"])+"h; NBA Cup gaps "
+                        +str(quality["unassigned_games"]))
+        return verified,"data/schedule.json",quality,"fallback: verified ESPN full-season calendar",warnings
+    except (ValueError,KeyError,TypeError) as exc:
+        warnings.append("Full-season fallback rejected: "+str(exc)[:160])
+    cached=old.get("schedule")
+    if not isinstance(cached,list):cached=[]
+    quality={"source":"prior live.json (unverified cache)","validated_at_utc":None,
+             "age_hours":None,"freshness":"stale_unverified",
+             "games":len(cached),"teams":None,"unassigned_games":None,
+             "complete":False,"warning":"No validated current calendar; cached fixtures may be stale"}
+    warnings.append("Using unverified last-known calendar; do not infer schedule freshness")
+    return list(cached),"last known",quality,"unavailable",warnings
+
+
 def refresh(fetch=http_json,now=None):
     now=now or dt.datetime.now(dt.timezone.utc)
     today=now.astimezone(ET).date()
@@ -164,21 +232,9 @@ def refresh(fetch=http_json,now=None):
             if english not in ambiguous and (english not in ids or ids[english]==key):
                 ids[english]=key
     warnings=[];providers={"nba_schedule":"unavailable","espn_scoreboard":"unavailable","nba_boxscores":0}
-    try:
-        future=nba_schedule(fetch(NBA_SCHEDULE))
-        providers["nba_schedule"]=f"ok: {len(future)}"
-    except Exception as e:
-        future=old.get("schedule") or []
-        warnings.append("NBA schedule: "+str(e)[:150])
-    fallback_quality=None
-    if not future:
-        try:
-            fallback, fallback_quality=verified_fallback(load(DATA/"schedule.json",{}),now)
-            future=fallback
-            warnings.append("NBA CDN unavailable: using validated ESPN season calendar; age "+str(fallback_quality["age_hours"])+"h; NBA Cup gaps "+str(fallback_quality["unassigned_games"]))
-            providers["nba_schedule"]="fallback: verified ESPN full-season calendar"
-        except (ValueError,KeyError,TypeError) as e:
-            warnings.append("Full-season fallback rejected: "+str(e)[:160])
+    future,schedule_source,schedule_quality,providers["nba_schedule"],calendar_warnings=select_live_schedule(
+        fetch,now,old,load(DATA/"schedule.json",{}))
+    warnings.extend(calendar_warnings)
     sched={g["id"]:g for g in future}
     games={g["id"]:g for g in old.get("games") or []}
     for g in future:
@@ -258,14 +314,14 @@ def refresh(fetch=http_json,now=None):
     result={"schema_version":4,"updated_at_utc":stamp if count or providers["nba_boxscores"] or providers["espn_boxscores"] else old.get("updated_at_utc",""),
             "mode":"live_sync" if is_live else "schedule_sync_only",
             "scoreboard_checked_at_utc":stamp if count else old.get("scoreboard_checked_at_utc"),
-            "source_status":providers,"schedule_source":NBA_SCHEDULE if providers["nba_schedule"].startswith("ok:") else "data/schedule.json" if fallback_quality else "last known",
-            "schedule_quality":fallback_quality,
+            "source_status":providers,"schedule_source":schedule_source,
+            "schedule_quality":schedule_quality,
             "schedule":sorted(sched.values(),key=lambda g:g["epoch"]),
             "games":sorted(games.values(),key=lambda g:g["epoch"]),"rows":rows,
             "injuries":old.get("injuries",[]),"unmatched":unseen,
             "warnings":warnings[:25],"sources":sources}
     save(DATA/"live.json",result)
-    return {"mode":result["mode"],"schedule_quality":fallback_quality,"games":len(games),"rows":len(rows),
+    return {"mode":result["mode"],"schedule_quality":schedule_quality,"games":len(games),"rows":len(rows),
             "calendar":len(sched),"providers":providers,"warnings":warnings[:3]}
 
 if __name__=="__main__":
