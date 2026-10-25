@@ -31,13 +31,16 @@ jobs:
           python-version: '3.12'
       - name: Test scoring without network
         run: python -m unittest -v test_sync
+      - name: Refresh full-season calendar before live boxscore sync
+        run: |
+          python -m src.schedule_sync || echo "Calendar refresh unavailable; keep previously verified schedule and mark age in live metadata"
       - name: Fetch official NBA data
         run: python -m src.sync
       - name: Commit validated public dataset
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/live.json data/catalog.json
+          git add data/live.json data/catalog.json data/schedule.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh NBA scores and schedule"
             git pull --rebase origin main
