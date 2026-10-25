@@ -1,0 +1,17 @@
+name: NBA verified calendar fallback regression
+on:
+  push:
+    branches: [fix/calendar-fallback-and-pit-outcomes-20261025]
+    paths: ['src/sync.py','src/live_calendar_fallback.py','test_live_calendar_fallback.py','.github/workflows/calendar-fallback-test.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Data-source fallback and historical scoring tests
+        run: python -m unittest -v test_live_calendar_fallback test_injury_outcome_observations test_sync
