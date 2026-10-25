@@ -13,6 +13,11 @@ def payload(flag=True):
  {"team":{"abbreviation":"BOS"},"statistics":[{"athletes":[
  {"athlete":{"displayName":"Test Player"},"didNotPlay":flag}]}]},
  {"team":{"abbreviation":"NYK"},"statistics":[{"athletes":[]}]}]}}
+def active_rows(include_target=False):
+ rows=[{"game_id":"espn_42","id":"b"+str(i),"team":"BOS","played":True} for i in range(5)]
+ rows += [{"game_id":"espn_42","id":"y"+str(i),"team":"NYK","played":True} for i in range(5)]
+ if include_target:rows.append({"game_id":"espn_42","id":"n001","team":"BOS","played":True})
+ return rows
 class Tests(unittest.TestCase):
  def test_explicit_only(self):
   a,qa=explicit_rows(payload(),GAME,IDENTITY,NOW)
@@ -23,14 +28,14 @@ class Tests(unittest.TestCase):
   p=payload();p["header"]["competitions"][0]["competitors"][0]["team"]["abbreviation"]="LAL"
   with self.assertRaises(ValueError):explicit_rows(p,GAME,IDENTITY,NOW)
  def test_append_without_backdate(self):
-  live={"games":[GAME],"rows":[]}
+  live={"games":[GAME],"rows":active_rows()}
   x,s=gather(live,IDENTITY,{},lambda _:payload(),NOW)
   self.assertEqual(s["new_games_checked"],1)
   y,s2=gather(live,IDENTITY,x,lambda _: (_ for _ in ()).throw(ValueError("should not fetch")),NOW)
   self.assertEqual(s2["new_games_checked"],0)
   self.assertEqual(x["events"],y["events"])
  def test_active_conflict_fails(self):
-  live={"games":[GAME],"rows":[{"game_id":"espn_42","id":"n001","played":True}]}
+  live={"games":[GAME],"rows":active_rows(include_target=True)}
   with self.assertRaises(ValueError):gather(live,IDENTITY,{},lambda _:payload(),NOW)
  def test_verified_espn_identity_and_game_club(self):
   from src.explicit_dnp_research import observed_active_espn_ids
@@ -42,7 +47,7 @@ class Tests(unittest.TestCase):
   self.assertEqual(rows[0]["identity_method"],"verified_espn_id_from_named_active_game")
   self.assertEqual(rows[0]["team"],"BOS")
  def test_missing_is_unknown(self):
-  live={"games":[GAME],"rows":[]}
+  live={"games":[GAME],"rows":active_rows()}
   x,_=gather(live,IDENTITY,{},lambda _:payload(False),NOW)
   self.assertEqual(x["events"],[])
   self.assertEqual(x["checked_final_game_ids"],["espn_42"])
