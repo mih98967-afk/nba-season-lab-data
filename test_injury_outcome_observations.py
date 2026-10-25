@@ -12,7 +12,7 @@ class TestOutcomes(unittest.TestCase):
           "first_seen_at_utc":"2026-10-25T13:02:00Z",
           "tipoff_utc":"2026-10-25T22:00:00Z","status":"questionable"}
         game={"id":"g1","status":"final","home":"NYK","away":"BOS","utc":event["tipoff_utc"]}
-        rows=[{"game_id":"g1","id":"n0"+str(i),"team":club,"played":True,
+        rows=[{"game_id":"g1","id":("n0" if club=="BOS" else "n1")+str(i),"team":club,"played":True,
                "minutes":20,"fp":15} for club in ("BOS","NYK") for i in range(1,8)]
         return {"status":"official_report_observed_pit_research_only","events":[event]},{
             "games":[game],"schedule":[game],"rows":rows}
