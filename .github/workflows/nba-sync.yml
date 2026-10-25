@@ -31,9 +31,6 @@ jobs:
           python-version: '3.12'
       - name: Test scoring without network
         run: python -m unittest -v test_sync
-      - name: Refresh full-season calendar before live boxscore sync
-        run: |
-          python -m src.schedule_sync || echo "Calendar refresh unavailable; keep previously verified schedule and mark age in live metadata"
       - name: Fetch official NBA data
         run: python -m src.sync
       - name: Commit validated public dataset
