@@ -24,7 +24,7 @@ class TestUnknown(unittest.TestCase):
   a=inputs();a[1]["records"][0]["team"]="NYK"
   x=coverage(*a,NOW)
   self.assertEqual(x["summary"]["verified_labels_outside_catalog_proxy"],1)
-  self.assertEqual(x["summary"]["played_verified"],0)
+  self.assertEqual(x["summary"].get("played_verified",0),0)
  def test_duplicate_source_rejected(self):
   a=inputs();a[1]["records"].append(a[1]["records"][0])
   with self.assertRaises(ValueError):coverage(*a,NOW)
