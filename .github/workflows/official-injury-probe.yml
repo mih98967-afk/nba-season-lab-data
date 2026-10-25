@@ -39,7 +39,11 @@ jobs:
           PY
       - name: Inspect real report text columns
         run: |
-          command -v pdftotext
-          pdfinfo report.pdf | head -14
-          pdftotext -layout report.pdf report.txt
-          head -90 report.txt
+          python -m pip install --quiet pypdf==5.9.0
+          python - <<'PY'
+          from pypdf import PdfReader
+          reader=PdfReader('report.pdf')
+          print('pages',len(reader.pages))
+          for p in reader.pages[:2]:
+              print((p.extract_text(extraction_mode='layout') or '')[:6000])
+          PY
