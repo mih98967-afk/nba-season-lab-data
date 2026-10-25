@@ -1,0 +1,46 @@
+name: Official injury rows isolated research
+on:
+  push:
+    branches: [main, research/official-injury-row-extraction-20261025]
+    paths:
+      - 'src/official_injury_rows.py'
+      - 'test_official_injury_rows.py'
+      - '.github/workflows/official-injury-rows.yml'
+  schedule:
+    - cron: '53 */4 * * *'
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install --quiet pdfplumber==0.11.7
+      - name: Offline parser safeguards
+        run: python -m unittest -v test_official_injury_rows
+      - name: Extract and match official PDF statuses without updating live model
+        run: python -m src.official_injury_rows
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: official-injury-rows-research
+          path: data/official_injury_status_research.json
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Publish research-only player status observations on main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/official_injury_status_research.json data/official_injury_status_archive.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: update PIT official injury status research"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
