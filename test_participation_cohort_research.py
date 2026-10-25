@@ -2,7 +2,7 @@ import unittest
 from datetime import datetime,timezone
 from copy import deepcopy
 from src.participation_cohort_research import build
-NOW=datetime(2026,10,26,tzinfo=timezone.utc)
+NOW=datetime(2026,10,26,3,tzinfo=timezone.utc)
 def fixture():
  g={"id":"espn_42","espn_id":"42","status":"final","home":"BOS","away":"NYK","utc":"2026-10-25T20:00:00Z"}
  cat={"players":[{"id":"n001","english":"Test Player","team":"BOS","pos":"PG"},{"id":"n002","english":"Other Player","team":"NYK","pos":"C"}]+[{"id":"n%03d"%i,"english":"P%d"%i,"team":"BOS","pos":"SF"} for i in range(3,404)]}
