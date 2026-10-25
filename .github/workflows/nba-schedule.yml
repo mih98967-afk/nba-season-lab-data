@@ -9,7 +9,7 @@ on:
       - '.github/workflows/nba-schedule.yml'
   workflow_dispatch:
   schedule:
-    - cron: '7 7,19 * * *'
+    - cron: '7 */4 * * *'
 
 permissions:
   contents: write
