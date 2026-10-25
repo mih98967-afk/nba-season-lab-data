@@ -9,6 +9,7 @@ import unicodedata
 import urllib.request
 from zoneinfo import ZoneInfo
 from src.espn_adapter import parse_summary, parse_scoreboard
+from src.live_calendar_fallback import verified_fallback
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 DATA=ROOT/"data"
@@ -169,6 +170,15 @@ def refresh(fetch=http_json,now=None):
     except Exception as e:
         future=old.get("schedule") or []
         warnings.append("NBA schedule: "+str(e)[:150])
+    fallback_quality=None
+    if not future:
+        try:
+            fallback, fallback_quality=verified_fallback(load(DATA/"schedule.json",{}),now)
+            future=fallback
+            warnings.append("NBA CDN unavailable: using validated ESPN season calendar; age "+str(fallback_quality["age_hours"])+"h; NBA Cup gaps "+str(fallback_quality["unassigned_games"]))
+            providers["nba_schedule"]="fallback: verified ESPN full-season calendar"
+        except (ValueError,KeyError,TypeError) as e:
+            warnings.append("Full-season fallback rejected: "+str(e)[:160])
     sched={g["id"]:g for g in future}
     games={g["id"]:g for g in old.get("games") or []}
     for g in future:
@@ -254,7 +264,7 @@ def refresh(fetch=http_json,now=None):
             "injuries":old.get("injuries",[]),"unmatched":unseen,
             "warnings":warnings[:25],"sources":sources}
     save(DATA/"live.json",result)
-    return {"mode":result["mode"],"games":len(games),"rows":len(rows),
+    return {"mode":result["mode"],"schedule_quality":fallback_quality,"games":len(games),"rows":len(rows),
             "calendar":len(sched),"providers":providers,"warnings":warnings[:3]}
 
 if __name__=="__main__":
