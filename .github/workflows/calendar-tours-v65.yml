@@ -1,0 +1,18 @@
+name: NBA v6.5 calendar tours CI
+on:
+  push:
+    branches: [main, feat/calendar-tour-grid-v65-20261025]
+    paths: ['site/v6_5/**','.github/workflows/calendar-tours-v65.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: node --check site/v6_5/app.js
+      - run: node --check site/v6_5/calendar_tours.js
+      - run: cd site/v6_5 && node test_calendar_tours.cjs
