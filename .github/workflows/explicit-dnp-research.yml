@@ -1,0 +1,40 @@
+name: NBA explicit DNP isolated research
+on:
+  push:
+    branches: [main, research/explicit-dnp-evidence-20261025]
+    paths:
+      - 'src/explicit_dnp_research.py'
+      - 'test_explicit_dnp_research.py'
+      - '.github/workflows/explicit-dnp-research.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '27 */4 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  dnp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Strict fixture, identity and explicit DNP regression
+        run: python -m unittest -v test_explicit_dnp_research test_played_fp_shadow
+      - name: Gather public explicit DNP evidence
+        if: github.ref == 'refs/heads/main'
+        run: python -m src.explicit_dnp_research
+      - name: Save research-only DNP evidence
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/explicit_dnp_research.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: append observed explicit NBA DNP"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
