@@ -109,6 +109,10 @@ def strict_enrich(events,catalog,identity,schedule,report_info):
         if not fixture or len(fixture)!=1:
             qc["missing_or_ambiguous_fixture"]+=1;continue
         g=fixture[0]
+        report_time=datetime.fromisoformat(report_info["report_at_utc"].replace("Z","+00:00"))
+        game_time=datetime.fromisoformat(g["utc"].replace("Z","+00:00"))
+        if report_time>=game_time:
+            qc["report_after_tipoff"]+=1;continue
         if e["team"] not in (g["away"],g["home"]):
             qc["team_fixture_mismatch"]+=1;continue
         # Cross-check with catalog may be stale after a trade; exact official
@@ -141,7 +145,8 @@ def run():
     identity=json.loads((DATA/"identity.json").read_text())
     schedule=json.loads((DATA/"schedule.json").read_text())
     mapped,joinqa=strict_enrich(events,catalog,identity,schedule,report)
-    if len(mapped)<5:raise ValueError("Less than 5 unambiguous joinable official statuses")
+    if len(mapped)<10 or len(mapped)/len(events)<.50:
+        raise ValueError("Official row matching coverage below safe threshold")
     output={"schema_version":1,"status":"research_only_not_deployed",
       "updated_at_utc":datetime.now(timezone.utc).isoformat(),
       "report_at_utc":report["report_at_utc"],"first_seen_at_utc":report["first_seen_at_utc"],
@@ -149,6 +154,21 @@ def run():
       "parser_qa":qa,"join_qa":joinqa,"events":mapped,
       "warning":"No status automatically changes FP; absent players are NOT healthy; timestamp is first observed, not guaranteed published availability",
       "adopt_on_site":False}
+    # Append-only, first-seen provenance. Revisions of a PDF can never
+    # overwrite previously observed status events.
+    archive_path=DATA/"official_injury_status_archive.json"
+    old=json.loads(archive_path.read_text()) if archive_path.exists() else {}
+    observations={x["event_id"]:x for x in old.get("events",[]) if x.get("event_id")}
+    for e in mapped:
+        event_id=report["sha256"]+"|"+e["game_id"]+"|"+e["player_id"]
+        observations.setdefault(event_id,{"event_id":event_id,**e})
+    archive={"schema_version":1,"status":"official_report_observed_pit_research_only",
+      "updated_at_utc":output["updated_at_utc"],"events":list(observations.values()),
+      "n":len(observations),"adopt_on_site":False,
+      "warning":"No historical backdating. Only report statuses, not full roster health status."}
+    archive_tmp=archive_path.with_suffix(".tmp")
+    archive_tmp.write_text(json.dumps(archive,ensure_ascii=False,separators=(",",":")),encoding="utf8")
+    archive_tmp.replace(archive_path)
     dest=DATA/"official_injury_status_research.json";tmp=dest.with_suffix(".tmp")
     tmp.write_text(json.dumps(output,ensure_ascii=False,indent=2),encoding="utf8")
     tmp.replace(dest)
