@@ -1,0 +1,24 @@
+'use strict';
+const assert=require('node:assert/strict');
+const T=require('./calendar_tours.js');
+let passes=0;
+function test(name,fn){fn();passes++;console.log('PASS',name);}
+const d=x=>Date.parse(x);
+test('Season starts Monday 19 October Moscow',()=>{assert.equal(T.dayKeyMsk(T.FIRST_MONDAY),'2026-10-19');assert.equal(T.tourNumber(d('2026-10-18T20:59:59Z')),0);assert.equal(T.tourNumber(T.FIRST_MONDAY),1);});
+test('Sunday midnight Moscow is next tour',()=>{assert.equal(T.tourNumber(d('2026-10-25T20:59:59Z')),1);assert.equal(T.tourNumber(d('2026-10-25T21:00:00Z')),2);});
+test('Moscow midnight date, not US date',()=>{assert.equal(T.dayKeyMsk(d('2026-10-25T22:15:00Z')),'2026-10-26');});
+test('Second week Monday-Sunday',()=>{const t=T.tourRange(2,1)[0];assert.equal(t.labelStart,'2026-10-26');assert.equal(t.labelEnd,'2026-11-01');assert.equal(t.days.length,7);});
+test('Cross-year Moscow grouping',()=>{let n=T.tourNumber(d('2027-01-01T03:00:00Z'));const t=T.tourRange(n,1)[0];assert(t.labelStart.endsWith('12-28'));assert(t.labelEnd.endsWith('01-03'));});
+test('Tour range independent of real date',()=>{assert.equal(T.tourRange(4,3).map(x=>x.number).join(','),'4,5,6');});
+test('Reject invalid counts',()=>{assert.throws(()=>T.tourRange(0,3));assert.throws(()=>T.tourRange(1,7));});
+test('One match counts for both teams',()=>{const g=[{id:'a',home:'BOS',away:'NYK',utc:'2026-10-26T22:00:00Z'}];const m=T.buildMatrix(g,['BOS','NYK'],T.tourRange(2,1));assert.equal(m.rows[0].total,1);assert.equal(m.rows[1].total,1);assert.equal(m.actualUniqueGames,1);assert.equal(m.rows[0].parts[0].days[1].games[0].opponent,'NYK');assert.equal(m.rows[1].parts[0].days[1].games[0].away,true);});
+test('Games on boundary put in correct tour',()=>{const g=[{id:'before',home:'BOS',away:'NYK',utc:'2026-10-25T20:59:59Z'},{id:'after',home:'BOS',away:'NYK',utc:'2026-10-25T21:00:00Z'}];const m=T.buildMatrix(g,['BOS','NYK'],T.tourRange(1,2));assert.equal(m.rows[0].parts[0].count,1);assert.equal(m.rows[0].parts[1].count,1);});
+test('MSK local 01:00 displayed from UTC 22:00',()=>{const m=T.buildMatrix([{id:'late',home:'BOS',away:'NYK',utc:'2026-10-25T22:00:00Z'}],['BOS','NYK'],T.tourRange(2,1));assert.equal(m.rows[0].parts[0].days[0].games[0].time,'01:00');});
+test('Duplicate source game never double counted',()=>{const g={id:'same',home:'BOS',away:'NYK',utc:'2026-10-26T20:00:00Z'};const m=T.buildMatrix([g,g],['BOS','NYK'],T.tourRange(2,1));assert.equal(m.rows[0].total,1);});
+test('Postponed games never counted as scheduled',()=>{const g={id:'cancel',home:'BOS',away:'NYK',utc:'2026-10-26T20:00:00Z',status:'postponed'};const m=T.buildMatrix([g],['BOS','NYK'],T.tourRange(2,1));assert.equal(m.rows[0].total,0);});
+test('B2B flag belongs to matching team only',()=>{const g={id:'b2b',home:'BOS',away:'NYK',utc:'2026-10-26T20:00:00Z',home_b2b:true,away_b2b:false};const m=T.buildMatrix([g],['BOS','NYK'],T.tourRange(2,1));assert.equal(m.rows[0].parts[0].days[0].games[0].b2b,true);assert.equal(m.rows[1].parts[0].days[0].games[0].b2b,false);});
+test('Rows may have two fixtures on the same Moscow day',()=>{const g=[{id:'1',home:'BOS',away:'NYK',utc:'2026-10-26T01:00:00Z'},{id:'2',home:'BOS',away:'CHA',utc:'2026-10-26T20:00:00Z'}];const m=T.buildMatrix(g,['BOS','NYK','CHA'],T.tourRange(2,1));assert.equal(m.rows[0].parts[0].days[0].games.length,2);});
+test('Empty day shows zero games, not generated fixture',()=>{const m=T.buildMatrix([],['BOS'],T.tourRange(1,2));assert.equal(m.rows[0].parts[0].days.length,7);assert.equal(m.rows[0].total,0);});
+test('Only own clubs still see outsiders as opponents',()=>{const g={id:'a',home:'BOS',away:'NYK',utc:'2026-10-26T20:00:00Z'};const m=T.buildMatrix([g],['BOS'],T.tourRange(2,1));assert.equal(m.rows[0].total,1);assert.equal(m.rows[0].parts[0].days[0].games[0].opponent,'NYK');});
+test('Last tour count finite',()=>{assert(T.seasonTourCount()>20&&T.seasonTourCount()<30);});
+console.log('CALENDAR_TOURS_TESTS_PASS',passes);
