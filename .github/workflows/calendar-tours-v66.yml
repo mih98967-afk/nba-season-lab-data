@@ -1,0 +1,19 @@
+name: NBA v6.6 ET tour calendar CI
+on:
+  push:
+    branches: [main, feat/calendar-et-total-30-teams-v66]
+    paths: ['site/v6_6/**','.github/workflows/calendar-tours-v66.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: node --check site/v6_6/app.js
+      - run: node --check site/v6_6/calendar_tours.js
+      - run: cd site/v6_6 && node test_calendar_tours_v66.cjs
+      - run: cd site/v6_6 && node test_calendar_tours_full_v66.cjs
