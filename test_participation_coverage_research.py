@@ -5,6 +5,8 @@ NOW=datetime(2026,10,26,tzinfo=timezone.utc)
 def inputs():
  g={"id":"g","status":"final","home":"BOS","away":"NYK","utc":"2026-10-25T20:00:00Z"}
  people=[{"id":f"n{i:03d}","team":"BOS" if i<210 else "NYK","pos":"PG"} for i in range(420)]
+ other="ATL BKN CHA CHI CLE DAL DEN DET GSW HOU IND LAC LAL MEM MIA MIL MIN NOP OKC ORL PHI PHX POR SAC SAS TOR UTA WAS".split()
+ people.extend({"id":f"n{i:03d}","team":team,"pos":"SG"} for i,team in enumerate(other,start=420))
  e={"game_id":"g","player_id":"n001","team":"BOS","position":"PG","game_utc":g["utc"],"participation_label":1,"evidence":"positive_minutes_verified_sportsru_fp","source_first_observed_at_utc":"2026-10-25T23:00:00Z"}
  c={"schema_version":1,"status":"research_only_not_deployed","adopt_on_site":False,"records":[e],"summary":{"verified_full_boxscores_checked":1,"listed_player_game_labels":1}}
  d={"schema_version":1,"adopt_on_site":False,"checked_final_game_ids":["g"]}
