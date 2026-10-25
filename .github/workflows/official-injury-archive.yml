@@ -1,0 +1,40 @@
+name: NBA official injury snapshot inventory
+on:
+  push:
+    branches: [main, feat/official-nba-injury-archive-20261025]
+    paths:
+      - 'src/official_injury_archive.py'
+      - 'test_official_injury_archive.py'
+      - '.github/workflows/official-injury-archive.yml'
+  schedule:
+    - cron: '41 */4 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Point-in-time and PDF guards
+        run: python -m unittest -v test_official_injury_archive
+      - name: Fetch latest official report and store SHA-only metadata
+        run: python -m src.official_injury_archive
+      - name: Commit inventory on main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/official_injury_snapshots.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: archive official NBA injury report snapshot"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
