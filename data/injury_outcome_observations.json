@@ -2,7 +2,7 @@
   "schema_version": 2,
   "status": "prospective_observation_only_no_model_adoption",
   "model_status": "research_only_not_deployed",
-  "updated_at_utc": "2026-10-25T19:20:35Z",
+  "updated_at_utc": "2026-10-25T22:50:44Z",
   "unit_of_analysis": "unique_sports_ru_player_id_x_verified_scheduled_game_id",
   "archive_report_events": 54,
   "eligible_unique_player_games": 28,
@@ -13,18 +13,20 @@
     "superseded_pdf_observations": 26,
     "player_games_with_multiple_reports": 26,
     "not_known_at_monday_15_msk": 28,
-    "future_game": 28,
-    "telegram_context_unverified": 25
+    "not_verified_final": 8,
+    "telegram_context_unverified": 25,
+    "future_game": 20
   },
   "by_status": {
     "available": {
-      "future_game": 1
+      "not_verified_final": 1
     },
     "out": {
-      "future_game": 20
+      "not_verified_final": 5,
+      "future_game": 15
     },
     "probable": {
-      "future_game": 2
+      "not_verified_final": 2
     },
     "questionable": {
       "future_game": 5
@@ -48,7 +50,7 @@
       "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-25_12_45PM.pdf",
       "official_versions_observed_before_lock": 2,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -76,7 +78,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -104,7 +106,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -132,7 +134,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -152,7 +154,7 @@
       "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-25_12_45PM.pdf",
       "official_versions_observed_before_lock": 2,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -180,7 +182,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -208,7 +210,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -228,7 +230,7 @@
       "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-25_12_45PM.pdf",
       "official_versions_observed_before_lock": 2,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -612,11 +614,11 @@
       "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-25_12_45PM.pdf",
       "official_versions_observed_before_lock": 2,
       "telegram_context": {
-        "signal_id": "nba_injurynews/51323:n104:0",
-        "status": "injury_update",
-        "published_at": "2026-10-25T15:44:29Z",
-        "first_seen_at": "2026-10-25T19:06:27Z",
-        "url": "https://t.me/nba_injurynews/51323",
+        "signal_id": "nba_injurynews/51346:n104:0",
+        "status": "out",
+        "published_at": "2026-10-25T22:00:33Z",
+        "first_seen_at": "2026-10-25T22:37:54Z",
+        "url": "https://t.me/nba_injurynews/51346",
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
