@@ -1,7 +1,7 @@
 name: NBA injury observation outcomes audit
 on:
   push:
-    branches: [main, fix/calendar-fallback-and-pit-outcomes-20261025]
+    branches: [main, research/injury-pit-cohort-20261025]
     paths: ['src/injury_outcome_observations.py','test_injury_outcome_observations.py','.github/workflows/injury-outcomes.yml']
   workflow_dispatch:
   schedule:
@@ -23,6 +23,7 @@ jobs:
       - name: Test no fabricated DNP and as-of timing
         run: python -m unittest -v test_injury_outcome_observations
       - name: Audit official statuses against observed completed games
+        if: github.ref == 'refs/heads/main'
         run: python -m src.injury_outcome_observations
       - name: Save research-only outcome summary on main
         if: github.ref == 'refs/heads/main'
