@@ -1,0 +1,37 @@
+name: NBA injury observation outcomes audit
+on:
+  push:
+    branches: [main, fix/calendar-fallback-and-pit-outcomes-20261025]
+    paths: ['src/injury_outcome_observations.py','test_injury_outcome_observations.py','.github/workflows/injury-outcomes.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '57 */4 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test no fabricated DNP and as-of timing
+        run: python -m unittest -v test_injury_outcome_observations
+      - name: Audit official statuses against observed completed games
+        run: python -m src.injury_outcome_observations
+      - name: Save research-only outcome summary on main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/injury_outcome_observations.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: update research-only injury outcome observations"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
