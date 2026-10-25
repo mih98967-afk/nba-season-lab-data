@@ -36,7 +36,10 @@ class Tests(unittest.TestCase):
   self.assertEqual(x["events"],y["events"])
  def test_active_conflict_fails(self):
   live={"games":[GAME],"rows":active_rows(include_target=True)}
-  with self.assertRaises(ValueError):gather(live,IDENTITY,{},lambda _:payload(),NOW)
+  result,summary=gather(live,IDENTITY,{},lambda _:payload(),NOW)
+  self.assertEqual(summary["new_games_checked"],0)
+  self.assertEqual(result["events"],[])
+  self.assertEqual(summary["qa_current"]["unverified_boxscore_attempt"],1)
  def test_verified_espn_identity_and_game_club(self):
   from src.explicit_dnp_research import observed_active_espn_ids
   live={"games":[GAME],"rows":[{"game_id":"espn_42","id":"n001","name":"Test Player","espn_person_id":"1234","team":"BOS","minutes":22,"played":True}]}
