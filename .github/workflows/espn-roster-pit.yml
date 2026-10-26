@@ -1,0 +1,40 @@
+name: NBA ESPN team roster PIT research
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/espn_roster_pit.py','test_espn_roster_pit.py','.github/workflows/espn-roster-pit.yml']
+  push:
+    branches: [main]
+    paths: ['src/espn_roster_pit.py','test_espn_roster_pit.py','.github/workflows/espn-roster-pit.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '23 8 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Fail-closed roster membership and team-ID tests
+        run: python -m unittest -v test_espn_roster_pit test_explicit_dnp_research
+      - name: Observe current public ESPN team rosters
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: python -m src.espn_roster_pit
+      - name: Publish only first-observed, non-overwritten research
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/espn_roster_pit/*.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: capture independent ESPN team roster PIT research"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
