@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "model_status": "research_only_not_deployed",
+  "adopt_on_site": false,
+  "updated_at_utc": "2026-10-26T21:25:35Z",
+  "source": "Audited NBA positive-minute game logs and independently verified ESPN historical tipoffs",
+  "source_seasons": [
+    "2024/25",
+    "2025/26"
+  ],
+  "training_season": "2024/25",
+  "untouched_holdout_season": "2025/26",
+  "sample_selection": "high_identity, >=8 previous same-club appearances, >=10 prior club games, played within 16 days",
+  "target": "appearance_logged_in_exact_last_observed_club_game_NOT_explicit_DNP",
+  "confirmed_DNP_observations": 0,
+  "target_is_true_game_day_eligibility": false,
+  "retrospective_true_scheduled_asof_proven": false,
+  "no_future_played_outcomes_used_as_features": true,
+  "full_fantasy_population_covered": false,
+  "p_play_probability_calibrated": false,
+  "selected_sample_Brier_only": true,
+  "transfer_value_proven": false,
+  "eligible_sample_qa": {
+    "2024/25": {
+      "eligible_proxy_player_games": 18382,
+      "distinct_players": 306,
+      "distinct_NBA_games": 1085,
+      "logged_appearances": 14507,
+      "no_logged_appearance_NOT_DNP": 3875,
+      "selection_qa": {
+        "no_prior_appearance": 19035,
+        "last_observed_club_not_playing": 313994,
+        "insufficient_prior_same_club_appearances": 3405,
+        "insufficient_prior_club_fixtures": 412,
+        "no_logged_appearance_NOT_DNP": 3875,
+        "positive_logged_appearance": 14507,
+        "inactive_older_than_16_days_excluded": 29762
+      }
+    },
+    "2025/26": {
+      "eligible_proxy_player_games": 21756,
+      "distinct_players": 354,
+      "distinct_NBA_games": 1085,
+      "logged_appearances": 17103,
+      "no_logged_appearance_NOT_DNP": 4653,
+      "selection_qa": {
+        "no_prior_appearance": 16076,
+        "last_observed_club_not_playing": 364691,
+        "insufficient_prior_same_club_appearances": 3558,
+        "insufficient_prior_club_fixtures": 431,
+        "positive_logged_appearance": 17103,
+        "no_logged_appearance_NOT_DNP": 4653,
+        "inactive_older_than_16_days_excluded": 31368
+      }
+    }
+  },
+  "source_positive_log_qa": {
+    "player_identity_not_high_confidence_excluded": 60,
+    "high_identity_verified_positive_rows": 38425
+  },
+  "fixed_baseline_params": {
+    "shrinkage": 10,
+    "recent_weight": 0.0
+  },
+  "selected_development_params": {
+    "shrinkage": 0,
+    "recent_weight": 0.75
+  },
+  "development": {
+    "baseline": {
+      "n": 18382,
+      "brier": 0.152427,
+      "logloss": 0.471889
+    },
+    "candidate": {
+      "n": 18382,
+      "brier": 0.135588,
+      "logloss": 0.486659
+    }
+  },
+  "holdout": {
+    "baseline": {
+      "n": 21756,
+      "brier": 0.151679,
+      "logloss": 0.46838
+    },
+    "candidate": {
+      "n": 21756,
+      "brier": 0.136714,
+      "logloss": 0.482388
+    },
+    "candidate_minus_baseline_brier": -0.014965,
+    "player_cluster_95pct_gain_in_Brier": [
+      0.01226,
+      0.017603
+    ],
+    "candidate_calibration_selected_proxy": {
+      "0": {
+        "n": 635,
+        "mean_score": 0.134,
+        "appearance_share": 0.214
+      },
+      "1": {
+        "n": 1330,
+        "mean_score": 0.297,
+        "appearance_share": 0.432
+      },
+      "2": {
+        "n": 1952,
+        "mean_score": 0.49,
+        "appearance_share": 0.536
+      },
+      "3": {
+        "n": 3300,
+        "mean_score": 0.692,
+        "appearance_share": 0.691
+      },
+      "4": {
+        "n": 14539,
+        "mean_score": 0.95,
+        "appearance_share": 0.899
+      }
+    },
+    "metric_cannot_be_used_for_pop_p_play": true
+  },
+  "candidate_beats_baseline_reliably_in_selected_proxy": true,
+  "eligibility_or_DNP_model_adoption_allowed": false,
+  "limitations": [
+    "Target 'no logged appearance' is NOT a confirmed DNP, injury, out-of-game roster, or a game-day lineup.",
+    "Historical team membership is inferred only from preceding positive-minute games.",
+    "Highly selected recently active players exclude most long absences, new joiners, and many trades.",
+    "2024/25 and 2025/26 final fixture times cannot prove the schedule was known at the historical decision time.",
+    "Neither ESPN official historical Injury Reports nor verified historical DNP flags are in this dataset.",
+    "2023/24 positive-minute history informs conditional FP research but lacks separately validated historical UTC fixture exposure here.",
+    "Only heldout retrospective appearance-frequency Brier is measured; no prospective p_play calibration.",
+    "No historical or personal Sports.ru transfer prices, no KEEP/TRANSFER improvement demonstrated."
+  ]
+}
