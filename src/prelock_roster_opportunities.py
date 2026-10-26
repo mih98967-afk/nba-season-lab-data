@@ -113,18 +113,29 @@ def validate_espn_snapshots(snapshots, now):
     return sorted(out, key=lambda x: x[0])
 
 
-def _verified_labels(cohort, explicit, live):
+def _verified_labels(cohort, explicit, live, now):
     if (cohort.get("schema_version") != 1 or cohort.get("status") != STATUS
             or cohort.get("adopt_on_site") is not False
             or explicit.get("schema_version") != 1
             or explicit.get("adopt_on_site") is not False):
         raise ValueError("Participation/DNP evidence has not passed research QA")
     checked = explicit.get("checked_final_game_ids")
-    if (not isinstance(checked, list) or len(set(checked)) != len(checked)
-            or len(checked) != cohort.get("summary", {}).get("verified_full_boxscores_checked")):
+    if (not isinstance(checked, list) or
+            any(not isinstance(g, str) or not g for g in checked) or
+            len(set(checked)) != len(checked) or
+            len(checked) != cohort.get("summary", {}).get("verified_full_boxscores_checked")):
         raise ValueError("Participation cohort/explicit DNP game sets disagree")
-    finals = {g["id"]: g for g in live.get("games", [])
-              if isinstance(g, dict) and g.get("status") == "final"}
+    finals = {}
+    for game in live.get("games", []):
+        if not isinstance(game, dict) or game.get("status") != "final":
+            continue
+        gid = game.get("id")
+        if not isinstance(gid, str) or gid in finals:
+            raise ValueError("Missing or duplicate finalized fixture")
+        finals[gid] = game
+    for gid in checked:
+        if gid not in finals or instant(finals[gid]["utc"]) > now:
+            raise ValueError("Checked final game unavailable or in the future")
     outcomes = {}
     for row in cohort.get("records", []):
         if not isinstance(row, dict):
@@ -143,9 +154,19 @@ def _verified_labels(cohort, explicit, live):
                     if row["participation_label"] else "explicit_espn_didNotPlay_true"
                 )):
             raise ValueError("Verified label/game contradicts source")
+        first_seen = row.get("source_first_observed_at_utc")
+        # Positive boxscore labels can be verified with a missing archived first
+        # seen clock, but must not be treated as dated pregame observations.
+        # Explicit DNP evidence always requires a real postgame observed time.
+        if first_seen is None:
+            if row["participation_label"] == 0:
+                raise ValueError("Explicit DNP without observed provenance time")
+        elif not instant(game["utc"]) <= instant(first_seen) <= now:
+            raise ValueError("Postgame outcome was observed before tipoff or after audit")
         outcomes[key] = row
-    if len(outcomes) != cohort.get("summary", {}).get("listed_player_game_labels"):
-        raise ValueError("Verified outcomes count mismatch")
+    if (len(outcomes) != cohort.get("summary", {}).get("listed_player_game_labels")
+            or {gid for gid, _ in outcomes} != set(checked)):
+        raise ValueError("Verified labels do not cover the exact checked-game set")
     return set(checked), finals, outcomes
 
 
@@ -157,7 +178,7 @@ def build(live, cohort, explicit, catalog_snapshots, espn_snapshots,
     now = now.astimezone(UTC)
     c_snapshots = validate_catalog_snapshots(catalog_snapshots, now)
     e_snapshots = validate_espn_snapshots(espn_snapshots, now)
-    checked, finals, labels = _verified_labels(cohort, explicit, live)
+    checked, finals, labels = _verified_labels(cohort, explicit, live, now)
     if official is not None and official.get("status") != "official_report_observed_pit_research_only":
         raise ValueError("Untrusted official injury evidence")
     if telegram is not None and telegram.get("status") != "observed_unconfirmed_research_archive":
@@ -251,11 +272,15 @@ def build(live, cohort, explicit, catalog_snapshots, espn_snapshots,
                 outcome = ("played_verified_after_game" if
                            label["participation_label"] == 1 else
                            "explicit_dnp_verified_after_game")
+            # A live report produced BEFORE game lock must not see injury
+            # signals published/first-observed between now and future lock.
+            # Historical evaluation after lock uses the actual lock cutoff.
+            evidence_cutoff = min(now, lock)
             official_at_lock = official_asof(
-                official, gid, p["player_id"], p["catalog_team"], lock
+                official, gid, p["player_id"], p["catalog_team"], evidence_cutoff
             ) if official else None
             telegram_at_lock = telegram_asof(
-                telegram, p["player_id"], lock
+                telegram, p["player_id"], evidence_cutoff
             ) if telegram else None
             row = {
                 "game_id": gid, "player_id": p["player_id"],
@@ -264,12 +289,16 @@ def build(live, cohort, explicit, catalog_snapshots, espn_snapshots,
                 "game_utc": game["utc"], "individual_lock_utc": stamp(lock),
                 "catalog_capture_utc": stamp(cat_at),
                 "espn_roster_capture_utc": stamp(espn_at),
+                "context_known_asof_utc": stamp(evidence_cutoff),
                 "club_cross_source_evidence": evidence,
                 "game_day_active_eligible": "UNVERIFIED",
                 "postgame_outcome": outcome,
                 "postgame_evidence": label["evidence"] if outcome != UNKNOWN else None,
                 "postgame_first_seen_at_utc":
                     label.get("source_first_observed_at_utc") if outcome != UNKNOWN else None,
+                "postgame_first_seen_timestamp_verified":
+                    bool(outcome != UNKNOWN and
+                         label.get("source_first_observed_at_utc")),
                 "official_status_known_before_lock":
                     official_at_lock.get("status") if official_at_lock else None,
                 "telegram_context_unconfirmed_before_lock": bool(telegram_at_lock),
@@ -296,6 +325,12 @@ def build(live, cohort, explicit, catalog_snapshots, espn_snapshots,
         for a in t["athletes"] if a.get("sportsru_player_id")
         and a.get("catalog_team_at_capture") != t["club"]
     ]
+    qa["verified_outcomes_missing_first_observed_clock"] = sum(
+        row["postgame_outcome"] != UNKNOWN and
+        not row["postgame_first_seen_timestamp_verified"]
+        for row in records)
+    qa["verified_finals_with_both_prelock_sources"] = qa[
+        "verified_final_games_with_prelock_sources"]
     if qa["catalog_proxy_player_games"] != len(records):
         raise ValueError("Incomplete evidence accounting")
     if (qa["played_verified_after_game"]+qa["explicit_dnp_verified_after_game"]
@@ -325,6 +360,8 @@ def build(live, cohort, explicit, catalog_snapshots, espn_snapshots,
             "A missing ESPN roster match, roster source error or club conflict remains UNKNOWN.",
             "Historical pre-snapshot games are excluded; no retrospective membership is invented.",
             "All postgame labels are learned only from final verified boxes after games.",
+            "Official injury / Telegram context is capped at min(now, player lock); future observations cannot appear early.",
+            "Postgame evidence without a recorded first-observed timestamp is explicitly counted, never backdated.",
             "No p_play training, validation, Brier or claimed KEEP/TRANSFER gain.",
         ],
     }

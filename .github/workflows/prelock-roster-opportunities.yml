@@ -7,6 +7,10 @@ on:
     branches: [main]
     paths: ['src/prelock_roster_opportunities.py','test_prelock_roster_opportunities.py','.github/workflows/prelock-roster-opportunities.yml']
   workflow_dispatch:
+  workflow_run:
+    workflows: ['NBA explicit DNP isolated research']
+    types: [completed]
+    branches: [main]
   schedule:
     - cron: '53 9,21 * * *'
 permissions:
@@ -23,16 +27,22 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - name: Check PIT clocks and missing-not-DNP gates
-        run: python -m unittest -v test_prelock_roster_opportunities test_catalog_pit_research test_espn_roster_pit
-      - name: Publish research-only audit
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: python -m unittest -v test_prelock_roster_opportunities test_catalog_pit_research test_espn_roster_pit test_participation_cohort_research
+      - name: Reconcile checked games and publish research-only audit
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
+          # The DNP and cohort files are published by independent schedules.
+          # Rebuild cohort on the same checkout as the final audit to avoid
+          # accepting a stale denominator or losing newly verified DNP labels.
+          # Shared-write concurrency serializes the result with other writers.
+          git pull --ff-only origin main
+          python -m src.participation_cohort_research
           python -m src.prelock_roster_opportunities
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/prelock_roster_opportunities_research.json
+          git add data/participation_cohort_research.json data/prelock_roster_opportunities_research.json
           if ! git diff --cached --quiet; then
-            git commit -m "data: dual-source PIT roster opportunity audit"
+            git commit -m "data: reconcile coherent cohort and dual-source PIT outcomes"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
