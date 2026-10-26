@@ -3,6 +3,9 @@ on:
   push:
     branches: [main, research/participation-unknown-denominator-20261025]
     paths: ['src/participation_coverage_research.py','test_participation_coverage_research.py','.github/workflows/participation-coverage.yml']
+  pull_request:
+    branches: [main]
+    paths: ['src/participation_coverage_research.py','test_participation_coverage_research.py','.github/workflows/participation-coverage.yml']
   workflow_dispatch:
   # React after the cohort publisher, but rebuild both archives from the
   # same DNP/live input rather than trusting independently scheduled timestamps.
