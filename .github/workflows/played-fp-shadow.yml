@@ -1,5 +1,9 @@
 name: NBA prospective played-FP shadow audit
 on:
+  pull_request:
+    branches: [main]
+    paths: ['src/played_fp_shadow.py', 'test_played_fp_shadow.py',
+            '.github/workflows/played-fp-shadow.yml']
   push:
     branches: [main, research/versioned-fp-shadow-no-hindsight-20261025]
     paths:
