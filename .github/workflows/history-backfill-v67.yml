@@ -1,0 +1,18 @@
+name: NBA v6.7 historical transfer import CI
+on:
+  push:
+    branches: [main, feat/historical-transfer-backfill-v67]
+    paths: ['site/v6_7/**','.github/workflows/history-backfill-v67.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  historical-import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: node --check site/v6_7/app.js
+      - run: node --check site/v6_7/transfer_history.js
+      - run: cd site/v6_7 && node test_transfer_history.cjs
