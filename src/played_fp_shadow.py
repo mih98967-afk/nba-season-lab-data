@@ -13,6 +13,8 @@ from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 import json
 import math
+from random import Random
+from zoneinfo import ZoneInfo
 
 from src.sync import DATA
 from src.rolling_decision_research import (
@@ -266,6 +268,64 @@ def issue(prior, live, catalog, history, rolling, now, official=None, telegram=N
     return result, result["last_issue_qa"]
 
 
+def _source_known_at_issue(version):
+    """A later-seen official/Telegram event cannot appear in an earlier issue.
+
+    This also protects independently imported legacy archives. Never use the
+    PDF report date alone if its first-observed timestamp is later.
+    """
+    issue_at = instant(version["issued_at_utc"])
+    for name, clocks in (
+        ("official_report_asof", ("first_seen_at_utc", "report_at_utc")),
+        ("telegram_unverified_asof", ("first_seen_at_utc", "published_at_utc")),
+    ):
+        evidence = version.get(name)
+        if evidence is None:
+            continue
+        if not isinstance(evidence, dict) or not evidence.get("first_seen_at_utc"):
+            return False
+        try:
+            if any(instant(evidence[field]) > issue_at for field in clocks):
+                return False
+        except (KeyError, ValueError, TypeError):
+            return False
+    return True
+
+
+def _game_cluster_gain_interval(compared, draws=2000, seed=20261026):
+    """Exploratory resampling of WHOLE NBA games, not independent athletes.
+
+    In a game, minutes, pace, victory bonuses and team context correlate the
+    two clubs' fantasy scores. Point gain is baseline MAE minus candidate MAE.
+    One game cannot provide a game-cluster uncertainty interval.
+    """
+    by_game = defaultdict(list)
+    for (game_id, _), actual, _, latest in compared:
+        by_game[game_id].append(
+            abs(float(latest["baseline_fp_if_play"]) - actual) -
+            abs(float(latest["candidate_fp_if_play"]) - actual))
+    games = [by_game[k] for k in sorted(by_game)]
+    if len(games) < 2:
+        return None
+    random = Random(seed)
+    outcomes = []
+    for _ in range(draws):
+        chosen = [games[random.randrange(len(games))] for _ in games]
+        total = sum(sum(group) for group in chosen)
+        count = sum(len(group) for group in chosen)
+        outcomes.append(total / count)
+    outcomes.sort()
+    low = outcomes[int((draws - 1) * 0.025)]
+    high = outcomes[int((draws - 1) * 0.975)]
+    return {
+        "lower": round(low, 4), "upper": round(high, 4),
+        "n_game_clusters": len(games), "resamples": draws, "seed": seed,
+        "unit": "FP_per_verified_played_player_game",
+        "method": "game_cluster_bootstrap_percentile_95_exploratory",
+        "not_proof_of_generalization": True,
+    }
+
+
 def audit(pred, live, now):
     """Independent, paired audit; one player-game, never one row per revision."""
     if now.utcoffset() is None:
@@ -289,6 +349,9 @@ def audit(pred, live, now):
             continue
         if issued >= tip - LOCK:
             qa["after_individual_lock"] += 1
+            continue
+        if not _source_known_at_issue(p):
+            qa["post_issue_source_leak_or_invalid_provenance"] += 1
             continue
         all_groups[key].append(p)
 
@@ -368,11 +431,40 @@ def audit(pred, live, now):
     last_baseline = metric("last", "baseline_fp_if_play")
     last_candidate = metric("last", "candidate_fp_if_play")
     n = len(compared)
+    days_et = set()
+    for (game_id, _), _, _, _ in compared:
+        game = final[game_id]
+        day = game.get("et_date")
+        if not isinstance(day, str) or len(day) != 10:
+            day = instant(game["utc"]).astimezone(
+                ZoneInfo("America/New_York")).date().isoformat()
+        days_et.add(day)
+    game_count = len({key[0] for key, _, _, _ in compared})
+    player_count = len({key[1] for key, _, _, _ in compared})
+    revisions_evaluated = [(key, actual, first, last)
+                           for key, actual, first, last in compared
+                           if first["issued_at_utc"] != last["issued_at_utc"]]
+    candidate_revision_gain = (
+        round(sum(abs(float(first["candidate_fp_if_play"]) - actual) -
+                  abs(float(last["candidate_fp_if_play"]) - actual)
+                  for _, actual, first, last in revisions_evaluated) /
+              len(revisions_evaluated), 4)
+        if revisions_evaluated else None)
+    paired_gain = (round(sum(
+        abs(float(last["baseline_fp_if_play"]) - actual) -
+        abs(float(last["candidate_fp_if_play"]) - actual)
+        for _, actual, _, last in compared) / n, 4) if n else None)
+    ci = _game_cluster_gain_interval(compared)
+    # These minimums are conservative exploratory guardrails, NOT a claim
+    # that their satisfaction alone establishes out-of-time model quality.
+    longitudinal_coverage = len(days_et) >= 4 and game_count >= 20
+    revision_sample_ready = (len(revisions_evaluated) >= 30 and
+                             len(days_et) >= 4)
     improvement = (round(100 * (last_baseline["mae"] - last_candidate["mae"]) /
                          last_baseline["mae"], 2)
                    if n >= 30 and last_baseline["mae"] > 0 else None)
     return {
-        "schema_version": 2, "status": "research_only_not_deployed",
+        "schema_version": 3, "status": "research_only_not_deployed",
         "evaluated_at_utc": stamp(now),
         "issued_rows": len(pred.get("issued", [])),
         "unique_player_game_forecasts": len(all_groups),
@@ -383,6 +475,33 @@ def audit(pred, live, now):
         "first_issue": {"baseline": first_baseline, "candidate": first_candidate},
         "latest_prelock_issue": {"baseline": last_baseline, "candidate": last_candidate},
         "latest_candidate_mae_improvement_pct_descriptive_only": improvement,
+        "paired_reliability": {
+            "unit_of_analysis": "one_played_player_game_even_if_revised",
+            "independent_resampling_unit": "completed_NBA_game",
+            "distinct_completed_games": game_count,
+            "distinct_players": player_count,
+            "distinct_ET_game_dates": len(days_et),
+            "ET_dates_seen": sorted(days_et),
+            "played_player_games_with_evaluable_prelock_revisions":
+                len(revisions_evaluated),
+            "first_to_last_candidate_mae_gain_on_revised_only_fp":
+                candidate_revision_gain,
+            "first_to_last_revision_quality_evaluable": revision_sample_ready,
+            "candidate_vs_baseline_paired_mae_gain_fp": paired_gain,
+            "game_cluster_95pct_gain_interval_fp": ci,
+            "candidate_gain_excludes_zero_in_exploratory_interval":
+                bool(ci and ci["lower"] > 0 and longitudinal_coverage),
+            "longitudinal_games_and_dates_gate": longitudinal_coverage,
+            "full_population_and_decision_value_gate": False,
+            "adoption_ready": False,
+            "cautions": [
+                "Only played outcomes from selected completed games; no population p_play or DNP denominator.",
+                "Players in one NBA game are correlated; 130 player-games on one ET date are not 130 independent game days.",
+                "Game-bootstrap interval is descriptive and unreliable with very few dates/clusters.",
+                "Unobserved revised predictions cannot establish that updates improve decision-time forecasts.",
+                "No actual Sports.ru price, account, KEEP/TRANSFER regret or net weekly FP is evaluated.",
+            ],
+        },
         "qa": dict(qa), "source_context_in_evaluated": dict(per_status),
         "sample_sufficient_for_adoption": False,
         "full_fantasy_population_coverage_proven": False,
