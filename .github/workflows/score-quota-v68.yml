@@ -1,0 +1,15 @@
+name: NBA v6.8 score quota
+on:
+  pull_request:
+    branches: [main]
+    paths: ['site/v6_8/**','.github/workflows/score-quota-v68.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: node site/v6_8/test_score_quota_v68.cjs
