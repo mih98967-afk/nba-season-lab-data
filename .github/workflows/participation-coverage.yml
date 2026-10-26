@@ -3,7 +3,16 @@ on:
   push:
     branches: [main, research/participation-unknown-denominator-20261025]
     paths: ['src/participation_coverage_research.py','test_participation_coverage_research.py','.github/workflows/participation-coverage.yml']
+  pull_request:
+    branches: [main]
+    paths: ['src/participation_coverage_research.py','test_participation_coverage_research.py','.github/workflows/participation-coverage.yml']
   workflow_dispatch:
+  # React after the cohort publisher, but rebuild both archives from the
+  # same DNP/live input rather than trusting independently scheduled timestamps.
+  workflow_run:
+    workflows: ['NBA participation cohort QA']
+    types: [completed]
+    branches: [main]
   schedule:
     - cron: '47 */6 * * *'
 permissions:
@@ -21,17 +30,23 @@ jobs:
         with: {python-version: '3.12'}
       - name: Verify all unknown outcome protections
         run: python -m unittest -v test_participation_coverage_research test_participation_cohort_research
-      - name: Capture current catalog proxy opportunity coverage
-        if: github.ref == 'refs/heads/main'
-        run: python -m src.participation_coverage_research
-      - name: Commit research-only summary
-        if: github.ref == 'refs/heads/main'
+      - name: Capture coherent cohort and catalog proxy opportunity coverage
+        if: github.ref == 'refs/heads/main' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+        run: |
+          # All research writers share nba-season-lab-shared-write concurrency.
+          # Refresh inputs first; rebuild cohort immediately before coverage.
+          # Never weaken coverage()'s hard source-coherence check.
+          git pull --ff-only origin main
+          python -m src.participation_cohort_research
+          python -m src.participation_coverage_research
+      - name: Commit research-only coherent pair
+        if: github.ref == 'refs/heads/main' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/participation_coverage_research.json
+          git add data/participation_cohort_research.json data/participation_coverage_research.json
           if ! git diff --cached --quiet; then
-            git commit -m "data: research participation unknown coverage"
+            git commit -m "data: refresh coherent research cohort and unknown coverage"
             git pull --rebase origin main
             git push origin HEAD:main
           fi
