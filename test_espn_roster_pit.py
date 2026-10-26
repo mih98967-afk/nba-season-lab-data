@@ -30,6 +30,6 @@ class Tests(unittest.TestCase):
   self.assertEqual(out["qa"]["unavailable_or_invalid_team"],1)
   self.assertFalse(out["adopt_on_site"])
   self.assertFalse(out["game_day_eligibility_verified"])
-  self.assertEqual(out["teams"][1]["source_status"],"invalid_or_unavailable")
+  self.assertEqual(next(t for t in out["teams"] if t["club"]=="BOS")["source_status"],"invalid_or_unavailable")
   self.assertTrue(out["publication_time_unknown"])
 if __name__=="__main__":unittest.main()
