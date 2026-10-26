@@ -1,0 +1,8 @@
+(function(root,factory){'use strict';const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;root.NBAScoreAudit=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){'use strict';
+const ET=new Intl.DateTimeFormat('en-GB',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'});
+function dayET(epoch){const p=ET.formatToParts(new Date(epoch));const get=k=>p.find(x=>x.type===k).value;return [get('year'),get('month'),get('day')].join('-');}
+function ownedAt(state,epoch){if(!Array.isArray(state?.initialRoster)||epoch<state.initialEpoch)return [];const ids=[...state.initialRoster];for(const x of [...(state.executed||[])].sort((a,b)=>a.epoch-b.epoch)){if(x.epoch<=epoch){const k=ids.indexOf(x.out);if(k>=0)ids[k]=x.in_;}}return ids;}
+function audit(live,state){const gs=new Map((live?.games||[]).filter(g=>g.status==='final'&&Number.isFinite(g.epoch)).map(g=>[g.id,g])),groups=new Map(),seen=new Set(),warnings=[];let fp=0,matches=0;
+for(const r of live?.rows||[]){const g=gs.get(r?.game_id);if(!g||r.played!==true||!ownedAt(state,g.epoch-1800000).includes(r.id))continue;const key=g.id+'|'+r.id;if(seen.has(key)){warnings.push('duplicate player-game');continue;}seen.add(key);const value=Number(r.fp);if(!Number.isFinite(value))continue;const d=g.et_date||dayET(g.epoch),o=groups.get(d)||{day:d,fp:0,matches:0};o.fp+=value;o.matches++;groups.set(d,o);fp+=value;matches++;}
+const days=[...groups.values()].sort((a,b)=>a.day.localeCompare(b.day)),last=days.at(-1);return {fp,matches,days,latestETDay:last?.day||null,latestETFP:last?.fp||0,earlierETFP:fp-(last?.fp||0),warnings,officialSportsFPTotal:null,officialSportsWeekCreditKnown:false};}
+return {audit,ownedAt,dayET};});
