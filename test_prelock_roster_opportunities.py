@@ -48,4 +48,24 @@ class Tests(unittest.TestCase):
   out=build(*a,d("2026-10-27T04:00:00Z"))
   self.assertEqual(out["summary"]["played_verified_after_game"],1)
   self.assertEqual(out["summary"].get("explicit_dnp_verified_after_game",0),0)
+ def test_reject_postgame_timestamp_from_future(self):
+  a=inputs();live,co,ex=a[:3]
+  live["games"]=[dict(live["schedule"][0],status="final")]
+  co["records"]=[{"game_id":"g","player_id":"n000","team":"ATL","position":"PG","game_utc":"2026-10-27T01:00:00Z","participation_label":1,"evidence":"positive_minutes_verified_sportsru_fp","source_first_observed_at_utc":"2026-10-27T08:00:00Z"}]
+  co["summary"]={"verified_full_boxscores_checked":1,"listed_player_game_labels":1}
+  ex["checked_final_game_ids"]=["g"]
+  with self.assertRaises(ValueError):build(*a,d("2026-10-27T04:00:00Z"))
+ def test_reject_postgame_timestamp_before_tip(self):
+  a=inputs();live,co,ex=a[:3]
+  live["games"]=[dict(live["schedule"][0],status="final")]
+  co["records"]=[{"game_id":"g","player_id":"n000","team":"ATL","position":"PG","game_utc":"2026-10-27T01:00:00Z","participation_label":1,"evidence":"positive_minutes_verified_sportsru_fp","source_first_observed_at_utc":"2026-10-26T23:00:00Z"}]
+  co["summary"]={"verified_full_boxscores_checked":1,"listed_player_game_labels":1}
+  ex["checked_final_game_ids"]=["g"]
+  with self.assertRaises(ValueError):build(*a,d("2026-10-27T04:00:00Z"))
+ def test_empty_pregame_cohort_remains_unknown(self):
+  a=inputs()
+  result=build(*a,d("2026-10-26T18:03:00Z"))
+  self.assertTrue(all(z["context_known_asof_utc"]=="2026-10-26T18:03:00Z" for z in result["records"]))
+  self.assertTrue(all(z["postgame_outcome"]==UNKNOWN for z in result["records"]))
+
 if __name__=="__main__":unittest.main()
