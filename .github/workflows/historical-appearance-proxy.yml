@@ -1,0 +1,38 @@
+name: NBA historical appearance proxy retrospective research
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/historical_appearance_proxy_research.py','test_historical_appearance_proxy_research.py','.github/workflows/historical-appearance-proxy.yml']
+  push:
+    branches: [main]
+    paths: ['src/historical_appearance_proxy_research.py','test_historical_appearance_proxy_research.py','.github/workflows/historical-appearance-proxy.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test selection, timestamps and safe proxy semantics
+        run: python -m unittest -v test_historical_appearance_proxy_research
+      - name: Audit 2024-25 dev versus 2025-26 independent holdout
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: python -m src.historical_appearance_proxy_research
+      - name: Save research-only result
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/historical_appearance_proxy_research.json
+          if ! git diff --cached --quiet; then
+            git commit -m "research: validate historical logged-appearance proxy holdout"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
