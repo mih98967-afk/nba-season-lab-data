@@ -1,0 +1,40 @@
+name: NBA prospective catalog PIT research
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/catalog_pit_research.py','test_catalog_pit_research.py','.github/workflows/catalog-pit-research.yml']
+  push:
+    branches: [main]
+    paths: ['src/catalog_pit_research.py','test_catalog_pit_research.py','.github/workflows/catalog-pit-research.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '37 6,18 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Prospective clocks, UNKNOWN guard, tamper checks
+        run: python -m unittest -v test_catalog_pit_research test_participation_coverage_research test_participation_cohort_research
+      - name: Capture non-backdated PIT proxy and evaluate completed games
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: python -m src.catalog_pit_research
+      - name: Publish append-only research observations only
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/catalog_pit/*.json data/catalog_pit_coverage_research.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: append prospective catalog PIT proxy evidence"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
