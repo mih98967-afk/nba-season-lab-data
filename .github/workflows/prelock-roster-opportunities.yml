@@ -1,0 +1,38 @@
+name: NBA dual-source PIT opportunity audit
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/prelock_roster_opportunities.py','test_prelock_roster_opportunities.py','.github/workflows/prelock-roster-opportunities.yml']
+  push:
+    branches: [main]
+    paths: ['src/prelock_roster_opportunities.py','test_prelock_roster_opportunities.py','.github/workflows/prelock-roster-opportunities.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '53 9,21 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Check PIT clocks and missing-not-DNP gates
+        run: python -m unittest -v test_prelock_roster_opportunities test_catalog_pit_research test_espn_roster_pit
+      - name: Publish research-only audit
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          python -m src.prelock_roster_opportunities
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/prelock_roster_opportunities_research.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: dual-source PIT roster opportunity audit"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
