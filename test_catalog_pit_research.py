@@ -62,10 +62,10 @@ class TestPIT(unittest.TestCase):
  def test_two_immutable_daily_captures_are_valid(self):
   c,live,snap,final,co,ex=fixture()
   second=deepcopy(snap)
-  second["captured_at_utc"]="2026-10-26T22:00:00Z"
-  second["snapshot_date_msk"]="2026-10-27"
-  self.assertEqual(len(_validated_snapshots([snap,second],dt("2026-10-27T00:00:00Z"))),2)
+  second["captured_at_utc"]="2026-10-26T20:30:00Z"
   second["snapshot_date_msk"]="2026-10-26"
+  self.assertEqual(len(_validated_snapshots([snap,second],dt("2026-10-27T00:00:00Z"))),2)
+  second["captured_at_utc"]="2026-10-26T17:00:00Z"
   with self.assertRaises(ValueError):
    _validated_snapshots([snap,second],dt("2026-10-27T00:00:00Z"))
  def test_not_pre_game_prediction(self):
