@@ -1,0 +1,44 @@
+name: NBA official explicit inactive summary research
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/official_nba_inactive_summary_research.py','test_official_nba_inactive_summary_research.py','.github/workflows/official-nba-inactive-summary.yml']
+  push:
+    branches: [main]
+    paths: ['src/official_nba_inactive_summary_research.py','test_official_nba_inactive_summary_research.py','.github/workflows/official-nba-inactive-summary.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '11 9 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  inactive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test exact IDs and strict negative evidence
+        run: python -m unittest -v test_official_nba_inactive_summary_research test_official_nba_gameday_status_research
+      - name: Independently verify official NBA inactive table
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git pull --ff-only origin main
+          python -m src.official_nba_inactive_summary_research
+      - name: Archive separate research evidence
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          if [ -f data/official_nba_inactive_summary_research.json ]; then
+            git add data/official_nba_inactive_summary_research.json
+            if ! git diff --cached --quiet; then
+              git commit -m "research: archive official explicit inactive checks"
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
