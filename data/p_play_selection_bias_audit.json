@@ -1,0 +1,534 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "adopt_on_site": false,
+  "updated_at_utc": "2026-10-27T08:34:31Z",
+  "prediction_target": "player_positive_minutes_with_verified_explicit_DNP_if_available",
+  "reference_population": "first_issued_prelock_predictions_with_completed_checked_NBA_games",
+  "total_issued_predictions": 349,
+  "finished_checked": 241,
+  "verified_postgame_results": 201,
+  "unknown_postgame_results": 40,
+  "future_or_not_checked": 108,
+  "distinct_finished_ET_dates": 1,
+  "by_first_observed_official_status": {
+    "available": {
+      "finished_checked": 2,
+      "verified_played": 2
+    },
+    "doubtful": {
+      "finished_checked": 2,
+      "outcome_UNKNOWN": 2
+    },
+    "no_observed_official_status": {
+      "finished_checked": 203,
+      "verified_played": 169,
+      "explicit_DNP": 21,
+      "outcome_UNKNOWN": 13
+    },
+    "out": {
+      "finished_checked": 24,
+      "outcome_UNKNOWN": 23,
+      "explicit_DNP": 1
+    },
+    "probable": {
+      "finished_checked": 5,
+      "verified_played": 5
+    },
+    "questionable": {
+      "finished_checked": 5,
+      "verified_played": 2,
+      "outcome_UNKNOWN": 2,
+      "explicit_DNP": 1
+    }
+  },
+  "by_game": {
+    "espn_401909868": {
+      "finished_checked": 28,
+      "verified_played": 19,
+      "outcome_UNKNOWN": 5,
+      "explicit_DNP": 4
+    },
+    "espn_401909869": {
+      "finished_checked": 24,
+      "verified_played": 16,
+      "outcome_UNKNOWN": 2,
+      "explicit_DNP": 6
+    },
+    "espn_401909870": {
+      "finished_checked": 28,
+      "verified_played": 24,
+      "outcome_UNKNOWN": 4
+    },
+    "espn_401909871": {
+      "finished_checked": 28,
+      "verified_played": 16,
+      "outcome_UNKNOWN": 6,
+      "explicit_DNP": 6
+    },
+    "espn_401909872": {
+      "finished_checked": 29,
+      "verified_played": 20,
+      "explicit_DNP": 4,
+      "outcome_UNKNOWN": 5
+    },
+    "espn_401909873": {
+      "finished_checked": 23,
+      "verified_played": 16,
+      "outcome_UNKNOWN": 7
+    },
+    "espn_401909874": {
+      "finished_checked": 26,
+      "verified_played": 22,
+      "outcome_UNKNOWN": 4
+    },
+    "espn_401909875": {
+      "finished_checked": 27,
+      "verified_played": 22,
+      "outcome_UNKNOWN": 2,
+      "explicit_DNP": 3
+    },
+    "espn_401909876": {
+      "finished_checked": 28,
+      "verified_played": 23,
+      "outcome_UNKNOWN": 5
+    }
+  },
+  "out_status_missing_review_queue": [
+    {
+      "game_id": "espn_401909868",
+      "player_id": "n066",
+      "team": "CHA",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909868|n066",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909868",
+      "player_id": "n070",
+      "team": "WAS",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909868|n070",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909868",
+      "player_id": "n099",
+      "team": "CHA",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909868|n099",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909868",
+      "player_id": "n280",
+      "team": "CHA",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909868|n280",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909868",
+      "player_id": "n410",
+      "team": "WAS",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909868|n410",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909869",
+      "player_id": "n119",
+      "team": "MIN",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909869|n119",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909870",
+      "player_id": "n113",
+      "team": "CHI",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909870|n113",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909870",
+      "player_id": "n309",
+      "team": "BOS",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909870|n309",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909871",
+      "player_id": "n136",
+      "team": "DAL",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909871|n136",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909871",
+      "player_id": "n143",
+      "team": "DAL",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909871|n143",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909871",
+      "player_id": "n204",
+      "team": "DAL",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909871|n204",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909871",
+      "player_id": "n366",
+      "team": "DAL",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909871|n366",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909872",
+      "player_id": "n158",
+      "team": "IND",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909872|n158",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909872",
+      "player_id": "n354",
+      "team": "IND",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909872|n354",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909872",
+      "player_id": "n445",
+      "team": "IND",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909872|n445",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909873",
+      "player_id": "n095",
+      "team": "PHX",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "edfe9eaf61c4543a74a28e493cfad81ca1ab736b9e39d8272655857082262d22|espn_401909873|n095",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_11_15AM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909874",
+      "player_id": "n202",
+      "team": "HOU",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909874|n202",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909874",
+      "player_id": "n249",
+      "team": "HOU",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909874|n249",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909874",
+      "player_id": "n387",
+      "team": "ATL",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909874|n387",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909876",
+      "player_id": "n077",
+      "team": "GSW",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909876|n077",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909876",
+      "player_id": "n137",
+      "team": "GSW",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909876|n137",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909876",
+      "player_id": "n265",
+      "team": "DEN",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909876|n265",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909876",
+      "player_id": "n359",
+      "team": "DEN",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909876|n359",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    }
+  ],
+  "official_OUT_unknown_review_priority_count": 23,
+  "selected_verified_only": {
+    "n": 201,
+    "verified": 201,
+    "missing": 0,
+    "bounds": {
+      "brier": {
+        "baseline_range": [
+          0.101988,
+          0.101988
+        ],
+        "candidate_range": [
+          0.091054,
+          0.091054
+        ],
+        "paired_baseline_minus_candidate_gain_range": [
+          0.010934,
+          0.010934
+        ],
+        "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
+      },
+      "logloss": {
+        "baseline_range": [
+          0.358543,
+          0.358543
+        ],
+        "candidate_range": [
+          0.319356,
+          0.319356
+        ],
+        "paired_baseline_minus_candidate_gain_range": [
+          0.039187,
+          0.039187
+        ],
+        "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
+      }
+    },
+    "individual_model_bounds_cannot_be_compared_as_if_independent": true,
+    "not_a_population_estimate": true
+  },
+  "all_finished_with_unknown_binary_sensitivity": {
+    "n": 241,
+    "verified": 201,
+    "missing": 40,
+    "bounds": {
+      "brier": {
+        "baseline_range": [
+          0.088314,
+          0.207816
+        ],
+        "candidate_range": [
+          0.079605,
+          0.197135
+        ],
+        "paired_baseline_minus_candidate_gain_range": [
+          0.007511,
+          0.011878
+        ],
+        "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
+      },
+      "logloss": {
+        "baseline_range": [
+          0.324066,
+          0.625359
+        ],
+        "candidate_range": [
+          0.292627,
+          0.58825
+        ],
+        "paired_baseline_minus_candidate_gain_range": [
+          0.026052,
+          0.042496
+        ],
+        "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
+      }
+    },
+    "individual_model_bounds_cannot_be_compared_as_if_independent": true,
+    "not_a_population_estimate": true
+  },
+  "high_confidence_ESPN_ID_subset_binary_sensitivity": {
+    "n": 204,
+    "verified": 193,
+    "missing": 11,
+    "bounds": {
+      "brier": {
+        "baseline_range": [
+          0.086659,
+          0.125482
+        ],
+        "candidate_range": [
+          0.07971,
+          0.118057
+        ],
+        "paired_baseline_minus_candidate_gain_range": [
+          0.005534,
+          0.008841
+        ],
+        "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
+      },
+      "logloss": {
+        "baseline_range": [
+          0.319894,
+          0.417777
+        ],
+        "candidate_range": [
+          0.292978,
+          0.390296
+        ],
+        "paired_baseline_minus_candidate_gain_range": [
+          0.020552,
+          0.033845
+        ],
+        "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
+      }
+    },
+    "individual_model_bounds_cannot_be_compared_as_if_independent": true,
+    "not_a_population_estimate": true
+  },
+  "quality_gate": {
+    "official_OUT_missing_label_count": 23,
+    "unknown_are_not_DNP": true,
+    "first_issue_status_anchored": true,
+    "full_game_day_roster_membership_verified": false,
+    "population_p_play_validated": false,
+    "prospective_model_adoption_allowed": false,
+    "keep_transfer_economic_value_proven": false
+  },
+  "limits": [
+    "All UNKNOWN outcomes are still UNKNOWN. Binary bounds are sensitivity calculations only.",
+    "An official OUT before issue does not prove ESPN didNotPlay=true; needs an independently checked complete boxscore.",
+    "No status means no status FIRST OBSERVED BY ISSUE, not proof of health.",
+    "Fantasy player population and all game-day club memberships are not verified.",
+    "A single NBA ET date and a selected ESPN cohort cannot establish calibrated p_play.",
+    "Negative labels cannot be backfilled from missing played rows or stale catalogs.",
+    "No new p_play model, injury weight, Telegram weight, site or real transfer is deployed."
+  ]
+}
