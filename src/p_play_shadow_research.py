@@ -16,6 +16,7 @@ Only first-observed, postgame labels known BEFORE issue can be features.
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+from random import Random
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -268,6 +269,60 @@ def _observations(issued, existing, live, cohort, explicit, now):
     return sorted(observed.values(), key=lambda r: (r["tipoff_utc"], r["game_id"], r["player_id"])), dict(qa)
 
 
+def _prospective_metrics(observations):
+    """Descriptive paired losses, with whole NBA games as bootstrap units."""
+    if not observations:
+        return None
+    grouped = defaultdict(list)
+    for o in observations:
+        y = o["actual_played"]
+        if type(y) is not int or y not in (0, 1):
+            raise ValueError("Invalid played outcome")
+        game = o["game_id"]
+        p0 = float(o["baseline_p_selected_listed_proxy"])
+        p1 = float(o["candidate_p_selected_listed_proxy"])
+        if not all(0 < p < 1 and math.isfinite(p) for p in (p0,p1)):
+            raise ValueError("Invalid saved probability")
+        b0 = (p0-y)**2
+        b1 = (p1-y)**2
+        l0 = -(y*math.log(p0)+(1-y)*math.log1p(-p0))
+        l1 = -(y*math.log(p1)+(1-y)*math.log1p(-p1))
+        grouped[game].append((b0,b1,l0,l1))
+    groups = [grouped[k] for k in sorted(grouped)]
+    items = [row for group in groups for row in group]
+    n = len(items)
+    dates = {_time(x["tipoff_utc"]).astimezone(ET).date().isoformat() for x in observations}
+    result = {
+        "scope": "selected_prelock_predictions_with_independently_observed_explicit_postgame_labels",
+        "player_games":n, "NBA_games":len(groups), "ET_dates":len(dates),
+        "baseline_Brier":round(sum(x[0] for x in items)/n,6),
+        "candidate_Brier":round(sum(x[1] for x in items)/n,6),
+        "baseline_logloss":round(sum(x[2] for x in items)/n,6),
+        "candidate_logloss":round(sum(x[3] for x in items)/n,6),
+        "no_population_calibration_claim":True,
+        "no_inferred_DNP":True,
+        "sufficient_for_longitudinal_adoption":False,
+    }
+    if len(groups)>1:
+        rng = Random(20261027)
+        boots = [[],[]]
+        for _ in range(1000):
+            draw = [groups[rng.randrange(len(groups))] for _ in groups]
+            values = [x for group in draw for x in group]
+            boots[0].append(sum(x[0]-x[1] for x in values)/len(values))
+            boots[1].append(sum(x[2]-x[3] for x in values)/len(values))
+        for b in boots:b.sort()
+        result["NBA_game_cluster_bootstrap_95pct_gain"] = {
+            "Brier":[round(boots[0][24],6),round(boots[0][974],6)],
+            "logloss":[round(boots[1][24],6),round(boots[1][974],6)],
+            "seed":20261027, "draws":1000,
+            "few_independent_game_dates_caution":len(dates)<4,
+        }
+    else:
+        result["NBA_game_cluster_bootstrap_95pct_gain"] = None
+    return result
+
+
 def _metrics(observations):
     games = {x["game_id"] for x in observations}
     dates = {_time(x["tipoff_utc"]).astimezone(ET).date().isoformat()
@@ -328,6 +383,7 @@ def advance(prior, live, cohort, explicit, catalog_snapshots, espn_snapshots,
         return previous, {"result": "no_new_issue_or_verified_outcome",
                           "issued_total": len(issued), "evaluated_total": len(observations)}
     summary, selected_metric = _metrics(observations)
+    prospective_metrics = _prospective_metrics(observations)
     result = {
         "schema_version": SCHEMA, "status": NO_DEPLOY,
         "model_status": NO_DEPLOY, "adopt_on_site": False,
@@ -351,6 +407,7 @@ def advance(prior, live, cohort, explicit, catalog_snapshots, espn_snapshots,
         "source_quality_qa": issuer_qa,
         "outcome_qa": outcome_qa,
         "selected_cohort_descriptive_metrics_only": selected_metric,
+        "all_verified_selected_prelock_prospective_metrics": prospective_metrics,
         "limitations": [
             "ESPN boxscore-list labels form a selected sample, not all fantasy player-games.",
             "Static catalog and ESPN roster are not official active game-day lists.",
