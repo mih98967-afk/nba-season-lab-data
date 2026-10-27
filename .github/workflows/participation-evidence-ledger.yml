@@ -1,0 +1,44 @@
+name: NBA participation evidence coverage ledger research
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/participation_evidence_ledger_research.py','test_participation_evidence_ledger_research.py','.github/workflows/participation-evidence-ledger.yml']
+  push:
+    branches: [main]
+    paths: ['src/participation_evidence_ledger_research.py','test_participation_evidence_ledger_research.py','.github/workflows/participation-evidence-ledger.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '53 10 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Run strict real-data ledger cross-check regressions
+        run: python -m unittest -v test_participation_evidence_ledger_research test_p_play_selection_bias_audit
+      - name: Reconcile research-only missing outcomes on main
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git pull --ff-only origin main
+          python -m src.participation_evidence_ledger_research
+      - name: Archive only research ledger
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          if [ -f data/participation_evidence_ledger_research.json ]; then
+            git add data/participation_evidence_ledger_research.json
+            if ! git diff --cached --quiet; then
+              git commit -m "research: archive participation evidence coverage ledger"
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
