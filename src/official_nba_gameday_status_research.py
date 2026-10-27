@@ -54,7 +54,7 @@ def fetch_public_json(url):
     if url == SCHEDULE_URL:
         limit = 9_000_000
     elif (url.startswith(BOX_PREFIX) and url.endswith(".json")
-          and re.fullmatch(r"\\d{10}", url[len(BOX_PREFIX):-5])):
+          and re.fullmatch(r"\d{10}", url[len(BOX_PREFIX):-5])):
         limit = 5_000_000
     else:
         raise ValueError("Unsupported official source URL")
@@ -81,7 +81,7 @@ def official_schedule(payload):
             raise ValueError("Incomplete gameDate on NBA schedule")
         for game in date["games"]:
             gid = str(game.get("gameId") or "")
-            if not re.fullmatch(r"00226\\d{5}", gid):
+            if not re.fullmatch(r"00226\d{5}", gid):
                 continue  # 2026/27 NBA regular season, not preseason/playoffs.
             if gid in seen_ids:
                 raise ValueError("Repeated official NBA game ID")
@@ -113,10 +113,10 @@ def parse_minutes(raw):
         return None
     if not isinstance(raw, str):
         raise ValueError("Non-string minutes")
-    if re.fullmatch(r"\\d+:\\d{2}(?:\\.\\d+)?", raw):
+    if re.fullmatch(r"\d+:\d{2}(?:\.\d+)?", raw):
         a, b = raw.split(":")
         return 60 * int(a) + float(b)
-    matched = re.fullmatch(r"PT(?:(\\d+)M)?(?:(\\d+(?:\\.\\d+)?)S)?", raw)
+    matched = re.fullmatch(r"PT(?:(\d+)M)?(?:(\d+(?:\.\d+)?)S)?", raw)
     if matched and (matched.group(1) or matched.group(2)):
         return 60 * int(matched.group(1) or 0) + float(matched.group(2) or 0)
     raise ValueError("Unrecognized NBA official minutes format")
