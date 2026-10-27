@@ -1,6 +1,7 @@
 import unittest
 from datetime import datetime, timezone
 from src.official_nba_gameday_status_research import (
+    SCHEDULE_URL, fetch_public_json,
     fixture_match, official_box, official_schedule, verdict, STATUS, build,
 )
 GAME={"id":"espn_123","utc":"2026-10-26T23:00:00Z","home":"CHA","away":"WAS","status":"final"}
@@ -20,6 +21,21 @@ def box():
                     "awayTeam":team("WAS",1610612764)}}
 
 class OfficialGameTests(unittest.TestCase):
+    def test_current_official_schedule_version_and_schema(self):
+        self.assertTrue(SCHEDULE_URL.endswith("/scheduleLeagueV2_1.json"))
+        self.assertFalse("scheduleLeagueV2.json" in SCHEDULE_URL)
+        days=[{"games":[]} for _ in range(110)]
+        for i in range(600):
+            days[i%110]["games"].append({"gameId":f"00226{i:05d}",
+                "gameDateTimeUTC":"2026-10-26T23:00:00Z",
+                "homeTeam":{"teamTricode":"CHA"},
+                "awayTeam":{"teamTricode":"WAS"}})
+        self.assertEqual(len(official_schedule({"leagueSchedule":{"gameDates":days}})),600)
+        self.assertEqual(len(official_schedule({"scheduleLeagueV2":{"gameDates":days}})),600)
+        with self.assertRaises(ValueError):
+            official_schedule({"leagueSchedule":{"gameDates":[{"games":[]}]} })
+        with self.assertRaises(ValueError):
+            fetch_public_json("https://arbitrary.example/api.json")
     def test_game_specific_inactive_and_active_dnp_are_distinct(self):
         b=box()
         index=official_box(b,OFF,GAME)
