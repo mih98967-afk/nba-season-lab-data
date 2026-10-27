@@ -8,7 +8,7 @@ on:
     paths: ['src/espn_roster_pit.py','test_espn_roster_pit.py','.github/workflows/espn-roster-pit.yml']
   workflow_dispatch:
   schedule:
-    - cron: '23 8 * * *'
+    - cron: '23 8,16 * * *'
 permissions:
   contents: write
 concurrency:
