@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 from datetime import datetime,timezone
-from src.p_play_shadow_research import _verified_past,_issues,_observations,_metrics,_prospective_metrics,STATUS
+from src.p_play_shadow_research import _verified_past,_issues,_observations,_metrics,_prospective_metrics,_fresh,STATUS
 from src.catalog_pit_research import UNKNOWN
 def d(x):return datetime.fromisoformat(x.replace("Z","+00:00"))
 class Tests(unittest.TestCase):
@@ -34,6 +34,20 @@ class Tests(unittest.TestCase):
   out,qa=_observations([issue],[],live,cohort,exp,d("2026-10-27T04:00:00Z"))
   self.assertEqual(len(out),1)
   self.assertEqual(out[0]["actual_played"],0)
+ def test_separate_calendar_and_live_freshness_bounds(self):
+  now=d("2026-10-27T12:00:00Z")
+  good={"schema_version":4,"updated_at_utc":"2026-10-27T11:00:00Z",
+        "schedule_quality":{"freshness":"fresh",
+        "validated_at_utc":"2026-10-26T20:00:00Z"}}
+  self.assertTrue(_fresh(good,now))
+  bad=deepcopy(good);bad["updated_at_utc"]="2026-10-27T03:59:59Z"
+  self.assertFalse(_fresh(bad,now))
+  bad=deepcopy(good);bad["schedule_quality"]["validated_at_utc"]="2026-10-26T00:00:00Z"
+  self.assertFalse(_fresh(bad,now))
+  bad=deepcopy(good);bad["schedule_quality"]["validated_at_utc"]="2026-10-27T12:01:00Z"
+  self.assertFalse(_fresh(bad,now))
+  bad=deepcopy(good);bad["schedule_quality"]["validated_at_utc"]="2026-10-27T11:30:00Z"
+  self.assertFalse(_fresh(bad,now))
  def test_single_game_does_not_open_calibration(self):
   obs=[{"game_id":"g","player_id":"p","tipoff_utc":"2026-10-27T01:00:00Z","actual_played":1,"club_link_evidence_at_issue":"same_club_independent_ESPN_ID_observed","baseline_p_selected_listed_proxy":0.5,"candidate_p_selected_listed_proxy":0.6}]
   summary,metric=_metrics(obs)
