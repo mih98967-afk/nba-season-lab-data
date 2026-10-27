@@ -1,0 +1,44 @@
+name: NBA official OUT independent boxscore evidence research
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/official_out_boxscore_evidence_research.py','test_official_out_boxscore_evidence_research.py','.github/workflows/official-out-boxscore-evidence.yml']
+  push:
+    branches: [main]
+    paths: ['src/official_out_boxscore_evidence_research.py','test_official_out_boxscore_evidence_research.py','.github/workflows/official-out-boxscore-evidence.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '29 7 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test never promote ESPN absence into DNP
+        run: python -m unittest -v test_official_out_boxscore_evidence_research test_p_play_selection_bias_audit
+      - name: Verify 8 completed games against ESPN
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git pull --ff-only origin main
+          python -m src.official_out_boxscore_evidence_research
+      - name: Archive only separate research evidence
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          if [ -f data/official_out_boxscore_evidence_research.json ]; then
+            git add data/official_out_boxscore_evidence_research.json
+            if ! git diff --cached --quiet; then
+              git commit -m "research: independently review official OUT missing results"
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
