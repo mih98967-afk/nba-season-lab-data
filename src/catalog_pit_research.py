@@ -125,7 +125,7 @@ def _validated_snapshots(snapshots, now):
     if not isinstance(snapshots, list):
         raise ValueError("Snapshot list missing")
     out = []
-    dates = set()
+    dates = {}
     for s in snapshots:
         if (not isinstance(s, dict) or s.get("schema_version") != 1 or
             s.get("status") != STATUS or s.get("adopt_on_site") is not False or
@@ -135,9 +135,9 @@ def _validated_snapshots(snapshots, now):
             raise ValueError("Untrusted or deployable catalog snapshot")
         captured = _when(s.get("captured_at_utc"))
         date_msk = captured.astimezone(MSK).date().isoformat()
-        if captured > now or s.get("snapshot_date_msk") != date_msk or date_msk in dates:
+        if captured > now or s.get("snapshot_date_msk") != date_msk or dates.get(date_msk, 0) >= 2:
             raise ValueError("Future/renamed/duplicate daily capture")
-        dates.add(date_msk)
+        dates[date_msk] = dates.get(date_msk, 0) + 1
         people = s.get("catalog_players_proxy")
         if not isinstance(people, list) or len(people) < 400:
             raise ValueError("Invalid snapshot catalog")
@@ -171,6 +171,8 @@ def _validated_snapshots(snapshots, now):
             raise ValueError("Snapshot fixture count inconsistent")
         out.append((captured, s))
     out.sort(key=lambda p: p[0])
+    if any(b[0] - a[0] < timedelta(hours=4) and a[0].astimezone(MSK).date() == b[0].astimezone(MSK).date() for a,b in zip(out,out[1:])):
+        raise ValueError("Same-day PIT captures too close to be independently scheduled")
     return out
 
 
@@ -350,9 +352,15 @@ def run():
     directory = DATA / "catalog_pit"
     day = now.astimezone(MSK).date().isoformat()
     path = directory / (day + ".json")
+    second = directory / (day + "_2.json")
     live = load("live.json")
     created = False
     # Never overwrite or backdate a real previous capture.
+    if path.exists():
+        first = json.loads(path.read_text(encoding="utf8"))
+        first_at = _when(first["captured_at_utc"])
+        if now - first_at >= timedelta(hours=4) and not second.exists():
+            path = second
     if not path.exists():
         snapshot = capture(load("catalog.json"), live, now)
         directory.mkdir(parents=True, exist_ok=True)
