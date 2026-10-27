@@ -26,14 +26,13 @@ import math
 from src.sync import DATA
 from src.prelock_roster_opportunities import build as opportunity_build, HIGH, WEAK
 from src.rolling_decision_research import instant, stamp, official_asof, telegram_asof
-from src.catalog_pit_research import LOCK
+from src.catalog_pit_research import LOCK, MAX_SCHEDULE_AGE, MAX_LIVE_AGE
 from src.espn_roster_pit import STATUS
 
 UTC = timezone.utc
 ET = ZoneInfo("America/New_York")
 SCHEMA = 1
 SHRINKAGE = 12
-MAX_SOURCE_AGE = timedelta(hours=8)
 ADMISSIBLE = {"same_club_independent_ESPN_ID_observed",
               "same_club_unique_name_only_observed"}
 NO_DEPLOY = "research_only_not_deployed"
@@ -90,13 +89,20 @@ def _fresh(live, now):
     quality = live.get("schedule_quality") or {}
     if quality.get("freshness") != "fresh":
         return False
-    for value in (live.get("updated_at_utc"), quality.get("validated_at_utc")):
-        try:
-            t = _time(value)
-        except (ValueError, TypeError):
-            return False
-        if t > now or now - t > MAX_SOURCE_AGE:
-            return False
+    # A refreshed live boxscore/fixture list must be recent (8 h), while a
+    # separately validated full-season schedule may be up to 36 h old. These
+    # are the same PIT freshness limits used by catalog_pit_research; applying
+    # the 8 h live limit to the calendar silently prevented new forecasts.
+    try:
+        live_at = _time(live.get("updated_at_utc"))
+        calendar_at = _time(quality.get("validated_at_utc"))
+    except (ValueError, TypeError):
+        return False
+    if (live_at > now or calendar_at > now
+            or calendar_at > live_at
+            or now - live_at > MAX_LIVE_AGE
+            or now - calendar_at > MAX_SCHEDULE_AGE):
+        return False
     return True
 
 
