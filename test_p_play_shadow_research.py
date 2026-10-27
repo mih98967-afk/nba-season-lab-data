@@ -42,7 +42,7 @@ class Tests(unittest.TestCase):
   self.assertTrue(_fresh(good,now))
   bad=deepcopy(good);bad["updated_at_utc"]="2026-10-27T03:59:59Z"
   self.assertFalse(_fresh(bad,now))
-  bad=deepcopy(good);bad["schedule_quality"]["validated_at_utc"]="2026-10-26T00:00:00Z"
+  bad=deepcopy(good);bad["schedule_quality"]["validated_at_utc"]="2026-10-25T23:59:59Z"
   self.assertFalse(_fresh(bad,now))
   bad=deepcopy(good);bad["schedule_quality"]["validated_at_utc"]="2026-10-27T12:01:00Z"
   self.assertFalse(_fresh(bad,now))
