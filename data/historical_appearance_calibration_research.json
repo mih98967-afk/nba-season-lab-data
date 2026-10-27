@@ -1,0 +1,445 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "model_status": "research_only_not_deployed",
+  "adopt_on_site": false,
+  "evaluated_at_utc": "2026-10-27T07:46:04.876985+00:00",
+  "scope": "retrospective_selected_logged_appearance_PROXY_NOT_DNP",
+  "model": "development_only_monotone_prevalence_shrink",
+  "target": "positive_minute_record_in_last_observed_team_fixture",
+  "actual_DNP_label_count": 0,
+  "full_game_day_active_roster_verified": false,
+  "p_play_calibrated_for_fantasy_population": false,
+  "used_in_live_site_or_forecast": false,
+  "keep_transfer_advantage_claim": false,
+  "frozen_raw_parameters": {
+    "shrinkage": 0,
+    "recent_weight": 0.75
+  },
+  "development_sample": {
+    "eligible_proxy_player_games": 18382,
+    "distinct_players": 306,
+    "distinct_NBA_games": 1085,
+    "logged_appearances": 14507,
+    "no_logged_appearance_NOT_DNP": 3875,
+    "selection_qa": {
+      "no_prior_appearance": 19035,
+      "last_observed_club_not_playing": 313994,
+      "insufficient_prior_same_club_appearances": 3405,
+      "insufficient_prior_club_fixtures": 412,
+      "no_logged_appearance_NOT_DNP": 3875,
+      "positive_logged_appearance": 14507,
+      "inactive_older_than_16_days_excluded": 29762
+    }
+  },
+  "holdout_sample": {
+    "eligible_proxy_player_games": 21756,
+    "distinct_players": 354,
+    "distinct_NBA_games": 1085,
+    "logged_appearances": 17103,
+    "no_logged_appearance_NOT_DNP": 4653,
+    "selection_qa": {
+      "no_prior_appearance": 16076,
+      "last_observed_club_not_playing": 364691,
+      "insufficient_prior_same_club_appearances": 3558,
+      "insufficient_prior_club_fixtures": 431,
+      "positive_logged_appearance": 17103,
+      "no_logged_appearance_NOT_DNP": 4653,
+      "inactive_older_than_16_days_excluded": 31368
+    }
+  },
+  "calibration_training_only_2024_25": {
+    "selected_shrink": 0.25,
+    "smoothed_development_appearance_rate": 0.789164,
+    "objective": "minimum_development_selected_proxy_logloss_only",
+    "grid": [
+      0.0,
+      0.01,
+      0.025,
+      0.05,
+      0.075,
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3,
+      0.4,
+      0.5
+    ],
+    "development_fit_is_in_sample": true
+  },
+  "development": {
+    "baseline": {
+      "brier": 0.152427,
+      "logloss": 0.471889,
+      "reliability": {
+        "buckets": {
+          "3": {
+            "n": 125,
+            "mean_score": 0.3596,
+            "observed_positive_log_fraction": 0.512
+          },
+          "4": {
+            "n": 421,
+            "mean_score": 0.4579,
+            "observed_positive_log_fraction": 0.4846
+          },
+          "5": {
+            "n": 1031,
+            "mean_score": 0.5555,
+            "observed_positive_log_fraction": 0.5994
+          },
+          "6": {
+            "n": 1743,
+            "mean_score": 0.6517,
+            "observed_positive_log_fraction": 0.6213
+          },
+          "7": {
+            "n": 2876,
+            "mean_score": 0.7543,
+            "observed_positive_log_fraction": 0.6902
+          },
+          "8": {
+            "n": 4684,
+            "mean_score": 0.8563,
+            "observed_positive_log_fraction": 0.7814
+          },
+          "9": {
+            "n": 7502,
+            "mean_score": 0.9362,
+            "observed_positive_log_fraction": 0.9188
+          }
+        },
+        "equal_width_10bin_ECE": 0.043204,
+        "high_confidence_over_90_count": 7502,
+        "high_confidence_over_90_observed_rate": 0.918822,
+        "high_confidence_over_90_avg_predicted": 0.936182
+      }
+    },
+    "raw": {
+      "brier": 0.135588,
+      "logloss": 0.486659,
+      "reliability": {
+        "buckets": {
+          "0": {
+            "n": 91,
+            "mean_score": 0.0662,
+            "observed_positive_log_fraction": 0.1538
+          },
+          "1": {
+            "n": 443,
+            "mean_score": 0.1549,
+            "observed_positive_log_fraction": 0.2325
+          },
+          "2": {
+            "n": 434,
+            "mean_score": 0.2529,
+            "observed_positive_log_fraction": 0.4124
+          },
+          "3": {
+            "n": 605,
+            "mean_score": 0.3384,
+            "observed_positive_log_fraction": 0.4545
+          },
+          "4": {
+            "n": 910,
+            "mean_score": 0.4495,
+            "observed_positive_log_fraction": 0.5308
+          },
+          "5": {
+            "n": 757,
+            "mean_score": 0.5441,
+            "observed_positive_log_fraction": 0.5522
+          },
+          "6": {
+            "n": 1507,
+            "mean_score": 0.6472,
+            "observed_positive_log_fraction": 0.6403
+          },
+          "7": {
+            "n": 1081,
+            "mean_score": 0.7582,
+            "observed_positive_log_fraction": 0.741
+          },
+          "8": {
+            "n": 2608,
+            "mean_score": 0.8315,
+            "observed_positive_log_fraction": 0.7987
+          },
+          "9": {
+            "n": 9946,
+            "mean_score": 0.9818,
+            "observed_positive_log_fraction": 0.9236
+          }
+        },
+        "equal_width_10bin_ECE": 0.051975,
+        "high_confidence_over_90_count": 9946,
+        "high_confidence_over_90_observed_rate": 0.923587,
+        "high_confidence_over_90_avg_predicted": 0.981782
+      }
+    },
+    "calibrated": {
+      "brier": 0.132669,
+      "logloss": 0.420817,
+      "reliability": {
+        "buckets": {
+          "2": {
+            "n": 189,
+            "mean_score": 0.2658,
+            "observed_positive_log_fraction": 0.1429
+          },
+          "3": {
+            "n": 636,
+            "mean_score": 0.347,
+            "observed_positive_log_fraction": 0.327
+          },
+          "4": {
+            "n": 824,
+            "mean_score": 0.4479,
+            "observed_positive_log_fraction": 0.46
+          },
+          "5": {
+            "n": 1148,
+            "mean_score": 0.5493,
+            "observed_positive_log_fraction": 0.5157
+          },
+          "6": {
+            "n": 1552,
+            "mean_score": 0.6602,
+            "observed_positive_log_fraction": 0.6186
+          },
+          "7": {
+            "n": 1726,
+            "mean_score": 0.7563,
+            "observed_positive_log_fraction": 0.7242
+          },
+          "8": {
+            "n": 2995,
+            "mean_score": 0.8362,
+            "observed_positive_log_fraction": 0.823
+          },
+          "9": {
+            "n": 9312,
+            "mean_score": 0.937,
+            "observed_positive_log_fraction": 0.9263
+          }
+        },
+        "equal_width_10bin_ECE": 0.018681,
+        "high_confidence_over_90_count": 9312,
+        "high_confidence_over_90_observed_rate": 0.926332,
+        "high_confidence_over_90_avg_predicted": 0.937012
+      }
+    }
+  },
+  "holdout": {
+    "baseline": {
+      "brier": 0.151679,
+      "logloss": 0.46838,
+      "reliability": {
+        "buckets": {
+          "3": {
+            "n": 225,
+            "mean_score": 0.3595,
+            "observed_positive_log_fraction": 0.5378
+          },
+          "4": {
+            "n": 696,
+            "mean_score": 0.456,
+            "observed_positive_log_fraction": 0.4713
+          },
+          "5": {
+            "n": 1187,
+            "mean_score": 0.5531,
+            "observed_positive_log_fraction": 0.551
+          },
+          "6": {
+            "n": 1956,
+            "mean_score": 0.654,
+            "observed_positive_log_fraction": 0.6452
+          },
+          "7": {
+            "n": 3446,
+            "mean_score": 0.7531,
+            "observed_positive_log_fraction": 0.6709
+          },
+          "8": {
+            "n": 5780,
+            "mean_score": 0.8548,
+            "observed_positive_log_fraction": 0.7962
+          },
+          "9": {
+            "n": 8466,
+            "mean_score": 0.9365,
+            "observed_positive_log_fraction": 0.9242
+          }
+        },
+        "equal_width_10bin_ECE": 0.036607,
+        "high_confidence_over_90_count": 8466,
+        "high_confidence_over_90_observed_rate": 0.924167,
+        "high_confidence_over_90_avg_predicted": 0.936467
+      }
+    },
+    "raw": {
+      "brier": 0.136714,
+      "logloss": 0.482388,
+      "reliability": {
+        "buckets": {
+          "0": {
+            "n": 159,
+            "mean_score": 0.0661,
+            "observed_positive_log_fraction": 0.195
+          },
+          "1": {
+            "n": 476,
+            "mean_score": 0.1564,
+            "observed_positive_log_fraction": 0.2206
+          },
+          "2": {
+            "n": 610,
+            "mean_score": 0.2473,
+            "observed_positive_log_fraction": 0.4016
+          },
+          "3": {
+            "n": 720,
+            "mean_score": 0.34,
+            "observed_positive_log_fraction": 0.4583
+          },
+          "4": {
+            "n": 1119,
+            "mean_score": 0.4509,
+            "observed_positive_log_fraction": 0.5264
+          },
+          "5": {
+            "n": 833,
+            "mean_score": 0.5414,
+            "observed_positive_log_fraction": 0.5498
+          },
+          "6": {
+            "n": 1952,
+            "mean_score": 0.6446,
+            "observed_positive_log_fraction": 0.665
+          },
+          "7": {
+            "n": 1348,
+            "mean_score": 0.7608,
+            "observed_positive_log_fraction": 0.7292
+          },
+          "8": {
+            "n": 2974,
+            "mean_score": 0.83,
+            "observed_positive_log_fraction": 0.8003
+          },
+          "9": {
+            "n": 11565,
+            "mean_score": 0.9812,
+            "observed_positive_log_fraction": 0.9238
+          }
+        },
+        "equal_width_10bin_ECE": 0.05315,
+        "high_confidence_over_90_count": 11565,
+        "high_confidence_over_90_observed_rate": 0.923822,
+        "high_confidence_over_90_avg_predicted": 0.981232
+      }
+    },
+    "calibrated": {
+      "brier": 0.133673,
+      "logloss": 0.423009,
+      "reliability": {
+        "buckets": {
+          "2": {
+            "n": 252,
+            "mean_score": 0.2607,
+            "observed_positive_log_fraction": 0.1746
+          },
+          "3": {
+            "n": 836,
+            "mean_score": 0.35,
+            "observed_positive_log_fraction": 0.3146
+          },
+          "4": {
+            "n": 982,
+            "mean_score": 0.4501,
+            "observed_positive_log_fraction": 0.4603
+          },
+          "5": {
+            "n": 1379,
+            "mean_score": 0.55,
+            "observed_positive_log_fraction": 0.5149
+          },
+          "6": {
+            "n": 2025,
+            "mean_score": 0.6625,
+            "observed_positive_log_fraction": 0.6509
+          },
+          "7": {
+            "n": 2107,
+            "mean_score": 0.7611,
+            "observed_positive_log_fraction": 0.7257
+          },
+          "8": {
+            "n": 3405,
+            "mean_score": 0.8371,
+            "observed_positive_log_fraction": 0.8253
+          },
+          "9": {
+            "n": 10770,
+            "mean_score": 0.9369,
+            "observed_positive_log_fraction": 0.9264
+          }
+        },
+        "equal_width_10bin_ECE": 0.016605,
+        "high_confidence_over_90_count": 10770,
+        "high_confidence_over_90_observed_rate": 0.92637,
+        "high_confidence_over_90_avg_predicted": 0.936878
+      }
+    }
+  },
+  "player_cluster_uncertainty": {
+    "independent_resampling_unit": "historical_NBA_player",
+    "game_or_team_dependence_not_fully_accounted": true,
+    "player_clusters": 354,
+    "repeats": 400,
+    "seed": 20261027,
+    "positive_gain_means_lower_loss": true,
+    "gain_intervals_95pct": {
+      "brier_baseline_to_raw": [
+        0.01226,
+        0.017603
+      ],
+      "brier_raw_to_calibrated": [
+        0.0024,
+        0.003659
+      ],
+      "brier_baseline_to_calibrated": [
+        0.015471,
+        0.02041
+      ],
+      "logloss_baseline_to_raw": [
+        -0.022402,
+        -0.006068
+      ],
+      "logloss_raw_to_calibrated": [
+        0.053687,
+        0.064868
+      ],
+      "logloss_baseline_to_calibrated": [
+        0.039257,
+        0.05146
+      ]
+    }
+  },
+  "raw_to_calibrated_holdout_brier_gain": 0.003041,
+  "raw_to_calibrated_holdout_logloss_gain": 0.059379,
+  "calibrated_better_than_raw_on_both_proper_scores": true,
+  "calibration_not_an_adoption_gate": true,
+  "limitations": [
+    "A missing logged appearance is not a verified DNP, illness, inactive roster, or tenure proof.",
+    "Only recently active high-identity players; long-term injured and transfers are underrepresented.",
+    "Calibration shrinks scores toward development prevalence; not a universal p_play model.",
+    "Raw parameters and shrink hyperparameter both fitted on development; development scores are optimistic.",
+    "2025/26 is untouched holdout; no iteration based on its measured metrics is authorized.",
+    "Bootstrap clusters by player, not by both player and NBA fixture/team, so dependence remains.",
+    "Historical finalized fixture calendars do not prove historically-known pregame schedule.",
+    "No individual Sports.ru acquisition/sale prices, moves, or verified KEEP/TRANSFER uplift."
+  ]
+}
