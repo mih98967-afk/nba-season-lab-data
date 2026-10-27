@@ -149,8 +149,13 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
             raise ValueError("Unsafe or mismatched game/OUT evidence")
         if nba_id not in checked:
             if nba_id in payloads:
-                checked[nba_id] = validate_summary(payloads[nba_id],nba_id,game["home"],game["away"])
-                qa["verified_official_summary_games"] += 1
+                try:
+                    checked[nba_id] = validate_summary(payloads[nba_id],nba_id,game["home"],game["away"])
+                    qa["verified_official_summary_games"] += 1
+                except (ValueError, KeyError, TypeError):
+                    errors[nba_id] = "NBA_summary_schema_or_match_invalid"
+                    qa["source_unavailable_games"] += 1
+                    checked[nba_id] = None
             else:
                 qa["source_unavailable_games"] += 1
                 checked[nba_id] = None
