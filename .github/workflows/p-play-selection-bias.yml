@@ -1,0 +1,46 @@
+name: NBA p-play missing-label selection audit
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/p_play_selection_bias_audit.py','test_p_play_selection_bias_audit.py','.github/workflows/p-play-selection-bias.yml']
+  push:
+    branches: [main]
+    paths: ['src/p_play_selection_bias_audit.py','test_p_play_selection_bias_audit.py','.github/workflows/p-play-selection-bias.yml']
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['NBA prospective p-play shadow research']
+    types: [completed]
+    branches: [main]
+  schedule:
+    - cron: '19 6,18 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Regression UNKNOWN and bounded paired losses
+        run: python -m unittest -v test_p_play_selection_bias_audit test_p_play_shadow_research
+      - name: Evaluate coverage on frozen forecasts
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+        run: |
+          git pull --ff-only origin main
+          python -m src.p_play_selection_bias_audit
+      - name: Publish public research report only
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/p_play_selection_bias_audit.json
+          if ! git diff --cached --quiet; then
+            git commit -m "research: measure p-play outcome coverage and unknown sensitivity"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
