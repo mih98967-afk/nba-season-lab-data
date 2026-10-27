@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 from datetime import datetime,timezone
-from src.p_play_shadow_research import _verified_past,_issues,_observations,_metrics,STATUS
+from src.p_play_shadow_research import _verified_past,_issues,_observations,_metrics,_prospective_metrics,STATUS
 from src.catalog_pit_research import UNKNOWN
 def d(x):return datetime.fromisoformat(x.replace("Z","+00:00"))
 class Tests(unittest.TestCase):
@@ -39,4 +39,16 @@ class Tests(unittest.TestCase):
   summary,metric=_metrics(obs)
   self.assertEqual(summary["verified_selected_distinct_games"],1)
   self.assertIsNone(metric)
+ def test_prospective_one_date_is_not_adoption(self):
+  rows=[]
+  for gid in ("g1","g2"):
+   for i in range(5):
+    rows.append({"game_id":gid,"player_id":"n"+str(i),"tipoff_utc":"2026-10-27T01:00:00Z","actual_played":int(i!=0),"baseline_p_selected_listed_proxy":0.8,"candidate_p_selected_listed_proxy":0.7})
+  metric=_prospective_metrics(rows)
+  self.assertEqual(metric["NBA_games"],2)
+  self.assertEqual(metric["ET_dates"],1)
+  self.assertFalse(metric["sufficient_for_longitudinal_adoption"])
+  self.assertTrue(metric["NBA_game_cluster_bootstrap_95pct_gain"]["few_independent_game_dates_caution"])
+  self.assertIsNone(_prospective_metrics([]))
+
 if __name__=="__main__":unittest.main()
