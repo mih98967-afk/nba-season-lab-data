@@ -1,7 +1,7 @@
 import unittest
 from copy import deepcopy
 from datetime import datetime, timezone, timedelta
-from src.catalog_pit_research import capture,evaluate,STATUS,UNKNOWN
+from src.catalog_pit_research import capture,evaluate,_validated_snapshots,STATUS,UNKNOWN
 from src.rolling_decision_research import canonical_hash
 UTC=timezone.utc
 def dt(s): return datetime.fromisoformat(s.replace("Z","+00:00"))
@@ -59,6 +59,15 @@ class TestPIT(unittest.TestCase):
   c,live,*_=fixture()
   live["updated_at_utc"]="2026-10-25T01:00:00Z"
   with self.assertRaises(ValueError):capture(c,live,dt("2026-10-26T16:00:00Z"))
+ def test_two_immutable_daily_captures_are_valid(self):
+  c,live,snap,final,co,ex=fixture()
+  second=deepcopy(snap)
+  second["captured_at_utc"]="2026-10-26T20:30:00Z"
+  second["snapshot_date_msk"]="2026-10-26"
+  self.assertEqual(len(_validated_snapshots([snap,second],dt("2026-10-27T00:00:00Z"))),2)
+  second["captured_at_utc"]="2026-10-26T17:00:00Z"
+  with self.assertRaises(ValueError):
+   _validated_snapshots([snap,second],dt("2026-10-27T00:00:00Z"))
  def test_not_pre_game_prediction(self):
   c,live,snap,final,co,ex=fixture()
   x=evaluate(final,co,ex,[snap],dt("2026-10-27T04:00:00Z"))
