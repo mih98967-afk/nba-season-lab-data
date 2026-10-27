@@ -7,6 +7,10 @@ on:
     branches: [main]
     paths: ['src/p_play_shadow_research.py','test_p_play_shadow_research.py','.github/workflows/p-play-shadow.yml']
   workflow_dispatch:
+  workflow_run:
+    workflows: ['NBA explicit DNP isolated research']
+    types: [completed]
+    branches: [main]
   schedule:
     - cron: '43 4,12,20 * * *'
 permissions:
@@ -25,13 +29,13 @@ jobs:
       - name: Verify PIT, UNKNOWN, immutable forecast, selection bias
         run: python -m unittest -v test_p_play_shadow_research test_prelock_roster_opportunities
       - name: Issue research-only prelock forecasts and evaluate only verified finished outcomes
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git pull --ff-only origin main
           python -m src.participation_cohort_research
           python -m src.p_play_shadow_research
       - name: Append only research forecasts and coherent labels
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
