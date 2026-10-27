@@ -40,7 +40,7 @@ def validate_espn_snapshots(snapshots, now):
     if not isinstance(snapshots, list):
         raise ValueError("ESPN archive must be a list")
     out = []
-    dates = set()
+    dates = {}
     for snap in snapshots:
         if (not isinstance(snap, dict) or snap.get("schema_version") != 1
                 or snap.get("status") != STATUS
@@ -51,9 +51,9 @@ def validate_espn_snapshots(snapshots, now):
             raise ValueError("Untrusted or deployable ESPN roster capture")
         captured = instant(snap["captured_at_utc"])
         day = captured.strftime("%Y-%m-%d")
-        if captured > now or day in dates:
+        if captured > now or dates.get(day, 0) >= 2:
             raise ValueError("Future or duplicate ESPN roster capture day")
-        dates.add(day)
+        dates[day] = dates.get(day, 0) + 1
         teams = snap.get("teams")
         if not isinstance(teams, list) or len(teams) != len(TEAMS):
             raise ValueError("ESPN roster capture omitted clubs")
@@ -110,7 +110,10 @@ def validate_espn_snapshots(snapshots, now):
         if seen_teams != TEAMS or snap.get("all_teams_available") is not (available == 30):
             raise ValueError("Incomplete roster availability flag")
         out.append((captured, snap))
-    return sorted(out, key=lambda x: x[0])
+    out.sort(key=lambda x: x[0])
+    if any(b[0]-a[0] < timedelta(hours=4) and a[0].date() == b[0].date() for a,b in zip(out,out[1:])):
+        raise ValueError("Duplicate ESPN daily snapshots too close")
+    return out
 
 
 def _verified_labels(cohort, explicit, live, now):
