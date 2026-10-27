@@ -25,13 +25,18 @@ class OfficialGameTests(unittest.TestCase):
         self.assertTrue(SCHEDULE_URL.endswith("/scheduleLeagueV2_1.json"))
         self.assertFalse("scheduleLeagueV2.json" in SCHEDULE_URL)
         days=[{"games":[]} for _ in range(110)]
-        for i in range(600):
+        for i in range(1100):
             days[i%110]["games"].append({"gameId":f"00226{i:05d}",
                 "gameDateTimeUTC":"2026-10-26T23:00:00Z",
                 "homeTeam":{"teamTricode":"CHA"},
                 "awayTeam":{"teamTricode":"WAS"}})
-        self.assertEqual(len(official_schedule({"leagueSchedule":{"gameDates":days}})),600)
-        self.assertEqual(len(official_schedule({"scheduleLeagueV2":{"gameDates":days}})),600)
+        self.assertEqual(len(official_schedule({"leagueSchedule":{"gameDates":days}})),1100)
+        self.assertEqual(len(official_schedule({"scheduleLeagueV2":{"gameDates":days}})),1100)
+        days[0]["games"].append({"gameId":"0022699999",
+            "gameDateTimeUTC":"2026-10-26T23:00:00Z",
+            "homeTeam":{"teamTricode":"TBD"},
+            "awayTeam":{"teamTricode":"CHA"}})
+        self.assertEqual(len(official_schedule({"leagueSchedule":{"gameDates":days}})),1100)
         with self.assertRaises(ValueError):
             official_schedule({"leagueSchedule":{"gameDates":[{"games":[]}]} })
         with self.assertRaises(ValueError):

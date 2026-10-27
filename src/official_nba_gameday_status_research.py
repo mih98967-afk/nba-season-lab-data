@@ -27,6 +27,7 @@ MAX_CASES = 150
 VERIFIED = {"VERIFIED_GAME_DAY_INACTIVE", "VERIFIED_ACTIVE_NONPLAY"}
 TEAM_ALIASES = {"GS": "GSW", "NY": "NYK", "SA": "SAS", "NO": "NOP",
                 "WSH": "WAS", "UTAH": "UTA"}
+from src.live_calendar_fallback import TEAMS
 
 
 def utc(value):
@@ -90,11 +91,15 @@ def official_schedule(payload):
             seen_ids.add(gid)
             home = code((game.get("homeTeam") or {}).get("teamTricode"))
             away = code((game.get("awayTeam") or {}).get("teamTricode"))
-            if not home or not away or home == away:
-                raise ValueError("Bad official home/away clubs")
+            if home not in TEAMS or away not in TEAMS:
+                # Unassigned NBA Cup fixtures are not usable as match evidence.
+                # They are not losses, DNP or assigned clubs.
+                continue
+            if home == away:
+                raise ValueError("Same-club NBA official fixture")
             out.append({"id": gid, "home": home, "away": away,
                         "utc": stamp(utc(game["gameDateTimeUTC"]))})
-    if len(out) < 500:
+    if len(out) < 1000:
         raise ValueError("Too few NBA regular season games in official schedule")
     return out
 
