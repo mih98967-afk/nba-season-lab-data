@@ -14,12 +14,13 @@ from datetime import datetime, timedelta, timezone
 from hashlib import sha256
 from pathlib import Path
 from urllib.request import Request, urlopen
+from urllib.error import HTTPError
 import json
 import re
 
 BASE = Path(__file__).resolve().parents[1] / "data"
 STATUS = "research_only_not_deployed"
-SCHEDULE_URL = "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json"
+SCHEDULE_URL = "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json"
 BOX_PREFIX = "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_"
 MAX_GAMES = 18
 MAX_CASES = 150
@@ -52,14 +53,15 @@ def code(raw):
 
 def fetch_public_json(url):
     if url == SCHEDULE_URL:
-        limit = 9_000_000
+        limit = 14_000_000
     elif (url.startswith(BOX_PREFIX) and url.endswith(".json")
           and re.fullmatch(r"\d{10}", url[len(BOX_PREFIX):-5])):
         limit = 5_000_000
     else:
         raise ValueError("Unsupported official source URL")
     req = Request(url, headers={
-        "User-Agent": "NBA-Season-Lab/1.0 independent-noncommercial-research",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0",
+        "Referer": "https://www.nba.com/",
         "Accept": "application/json",
     })
     with urlopen(req, timeout=23) as response:
@@ -71,7 +73,7 @@ def fetch_public_json(url):
 
 def official_schedule(payload):
     """Independent ESPN->NBA fixture crosswalk; not by guessed NBA game ID."""
-    dates = (payload.get("leagueSchedule") or {}).get("gameDates")
+    dates = (payload.get("leagueSchedule") or payload.get("scheduleLeagueV2") or {}).get("gameDates")
     if not isinstance(dates, list) or not 100 <= len(dates) <= 400:
         raise ValueError("Official NBA season calendar missing/incomplete")
     out = []
@@ -391,7 +393,7 @@ def run(dry_run=False):
         schedule = fetch_public_json(SCHEDULE_URL)
     except (OSError, TimeoutError, ValueError, TypeError) as exc:
         schedule = None
-        schedule_error = type(exc).__name__
+        schedule_error = ("HTTP_" + str(exc.code)) if isinstance(exc, HTTPError) else type(exc).__name__
     report = build(read("official_out_boxscore_evidence_research.json"),
                    read("identity.json"), read("live.json"),
                    read("explicit_dnp_research.json"),
