@@ -168,9 +168,6 @@ def diagnose(live, shadow, catalog_snapshots, espn_snapshots, now):
             "readiness": reason,
         })
 
-    if sum(1 for _ in fixture_rows) != sum(count[r["readiness"]] for r in []):
-        # Avoid derived counter ambiguities: verify a direct partition below.
-        pass
     direct_partition = sum(
         v for k, v in count.items()
         if k in {
