@@ -38,6 +38,84 @@ def indexed(rows, name):
     return index
 
 
+def archive_verified_resolutions(prior, old, active_keys, shadow, now):
+    """Move only newly ESPN-verified first issues to immutable source history.
+
+    Never drop earlier independent NBA evidence or treat an NBA status,
+    unavailable player, or absent boxscore row as a new p_play label.
+    """
+    forecasts = indexed(shadow.get("issued"), "original frozen first issues")
+    labels = indexed(shadow.get("observations"), "independently verified p_play labels")
+    past = prior.get("resolved_verified_history", [])
+    if not isinstance(past, list):
+        raise ValueError("Historical source archive is not a list")
+    resolved = {}
+
+    def evidence(source):
+        key = (source.get("game_id"), source.get("player_id"))
+        first = forecasts.get(key)
+        observed = labels.get(key)
+        if (key in active_keys or first is None or observed is None
+                or source.get("team") != first.get("team")
+                or source.get("game_utc") != first.get("tipoff_utc")
+                or source.get("first_prediction_issued_at_utc") != first.get("issued_at_utc")
+                or source.get("individual_lock_utc") != first.get("individual_lock_utc")
+                or source.get("original_p_play_club_link") != first.get("club_link_evidence")
+                or source.get("p_play_outcome_still_UNKNOWN") is not True
+                or source.get("model_training_negative") is not False
+                or source.get("adopt_on_site") is not False):
+            raise ValueError("Prior UNKNOWN may not be removed without original verified label")
+        y = observed.get("actual_played")
+        expected = ("positive_minutes_verified_sportsru_fp" if y == 1 and type(y) is int
+                    else "explicit_espn_didNotPlay_true" if y == 0 and type(y) is int
+                    else None)
+        seen = observed.get("source_first_observed_at_utc")
+        if (expected is None or observed.get("label_provenance") != expected
+                or observed.get("tipoff_utc") != first.get("tipoff_utc")
+                or not isinstance(seen, str)
+                or not utc(first["tipoff_utc"]) <= utc(seen) <= now):
+            raise ValueError("Removed non-OUT case lacks separately verified ESPN outcome")
+        if source.get("source_first_observed_at_utc") is not None:
+            source_at = utc(source["source_first_observed_at_utc"])
+            if not utc(first["tipoff_utc"]) <= source_at <= now:
+                raise ValueError("Historical independent source observed outside game window")
+        return observed
+
+    for record in past:
+        if not isinstance(record, dict) or not isinstance(record.get("source_case"), dict):
+            raise ValueError("Malformed prior resolved-source archive")
+        source = record["source_case"]
+        key = (source.get("game_id"), source.get("player_id"))
+        if key in resolved or key in old:
+            raise ValueError("Historical resolved source duplicated or returned to active")
+        label = evidence(source)
+        if (record.get("source_case_sha256") != digest(source)
+                or record.get("p_play_verified_actual_played") != label["actual_played"]
+                or record.get("p_play_label_provenance") != label["label_provenance"]
+                or record.get("p_play_source_first_observed_at_utc") !=
+                   label["source_first_observed_at_utc"]
+                or not isinstance(record.get("archived_after_verification_at_utc"), str)
+                or not utc(label["source_first_observed_at_utc"]) <=
+                    utc(record["archived_after_verification_at_utc"]) <= now):
+            raise ValueError("Historical archived source or verified evidence was edited")
+        resolved[key] = record
+
+    newly_archived = 0
+    for key in sorted(set(old) - active_keys):
+        source = old[key]
+        label = evidence(source)
+        resolved[key] = {
+            "source_case": source,
+            "source_case_sha256": digest(source),
+            "p_play_verified_actual_played": label["actual_played"],
+            "p_play_label_provenance": label["label_provenance"],
+            "p_play_source_first_observed_at_utc": label["source_first_observed_at_utc"],
+            "archived_after_verification_at_utc": stamp(now),
+        }
+        newly_archived += 1
+    return [resolved[key] for key in sorted(resolved)], newly_archived
+
+
 def eligible_cases(ledger, shadow, selection, existing, identity, live, explicit, now):
     for name, item in (("ledger", ledger), ("p_play", shadow),
                        ("selection", selection), ("NBA prior OUT", existing),
@@ -133,8 +211,8 @@ def build(ledger, shadow, selection, existing, identity, live, explicit,
         raise ValueError("No NON-OUT unknown cohort")
     old = indexed(prior.get("records", []), "old non-OUT research")
     keys = {(r["game_id"], r["player_id"]) for r in candidates}
-    if set(old) - keys:
-        raise ValueError("Prior research contained deleted/fabricated player-games")
+    history, newly_resolved = archive_verified_resolutions(
+        prior, old, keys, shadow, now)
     old_lock = {(r["game_id"], r["player_id"]): r for r in candidates}
     final = {}
     needs = defaultdict(list)
@@ -260,17 +338,21 @@ def build(ledger, shadow, selection, existing, identity, live, explicit,
             "source_games_failed_this_run": sum(failures.values()),
             "source_games_pending_cap_this_run": max(0,len(needs)-max_games),
             "p_play_negative_labels_created": 0,
+            "previous_non_OUT_cases_now_independently_ESPN_verified": newly_resolved,
+            "historical_verified_resolution_source_records_preserved": len(history),
         },
         "by_first_issued_status": by_status,
         "by_independent_NBA_verdict": dict(counter),
         "source_error_classes_this_run": dict(failures),
         "qa": dict(qa),
         "records": outputs,
+        "resolved_verified_history": history,
         "quality_gate": {
             "full_fantasy_game_day_roster_denominator_verified": False,
             "NBA_game_day_membership_is_prelock_club_tenure": False,
             "separate_official_inactive_is_ESPN_DNP_label": False,
             "UNKNOWN_as_zero_training_allowed": False,
+            "verified_source_history_preserved": True,
             "population_p_play_calibrated": False,
             "unconditional_FP_enabled": False,
             "adopt_on_site": False,
@@ -281,7 +363,7 @@ def build(ledger, shadow, selection, existing, identity, live, explicit,
             "Official NBA athlete absent from game boxscore remains UNKNOWN, not DNP.",
             "Official NBA inactive/nonplay is separate postgame evidence, never ESPN label.",
             "Source availability and original observed timestamps are first-observed, not backfilled.",
-            "Only 26 first-issued non-OUT unknown cases, not whole Sports.ru game-day roster.",
+            "The currently active non-OUT denominator is dynamic, while verified resolved source cases are retained immutably.",
             "No p_play labels/model/Firestore/Hosting/prices/transfers are changed.",
         ],
     }
