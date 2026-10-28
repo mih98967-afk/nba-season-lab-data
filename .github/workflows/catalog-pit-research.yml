@@ -7,9 +7,9 @@ on:
   schedule:
     - cron: '37 6,18 * * *'
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: ${{ github.event_name == 'pull_request' && 'nba-catalog-pit-pr-checks' || 'nba-season-lab-shared-write' }}
+  group: nba-pit-diagnostic-only
   cancel-in-progress: false
 jobs:
   research:
@@ -22,16 +22,5 @@ jobs:
       - name: Prospective clocks, UNKNOWN guard, tamper checks
         run: python -m unittest -v test_catalog_pit_research test_participation_coverage_research test_participation_cohort_research
       - name: Capture non-backdated PIT proxy and evaluate completed games
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request'
         run: python -c "from src.catalog_pit_research import run; print(run(evaluate_only=True))"
-      - name: Publish append-only research observations only
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        run: |
-          git config user.name "nba-season-lab-bot"
-          git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/catalog_pit/*.json data/catalog_pit_coverage_research.json
-          if ! git diff --cached --quiet; then
-            git commit -m "data: append prospective catalog PIT proxy evidence"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
