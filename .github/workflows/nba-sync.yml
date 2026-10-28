@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/nba-sync.yml'
       - 'test_schedule_workflow_owner.py'
+      - 'src/public_sync_integrity.py'
+      - 'test_public_sync_integrity.py'
   push:
     branches: [main, fix/live-schedule-provenance-20261025]
     paths:
@@ -36,7 +38,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test scoring without network
-        run: python -m unittest -v test_sync test_live_schedule_provenance test_schedule_workflow_owner
+        run: python -m unittest -v test_sync test_live_schedule_provenance test_schedule_workflow_owner test_public_sync_integrity
       - name: Prove downstream participation and FP evaluation can run offline
         if: github.event_name == 'pull_request'
         run: |
@@ -46,6 +48,11 @@ jobs:
           python -m src.short_minutes_prospective_research
           python -m src.conditional_minutes_fp_evaluation_research
           python -m src.short_minutes_prospective_evaluation_research
+          python -m src.participation_coverage_research
+          python -m src.p_play_selection_bias_audit
+          python -m src.participation_evidence_ledger_research
+          python -m src.p_play_precommitted_paired_evaluation
+          python -m src.public_sync_integrity
       - name: Refresh official NBA live data from latest main
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
@@ -66,7 +73,7 @@ jobs:
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/live.json data/catalog.json data/explicit_dnp_research.json data/participation_cohort_research.json data/p_play_shadow_research.json data/conditional_minutes_fp_research.json data/short_minutes_prospective_research.json data/conditional_minutes_fp_evaluation_research.json data/short_minutes_prospective_evaluation_research.json
+          git add data/live.json data/catalog.json data/explicit_dnp_research.json data/participation_cohort_research.json data/p_play_shadow_research.json data/conditional_minutes_fp_research.json data/short_minutes_prospective_research.json data/conditional_minutes_fp_evaluation_research.json data/short_minutes_prospective_evaluation_research.json data/participation_coverage_research.json data/p_play_selection_bias_audit.json data/participation_evidence_ledger_research.json data/p_play_precommitted_paired_evaluation_research.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh NBA scores and schedule"
             git pull --rebase origin main
