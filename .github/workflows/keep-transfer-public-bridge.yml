@@ -1,0 +1,21 @@
+name: NBA KEEP TRANSFER frozen forecast bridge gate
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/keep_transfer_public_bridge.py','test_keep_transfer_public_bridge.py','.github/workflows/keep-transfer-public-bridge.yml']
+  push:
+    branches: [main]
+    paths: ['src/keep_transfer_public_bridge.py','test_keep_transfer_public_bridge.py','.github/workflows/keep-transfer-public-bridge.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test prospective coverage without leakage or economics claims
+        run: python -m unittest -v test_keep_transfer_public_bridge test_keep_transfer_economic_replay
