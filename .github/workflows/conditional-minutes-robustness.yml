@@ -15,7 +15,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: nba-season-lab-shared-write
+  group: nba-conditional-robustness-read-only
   cancel-in-progress: false
 jobs:
   robustness:
