@@ -7,6 +7,10 @@ on:
     branches: [main]
     paths: ['src/participation_evidence_ledger_research.py','test_participation_evidence_ledger_research.py','.github/workflows/participation-evidence-ledger.yml']
   workflow_dispatch:
+  workflow_run:
+    workflows: ['NBA p-play missing-label selection audit']
+    types: [completed]
+    branches: [main]
   schedule:
     - cron: '53 10 * * *'
 permissions:
@@ -25,12 +29,12 @@ jobs:
       - name: Run strict real-data ledger cross-check regressions
         run: python -m unittest -v test_participation_evidence_ledger_research test_p_play_selection_bias_audit
       - name: Reconcile research-only missing outcomes on main
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git pull --ff-only origin main
           python -m src.participation_evidence_ledger_research
       - name: Archive only research ledger
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
