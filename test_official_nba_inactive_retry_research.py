@@ -18,14 +18,15 @@ class Catchup(unittest.TestCase):
         cls.espn=get("official_out_boxscore_evidence_research.json")
         cls.live=get("live.json")
         cls.old=get("official_nba_inactive_summary_research.json")
+        cls.test_now=max(NOW,datetime.fromisoformat(cls.old["updated_at_utc"].replace("Z","+00:00"))+timedelta(minutes=1))
     def test_only_new_games_requested_and_failure_preserves_outcomes(self):
-        req,defer=plan_requests(self.nba,self.old,NOW)
+        req,defer=plan_requests(self.nba,self.old,self.test_now)
         old_games={x["nba_game_id"] for x in self.old["records"]}
         all_games={x["nba_game_id"] for x in self.nba["records"]}
         self.assertEqual(set(defer),old_games)
         self.assertEqual(set(req),all_games-old_games)
         result=reconcile(self.nba,self.espn,self.live,{}, {gid:"TimeoutError" for gid in req},
-                         NOW,deepcopy(self.old),attempted_game_ids=req,deferred_game_ids=defer)
+                         self.test_now,deepcopy(self.old),attempted_game_ids=req,deferred_game_ids=defer)
         self.assertEqual(result["original_queue_count"],len(self.nba["records"]))
         self.assertEqual(result["source_attempts_this_run"],len(req))
         self.assertEqual(result["source_retry_deferred_games"],len(defer))
@@ -41,7 +42,7 @@ class Catchup(unittest.TestCase):
             self.old["records"][0]["nba_game_id"]:"2030-01-01T00:00:00Z"}
         with self.assertRaises(ValueError):plan_requests(self.nba,old,NOW)
     def test_retry_after_24_hours_without_backdating(self):
-        req,defer=plan_requests(self.nba,self.old,NOW+timedelta(days=2))
+        req,defer=plan_requests(self.nba,self.old,self.test_now+timedelta(days=2))
         self.assertFalse(defer)
         self.assertEqual(len(req),len({r["nba_game_id"] for r in self.nba["records"]}))
     def test_new_game_cannot_be_deferred_without_prior(self):
