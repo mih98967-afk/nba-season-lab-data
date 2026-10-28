@@ -2,11 +2,15 @@ name: NBA official explicit inactive summary research
 on:
   pull_request:
     branches: [main]
-    paths: ['src/official_nba_inactive_summary_research.py','test_official_nba_inactive_summary_research.py','.github/workflows/official-nba-inactive-summary.yml']
+    paths: ['src/official_nba_inactive_summary_research.py','test_official_nba_inactive_summary_research.py','test_official_nba_inactive_retry_research.py','.github/workflows/official-nba-inactive-summary.yml']
   push:
     branches: [main]
-    paths: ['src/official_nba_inactive_summary_research.py','test_official_nba_inactive_summary_research.py','.github/workflows/official-nba-inactive-summary.yml']
+    paths: ['src/official_nba_inactive_summary_research.py','test_official_nba_inactive_summary_research.py','test_official_nba_inactive_retry_research.py','.github/workflows/official-nba-inactive-summary.yml']
   workflow_dispatch:
+  workflow_run:
+    workflows: ['NBA official game-day roster verification research']
+    types: [completed]
+    branches: [main]
   schedule:
     - cron: '11 9 * * *'
 permissions:
@@ -23,14 +27,14 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - name: Test exact IDs and strict negative evidence
-        run: python -m unittest -v test_official_nba_inactive_summary_research test_official_nba_gameday_status_research
+        run: python -m unittest -v test_official_nba_inactive_summary_research test_official_nba_inactive_retry_research test_official_nba_gameday_status_research
       - name: Independently verify official NBA inactive table
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git pull --ff-only origin main
           python -m src.official_nba_inactive_summary_research
       - name: Archive separate research evidence
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
