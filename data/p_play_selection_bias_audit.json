@@ -2,15 +2,15 @@
   "schema_version": 1,
   "status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-27T23:59:13Z",
+  "updated_at_utc": "2026-10-28T06:43:05Z",
   "prediction_target": "player_positive_minutes_with_verified_explicit_DNP_if_available",
   "reference_population": "first_issued_prelock_predictions_with_completed_checked_NBA_games",
   "total_issued_predictions": 617,
-  "finished_checked": 241,
-  "verified_postgame_results": 201,
-  "unknown_postgame_results": 40,
-  "future_or_not_checked": 376,
-  "distinct_finished_ET_dates": 1,
+  "finished_checked": 321,
+  "verified_postgame_results": 268,
+  "unknown_postgame_results": 53,
+  "future_or_not_checked": 296,
+  "distinct_finished_ET_dates": 2,
   "by_first_observed_official_status": {
     "available": {
       "finished_checked": 2,
@@ -21,14 +21,14 @@
       "outcome_UNKNOWN": 2
     },
     "no_observed_official_status": {
-      "finished_checked": 203,
-      "verified_played": 169,
-      "explicit_DNP": 21,
-      "outcome_UNKNOWN": 13
+      "finished_checked": 277,
+      "verified_played": 230,
+      "explicit_DNP": 26,
+      "outcome_UNKNOWN": 21
     },
     "out": {
-      "finished_checked": 24,
-      "outcome_UNKNOWN": 23,
+      "finished_checked": 28,
+      "outcome_UNKNOWN": 27,
       "explicit_DNP": 1
     },
     "probable": {
@@ -36,9 +36,9 @@
       "verified_played": 5
     },
     "questionable": {
-      "finished_checked": 5,
-      "verified_played": 2,
-      "outcome_UNKNOWN": 2,
+      "finished_checked": 7,
+      "verified_played": 3,
+      "outcome_UNKNOWN": 3,
       "explicit_DNP": 1
     }
   },
@@ -91,6 +91,23 @@
     "espn_401909876": {
       "finished_checked": 28,
       "verified_played": 23,
+      "outcome_UNKNOWN": 5
+    },
+    "espn_401909877": {
+      "finished_checked": 29,
+      "verified_played": 20,
+      "explicit_DNP": 4,
+      "outcome_UNKNOWN": 5
+    },
+    "espn_401909878": {
+      "finished_checked": 27,
+      "verified_played": 23,
+      "outcome_UNKNOWN": 3,
+      "explicit_DNP": 1
+    },
+    "espn_401909879": {
+      "finished_checked": 24,
+      "verified_played": 19,
       "outcome_UNKNOWN": 5
     }
   },
@@ -393,41 +410,93 @@
       "complete_explicit_DNP_audit": true,
       "actual_played": "UNKNOWN_NOT_INFERRED",
       "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909877",
+      "player_id": "n321",
+      "team": "BKN",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909877|n321",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909877",
+      "player_id": "n341",
+      "team": "BKN",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909877|n341",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909878",
+      "player_id": "n019",
+      "team": "DET",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909878|n019",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
+    },
+    {
+      "game_id": "espn_401909878",
+      "player_id": "n215",
+      "team": "NYK",
+      "first_issue_at_utc": "2026-10-26T21:17:56Z",
+      "source_observed_status": "out",
+      "official_event_id": "e614a0c37344c5c8a5d4d01fdf25f0fecfc40f0fa4242d717725fd48e1386876|espn_401909878|n215",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-26_05_00PM.pdf",
+      "game_verified_final": true,
+      "complete_explicit_DNP_audit": true,
+      "actual_played": "UNKNOWN_NOT_INFERRED",
+      "needs_independent_full_boxscore_athlete_ID_review": true
     }
   ],
-  "official_OUT_unknown_review_priority_count": 23,
+  "official_OUT_unknown_review_priority_count": 27,
   "selected_verified_only": {
-    "n": 201,
-    "verified": 201,
+    "n": 268,
+    "verified": 268,
     "missing": 0,
     "bounds": {
       "brier": {
         "baseline_range": [
-          0.101988,
-          0.101988
+          0.094824,
+          0.094824
         ],
         "candidate_range": [
-          0.091054,
-          0.091054
+          0.083806,
+          0.083806
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.010934,
-          0.010934
+          0.011018,
+          0.011018
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       },
       "logloss": {
         "baseline_range": [
-          0.358543,
-          0.358543
+          0.34048,
+          0.34048
         ],
         "candidate_range": [
-          0.319356,
-          0.319356
+          0.30058,
+          0.30058
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.039187,
-          0.039187
+          0.0399,
+          0.0399
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       }
@@ -436,37 +505,37 @@
     "not_a_population_estimate": true
   },
   "all_finished_with_unknown_binary_sensitivity": {
-    "n": 241,
-    "verified": 201,
-    "missing": 40,
+    "n": 321,
+    "verified": 268,
+    "missing": 53,
     "bounds": {
       "brier": {
         "baseline_range": [
-          0.088314,
-          0.207816
+          0.082404,
+          0.201282
         ],
         "candidate_range": [
-          0.079605,
-          0.197135
+          0.073734,
+          0.190126
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.007511,
-          0.011878
+          0.007223,
+          0.012603
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       },
       "logloss": {
         "baseline_range": [
-          0.324066,
-          0.625359
+          0.309166,
+          0.608887
         ],
         "candidate_range": [
-          0.292627,
-          0.58825
+          0.27743,
+          0.570133
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.026052,
-          0.042496
+          0.025241,
+          0.045249
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       }
@@ -475,37 +544,37 @@
     "not_a_population_estimate": true
   },
   "high_confidence_ESPN_ID_subset_binary_sensitivity": {
-    "n": 204,
-    "verified": 193,
-    "missing": 11,
+    "n": 271,
+    "verified": 253,
+    "missing": 18,
     "bounds": {
       "brier": {
         "baseline_range": [
-          0.086659,
-          0.125482
+          0.075393,
+          0.123216
         ],
         "candidate_range": [
-          0.07971,
-          0.118057
+          0.069129,
+          0.115402
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.005534,
-          0.008841
+          0.00455,
+          0.009529
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       },
       "logloss": {
         "baseline_range": [
-          0.319894,
-          0.417777
+          0.291491,
+          0.412064
         ],
         "candidate_range": [
-          0.292978,
-          0.390296
+          0.266419,
+          0.383295
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.020552,
-          0.033845
+          0.017379,
+          0.036461
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       }
@@ -514,7 +583,7 @@
     "not_a_population_estimate": true
   },
   "quality_gate": {
-    "official_OUT_missing_label_count": 23,
+    "official_OUT_missing_label_count": 27,
     "unknown_are_not_DNP": true,
     "first_issue_status_anchored": true,
     "full_game_day_roster_membership_verified": false,
