@@ -26,6 +26,12 @@ class TestWorkflowOwnership(unittest.TestCase):
    self.assertIn(command,sync)
   self.assertIn('data/catalog_pit_coverage_research.json',sync)
   self.assertIn('data/p_play_issuance_readiness_research.json',sync)
+  self.assertIn('data/keep_transfer_public_readiness_research.json',sync)
+  self.assertEqual(sync.count('python -m src.keep_transfer_public_readiness --publish'),2)
+  self.assertEqual(sync.count('python -m src.keep_transfer_public_readiness --verify'),2)
+  self.assertLess(sync.index('python -m src.p_play_issuance_readiness_research'),
+                  sync.index('python -m src.keep_transfer_public_readiness --publish'))
+
   for workflow in ('catalog-pit-research.yml','p-play-issuance-readiness.yml'):
    t=(ROOT/'.github/workflows'/workflow).read_text()
    self.assertIn('contents: read',t)
