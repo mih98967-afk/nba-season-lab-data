@@ -2,13 +2,13 @@ name: NBA participation evidence coverage ledger research
 on:
   pull_request:
     branches: [main]
-    paths: ['src/participation_evidence_ledger_research.py','test_participation_evidence_ledger_research.py','.github/workflows/participation-evidence-ledger.yml']
+    paths: ['src/participation_evidence_ledger_research.py','test_participation_evidence_ledger_research.py','test_evidence_workflow_graph.py','.github/workflows/participation-evidence-ledger.yml']
   push:
     branches: [main]
     paths: ['src/participation_evidence_ledger_research.py','test_participation_evidence_ledger_research.py','.github/workflows/participation-evidence-ledger.yml']
   workflow_dispatch:
   workflow_run:
-    workflows: ['NBA p-play missing-label selection audit', 'NBA official explicit inactive summary research']
+    workflows: ['NBA official explicit inactive summary research']
     types: [completed]
     branches: [main]
   schedule:
@@ -26,22 +26,29 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - name: Run strict real-data ledger cross-check regressions
-        run: python -m unittest -v test_participation_evidence_ledger_research test_p_play_selection_bias_audit
-      - name: Reconcile research-only missing outcomes on main
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+      # Live-data ledger tests must read a selection report from the exact
+      # p_play/explicit DNP snapshot checked out for this job. A scheduled
+      # p_play writer can have advanced while this workflow was queued.
+      - name: Rebuild exact-source selection before live-data tests
         run: |
-          git pull --ff-only origin main
-          python -m src.participation_evidence_ledger_research
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            git pull --ff-only origin main
+          fi
+          python -m src.p_play_selection_bias_audit
+      - name: Run strict real-data ledger cross-check regressions
+        run: python -m unittest -v test_participation_evidence_ledger_research test_p_play_selection_bias_audit test_evidence_workflow_graph
+      - name: Reconcile research-only missing outcomes on checked snapshot
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+        run: python -m src.participation_evidence_ledger_research
       - name: Archive only research ledger
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
           if [ -f data/participation_evidence_ledger_research.json ]; then
-            git add data/participation_evidence_ledger_research.json
+            git add data/p_play_selection_bias_audit.json data/participation_evidence_ledger_research.json
             if ! git diff --cached --quiet; then
-              git commit -m "research: archive participation evidence coverage ledger"
+              git commit -m "research: reconcile selection and evidence ledger from same source snapshot"
               git pull --rebase origin main
               git push origin HEAD:main
             fi
