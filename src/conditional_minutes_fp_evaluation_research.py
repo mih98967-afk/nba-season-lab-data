@@ -190,7 +190,7 @@ def build(minutes, pplay, cohort, explicit, live, now):
         game = finals[(gid,)]
         if (game["utc"] != issue["game_utc"] or
                 issue["team"] not in (game["home"], game["away"]) or tip > now or
-                game.get("et_date") != tip.astimezone(ET).date().isoformat()):
+                (game.get("et_date") is not None and game["et_date"] != tip.astimezone(ET).date().isoformat())):
             raise ValueError("Wrong team, game date or tipoff for finished issue")
         o = labelled.get(key)
         shadow_label = shadow_observed.get(key)
