@@ -1,0 +1,19 @@
+name: NBA private price observation offline gate
+on:
+  pull_request:
+    branches: [main]
+    paths: ['site/v6_9/price_evidence.js','site/v6_9/test_price_evidence.cjs','.github/workflows/private-price-evidence.yml']
+  push:
+    branches: [main]
+    paths: ['site/v6_9/price_evidence.js','site/v6_9/test_price_evidence.cjs','.github/workflows/private-price-evidence.yml']
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: node site/v6_9/test_price_evidence.cjs
