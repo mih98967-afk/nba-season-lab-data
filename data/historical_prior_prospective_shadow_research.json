@@ -3,7 +3,7 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-27T15:06:43Z",
+  "updated_at_utc": "2026-10-28T06:00:17Z",
   "frozen_model_selection_season": "2024/25",
   "historical_source_season": "2025/26",
   "current_prospective_season": "2026/27",
@@ -5379,25 +5379,61 @@
       "adopt_on_site": false
     }
   ],
-  "observed": [],
+  "observed": [
+    {
+      "game_id": "espn_401909878",
+      "player_id": "n240",
+      "game_utc": "2026-10-28T00:00:00Z",
+      "actual_played": 0,
+      "label_provenance": "explicit_espn_didNotPlay_true",
+      "source_first_observed_at_utc": "2026-10-28T05:59:31Z",
+      "historical_score_dev_calibrated": 0.937916,
+      "current_pplay_baseline_frozen": 0.86,
+      "current_pplay_candidate_frozen": 0.888,
+      "evaluated_at_utc": "2026-10-28T06:00:17Z"
+    }
+  ],
   "summary": {
-    "issued_new": 149,
+    "issued_new": 0,
     "issued_total": 206,
-    "matched_verified_labels": 0,
-    "unobserved_UNKNOWN": 206
+    "matched_verified_labels": 1,
+    "unobserved_UNKNOWN": 205
   },
   "issue_QA": {
-    "already_locked_no_historical_backfill": 241,
-    "already_issued_unchanged": 57,
-    "no_high_confidence_recent_2025_26_profile": 66,
-    "different_club_since_2025_26_excluded": 51,
-    "weak_or_unknown_cross_source_identity": 53,
-    "new_historical_benchmark_issues": 149
+    "already_locked_no_historical_backfill": 292,
+    "already_issued_unchanged": 206,
+    "no_high_confidence_recent_2025_26_profile": 46,
+    "different_club_since_2025_26_excluded": 37,
+    "weak_or_unknown_cross_source_identity": 36
   },
   "observation_QA": {
-    "no_explicit_verified_outcome_UNKNOWN": 206
+    "no_explicit_verified_outcome_UNKNOWN": 205,
+    "new_same_game_verified_outcomes": 1
   },
-  "same_game_competition_metrics_research_only": null,
+  "same_game_competition_metrics_research_only": {
+    "scope": "overlap_high_ESPN_ID_prior_2025_26_same_observed_club",
+    "verified_player_games": 1,
+    "distinct_NBA_games": 1,
+    "distinct_NBA_ET_dates": 1,
+    "baselines": {
+      "current_baseline": {
+        "Brier": 0.7396,
+        "logloss": 1.966113
+      },
+      "current_candidate": {
+        "Brier": 0.788544,
+        "logloss": 2.189256
+      },
+      "historical_dev_calibrated": {
+        "Brier": 0.879686,
+        "logloss": 2.779267
+      }
+    },
+    "historical_is_logged_appearance_proxy_not_true_pplay": true,
+    "selected_verified_participation_labels_only": true,
+    "population_model_adoption_permitted": false,
+    "confounding_issue_time_not_identical": true
+  },
   "limitations": [
     "2025/26 logged appearance has NO official active or DNP denominator.",
     "Only high-confidence independently ESPN-ID-linked existing same-club players are eligible.",
