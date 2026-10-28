@@ -12,17 +12,10 @@ on:
       - src/conditional_minutes_robustness_research.py
       - test_conditional_minutes_robustness_research.py
       - .github/workflows/conditional-minutes-robustness.yml
-  workflow_dispatch:
-  workflow_run:
-    workflows: ['NBA prospective conditional minutes FP evaluation']
-    types: [completed]
-    branches: [main]
-  schedule:
-    - cron: '33 13 * * *'
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: nba-season-lab-shared-write
+  group: nba-conditional-robustness-read-only
   cancel-in-progress: false
 jobs:
   robustness:
@@ -33,21 +26,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Reconcile immutable source labels in checkout (not published)
+        run: |
+          python -m src.participation_cohort_research
+          python -m src.p_play_shadow_research
+          python -m src.conditional_minutes_fp_evaluation_research
       - name: Validate original first issues and date-resampling conditions
         run: python -m unittest -v test_conditional_minutes_robustness_research test_conditional_minutes_fp_evaluation_research
-      - name: Reconcile robustness against immutable first-issued minutes
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
-        run: |
-          git pull --ff-only origin main
-          python -m src.conditional_minutes_robustness_research
-      - name: Archive research robustness only; never change the live model
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
-        run: |
-          git config user.name "nba-season-lab-bot"
-          git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/conditional_minutes_robustness_research.json
-          if ! git diff --cached --quiet; then
-            git commit -m "research: audit conditional FP gain by independent NBA ET dates"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi

@@ -6,17 +6,10 @@ on:
   push:
     branches: [main]
     paths: ['src/conditional_minutes_fp_evaluation_research.py','test_conditional_minutes_fp_evaluation_research.py','.github/workflows/conditional-minutes-fp-evaluation.yml']
-  workflow_dispatch:
-  workflow_run:
-    workflows: ['NBA conditional minutes FP research', 'NBA prospective p-play shadow research']
-    types: [completed]
-    branches: [main]
-  schedule:
-    - cron: '17 11 * * *'
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: nba-season-lab-shared-write
+  group: nba-conditional-evaluation-read-only
   cancel-in-progress: false
 jobs:
   prospective-evaluation:
@@ -26,21 +19,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
+      - name: Reconcile immutable source labels in checkout (not published)
+        run: |
+          python -m src.participation_cohort_research
+          python -m src.p_play_shadow_research
+          python -m src.conditional_minutes_fp_evaluation_research
       - name: Validate immutable PIT issues, source clocks, UNKNOWN and identity
         run: python -m unittest -v test_conditional_minutes_fp_evaluation_research
-      - name: Evaluate scored played cases against two frozen conditional FP models
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
-        run: |
-          git pull --ff-only origin main
-          python -m src.conditional_minutes_fp_evaluation_research
-      - name: Archive read-only conditional evaluation (never predicted labels)
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
-        run: |
-          git config user.name "nba-season-lab-bot"
-          git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/conditional_minutes_fp_evaluation_research.json
-          if ! git diff --cached --quiet; then
-            git commit -m "research: archive conditional minutes FP prospective evaluation"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
