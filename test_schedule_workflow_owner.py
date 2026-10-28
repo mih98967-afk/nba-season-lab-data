@@ -16,7 +16,7 @@ class TestWorkflowOwnership(unittest.TestCase):
                   live.index('python -m src.p_play_shadow_research', live.index('python -m src.espn_roster_pit')))
   self.assertIn('data/espn_roster_pit/*.json',live)
   self.assertIn('data/catalog_pit/*.json',live)
-  self.assertLess(live.index('python -m src.sync'),live.index('from src.catalog_pit_research import run'))
+  self.assertLess(live.index('python -m src.sync'),live.index('      - name: Capture Sports.ru catalog PIT in reserved slot'))
   # Publish PIT-derived diagnostics only after the coherent main sync.
   sync=live
   for command in ("python -m src.p_play_shadow_research",
