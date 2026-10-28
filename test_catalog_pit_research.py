@@ -1,7 +1,10 @@
 import unittest
+from tempfile import TemporaryDirectory
+from pathlib import Path
+import json
 from copy import deepcopy
 from datetime import datetime, timezone, timedelta
-from src.catalog_pit_research import capture,evaluate,_validated_snapshots,STATUS,UNKNOWN
+from src.catalog_pit_research import capture,evaluate,_validated_snapshots,STATUS,UNKNOWN,next_capture_slot
 from src.rolling_decision_research import canonical_hash
 UTC=timezone.utc
 def dt(s): return datetime.fromisoformat(s.replace("Z","+00:00"))
@@ -68,6 +71,25 @@ class TestPIT(unittest.TestCase):
   second["captured_at_utc"]="2026-10-26T17:00:00Z"
   with self.assertRaises(ValueError):
    _validated_snapshots([snap,second],dt("2026-10-27T00:00:00Z"))
+ def test_reserved_evening_slot_and_no_overwrite(self):
+  c,live,snap,*_=fixture()
+  with TemporaryDirectory() as dirname:
+   folder=Path(dirname)
+   morning=dt("2026-10-28T07:00:00Z")
+   p,reason,_=next_capture_slot(folder,morning)
+   self.assertEqual(reason,"first_capture")
+   self.assertTrue(str(p).endswith("2026-10-28.json"))
+   first=deepcopy(snap)
+   first["captured_at_utc"]="2026-10-28T07:00:00Z"
+   first["snapshot_date_msk"]="2026-10-28"
+   p.write_text(json.dumps(first))
+   self.assertEqual(next_capture_slot(folder,dt("2026-10-28T10:00:00Z"))[1],"four_hour_cooldown")
+   self.assertEqual(next_capture_slot(folder,dt("2026-10-28T11:30:00Z"))[1],"second_capture_reserved_until_16_msk")
+   q,reason,_=next_capture_slot(folder,dt("2026-10-28T13:01:00Z"))
+   self.assertEqual(reason,"second_capture")
+   self.assertTrue(str(q).endswith("_2.json"))
+   q.write_text(json.dumps(first))
+   self.assertEqual(next_capture_slot(folder,dt("2026-10-28T18:00:00Z"))[1],"daily_two_capture_limit")
  def test_not_pre_game_prediction(self):
   c,live,snap,final,co,ex=fixture()
   x=evaluate(final,co,ex,[snap],dt("2026-10-27T04:00:00Z"))

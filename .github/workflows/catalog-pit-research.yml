@@ -3,16 +3,13 @@ on:
   pull_request:
     branches: [main]
     paths: ['src/catalog_pit_research.py','test_catalog_pit_research.py','.github/workflows/catalog-pit-research.yml']
-  push:
-    branches: [main]
-    paths: ['src/catalog_pit_research.py','test_catalog_pit_research.py','.github/workflows/catalog-pit-research.yml']
   workflow_dispatch:
   schedule:
     - cron: '37 6,18 * * *'
 permissions:
   contents: write
 concurrency:
-  group: nba-season-lab-shared-write
+  group: ${{ github.event_name == 'pull_request' && 'nba-catalog-pit-pr-checks' || 'nba-season-lab-shared-write' }}
   cancel-in-progress: false
 jobs:
   research:
@@ -26,7 +23,7 @@ jobs:
         run: python -m unittest -v test_catalog_pit_research test_participation_coverage_research test_participation_cohort_research
       - name: Capture non-backdated PIT proxy and evaluate completed games
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        run: python -m src.catalog_pit_research
+        run: python -c "from src.catalog_pit_research import run; print(run(evaluate_only=True))"
       - name: Publish append-only research observations only
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
