@@ -3,7 +3,7 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-28T10:48:40Z",
+  "updated_at_utc": "2026-10-28T15:14:06Z",
   "protocol_frozen_before_first_historical_paired_outcome": true,
   "model_selection_frozen_season": "2024/25",
   "historical_source_holdout": "2025/26",
@@ -17,12 +17,12 @@
   "paired_cohort": {
     "issued": 206,
     "awaiting_finished_checked_game": 149,
-    "final_game_not_independently_DNP_checked": 11,
-    "finished_checked": 46,
+    "final_game_not_independently_DNP_checked": 0,
+    "finished_checked": 57,
     "verified_pairs": 43,
-    "outcome_UNKNOWN": 3,
-    "waiting_historical_reconciliation": 0,
-    "label_missing_or_waiting_fraction": 0.065217,
+    "outcome_UNKNOWN": 13,
+    "waiting_historical_reconciliation": 1,
+    "label_missing_or_waiting_fraction": 0.245614,
     "known_positive": 42,
     "known_explicit_DNP": 1
   },
@@ -30,12 +30,12 @@
     "no_observed_official_status": {
       "issued": 202,
       "awaiting_finished_checked_game": 149,
-      "final_game_not_independently_DNP_checked": 11,
-      "finished_checked": 42,
+      "final_game_not_independently_DNP_checked": 0,
+      "finished_checked": 53,
       "verified_pairs": 42,
-      "outcome_UNKNOWN": 0,
-      "waiting_historical_reconciliation": 0,
-      "label_missing_or_waiting_fraction": 0.0,
+      "outcome_UNKNOWN": 10,
+      "waiting_historical_reconciliation": 1,
+      "label_missing_or_waiting_fraction": 0.207547,
       "known_positive": 41,
       "known_explicit_DNP": 1
     },
@@ -68,12 +68,12 @@
     "2026-10-27": {
       "issued": 57,
       "awaiting_finished_checked_game": 0,
-      "final_game_not_independently_DNP_checked": 11,
-      "finished_checked": 46,
+      "final_game_not_independently_DNP_checked": 0,
+      "finished_checked": 57,
       "verified_pairs": 43,
-      "outcome_UNKNOWN": 3,
-      "waiting_historical_reconciliation": 0,
-      "label_missing_or_waiting_fraction": 0.065217,
+      "outcome_UNKNOWN": 13,
+      "waiting_historical_reconciliation": 1,
+      "label_missing_or_waiting_fraction": 0.245614,
       "known_positive": 42,
       "known_explicit_DNP": 1,
       "verified_only_loss": {
@@ -132,46 +132,46 @@
     "cannot_ignore_unknown_for_adoption": true
   },
   "sharp_unknown_label_sensitivity": {
-    "completed_checked_pair_denominator": 46,
+    "completed_checked_pair_denominator": 57,
     "verified_pairs": 43,
-    "unknown_or_pending_labels": 3,
+    "unknown_or_pending_labels": 14,
     "sharp_missing_label_gain_range": {
       "Brier": {
         "current_candidate_over_current_baseline": {
-          "lower_gain": -0.000501,
-          "upper_gain": 0.009528,
+          "lower_gain": -0.007718,
+          "upper_gain": 0.011651,
           "positive_favors": "current_candidate",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
-          "lower_gain": -0.052198,
-          "upper_gain": -0.044896,
+          "lower_gain": -0.075927,
+          "upper_gain": -0.010192,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
-          "lower_gain": -0.047308,
-          "upper_gain": -0.040759,
+          "lower_gain": -0.073633,
+          "upper_gain": -0.008553,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         }
       },
       "logloss": {
         "current_candidate_over_current_baseline": {
-          "lower_gain": 0.00274,
-          "upper_gain": 0.036661,
+          "lower_gain": -0.029546,
+          "upper_gain": 0.043779,
           "positive_favors": "current_candidate",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
-          "lower_gain": -0.138625,
-          "upper_gain": -0.114395,
+          "lower_gain": -0.256236,
+          "upper_gain": -0.017966,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
-          "lower_gain": -0.118732,
-          "upper_gain": -0.094886,
+          "lower_gain": -0.250852,
+          "upper_gain": -0.009117,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         }
