@@ -24,7 +24,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: nba-season-lab-shared-write
+  group: ${{ github.event_name == 'pull_request' && 'nba-public-sync-pr-checks' || 'nba-season-lab-shared-write' }}
   cancel-in-progress: false
 
 jobs:
