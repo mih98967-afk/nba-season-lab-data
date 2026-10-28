@@ -7,8 +7,8 @@ on:
     branches: [main]
     paths: ['src/official_nba_prelock_roster_pit_research.py','test_official_nba_prelock_roster_pit_research.py','.github/workflows/nba-official-prelock-roster-pit.yml']
   workflow_dispatch:
-  schedule:
-    - cron: '11,41 20-23,0-5 * * *'
+  # Public NBA live boxscore returned HTTP 403 for 12/12 attempts on Actions.
+  # No recurring requests until an independently verified accessible source.
 permissions:
   contents: write
 concurrency:
