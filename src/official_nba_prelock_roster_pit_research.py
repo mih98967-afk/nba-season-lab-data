@@ -70,6 +70,9 @@ def capture(live, schedule, fetch, now, old=None):
     for s in snapshots:
         if (s.get("adopt_on_site") is not False or s.get("status") != STATUS
                 or utc(s["source_first_observed_at_utc"]) > now
+                or utc(s["source_first_observed_at_utc"]) >= utc(s["individual_lock_utc"])
+                or s.get("game_day_active_eligibility_verified") is not False
+                or s.get("missing_player_implies_DNP") is not False
                 or s.get("snapshot_hash_sha256") != canonical_hash({
                     k: v for k, v in s.items() if k != "snapshot_hash_sha256"})):
             raise ValueError("Untrusted immutable historical observation")
