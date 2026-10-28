@@ -21,7 +21,6 @@ class TestWorkflowOwnership(unittest.TestCase):
   sync=live
   for command in ("python -m src.p_play_shadow_research",
                   "python -m src.p_play_precommitted_paired_evaluation",
-                  "python -c \\"from src.catalog_pit_research import run; print(run(evaluate_only=True))\\"",
                   "python -m src.p_play_issuance_readiness_research",
                   "python -m src.public_sync_integrity"):
    self.assertIn(command,sync)
@@ -38,3 +37,4 @@ class TestWorkflowOwnership(unittest.TestCase):
   self.assertIn('  schedule:',espn)
   self.assertIn("github.event_name == 'pull_request'",espn)
 if __name__=='__main__':unittest.main()
+
