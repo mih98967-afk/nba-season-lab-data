@@ -27,7 +27,7 @@ def extract_pregame(payload, fixture):
     game = payload.get("game")
     if not isinstance(game, dict) or str(game.get("gameId")) != fixture["id"]:
         raise ValueError("Wrong official NBA game ID")
-    if str(game.get("gameStatus")) not in ("1", "2"):
+    if str(game.get("gameStatus")) != "1":
         raise ValueError("Not a live pre-final boxscore")
     if abs(utc(game["gameTimeUTC"]) - utc(fixture["utc"])) > timedelta(minutes=5):
         raise ValueError("Official NBA game time mismatch")
