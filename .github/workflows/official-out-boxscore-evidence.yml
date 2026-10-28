@@ -2,11 +2,15 @@ name: NBA official OUT independent boxscore evidence research
 on:
   pull_request:
     branches: [main]
-    paths: ['src/official_out_boxscore_evidence_research.py','test_official_out_boxscore_evidence_research.py','.github/workflows/official-out-boxscore-evidence.yml']
+    paths: ['src/official_out_boxscore_evidence_research.py','test_official_out_boxscore_evidence_research.py','test_official_out_catchup_research.py','.github/workflows/official-out-boxscore-evidence.yml']
   push:
     branches: [main]
     paths: ['src/official_out_boxscore_evidence_research.py','test_official_out_boxscore_evidence_research.py','.github/workflows/official-out-boxscore-evidence.yml']
   workflow_dispatch:
+  workflow_run:
+    workflows: ['NBA p-play missing-label selection audit']
+    types: [completed]
+    branches: [main]
   schedule:
     - cron: '29 7 * * *'
 permissions:
@@ -23,14 +27,14 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - name: Test never promote ESPN absence into DNP
-        run: python -m unittest -v test_official_out_boxscore_evidence_research test_p_play_selection_bias_audit
+        run: python -m unittest -v test_official_out_boxscore_evidence_research test_official_out_catchup_research test_p_play_selection_bias_audit
       - name: Verify 8 completed games against ESPN
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git pull --ff-only origin main
           python -m src.official_out_boxscore_evidence_research
       - name: Archive only separate research evidence
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
