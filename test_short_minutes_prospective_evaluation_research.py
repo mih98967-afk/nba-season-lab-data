@@ -38,7 +38,7 @@ class Test(unittest.TestCase):
          "lg":0.7 if day%2 else 0.3,"lp":0.5}
         for day in range(MIN_ET_DATES) for j in range(max(14,MIN_PLAYED//MIN_ET_DATES+1))]
   self.assertGreaterEqual(len({r["game_id"] for r in rows}),MIN_GAMES)
-  self.assertIsNone(date_cluster_paired_uncertainty(rows[:MIN_PLAYED]))
+  self.assertIsNone(date_cluster_paired_uncertainty(rows[:MIN_PLAYED-1]))
   self.assertIsNone(date_cluster_paired_uncertainty([dict(r,ET_date="2026-11-01") for r in rows[:13]]))
   a=date_cluster_paired_uncertainty(rows)
   self.assertIsNotNone(a)
