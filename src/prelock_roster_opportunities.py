@@ -13,6 +13,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 import json
 
 from src.catalog_pit_research import (
@@ -28,6 +29,7 @@ from src.rolling_decision_research import (
 from src.sync import DATA
 
 UTC = timezone.utc
+MSK = ZoneInfo("Europe/Moscow")
 ESPN_SOURCE = "ESPN public team roster current snapshot"
 HIGH = "previously_named_played_ESPN_person_ID"
 WEAK = "unique_english_name_only"
@@ -50,9 +52,11 @@ def validate_espn_snapshots(snapshots, now):
                 or snap.get("source") != ESPN_SOURCE):
             raise ValueError("Untrusted or deployable ESPN roster capture")
         captured = instant(snap["captured_at_utc"])
-        day = captured.strftime("%Y-%m-%d")
+        # The append-only writer names its two daily files by Moscow date,
+        # not UTC date. Preserve real UTC capture times for all lock checks.
+        day = captured.astimezone(MSK).date().isoformat()
         if captured > now or len(dates[day]) >= 2:
-            raise ValueError("Future or more than two ESPN captures per UTC day")
+            raise ValueError("Future or more than two ESPN captures per MSK day")
         dates[day].append(captured)
         teams = snap.get("teams")
         if not isinstance(teams, list) or len(teams) != len(TEAMS):
