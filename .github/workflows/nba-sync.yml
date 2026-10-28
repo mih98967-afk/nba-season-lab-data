@@ -9,6 +9,7 @@ on:
       - 'src/public_sync_integrity.py'
       - 'test_public_sync_integrity.py'
       - 'test_conditional_pipeline_owner.py'
+      - 'test_short_risk_workflow_owner.py'
   push:
     branches: [main, fix/live-schedule-provenance-20261025]
     paths:
@@ -39,7 +40,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test scoring without network
-        run: python -m unittest -v test_sync test_live_schedule_provenance test_schedule_workflow_owner test_public_sync_integrity test_conditional_pipeline_owner
+        run: python -m unittest -v test_sync test_live_schedule_provenance test_schedule_workflow_owner test_public_sync_integrity test_conditional_pipeline_owner test_short_risk_workflow_owner
       - name: Prove downstream participation and FP evaluation can run offline
         if: github.event_name == 'pull_request'
         run: |
@@ -55,7 +56,8 @@ jobs:
           python -m src.participation_evidence_ledger_research
           python -m src.p_play_precommitted_paired_evaluation
           python -m src.public_sync_integrity
-          python -m unittest -v test_conditional_minutes_fp_evaluation_research test_conditional_minutes_robustness_research test_conditional_pipeline_owner
+          python -m unittest -v test_short_minutes_prospective_evaluation_research test_short_risk_workflow_owner
+          python -m unittest -v test_conditional_minutes_fp_evaluation_research test_conditional_minutes_robustness_research test_conditional_pipeline_owner test_short_risk_workflow_owner
       - name: Refresh official NBA live data from latest main
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
@@ -77,7 +79,7 @@ jobs:
           python -m src.participation_evidence_ledger_research
           python -m src.p_play_precommitted_paired_evaluation
           python -m src.public_sync_integrity
-          python -m unittest -v test_conditional_minutes_fp_evaluation_research test_conditional_minutes_robustness_research test_conditional_pipeline_owner
+          python -m unittest -v test_conditional_minutes_fp_evaluation_research test_conditional_minutes_robustness_research test_conditional_pipeline_owner test_short_risk_workflow_owner
       - name: Atomically archive public dataset and coherent research outcomes
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
