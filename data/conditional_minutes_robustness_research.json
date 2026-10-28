@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "model_status": "research_only_not_deployed",
+  "adopt_on_site": false,
+  "updated_at_utc": "2026-10-28T10:02:14.886712Z",
+  "scope": "same_first_issued_prelock_selected_prospective_minutes_if_play_only",
+  "frozen_issue_sha256": "b94d50c6aaa96f44d9e4230c2a41940a1f4a2c25ac3907efbb930c1d4c73dc78",
+  "frozen_model_sha256": "96fe3f30009c36de525ec089d03cad6b8bd14fb07f46137ae991031568d5e6f0",
+  "input_evaluation_last_updated_at_utc": "2026-10-28T08:42:47.420175Z",
+  "summary": {
+    "frozen_issues_total": 221,
+    "finished_checked": 51,
+    "played_scored_conditional": 44,
+    "explicit_DNP_not_scored_as_zero": 2,
+    "UNKNOWN_not_imputed": 5,
+    "independent_ET_date_clusters": 1,
+    "distinct_NBA_games": 3,
+    "observed_pairwise_direct_minus_decomposed_FP_MAE_gain": 0.1472,
+    "relative_gain_pct_descriptive_ONLY": 2.04,
+    "positive_gain_does_not_prove_future_generalization": true
+  },
+  "frozen_bands_descriptive_played_only": {
+    "minutes_coverage": 0.886364,
+    "minutes_mean_width": 22.8504,
+    "FP_coverage": 0.954545,
+    "FP_mean_width": 29.7006,
+    "not_validated_prospective_individual_intervals": true
+  },
+  "by_NBA_ET_date": {
+    "2026-10-27": {
+      "played": 44,
+      "distinct_NBA_games": 3,
+      "paired_direct_minus_decomposed_FP_MAE": 0.1472,
+      "decomposed_FP_MAE": 7.0755,
+      "direct_FP_MAE": 7.2227,
+      "minutes_MAE": 5.6141,
+      "minutes_frozen_band_empirical_coverage": 0.886364,
+      "FP_frozen_band_empirical_coverage": 0.954545
+    }
+  },
+  "fixed_research_thresholds": {
+    "min_ET_dates_for_exploratory_cluster_bootstrap": 8,
+    "min_positive_minutes_cases": 100,
+    "min_distinct_NBA_games": 24,
+    "date_gate": false,
+    "played_gate": false,
+    "game_gate": false,
+    "first_exploratory_interval_eligible": false
+  },
+  "ET_date_cluster_paired_MAE_gain_95pct_interval_if_eligible": null,
+  "quality_gate": {
+    "frozen_model_parameters_changed": false,
+    "individual_FP_interval_calibration_proven": false,
+    "correct_full_fantasy_roster_denominator_verified": false,
+    "p_play_population_probabilities_calibrated": false,
+    "Sportsru_account_credited_FP_verified": false,
+    "actual_KEEP_TRANSFER_gain_demonstrated": false,
+    "unconditional_FP_allowed": false,
+    "adopt_on_site": false
+  },
+  "interpretation": [
+    "44 played cases on one ET date can produce a descriptive paired MAE, NOT a robust interval.",
+    "Future cluster intervals resample ET DATES, never players as independent draws.",
+    "The gates are necessary exploratory sample checks, NOT deployment acceptance.",
+    "Development-2024/25 frozen residual bands do not guarantee future individual coverage.",
+    "DNP is not scored as zero conditional minutes or FP; UNKNOWN is never imputed.",
+    "FP here is reconstructed from NBA boxscore under Sports.ru formula, not official user credit.",
+    "No model reissue, parameter tuning, live site, private data or transfer backtest."
+  ]
+}
