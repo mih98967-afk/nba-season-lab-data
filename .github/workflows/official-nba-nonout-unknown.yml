@@ -6,17 +6,10 @@ on:
   push:
     branches: [main]
     paths: ['src/official_nba_nonout_unknown_research.py','test_official_nba_nonout_unknown_research.py','.github/workflows/official-nba-nonout-unknown.yml']
-  workflow_dispatch:
-  workflow_run:
-    workflows: ['NBA participation evidence coverage ledger research']
-    types: [completed]
-    branches: [main]
-  schedule:
-    - cron: '31 14 * * *'
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: nba-season-lab-shared-write
+  group: nba-nonout-source-ci
   cancel-in-progress: false
 jobs:
   non-out:
@@ -28,19 +21,3 @@ jobs:
         with: {python-version: '3.12'}
       - name: Fail-closed first-issued and NBA game-day regression
         run: python -m unittest -v test_official_nba_nonout_unknown_research test_official_nba_gameday_status_research
-      - name: Verify independent non-OUT game-day evidence (read-only upstream)
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
-        run: |
-          git pull --ff-only origin main
-          python -m src.official_nba_nonout_unknown_research
-      - name: Archive separate non-OUT source evidence only
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
-        run: |
-          git config user.name "nba-season-lab-bot"
-          git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/official_nba_nonout_unknown_research.json
-          if ! git diff --cached --quiet; then
-            git commit -m "research: preserve NBA non-OUT unknown game-day evidence"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
