@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "model_status": "research_only_not_deployed",
+  "adopt_on_site": false,
+  "updated_at_utc": "2026-10-28T12:53:27Z",
+  "target": "probability_minutes_below_10_given_positive_minutes_and_90pct_minutes_bands",
+  "population": "2025_26_first_five_POSITIVE_MINUTE_games_only_not_full_scheduled_fantasy_roster",
+  "historical_index_version": "0d395ece015799c4",
+  "immutable_2024_25_model_hash": "96fe3f30009c36de525ec089d03cad6b8bd14fb07f46137ae991031568d5e6f0",
+  "development_source": "2024_25_rolling_same_team_past_played_only",
+  "test_source": "2025_26_first_five_played_only_already_inspected_by_PR65",
+  "protocol": {
+    "threshold_short_actual_minutes": 10.0,
+    "strata_prior_predicted_minutes": [
+      15,
+      25,
+      35
+    ],
+    "strata_selected_after_previous_2025_26_audit": true,
+    "dev_only_residual_quantile": 0.9,
+    "minimum_development_cases_per_group_for_band": 100,
+    "short_minute_probability_pseudocount_strength": 40.0,
+    "short_minute_probability_clip": 0.005,
+    "no_selection_or_refitting_on_2025_26_holdout": true,
+    "prior_season_frozen_prediction_reused_first_five_played_games": true
+  },
+  "dev_only_fit": {
+    "global_dev_played_only_short_under_10_rate": 0.10488127,
+    "global_dev_played_only_short_baseline_probability": 0.10488127,
+    "original_global_dev_q90_minutes": 11.51465,
+    "development_cases": 3032,
+    "group_parameters_fitted_on_dev_only": {
+      "under_15": {
+        "dev_cases": 502,
+        "dev_short_under_10_count": 235,
+        "dev_short_under_10_rate": 0.468127,
+        "dev_only_smoothed_conditional_short_probability": 0.44131965,
+        "dev_only_residual_q90_minutes": 16.9706,
+        "used_group_q90_not_global_fallback": true
+      },
+      "15_to_under_25": {
+        "dev_cases": 861,
+        "dev_short_under_10_count": 66,
+        "dev_short_under_10_rate": 0.076655,
+        "dev_only_smoothed_conditional_short_probability": 0.07790816,
+        "dev_only_residual_q90_minutes": 11.6273,
+        "used_group_q90_not_global_fallback": true
+      },
+      "25_to_under_35": {
+        "dev_cases": 1357,
+        "dev_short_under_10_count": 13,
+        "dev_short_under_10_rate": 0.00958,
+        "dev_only_smoothed_conditional_short_probability": 0.0123087,
+        "dev_only_residual_q90_minutes": 10.2416,
+        "used_group_q90_not_global_fallback": true
+      },
+      "35_plus": {
+        "dev_cases": 312,
+        "dev_short_under_10_count": 4,
+        "dev_short_under_10_rate": 0.012821,
+        "dev_only_smoothed_conditional_short_probability": 0.02328196,
+        "dev_only_residual_q90_minutes": 9.2929,
+        "used_group_q90_not_global_fallback": true
+      }
+    },
+    "no_2025_26_outcome_used_for_fitting": true
+  },
+  "holdout_exploratory": {
+    "played_only_cases": 1554,
+    "distinct_players": 311,
+    "distinct_NBA_games": 301,
+    "observed_under_10_minutes_count": 220,
+    "observed_under_10_minutes_rate": 0.14157,
+    "global_short_minutes_Brier": 0.122874,
+    "group_short_minutes_Brier": 0.099756,
+    "paired_Brier_gain_global_minus_group": 0.023118,
+    "global_short_minutes_logloss": 0.414343,
+    "group_short_minutes_logloss": 0.342338,
+    "paired_logloss_gain_global_minus_group": 0.072006,
+    "original_global_q90_coverage": 0.846203,
+    "new_group_dev_q90_coverage": 0.839768,
+    "new_group_minus_global_coverage_pp": -0.644,
+    "original_global_band_mean_width": 22.7606,
+    "new_group_band_mean_width": 22.2275,
+    "new_minus_original_width_minutes": -0.5331,
+    "global_90pct_target_gap_pp": 5.38,
+    "new_group_90pct_target_gap_pp": 6.023
+  },
+  "holdout_by_predicted_minutes_before_2025_outcomes": {
+    "under_15": {
+      "played_only_cases": 239,
+      "distinct_players": 48,
+      "distinct_NBA_games": 137,
+      "observed_under_10_minutes_count": 116,
+      "observed_under_10_minutes_rate": 0.485356,
+      "global_short_minutes_Brier": 0.394546,
+      "group_short_minutes_Brier": 0.251725,
+      "paired_Brier_gain_global_minus_group": 0.142822,
+      "global_short_minutes_logloss": 1.151463,
+      "group_short_minutes_logloss": 0.696629,
+      "paired_logloss_gain_global_minus_group": 0.454835,
+      "original_global_q90_coverage": 0.8159,
+      "new_group_dev_q90_coverage": 0.949791,
+      "new_group_minus_global_coverage_pp": 13.389,
+      "original_global_band_mean_width": 21.2824,
+      "new_group_band_mean_width": 27.5594,
+      "new_minus_original_width_minutes": 6.277,
+      "global_90pct_target_gap_pp": 8.41,
+      "new_group_90pct_target_gap_pp": -4.979
+    },
+    "15_to_under_25": {
+      "played_only_cases": 450,
+      "distinct_players": 90,
+      "distinct_NBA_games": 175,
+      "observed_under_10_minutes_count": 72,
+      "observed_under_10_minutes_rate": 0.16,
+      "global_short_minutes_Brier": 0.137438,
+      "group_short_minutes_Brier": 0.141139,
+      "paired_Brier_gain_global_minus_group": -0.003701,
+      "global_short_minutes_logloss": 0.453859,
+      "group_short_minutes_logloss": 0.476489,
+      "paired_logloss_gain_global_minus_group": -0.022629,
+      "original_global_q90_coverage": 0.813333,
+      "new_group_dev_q90_coverage": 0.813333,
+      "new_group_minus_global_coverage_pp": 0.0,
+      "original_global_band_mean_width": 23.0293,
+      "new_group_band_mean_width": 23.2546,
+      "new_minus_original_width_minutes": 0.2253,
+      "global_90pct_target_gap_pp": 8.667,
+      "new_group_90pct_target_gap_pp": 8.667
+    },
+    "25_to_under_35": {
+      "played_only_cases": 745,
+      "distinct_players": 149,
+      "distinct_NBA_games": 186,
+      "observed_under_10_minutes_count": 30,
+      "observed_under_10_minutes_rate": 0.040268,
+      "global_short_minutes_Brier": 0.042822,
+      "group_short_minutes_Brier": 0.039429,
+      "paired_Brier_gain_global_minus_group": 0.003393,
+      "global_short_minutes_logloss": 0.19714,
+      "group_short_minutes_logloss": 0.188965,
+      "paired_logloss_gain_global_minus_group": 0.008175,
+      "original_global_q90_coverage": 0.857718,
+      "new_group_dev_q90_coverage": 0.813423,
+      "new_group_minus_global_coverage_pp": -4.43,
+      "original_global_band_mean_width": 23.0293,
+      "new_group_band_mean_width": 20.4832,
+      "new_minus_original_width_minutes": -2.5461,
+      "global_90pct_target_gap_pp": 4.228,
+      "new_group_90pct_target_gap_pp": 8.658
+    },
+    "35_plus": {
+      "played_only_cases": 120,
+      "distinct_players": 24,
+      "distinct_NBA_games": 63,
+      "observed_under_10_minutes_count": 2,
+      "observed_under_10_minutes_rate": 0.016667,
+      "global_short_minutes_Brier": 0.024171,
+      "group_short_minutes_Brier": 0.016433,
+      "paired_Brier_gain_global_minus_group": 0.007738,
+      "global_short_minutes_logloss": 0.146534,
+      "group_short_minutes_logloss": 0.085833,
+      "paired_logloss_gain_global_minus_group": 0.060702,
+      "original_global_q90_coverage": 0.958333,
+      "new_group_dev_q90_coverage": 0.883333,
+      "new_group_minus_global_coverage_pp": -7.5,
+      "original_global_band_mean_width": 23.0293,
+      "new_group_band_mean_width": 18.5858,
+      "new_minus_original_width_minutes": -4.4435,
+      "global_90pct_target_gap_pp": -5.833,
+      "new_group_90pct_target_gap_pp": 1.667
+    }
+  },
+  "player_cluster_uncertainty": {
+    "paired_global_minus_group_Brier_gain": {
+      "lower": 0.011685,
+      "upper": 0.035184
+    },
+    "paired_global_minus_group_logloss_gain": {
+      "lower": 0.029662,
+      "upper": 0.113382
+    },
+    "coverage_group_minus_global": {
+      "lower": -0.020592,
+      "upper": 0.009025
+    },
+    "resamples": 1200,
+    "seed": 20261028,
+    "independent_unit": "historical_player_not_individual_game",
+    "Brier_gain_interval_excludes_zero_exploratory_only": true,
+    "not_fresh_independent_holdout_for_model_choice": true
+  },
+  "quality_gate": {
+    "fresh_unused_holdout_for_new_strata": false,
+    "prospective_2026_27_separate_model_issues_exist": false,
+    "p_play_full_denominator_verified": false,
+    "unconditional_FP_from_this_risk_allowed": false,
+    "new_individual_minutes_interval_calibrated": false,
+    "false_DNP_created_from_absence": false,
+    "live_model_changed": false,
+    "KEEP_TRANSFER_gain_proven": false,
+    "adopt_on_site": false
+  },
+  "limitations": [
+    "Only actual positive-minute appearances; conditional short minutes is not player DNP probability.",
+    "The four group cutpoints were investigated AFTER previous 2025/26 diagnostics; cannot treat this 2025/26 result as fresh model-selection validation.",
+    "All fitted quantities are calculated solely from 2024/25 chronological development played cases.",
+    "Historical prior is reused for the first five 2025/26 played games; no 2025/26 rolling updates.",
+    "Whole-player bootstrap acknowledges correlated first-five repeated outcomes; not team/game generalization.",
+    "Group 2024/25 q90 bands and risk are frozen exploratory alternatives, not future prediction intervals.",
+    "No full game-day roster, DNP imputation, Sports.ru credited FP, Firebase/Hosting or personal transfer changes."
+  ]
+}
