@@ -45,7 +45,7 @@ class Tests(unittest.TestCase):
   for t in second["teams"]:t["source_first_seen_at_utc"]=second["captured_at_utc"]
   second["snapshot_hash_sha256"]=canonical_hash({"teams":second["teams"],"captured":second["captured_at_utc"]})
   self.assertEqual(len(validate_espn_snapshots([first,second],d("2026-10-26T22:10:00Z"))),2)
-  second["captured_at_utc"]="2026-10-26T21:00:00Z"
+  second["captured_at_utc"]="2026-10-26T20:00:00Z"
   for t in second["teams"]:t["source_first_seen_at_utc"]=second["captured_at_utc"]
   second["snapshot_hash_sha256"]=canonical_hash({"teams":second["teams"],"captured":second["captured_at_utc"]})
   with self.assertRaises(ValueError):validate_espn_snapshots([first,second],d("2026-10-26T22:10:00Z"))
