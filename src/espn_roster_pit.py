@@ -173,9 +173,15 @@ def seal_capture_after_final_fetch(value, observed_at):
 def run():
     from zoneinfo import ZoneInfo
     now=datetime.now(timezone.utc);day=now.astimezone(ZoneInfo("Europe/Moscow")).date().isoformat()
-    directory=DATA/"espn_roster_pit";target=directory/(day+".json")
-    if target.exists():
-        return {"status":STATUS,"capture":"already_exists_not_overwritten","day":day}
+    directory=DATA/"espn_roster_pit"
+    first=directory/(day+".json")
+    second=directory/(day+"_2.json")
+    if second.exists():
+        return {"status":STATUS,"capture":"daily_two_capture_limit","day":day}
+    if first.exists():
+        first_at=instant(json.loads(first.read_text(encoding="utf8"))["captured_at_utc"])
+        if now-first_at<timedelta(hours=4):
+            return {"status":STATUS,"capture":"four_hour_cooldown","day":day}
     def load(n):return json.loads((DATA/n).read_text(encoding="utf8"))
     value=capture(load("catalog.json"),load("identity.json"),load("live.json"),fetch,now)
     # 30 sequential HTTP calls may span individual player locks. Record the
@@ -183,8 +189,14 @@ def run():
     value=seal_capture_after_final_fetch(value,datetime.now(timezone.utc))
     day=instant(value["captured_at_utc"]).astimezone(ZoneInfo("Europe/Moscow")).date().isoformat()
     target=directory/(day+".json")
+    second=directory/(day+"_2.json")
     if target.exists():
-        return {"status":STATUS,"capture":"already_exists_not_overwritten","day":day}
+        first_at=instant(json.loads(target.read_text(encoding="utf8"))["captured_at_utc"])
+        if instant(value["captured_at_utc"])-first_at<timedelta(hours=4):
+            return {"status":STATUS,"capture":"four_hour_cooldown","day":day}
+        target=second
+    if target.exists():
+        return {"status":STATUS,"capture":"daily_two_capture_limit","day":day}
     directory.mkdir(parents=True,exist_ok=True)
     tmp=target.with_suffix(".tmp")
     tmp.write_text(json.dumps(value,ensure_ascii=False,separators=(",",":")),encoding="utf8")
