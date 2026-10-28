@@ -194,6 +194,13 @@ def build(minutes, pplay, cohort, explicit, live, now):
             raise ValueError("Wrong team, game date or tipoff for finished issue")
         o = labelled.get(key)
         shadow_label = shadow_observed.get(key)
+        # A named positive boxscore alone lacks archived first-observed
+        # provenance. Keep it UNKNOWN, never invent a past observation time.
+        # A verified p_play result against such an unproven clock is a conflict.
+        if o is not None and o.get("source_first_observed_at_utc") is None:
+            if shadow_label is not None:
+                raise ValueError("Verified p_play label has no first-observed provenance")
+            o = None
         outcome = "UNKNOWN" if o is None else (
             "played" if o.get("played") is True else "explicit_DNP")
         if o is None and shadow_label is not None:

@@ -69,6 +69,24 @@ class ConditionalMinutesProspectiveEvaluation(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.make(args)
 
+    def test_unarchived_first_seen_positive_stays_UNKNOWN(self):
+        args = deepcopy(self.inputs)
+        current = self.make()
+        target = current["scored_played"][0]
+        key = (target["game_id"], target["player_id"])
+        cohort = next(r for r in args[2]["records"]
+                      if (r["game_id"], r["player_id"]) == key)
+        cohort["source_first_observed_at_utc"] = None
+        args[1]["observations"] = [
+            x for x in args[1]["observations"]
+            if (x["game_id"], x["player_id"]) != key]
+        updated = self.make(args)
+        self.assertEqual(updated["summary"]["played"], current["summary"]["played"] - 1)
+        self.assertEqual(updated["summary"]["UNKNOWN_not_imputed"],
+                         current["summary"]["UNKNOWN_not_imputed"] + 1)
+        self.assertTrue(any((r["game_id"], r["player_id"]) == key
+                            for r in updated["UNKNOWN_unscored"]))
+
     def test_lock_time_tampering_rejected(self):
         args = deepcopy(self.inputs)
         issue = args[0]["issued"][0]
