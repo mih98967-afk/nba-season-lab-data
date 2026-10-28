@@ -346,31 +346,74 @@ def evaluate(live, cohort, explicit, snapshots, now, official=None, telegram=Non
     }
 
 
-def run():
+def next_capture_slot(directory, now, *, reserve_evening=True):
+    """Choose an append-only MSK-day slot without consuming both too early.
+
+    This is an operational scheduling rule, not evidence that the underlying
+    static Sports.ru catalog was updated by Sports.ru at capture time.
+    """
+    if now.utcoffset() is None:
+        raise ValueError("PIT capture decision requires timezone-aware time")
+    now = now.astimezone(UTC)
+    moscow = now.astimezone(MSK)
+    day = moscow.date().isoformat()
+    first = directory / (day + ".json")
+    second = directory / (day + "_2.json")
+    if second.exists() and not first.exists():
+        raise ValueError("Second PIT file exists without immutable first")
+    if second.exists():
+        return None, "daily_two_capture_limit", day
+    if not first.exists():
+        return first, "first_capture", day
+    previous = json.loads(first.read_text(encoding="utf8"))
+    first_at = instant(previous.get("captured_at_utc"))
+    if first_at > now or first_at.astimezone(MSK).date() != moscow.date():
+        raise ValueError("First PIT has a future or wrong-day timestamp")
+    if now - first_at < timedelta(hours=4):
+        return None, "four_hour_cooldown", day
+    # Save the second immutable slot for evening/night NBA fixtures.
+    # Do not exhaust it at an early 4-hour polling cycle.
+    if reserve_evening and moscow.hour < 16:
+        return None, "second_capture_reserved_until_16_msk", day
+    return second, "second_capture", day
+
+
+def run(*, capture_only=False, evaluate_only=False, reserve_evening=True):
+    if capture_only and evaluate_only:
+        raise ValueError("Choose either PIT capture-only or evaluation-only")
     now = datetime.now(UTC)
     load = lambda name: json.loads((DATA / name).read_text(encoding="utf8"))
     directory = DATA / "catalog_pit"
-    day = now.astimezone(MSK).date().isoformat()
-    path = directory / (day + ".json")
-    second = directory / (day + "_2.json")
     live = load("live.json")
+    directory.mkdir(parents=True, exist_ok=True)
+    existing = [load("catalog_pit/" + p.name) for p in sorted(directory.glob("*.json"))]
+    # Validate history before any write. A bad old snapshot must not be
+    # silently ignored when the hourly backup executes.
+    _validated_snapshots(existing, now)
     created = False
-    # Never overwrite or backdate a real previous capture.
-    if path.exists():
-        first = json.loads(path.read_text(encoding="utf8"))
-        first_at = _when(first["captured_at_utc"])
-        if now - first_at >= timedelta(hours=4) and not second.exists():
-            path = second
-    if not path.exists():
-        snapshot = capture(load("catalog.json"), live, now)
-        directory.mkdir(parents=True, exist_ok=True)
-        tmp = path.with_suffix(".tmp")
-        tmp.write_text(json.dumps(snapshot, ensure_ascii=False,
-                                  separators=(",", ":")), encoding="utf8")
-        tmp.replace(path)
-        created = True
-    snapshots = [json.loads(p.read_text(encoding="utf8"))
+    decision = "evaluation_only"
+    if not evaluate_only:
+        target, decision, day = next_capture_slot(
+            directory, now, reserve_evening=reserve_evening)
+        if target is not None:
+            snapshot = capture(load("catalog.json"), live, now)
+            if snapshot["snapshot_date_msk"] != day:
+                raise ValueError("PIT capture crossed Moscow calendar day")
+            tmp = target.with_suffix(".tmp")
+            tmp.write_text(json.dumps(snapshot, ensure_ascii=False,
+                                      separators=(",", ":")), encoding="utf8")
+            if target.exists():
+                raise ValueError("Refusing to replace immutable catalog PIT")
+            tmp.replace(target)
+            created = True
+    snapshots = [load("catalog_pit/" + p.name)
                  for p in sorted(directory.glob("*.json"))]
+    _validated_snapshots(snapshots, now)
+    if capture_only:
+        return {"status": STATUS, "new_snapshot": created,
+                "capture_decision": decision, "snapshots": len(snapshots),
+                "catalog_proxy_only": True, "adopt_on_site": False,
+                "fantasy_account_mutation": False}
     result = evaluate(live, load("participation_cohort_research.json"),
                       load("explicit_dnp_research.json"), snapshots, now,
                       load("official_injury_status_archive.json"),
@@ -380,10 +423,10 @@ def run():
     tmp.write_text(json.dumps(result, ensure_ascii=False,
                               separators=(",", ":")), encoding="utf8")
     tmp.replace(target)
-    return {"status": STATUS, "new_snapshot": created, "snapshot_date_msk": day,
-            "snapshots": len(snapshots), "summary": result["summary"],
+    return {"status": STATUS, "new_snapshot": created,
+            "capture_decision": decision, "snapshots": len(snapshots),
+            "summary": result["summary"], "catalog_proxy_only": True,
             "p_play_deployed": False, "fantasy_account_mutation": False}
-
 
 if __name__ == "__main__":
     print(json.dumps(run(), ensure_ascii=False, indent=2))
