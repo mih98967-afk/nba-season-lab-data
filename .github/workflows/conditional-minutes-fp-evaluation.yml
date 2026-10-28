@@ -8,7 +8,7 @@ on:
     paths: ['src/conditional_minutes_fp_evaluation_research.py','test_conditional_minutes_fp_evaluation_research.py','.github/workflows/conditional-minutes-fp-evaluation.yml']
   workflow_dispatch:
   workflow_run:
-    workflows: ['NBA conditional minutes FP research']
+    workflows: ['NBA conditional minutes FP research', 'NBA prospective p-play shadow research']
     types: [completed]
     branches: [main]
   schedule:
