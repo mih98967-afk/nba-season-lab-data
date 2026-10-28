@@ -1,6 +1,11 @@
 name: NBA public data sync
 
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/nba-sync.yml'
+      - 'test_schedule_workflow_owner.py'
   push:
     branches: [main, fix/live-schedule-provenance-20261025]
     paths:
