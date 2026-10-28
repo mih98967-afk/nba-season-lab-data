@@ -45,8 +45,20 @@ class Catchup(unittest.TestCase):
         self.assertFalse(defer)
         self.assertEqual(len(req),len({r["nba_game_id"] for r in self.nba["records"]}))
     def test_new_game_cannot_be_deferred_without_prior(self):
+        # Use a synthetic *older* saved snapshot. The real research archive
+        # eventually catches up to all games; no test may require it to stay
+        # perpetually at 23/27 cases.
         games={r["nba_game_id"] for r in self.nba["records"]}
+        self.assertTrue(games)
+        unseen=sorted(games)[-1]
+        earlier=deepcopy(self.old)
+        earlier["records"]=[
+            r for r in earlier["records"] if r["nba_game_id"]!=unseen]
+        earlier["source_attempted_utc_by_game"]={
+            k:v for k,v in earlier.get("source_attempted_utc_by_game",{}).items()
+            if k!=unseen}
+        self.assertNotIn(unseen,{r["nba_game_id"] for r in earlier["records"]})
         with self.assertRaises(ValueError):
-            reconcile(self.nba,self.espn,self.live,{}, {},NOW,self.old,
+            reconcile(self.nba,self.espn,self.live,{}, {},NOW,earlier,
                       attempted_game_ids=[],deferred_game_ids=list(games))
 if __name__=="__main__":unittest.main()
