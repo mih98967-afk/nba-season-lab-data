@@ -56,6 +56,9 @@ jobs:
           python -m src.participation_evidence_ledger_research
           python -m src.p_play_precommitted_paired_evaluation
           python -m src.public_sync_integrity
+          python -c "from src.official_nba_nonout_unknown_research import run; run(allow_network=False)"
+          python -m src.availability_source_reconciliation_research
+          python -m unittest -v test_availability_source_reconciliation_research test_official_nba_nonout_unknown_research
           python -m unittest -v test_short_minutes_prospective_evaluation_research test_short_risk_workflow_owner
           python -m unittest -v test_conditional_minutes_fp_evaluation_research test_conditional_minutes_robustness_research test_conditional_pipeline_owner test_short_risk_workflow_owner
       - name: Refresh official NBA live data from latest main
@@ -79,13 +82,16 @@ jobs:
           python -m src.participation_evidence_ledger_research
           python -m src.p_play_precommitted_paired_evaluation
           python -m src.public_sync_integrity
+          python -m src.official_nba_nonout_unknown_research
+          python -m src.availability_source_reconciliation_research
+          python -m unittest -v test_availability_source_reconciliation_research test_official_nba_nonout_unknown_research
           python -m unittest -v test_conditional_minutes_fp_evaluation_research test_conditional_minutes_robustness_research test_conditional_pipeline_owner test_short_risk_workflow_owner
       - name: Atomically archive public dataset and coherent research outcomes
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/live.json data/catalog.json data/explicit_dnp_research.json data/participation_cohort_research.json data/p_play_shadow_research.json data/conditional_minutes_fp_research.json data/short_minutes_prospective_research.json data/conditional_minutes_fp_evaluation_research.json data/conditional_minutes_robustness_research.json data/short_minutes_prospective_evaluation_research.json data/participation_coverage_research.json data/p_play_selection_bias_audit.json data/participation_evidence_ledger_research.json data/p_play_precommitted_paired_evaluation_research.json
+          git add data/live.json data/catalog.json data/explicit_dnp_research.json data/participation_cohort_research.json data/p_play_shadow_research.json data/conditional_minutes_fp_research.json data/short_minutes_prospective_research.json data/conditional_minutes_fp_evaluation_research.json data/conditional_minutes_robustness_research.json data/short_minutes_prospective_evaluation_research.json data/participation_coverage_research.json data/p_play_selection_bias_audit.json data/participation_evidence_ledger_research.json data/p_play_precommitted_paired_evaluation_research.json data/official_nba_nonout_unknown_research.json data/availability_source_reconciliation_research.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh NBA scores and schedule"
             git pull --rebase origin main
