@@ -2,7 +2,7 @@
   "schema_version": 1,
   "status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-28T18:21:06Z",
+  "updated_at_utc": "2026-10-28T19:05:52Z",
   "target": "short_minutes_given_verified_positive_minutes_only",
   "summary": {
     "issued": 215,
@@ -10,7 +10,8 @@
     "explicit_DNP_excluded": 0,
     "UNKNOWN_not_imputed": 0,
     "awaiting_or_unchecked": 215,
-    "distinct_ET_dates_scored": 0
+    "distinct_ET_dates_scored": 0,
+    "distinct_NBA_games_scored": 0
   },
   "conditional_played_only_metrics": {
     "n": 0,
@@ -19,7 +20,10 @@
     "logloss_global": null,
     "logloss_group": null,
     "band_coverage_global": null,
-    "band_coverage_group": null
+    "band_coverage_group": null,
+    "actual_under_10": 0,
+    "paired_global_minus_group_Brier_gain": null,
+    "paired_global_minus_group_logloss_gain": null
   },
   "by_ET_date": {},
   "by_predicted_minutes": {},
@@ -1100,17 +1104,32 @@
       "outcome": "awaiting_or_unchecked"
     }
   ],
+  "precommitted_exploratory_date_cluster_gates": {
+    "min_independent_ET_dates": 8,
+    "min_verified_played_player_games": 100,
+    "min_distinct_NBA_games": 24,
+    "date_gate": false,
+    "played_gate": false,
+    "games_gate": false,
+    "interval_eligible": false
+  },
+  "paired_global_minus_group_uncertainty_if_eligible": null,
   "quality_gate": {
     "at_least_8_independent_ET_dates": false,
     "at_least_100_verified_played": false,
+    "at_least_24_NBA_games": false,
     "DNP_scored_as_zero": false,
     "UNKNOWN_imputed": false,
     "full_population_calibration_proven": false,
+    "unconditional_FP_allowed": false,
+    "KEEP_TRANSFER_gain_proven": false,
     "adopt_on_site": false
   },
   "limitations": [
     "No FP or minutes scoring for DNP and unlisted UNKNOWN",
     "No retrospective backfill and no new prediction fitting",
+    "Date-cluster uncertainty uses whole NBA ET dates, never player rows as independent units",
+    "Screening floors are not adoption criteria; even positive exploratory gain cannot prove whole-population calibration",
     "Not P(play); no site, Firestore, roster, price or automatic transfers"
   ]
 }
