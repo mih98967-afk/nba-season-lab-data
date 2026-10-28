@@ -41,6 +41,38 @@ class NonOutEvidence(unittest.TestCase):
                         for row in result["records"]))
         self.assertTrue(all(row["independent_NBA_verdict"]=="UNKNOWN"
                         for row in result["records"]))
+    def test_resolution_archives_only_genuine_verified_ESPN_labels(self):
+        inputs=deepcopy(self.inputs)
+        old=json.loads((DATA/"official_nba_nonout_unknown_research.json").read_text())
+        report=build(*inputs,None,lambda _:self.fail("Network should not run"),
+                     self.now,old)
+        previous={(r["game_id"],r["player_id"]) for r in old["records"]}
+        active={(r["game_id"],r["player_id"]) for r in report["records"]}
+        historic={(r["source_case"]["game_id"],r["source_case"]["player_id"])
+                  for r in report["resolved_verified_history"]}
+        self.assertFalse(active&historic)
+        self.assertEqual(report["summary"]["historical_verified_resolution_source_records_preserved"],len(historic))
+        self.assertTrue(all(x["source_case_sha256"] and x["p_play_label_provenance"]
+                            in ("positive_minutes_verified_sportsru_fp",
+                                "explicit_espn_didNotPlay_true")
+                            for x in report["resolved_verified_history"]))
+        again=build(*inputs,None,lambda _:self.fail("Network should not run"),
+                    self.now,report)
+        self.assertEqual(again["resolved_verified_history"],report["resolved_verified_history"])
+        corrupted=deepcopy(report)
+        if corrupted["resolved_verified_history"]:
+            corrupted["resolved_verified_history"][0]["p_play_verified_actual_played"]=0 if (
+                corrupted["resolved_verified_history"][0]["p_play_verified_actual_played"]==1) else 1
+            with self.assertRaises(ValueError):
+                build(*inputs,None,lambda _:None,self.now,corrupted)
+        missing=deepcopy(inputs)
+        if report["resolved_verified_history"]:
+            key=report["resolved_verified_history"][0]["source_case"]
+            missing[1]["observations"]=[x for x in missing[1]["observations"] if
+                (x["game_id"],x["player_id"])!=(key["game_id"],key["player_id"])]
+            with self.assertRaises(ValueError):
+                build(*missing,None,lambda _:None,self.now,old)
+
     def test_literal_NBA_only_and_wrong_team_conflict(self):
         obj={"111":{"team":"BOS","played":"0","status":"INACTIVE",
                     "not_playing_reason":"Injury"},
