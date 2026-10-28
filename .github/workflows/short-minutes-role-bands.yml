@@ -1,0 +1,47 @@
+name: NBA short-minutes dev-only risk and role intervals research
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - src/short_minutes_role_bands_research.py
+      - test_short_minutes_role_bands_research.py
+      - .github/workflows/short-minutes-role-bands.yml
+  push:
+    branches: [main]
+    paths:
+      - src/short_minutes_role_bands_research.py
+      - test_short_minutes_role_bands_research.py
+      - .github/workflows/short-minutes-role-bands.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: nba-season-lab-shared-write
+  cancel-in-progress: false
+jobs:
+  dev-holdout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify dev-only fit, immutable historical holdout and no DNP inference
+        run: python -m unittest -v test_short_minutes_role_bands_research test_conditional_minutes_fp_research
+      - name: Research-only evaluate 2024/25 dev and previously inspected 2025/26 holdout
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git pull --ff-only origin main
+          python -m src.short_minutes_role_bands_research
+      - name: Archive separate non-deployed research JSON
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/short_minutes_role_bands_research.json
+          if ! git diff --cached --quiet; then
+            git commit -m "research: audit conditional short minutes and dev-only role bands"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
