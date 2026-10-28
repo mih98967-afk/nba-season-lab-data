@@ -190,7 +190,7 @@ def build(minutes, pplay, cohort, explicit, live, now):
         game = finals[(gid,)]
         if (game["utc"] != issue["game_utc"] or
                 issue["team"] not in (game["home"], game["away"]) or tip > now or
-                (game.get("et_date") is not None and game["et_date"] != tip.astimezone(ET).date().isoformat())):
+                (game.get("et_date") is not None and game.get("et_date", tip.astimezone(ET).date().isoformat()) != tip.astimezone(ET).date().isoformat())):
             raise ValueError("Wrong team, game date or tipoff for finished issue")
         o = labelled.get(key)
         shadow_label = shadow_observed.get(key)
@@ -214,7 +214,7 @@ def build(minutes, pplay, cohort, explicit, live, now):
                 raise ValueError("p_play independently verified participation disagrees")
         r = {"game_id": gid, "player_id": pid, "team": issue["team"],
              "position": p["position"], "game_utc": issue["game_utc"],
-             "et_date": game["et_date"], "outcome": outcome,
+             "et_date": game.get("et_date", tip.astimezone(ET).date().isoformat()), "outcome": outcome,
              "p_play_first_issued_at_utc": p["issued_at_utc"],
              "minutes_issued_at_utc": issue["issued_at_utc"],
              "official_status_first_known_asof_p_play_issue":
