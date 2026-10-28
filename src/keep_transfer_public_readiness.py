@@ -109,12 +109,39 @@ def public_report(source, source_hashes, cutoff):
     }
 
 
-def run(base=DATA, *, persist=False, asof=None):
+def load_public_sources(base=DATA):
     sources, fingerprints = {}, {}
     for key, file in SOURCES.items():
         raw = (Path(base) / file).read_bytes()
         fingerprints[key] = sha256(raw).hexdigest()
         sources[key] = json.loads(raw)
+    return sources, fingerprints
+
+
+def verify_persisted(base=DATA):
+    """Verify the archived report against EXACT bytes of the same public inputs.
+
+    No current-time re-evaluation: use the original decision clock to ensure
+    an atomic main publication cannot contain an outdated or forged report.
+    """
+    path = Path(base) / OUTFILE
+    report = json.loads(path.read_text(encoding="utf8"))
+    if not isinstance(report, dict):
+        raise ValueError("Invalid published research report")
+    sources, fingerprints = load_public_sources(base)
+    if report.get("source_content_sha256") != fingerprints:
+        raise ValueError("KEEP/TRANSFER source SHA mismatch")
+    if report.get("status") != STATUS or report.get("adopt_on_site") is not False:
+        raise ValueError("KEEP/TRANSFER report must remain research-only")
+    expected = public_report(sources, fingerprints, report.get("decision_asof_utc"))
+    if report != expected:
+        raise ValueError("KEEP/TRANSFER archived report is not reproducible")
+    return {"status": STATUS, "verified_public_source_hashes": len(fingerprints),
+            "phase": report["phase"], "adopt_on_site": False}
+
+
+def run(base=DATA, *, persist=False, asof=None):
+    sources, fingerprints = load_public_sources(base)
     decision = asof or datetime.now(timezone.utc).isoformat()
     report = public_report(sources, fingerprints, decision)
     if persist:
@@ -134,5 +161,8 @@ def run(base=DATA, *, persist=False, asof=None):
 
 if __name__ == "__main__":
     import sys
-    print(json.dumps(run(persist="--publish" in sys.argv),
-                     ensure_ascii=False, indent=2))
+    if "--verify" in sys.argv:
+        response = verify_persisted()
+    else:
+        response = run(persist="--publish" in sys.argv)
+    print(json.dumps(response, ensure_ascii=False, indent=2))
