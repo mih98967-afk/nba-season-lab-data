@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 
 from src.sync import DATA
 from src.availability_source_reconciliation_research import build
+from src.official_nba_nonout_unknown_research import build as nonout_build
 
 FILES=("participation_evidence_ledger_research.json",
        "official_nba_nonout_unknown_research.json",
@@ -18,6 +19,17 @@ class AvailabilityProof(unittest.TestCase):
     def setUpClass(cls):
         cls.sources=[json.loads((DATA/name).read_text(encoding="utf8")) for name in FILES]
         cls.now=datetime.now(timezone.utc)
+        # Exact current UNKNOWN snapshot; retain historical resolved independent
+        # source cases, never promote them to a p_play/DNP label.
+        old=cls.sources[1]
+        cls.sources[1]=nonout_build(
+            cls.sources[0],cls.sources[5],cls.sources[4],cls.sources[2],
+            json.loads((DATA/"identity.json").read_text()),
+            json.loads((DATA/"live.json").read_text()),
+            json.loads((DATA/"explicit_dnp_research.json").read_text()),
+            None,lambda _: (_ for _ in ()).throw(AssertionError("Network during test")),
+            cls.now,old)
+
     def evaluate(self,data=None):
         return build(*(self.sources if data is None else data),self.now)
     def test_all_missing_labels_have_disjoint_evidence(self):
