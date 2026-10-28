@@ -8,7 +8,7 @@ on:
     paths: ['src/p_play_shadow_research.py','test_p_play_shadow_research.py','.github/workflows/p-play-shadow.yml']
   workflow_dispatch:
   workflow_run:
-    workflows: ['NBA explicit DNP isolated research', 'NBA ESPN team roster PIT research', 'NBA prospective catalog PIT research']
+    workflows: ['NBA explicit DNP isolated research', 'NBA ESPN team roster PIT research', 'NBA prospective catalog PIT research', 'NBA participation cohort QA']
     types: [completed]
     branches: [main]
   schedule:
