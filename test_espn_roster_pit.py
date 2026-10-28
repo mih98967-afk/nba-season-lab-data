@@ -1,6 +1,6 @@
 import unittest
-from datetime import datetime,timezone
-from src.espn_roster_pit import athletes,capture,ESPN_TEAMS
+from datetime import datetime,timezone,timedelta
+from src.espn_roster_pit import athletes,capture,ESPN_TEAMS,seal_capture_after_final_fetch
 from src.live_calendar_fallback import TEAMS
 
 class Tests(unittest.TestCase):
@@ -32,4 +32,16 @@ class Tests(unittest.TestCase):
   self.assertFalse(out["game_day_eligibility_verified"])
   self.assertEqual(next(t for t in out["teams"] if t["club"]=="BOS")["source_status"],"invalid_or_unavailable")
   self.assertTrue(out["publication_time_unknown"])
+  sealed=seal_capture_after_final_fetch(out,now+timedelta(minutes=3))
+  self.assertEqual(sealed["captured_at_utc"],"2026-10-26T18:03:00Z")
+  self.assertEqual(out["captured_at_utc"],"2026-10-26T18:00:00Z")
+  self.assertTrue(all(t["source_first_seen_at_utc"]==sealed["captured_at_utc"]
+                      for t in sealed["teams"]))
+  from src.rolling_decision_research import canonical_hash
+  self.assertEqual(sealed["snapshot_hash_sha256"],canonical_hash(
+      {"teams":sealed["teams"],"captured":sealed["captured_at_utc"]}))
+  with self.assertRaises(ValueError):
+   seal_capture_after_final_fetch(out,now+timedelta(minutes=16))
+  with self.assertRaises(ValueError):
+   seal_capture_after_final_fetch(out,now-timedelta(seconds=1))
 if __name__=="__main__":unittest.main()

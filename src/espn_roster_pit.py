@@ -8,6 +8,7 @@ No account/Firestore, prices, or model publication.
 from __future__ import annotations
 from datetime import datetime, timezone, timedelta
 from collections import Counter, defaultdict
+from copy import deepcopy
 from urllib.request import Request, urlopen
 import json, re
 from src.sync import DATA
@@ -138,6 +139,37 @@ def capture(catalog, identity, live, provider, now):
     result["snapshot_hash_sha256"]=canonical_hash({"teams":result["teams"],"captured":result["captured_at_utc"]})
     return result
 
+def seal_capture_after_final_fetch(value, observed_at):
+    """Conservatively first-observe a sequential 30-club scrape at its END.
+
+    No roster fetched later in the loop may enter an earlier individual lock.
+    Previously archived PIT snapshots remain untouched.
+    """
+    if observed_at.utcoffset() is None:
+        raise ValueError("Sealing requires timezone-aware end observation")
+    finish=observed_at.astimezone(timezone.utc)
+    start=instant(value.get("captured_at_utc"))
+    if finish < start or finish-start > timedelta(minutes=15):
+        raise ValueError("ESPN PIT scrape clock invalid or too prolonged")
+    if (value.get("schema_version")!=1 or value.get("status")!=STATUS
+            or value.get("adopt_on_site") is not False
+            or value.get("game_day_eligibility_verified") is not False
+            or len(value.get("teams",[]))!=30
+            or value.get("snapshot_hash_sha256")!=canonical_hash(
+                {"teams":value["teams"],"captured":value["captured_at_utc"]})):
+        raise ValueError("Invalid roster capture cannot be sealed")
+    for team in value["teams"]:
+        if team.get("source_first_seen_at_utc")!=stamp(start):
+            raise ValueError("Unexpected first-observation clock in roster")
+    sealed=deepcopy(value)
+    clock=stamp(finish)
+    sealed["captured_at_utc"]=clock
+    for team in sealed["teams"]:
+        team["source_first_seen_at_utc"]=clock
+    sealed["snapshot_hash_sha256"]=canonical_hash(
+        {"teams":sealed["teams"],"captured":clock})
+    return sealed
+
 def run():
     from zoneinfo import ZoneInfo
     now=datetime.now(timezone.utc);day=now.astimezone(ZoneInfo("Europe/Moscow")).date().isoformat()
@@ -146,6 +178,13 @@ def run():
         return {"status":STATUS,"capture":"already_exists_not_overwritten","day":day}
     def load(n):return json.loads((DATA/n).read_text(encoding="utf8"))
     value=capture(load("catalog.json"),load("identity.json"),load("live.json"),fetch,now)
+    # 30 sequential HTTP calls may span individual player locks. Record the
+    # latest possible first-observed time, never the earlier request start.
+    value=seal_capture_after_final_fetch(value,datetime.now(timezone.utc))
+    day=instant(value["captured_at_utc"]).astimezone(ZoneInfo("Europe/Moscow")).date().isoformat()
+    target=directory/(day+".json")
+    if target.exists():
+        return {"status":STATUS,"capture":"already_exists_not_overwritten","day":day}
     directory.mkdir(parents=True,exist_ok=True)
     tmp=target.with_suffix(".tmp")
     tmp.write_text(json.dumps(value,ensure_ascii=False,separators=(",",":")),encoding="utf8")
