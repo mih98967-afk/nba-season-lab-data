@@ -37,6 +37,18 @@ class Tests(unittest.TestCase):
   snap["snapshot_hash_sha256"]=canonical_hash({"teams":snap["teams"],"captured":snap["captured_at_utc"]})
   v=build(*a,d("2026-10-27T00:40:00Z"))
   self.assertEqual(v["summary"]["without_recent_prelock_espn_snapshot"],1)
+ def test_two_espn_captures_and_spacing(self):
+  a=inputs()
+  first=a[4][0]
+  second=deepcopy(first)
+  second["captured_at_utc"]="2026-10-26T22:02:00Z"
+  for t in second["teams"]:t["source_first_seen_at_utc"]=second["captured_at_utc"]
+  second["snapshot_hash_sha256"]=canonical_hash({"teams":second["teams"],"captured":second["captured_at_utc"]})
+  self.assertEqual(len(validate_espn_snapshots([first,second],d("2026-10-26T22:10:00Z"))),2)
+  second["captured_at_utc"]="2026-10-26T21:00:00Z"
+  for t in second["teams"]:t["source_first_seen_at_utc"]=second["captured_at_utc"]
+  second["snapshot_hash_sha256"]=canonical_hash({"teams":second["teams"],"captured":second["captured_at_utc"]})
+  with self.assertRaises(ValueError):validate_espn_snapshots([first,second],d("2026-10-26T22:10:00Z"))
  def test_tampered_hash_is_rejected(self):
   a=inputs();a[4][0]["teams"][0]["athletes"][0]["display_name"]="Tampered"
   with self.assertRaises(ValueError):build(*a,d("2026-10-26T18:03:00Z"))
