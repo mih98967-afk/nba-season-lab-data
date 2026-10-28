@@ -68,6 +68,11 @@ jobs:
           python -m src.short_minutes_prospective_research
           python -m src.conditional_minutes_fp_evaluation_research
           python -m src.short_minutes_prospective_evaluation_research
+          python -m src.participation_coverage_research
+          python -m src.p_play_selection_bias_audit
+          python -m src.participation_evidence_ledger_research
+          python -m src.p_play_precommitted_paired_evaluation
+          python -m src.public_sync_integrity
       - name: Atomically archive public dataset and coherent research outcomes
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
