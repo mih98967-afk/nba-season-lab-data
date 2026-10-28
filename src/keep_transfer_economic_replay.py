@@ -225,12 +225,67 @@ def validate_decision(snapshot, moves):
     }
 
 
+
+def verified_club_tenure(checked, outcomes, player_id):
+    """Post-week independent club timeline; NEVER a pre-decision roster claim.
+
+    A dated owner-attested receipt has to cover the whole remaining ET window.
+    Changes of club must be explicit, contiguous, and connected to official
+    transaction/game-day evidence. One current catalogue club cannot stand
+    in for every subsequent game.
+    """
+    bundle = outcomes.get("game_day_club_tenure")
+    ensure(isinstance(bundle, dict) and player_id in bundle,
+           "MISSING_GAME_DAY_CLUB_TENURE")
+    receipt = bundle[player_id]
+    evaluated = moment(outcomes.get("evaluated_at_utc"))
+    observed(receipt, kind="official_complete_game_day_club_tenure",
+             cutoff=evaluated, after=checked["end"])
+    ensure(receipt.get("player_id") == player_id
+           and receipt.get("complete_entire_window_from_official_transactions") is True
+           and receipt.get("independent_game_day_club_check") is True
+           and receipt.get("evidence_is_not_current_catalog_proxy") is True,
+           "UNVERIFIED_GAME_DAY_CLUB_TENURE")
+    periods = receipt.get("intervals")
+    ensure(isinstance(periods, list) and 1 <= len(periods) <= 32,
+           "MISSING_CLUB_TENURE_INTERVALS")
+    cursor = checked["decision"]
+    verified = []
+    for item in periods:
+        ensure(isinstance(item, dict), "INVALID_CLUB_TENURE_INTERVAL")
+        begin = moment(item.get("from_utc"))
+        end = moment(item.get("until_utc"))
+        club = item.get("club")
+        ensure(begin == cursor and begin < end <= checked["end"]
+               and club in TEAMS, "CLUB_TENURE_GAP_OVERLAP_OR_INVALID_CLUB")
+        verified.append((begin, end, club))
+        cursor = end
+    ensure(cursor == checked["end"], "CLUB_TENURE_DOES_NOT_COVER_ET_WEEK")
+    ensure(verified[0][2] == checked["cards"][player_id]["club"],
+           "DECISION_CLUB_VERSUS_RECONSTRUCTED_TENURE_CONFLICT")
+    return verified
+
+
+def club_at(verified, stamp):
+    for begin, end, club in verified:
+        if begin <= stamp < end:
+            return club
+    raise InsufficientEvidence("GAME_OUTSIDE_VERIFIED_CLUB_TENURE")
+
+
 def score_replay(checked, outcomes):
-    """Postgame only. Every relevant player x club fixture must have a credit."""
+    """Only postweek credited Sports.ru FP; explicitly verify game-day clubs.
+
+    Fixed-branch counterfactual: KEEP owns every OUT, TRANSFER owns every IN
+    from the decision onward with no additional simulated moves. Actual
+    ownership, true profitability and Sports.ru credited zero are NEVER
+    inferred from missing player rows, OUT or NBA boxscores.
+    """
     ensure(isinstance(outcomes, dict), "NO_SPORTSRU_CREDIT_OUTCOMES")
     after = checked["end"]
-    observed(outcomes, kind="sportsru_final_credits_batch", cutoff=moment(
-        outcomes.get("evaluated_at_utc")), after=after)
+    evaluated = moment(outcomes.get("evaluated_at_utc"))
+    observed(outcomes, kind="sportsru_final_credits_batch",
+             cutoff=evaluated, after=after)
     ensure(outcomes.get("complete_final_fixture_set") is True,
            "FINAL_FIXTURE_SET_NOT_VERIFIED")
     final = outcomes.get("final_games")
@@ -238,51 +293,69 @@ def score_replay(checked, outcomes):
     ensure(isinstance(final, list) and isinstance(records, list),
            "MISSING_FINAL_GAMES_OR_CREDITS")
     fixture_index = checked["fixtures"]
-    final_ids = set()
     involved = {p for m in checked["moves"] for p in (m["out"], m["in"])}
-    relevant_clubs = {checked["cards"][pid]["club"] for pid in involved}
-    expected_fixtures = {gid for gid, game in fixture_index.items()
-                         if checked["decision"] <= game["tip"] < checked["end"]
-                         and (game["home"] in relevant_clubs or
-                              game["away"] in relevant_clubs)}
+    # The entire declared ET-week calendar must have finished: selecting only
+    # games of the decision-day clubs misses the games of a player traded later.
+    expected_fixtures = {gid for gid, g in fixture_index.items()
+                         if checked["decision"] <= g["tip"] < after}
+    final_ids = set()
+    final_observed = {}
     for g in final:
         ensure(isinstance(g, dict) and isinstance(g.get("id"), str)
                and g["id"] not in final_ids, "DUPLICATE_FINAL_GAME")
         gid = g["id"]
-        ensure(gid in fixture_index and g.get("status") == "final",
+        ensure(gid in expected_fixtures and g.get("status") == "final",
                "UNMATCHED_OR_UNFINISHED_GAME")
         asof = fixture_index[gid]
         ensure(moment(g.get("utc")) == asof["tip"] and
                g.get("home") == asof["home"] and
                g.get("away") == asof["away"],
                "RESCHEDULED_OR_CLUB_CONFLICT")
+        verified_final_at = moment(g.get("final_verified_at_utc"))
+        ensure(asof["tip"] < verified_final_at <= evaluated,
+               "FINAL_STATUS_NOT_OBSERVED_AFTER_TIPOFF")
         final_ids.add(gid)
-    ensure(final_ids == expected_fixtures, "INCOMPLETE_OR_EXTRA_FINAL_FIXTURES")
-    actual = {}
-    for record in records:
-        ensure(isinstance(record, dict), "MALFORMED_FP_CREDIT")
-        pid, gid = record.get("player_id"), record.get("game_id")
-        key = (pid, gid)
-        ensure(pid in involved and gid in final_ids and key not in actual,
-               "EXTRA_OR_DUPLICATE_FP_CREDIT")
-        game = fixture_index[gid]
-        ensure(checked["cards"][pid]["club"] in (game["home"], game["away"]),
-               "CREDIT_GAME_CLUB_CONFLICT")
-        observed(record, kind="sportsru_credited_fp", cutoff=moment(
-            outcomes["evaluated_at_utc"]), after=game["tip"])
-        actual[key] = numerical(record.get("credited_fp"),
-                                "SPORTSRU_CREDIT", minimum=-1e6)
-    delta = 0.
-    for m in checked["moves"]:
-        for pid, sign in ((m["out"], -1), (m["in"], 1)):
-            club = checked["cards"][pid]["club"]
-            for gid in expected_fixtures:
-                g = fixture_index[gid]
-                if club in (g["home"], g["away"]):
-                    ensure((pid, gid) in actual, "MISSING_SPORTSRU_CREDIT_NOT_ZERO")
-                    delta += sign * actual[pid, gid]
-    return round(delta, 4)
+        final_observed[gid] = verified_final_at
+    ensure(final_ids == expected_fixtures,
+           "INCOMPLETE_OR_EXTRA_FINAL_FIXTURES")
 
+    tenures = {pid: verified_club_tenure(checked, outcomes, pid)
+               for pid in involved}
+    expected = {}
+    for pid in involved:
+        for gid in expected_fixtures:
+            game = fixture_index[gid]
+            club = club_at(tenures[pid], game["tip"])
+            if club in (game["home"], game["away"]):
+                # A new owner cannot receive credit for a game that was
+                # already locked at the time of this decision.
+                ensure(checked["decision"] < game["tip"] - HALF_HOUR,
+                       "OWNERSHIP_AT_LOCK_ALREADY_CLOSED")
+                expected[(pid, gid)] = club
+
+    actual = {}
+    for row in records:
+        ensure(isinstance(row, dict), "MALFORMED_FP_CREDIT")
+        key = (row.get("player_id"), row.get("game_id"))
+        ensure(key in expected and key not in actual,
+               "EXTRA_OR_DUPLICATE_FP_CREDIT")
+        ensure(row.get("club_at_game") == expected[key],
+               "CREDIT_GAME_DAY_CLUB_CONFLICT")
+        # A credited FP receipt observed BEFORE the game was declared final
+        # cannot be accepted as the final Sports.ru result.
+        observed(row, kind="sportsru_credited_fp", cutoff=evaluated,
+                 after=final_observed[key[1]])
+        actual[key] = numerical(row.get("credited_fp"),
+                                "SPORTSRU_CREDIT", minimum=-1e6)
+    ensure(set(actual) == set(expected),
+           "MISSING_SPORTSRU_CREDIT_NOT_ZERO")
+    delta = 0.
+    for move in checked["moves"]:
+        for pid, sign in ((move["out"], -1), (move["in"], 1)):
+            for (member, _), fp in actual.items():
+                if member == pid:
+                    delta += sign * fp
+    return round(delta, 4)
 
 def evaluate(snapshot, moves, outcomes=None):
     """No private state is read or persisted. A refusal is a useful result."""
@@ -301,6 +374,9 @@ def evaluate(snapshot, moves, outcomes=None):
               "quota_after": legal["quota_after"],
               "expected_delta_fp": legal["expected_delta_fp"],
               "actual_delta_fp": None,
+              "comparison_scope": "single_decision_fixed_roster_no_followup_moves",
+              "game_day_club_tenure_required_postweek": True,
+              "ownership_at_lock_from_hypothetical_scenario_only": True,
               "verified_source_representativeness": False,
               "source_evidence_self_attested_not_independently_audited": True}
     if outcomes is not None:
