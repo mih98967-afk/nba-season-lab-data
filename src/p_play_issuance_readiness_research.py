@@ -7,7 +7,7 @@ game-day membership, or marks an absent person as DNP.
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import json
 
@@ -24,6 +24,13 @@ from src.rolling_decision_research import instant, stamp
 
 STATUS = "research_only_not_deployed"
 CANDIDATE_METHODS = {HIGH, WEAK}
+# Monitoring threshold only. NOT an NBA game-day eligibility or DNP rule.
+URGENT_LOCK_WINDOW = timedelta(hours=24)
+MISSING_PIT = {
+    "catalog_capture_outside_prelock_36h",
+    "fixture_missing_from_captured_catalog",
+    "ESPN_capture_outside_prelock_36h",
+}
 
 
 def _fixture_in_snapshot(snap, game_id):
@@ -63,6 +70,7 @@ def diagnose(live, shadow, catalog_snapshots, espn_snapshots, now):
     unique_games = set()
     fixture_rows = []
     count = Counter()
+    monitoring = Counter()
     planned = live.get("schedule")
     if not isinstance(planned, list):
         raise ValueError("Missing public fixtures")
@@ -148,6 +156,28 @@ def diagnose(live, shadow, catalog_snapshots, espn_snapshots, now):
                 reason = "new_prelock_candidates_ready"
 
         count[reason] += 1
+        # A 72h diagnostic naturally includes fixtures with >36h remaining.
+        # These are NOT late captures. Escalate only within 24h of player lock.
+        remaining = lock - now
+        if remaining <= timedelta(0):
+            monitor = "lock_elapsed_not_actionable"
+        elif reason == "all_mapped_players_already_issued":
+            monitor = "cross_source_proxy_first_issues_covered"
+        elif reason == "new_prelock_candidates_ready":
+            monitor = "new_selected_candidates_ready_to_issue"
+        elif reason in MISSING_PIT:
+            monitor = ("prelock_capture_needed_within_24h"
+                       if remaining <= URGENT_LOCK_WINDOW else
+                       "awaiting_prospective_snapshot_beyond_24h")
+        else:
+            monitor = ("other_source_issue_within_24h"
+                       if remaining <= URGENT_LOCK_WINDOW else
+                       "other_source_issue_beyond_24h")
+        monitoring[monitor] += 1
+        if timedelta(0) < remaining <= URGENT_LOCK_WINDOW:
+            monitoring["all_games_locking_within_24h"] += 1
+            if monitor == "cross_source_proxy_first_issues_covered":
+                monitoring["proxy_issued_games_locking_within_24h"] += 1
         new_now = len(linked - known_ids) if reason == "new_prelock_candidates_ready" else 0
         count["potential_new_player_games"] += new_now
         count["already_issued_in_upcoming_games"] += len(known_ids)
@@ -166,6 +196,8 @@ def diagnose(live, shadow, catalog_snapshots, espn_snapshots, now):
             "latest_unique_name_only_mapped_count": matched_weak,
             "unissued_mapped_candidates_now": new_now,
             "readiness": reason,
+            "hours_until_individual_lock": round(remaining.total_seconds()/3600, 2),
+            "operational_capture_monitor": monitor,
         })
 
     direct_partition = sum(
@@ -182,6 +214,20 @@ def diagnose(live, shadow, catalog_snapshots, espn_snapshots, now):
     )
     if direct_partition != len(fixture_rows):
         raise ValueError("Missing readiness reason for scheduled fixture")
+    monitor_states = {
+        "lock_elapsed_not_actionable",
+        "cross_source_proxy_first_issues_covered",
+        "new_selected_candidates_ready_to_issue",
+        "prelock_capture_needed_within_24h",
+        "awaiting_prospective_snapshot_beyond_24h",
+        "other_source_issue_within_24h",
+        "other_source_issue_beyond_24h",
+    }
+    if sum(monitoring[x] for x in monitor_states) != len(fixture_rows):
+        raise ValueError("Operational PIT readiness monitor has missing fixtures")
+    if (monitoring["prelock_capture_needed_within_24h"] >
+            monitoring["all_games_locking_within_24h"]):
+        raise ValueError("PIT capture cannot be urgent for future-dated fixtures")
     return {
         "schema_version": 1,
         "status": STATUS, "model_status": STATUS, "adopt_on_site": False,
@@ -196,6 +242,9 @@ def diagnose(live, shadow, catalog_snapshots, espn_snapshots, now):
         "espn_snapshot_count": len(espn),
         "future_scheduled_games_next_72h": len(fixture_rows),
         "readiness_counts": dict(count),
+        "operational_capture_monitor_counts": dict(monitoring),
+        "operational_monitor_horizon_hours": 24,
+        "operational_monitor_is_not_game_day_eligibility": True,
         "per_game": fixture_rows,
         "uncertain_roster_denominator_verified": False,
         "missing_row_does_not_mean_DNP": True,
@@ -207,6 +256,8 @@ def diagnose(live, shadow, catalog_snapshots, espn_snapshots, now):
             "A strong ESPN ID is not a confirmed active NBA game-day roster membership.",
             "No new frozen forecast is actually issued by this diagnostic.",
             "A later roster capture cannot be backdated to earlier individual locks.",
+            "A fixture in the next 72h but >36h after the last capture is not necessarily an overdue capture.",
+            "Only missing PIT sources with player lock <=24h are escalated; this is an operational warning, not an NBA roster label.",
             "Upcoming games with stale catalog require new independently timed snapshots.",
         ],
     }

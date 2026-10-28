@@ -32,6 +32,14 @@ class Tests(unittest.TestCase):
             "all_mapped_players_already_issued","live_or_calendar_source_not_fresh",
             "new_prelock_candidates_ready"}), len(r["per_game"]))
         self.assertTrue(all(row["readiness"] for row in r["per_game"]))
+        m=r["operational_capture_monitor_counts"]
+        self.assertEqual(r["operational_monitor_horizon_hours"],24)
+        self.assertEqual(sum(v for k,v in m.items() if k not in (
+            "all_games_locking_within_24h","proxy_issued_games_locking_within_24h")),len(r["per_game"]))
+        self.assertFalse(r["operational_monitor_is_not_game_day_eligibility"] is False)
+        self.assertEqual(sum(x["operational_capture_monitor"]=="prelock_capture_needed_within_24h"
+                             for x in r["per_game"]),m.get("prelock_capture_needed_within_24h",0))
+        self.assertTrue(all(x["hours_until_individual_lock"]>0 for x in r["per_game"]))
     def test_does_not_backdate_future_screenshot(self):
         c=deepcopy(self.catalog)
         future=self.now+timedelta(hours=48)
