@@ -49,6 +49,40 @@ class Tests(unittest.TestCase):
   for t in second["teams"]:t["source_first_seen_at_utc"]=second["captured_at_utc"]
   second["snapshot_hash_sha256"]=canonical_hash({"teams":second["teams"],"captured":second["captured_at_utc"]})
   with self.assertRaises(ValueError):validate_espn_snapshots([first,second],d("2026-10-26T22:10:00Z"))
+ def test_msk_midnight_boundary_and_fail_closed_guards(self):
+  # These three actual PIT observation clocks crossed midnight in Moscow,
+  # although all three are still 28 October UTC.
+  a=inputs();first=a[4][0]
+  def at(clock):
+   snap=deepcopy(first);snap["captured_at_utc"]=clock
+   for t in snap["teams"]:t["source_first_seen_at_utc"]=clock
+   snap["snapshot_hash_sha256"]=canonical_hash({"teams":snap["teams"],"captured":clock})
+   return snap
+  early=at("2026-10-28T15:14:29Z")
+  late=at("2026-10-28T20:54:15Z")
+  next_day=at("2026-10-28T21:12:11Z")
+  now=d("2026-10-28T22:00:00Z")
+  actual=validate_espn_snapshots([next_day,late,early],now)
+  self.assertEqual([t.isoformat() for t,_ in actual],[
+   "2026-10-28T15:14:29+00:00","2026-10-28T20:54:15+00:00","2026-10-28T21:12:11+00:00"])
+  # The cap remains two per Moscow date, not an exemption for extra sources.
+  third_same_msk=at("2026-10-28T20:59:59Z")
+  with self.assertRaises(ValueError):
+   validate_espn_snapshots([early,late,third_same_msk],now)
+  too_close=at("2026-10-28T17:14:29Z")
+  with self.assertRaises(ValueError):
+   validate_espn_snapshots([early,too_close],now)
+  with self.assertRaises(ValueError):
+   validate_espn_snapshots([early,late,next_day],d("2026-10-28T21:00:00Z"))
+  forged=deepcopy(next_day)
+  forged["teams"][0]["source_first_seen_at_utc"]="2026-10-28T20:00:00Z"
+  forged["snapshot_hash_sha256"]=canonical_hash({"teams":forged["teams"],"captured":forged["captured_at_utc"]})
+  with self.assertRaises(ValueError):
+   validate_espn_snapshots([forged],now)
+  bad_hash=deepcopy(next_day);bad_hash["teams"][0]["club"]="FAKE"
+  with self.assertRaises(ValueError):
+   validate_espn_snapshots([bad_hash],now)
+
  def test_tampered_hash_is_rejected(self):
   a=inputs();a[4][0]["teams"][0]["athletes"][0]["display_name"]="Tampered"
   with self.assertRaises(ValueError):build(*a,d("2026-10-26T18:03:00Z"))
