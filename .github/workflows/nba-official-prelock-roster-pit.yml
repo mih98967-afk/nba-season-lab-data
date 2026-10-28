@@ -1,0 +1,41 @@
+name: NBA official prelock game roster PIT research
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/official_nba_prelock_roster_pit_research.py','test_official_nba_prelock_roster_pit_research.py','.github/workflows/nba-official-prelock-roster-pit.yml']
+  workflow_dispatch:
+  schedule:
+    - cron: '11,41 20-23,0-5 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && 'nba-official-prelock-pr-checks' || 'nba-season-lab-shared-write' }}
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Verify non-backdated game-specific source and UNKNOWN rules
+        run: python -m unittest -v test_official_nba_prelock_roster_pit_research
+      - name: Capture only actual official NBA prelock observations
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          git pull --ff-only origin main
+          python -m src.official_nba_prelock_roster_pit_research
+      - name: Archive only independent first-observed research
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          if [ -f data/official_nba_prelock_roster_pit_research.json ]; then
+            git config user.name "nba-season-lab-bot"
+            git config user.email "nba-season-lab-bot@users.noreply.github.com"
+            git add data/official_nba_prelock_roster_pit_research.json
+            if ! git diff --cached --quiet; then
+              git commit -m "research: append official NBA prelock roster observations"
+              git pull --rebase origin main
+              git push origin HEAD:main
+            fi
+          fi
