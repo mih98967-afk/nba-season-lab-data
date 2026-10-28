@@ -12,7 +12,7 @@ class HistoricalHoldoutChecks(unittest.TestCase):
         cls.index=json.loads((DATA/"history/index.json").read_text(encoding="utf8"))
         cls.frozen=json.loads((DATA/"conditional_minutes_fp_research.json").read_text(encoding="utf8"))
         cls.now=datetime.now(timezone.utc)
-        cls.loads=lambda name:json.loads((DATA/"history"/name).read_text(encoding="utf8"))
+        cls.loads=staticmethod(lambda name:json.loads((DATA/"history"/name).read_text(encoding="utf8")))
     def make(self,index=None,frozen=None):
         return build(index or self.index,self.loads,frozen or self.frozen,self.now)
     def test_replay_matches_current_untouched_holdout(self):
