@@ -11,4 +11,12 @@ class TestWorkflowOwnership(unittest.TestCase):
   self.assertIn('git add data/schedule.json',schedule)
   self.assertIn("cron: '7 */4 * * *'",schedule)
   self.assertIn("cron: '17 */4 * * *'",live)
+  self.assertLess(live.index('python -m src.sync'),live.index('python -m src.espn_roster_pit'))
+  self.assertLess(live.index('python -m src.espn_roster_pit'),
+                  live.index('python -m src.p_play_shadow_research', live.index('python -m src.espn_roster_pit')))
+  self.assertIn('git add data/espn_roster_pit/*.json',live)
+  espn=(ROOT/'.github/workflows/espn-roster-pit.yml').read_text()
+  self.assertNotIn('  push:',espn)
+  self.assertIn('  schedule:',espn)
+  self.assertIn("github.event_name == 'pull_request'",espn)
 if __name__=='__main__':unittest.main()

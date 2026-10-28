@@ -66,6 +66,10 @@ jobs:
         run: |
           git pull --ff-only origin main
           python -m src.sync
+      - name: Capture current ESPN team PIT if a daily slot is available
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          python -m src.espn_roster_pit
       - name: Reconcile official explicit DNP, participation and immutable forecast outcomes
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
@@ -91,7 +95,7 @@ jobs:
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/live.json data/catalog.json data/explicit_dnp_research.json data/participation_cohort_research.json data/p_play_shadow_research.json data/conditional_minutes_fp_research.json data/short_minutes_prospective_research.json data/conditional_minutes_fp_evaluation_research.json data/conditional_minutes_robustness_research.json data/short_minutes_prospective_evaluation_research.json data/participation_coverage_research.json data/p_play_selection_bias_audit.json data/participation_evidence_ledger_research.json data/p_play_precommitted_paired_evaluation_research.json data/official_nba_nonout_unknown_research.json data/availability_source_reconciliation_research.json
+          git add data/espn_roster_pit/*.json data/live.json data/catalog.json data/explicit_dnp_research.json data/participation_cohort_research.json data/p_play_shadow_research.json data/conditional_minutes_fp_research.json data/short_minutes_prospective_research.json data/conditional_minutes_fp_evaluation_research.json data/conditional_minutes_robustness_research.json data/short_minutes_prospective_evaluation_research.json data/participation_coverage_research.json data/p_play_selection_bias_audit.json data/participation_evidence_ledger_research.json data/p_play_precommitted_paired_evaluation_research.json data/official_nba_nonout_unknown_research.json data/availability_source_reconciliation_research.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh NBA scores and schedule"
             git pull --rebase origin main
