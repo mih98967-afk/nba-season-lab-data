@@ -13,6 +13,10 @@ on:
       - test_official_nba_gameday_status_research.py
       - .github/workflows/official-nba-gameday-research.yml
   workflow_dispatch:
+  workflow_run:
+    workflows: ['NBA official OUT independent boxscore evidence research']
+    types: [completed]
+    branches: [main]
   schedule:
     - cron: '43 8 * * *'
 permissions:
@@ -32,12 +36,12 @@ jobs:
         run: |
           python -m unittest -v test_official_nba_gameday_status_research test_official_out_boxscore_evidence_research
       - name: Fetch official game-specific NBA evidence only
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git pull --ff-only origin main
           python -m src.official_nba_gameday_status_research
       - name: Archive separate research-only report
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
