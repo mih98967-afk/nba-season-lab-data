@@ -14,7 +14,9 @@ class TestWorkflowOwnership(unittest.TestCase):
   self.assertLess(live.index('python -m src.sync'),live.index('python -m src.espn_roster_pit'))
   self.assertLess(live.index('python -m src.espn_roster_pit'),
                   live.index('python -m src.p_play_shadow_research', live.index('python -m src.espn_roster_pit')))
-  self.assertIn('git add data/espn_roster_pit/*.json',live)
+  self.assertIn('data/espn_roster_pit/*.json',live)
+  self.assertIn('data/catalog_pit/*.json',live)
+  self.assertLess(live.index('python -m src.sync'),live.index('from src.catalog_pit_research import run'))
   espn=(ROOT/'.github/workflows/espn-roster-pit.yml').read_text()
   self.assertNotIn('  push:',espn)
   self.assertIn('  schedule:',espn)
