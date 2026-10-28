@@ -74,6 +74,23 @@ class Tests(unittest.TestCase):
             report = capture(LIVE,{},missing,T,clock=lambda:T)
         self.assertEqual(report["qa"]["nba_box_http_404"],1)
 
+    def test_403_stops_network_requests_without_labels(self):
+        calls=[]
+        live={"schema_version":4,"schedule":[dict(GAME,id="espn_"+str(i))
+             for i in range(5)]}
+        with patch("src.official_nba_prelock_roster_pit_research.official_schedule",return_value=[FIX]):
+            def blocked(url):
+                from urllib.error import HTTPError
+                calls.append(url)
+                raise HTTPError(url,403,"Forbidden",None,None)
+            report=capture(live,{},blocked,T,clock=lambda:T)
+        self.assertEqual(len(calls),1)
+        self.assertEqual(report["qa"]["considered"],5)
+        self.assertEqual(report["qa"]["unknown_or_unavailable"],5)
+        self.assertEqual(report["qa"]["source_blocked_unqueried"],4)
+        self.assertEqual(report["qa"]["nba_box_http_403"],1)
+        self.assertFalse(report["snapshots"])
+
     def test_wrong_game_and_cross_team_rejected(self):
         p = box()
         p["game"]["homeTeam"]["teamTricode"] = "NYK"

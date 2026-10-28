@@ -87,7 +87,8 @@ def capture(live, schedule, fetch, now, old=None, *, clock=None):
     games = [g for g in live.get("schedule", []) if
              g.get("status") == "scheduled" and g.get("id") not in previous
              and LOCK < utc(g["utc"]) - now <= timedelta(hours=6)]
-    for game in sorted(games, key=lambda x: (x["utc"], x["id"]))[:MAX_GAMES]:
+    queue = sorted(games, key=lambda x: (x["utc"], x["id"]))[:MAX_GAMES]
+    for i, game in enumerate(queue):
         qa["considered"] += 1
         matched, reason = fixture_match(game, official)
         lock = utc(game["utc"]) - LOCK
@@ -102,6 +103,15 @@ def capture(live, schedule, fetch, now, old=None, *, clock=None):
             roster = extract_pregame(payload, matched)
         except HTTPError as exc:
             unavailable("nba_box_http_" + str(exc.code))
+            if exc.code in (401, 403, 429):
+                # Repeated calls from this Actions runner cannot make a
+                # blocked public endpoint trustworthy. Leave ALL others UNKNOWN.
+                skipped = len(queue) - i - 1
+                qa["considered"] += skipped
+                qa["unknown_or_unavailable"] += skipped
+                qa["source_blocked_unqueried"] += skipped
+                qa["source_access_denied_short_circuit"] += 1
+                break
             continue
         except (URLError, OSError, TimeoutError):
             unavailable("nba_box_network_unavailable")
