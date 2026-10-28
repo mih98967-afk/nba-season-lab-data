@@ -29,5 +29,6 @@ class ConditionalOwner(unittest.TestCase):
             self.assertNotIn("workflow_run:",s)
             self.assertNotIn("  schedule:",s)
             self.assertNotIn("  workflow_dispatch:",s)
-            self.assertNotIn("python -m src.conditional_minutes_",s)
+            self.assertIn("python -m src.conditional_minutes_fp_evaluation_research",s)
+            self.assertIn("Reconcile immutable source labels in checkout (not published)",s)
 if __name__=="__main__":unittest.main()
