@@ -12,16 +12,31 @@ class PairedProtocol(unittest.TestCase):
             ("p_play_shadow_research.json",
              "historical_prior_prospective_shadow_research.json",
              "explicit_dnp_research.json","live.json")]
-        cls.now=datetime(2026,10,27,16,0,tzinfo=timezone.utc)
-    def test_real_prelock_overlap_zero_outcomes_and_locked_rules(self):
+        cls.now=datetime.now(timezone.utc)
+    def test_live_data_advances_without_retroactive_predictions(self):
         x=evaluate(*self.inputs,self.now)
-        self.assertEqual(x["p_play_first_issued_total"],617)
-        self.assertEqual(x["historical_prelock_overlapping_issued_total"],206)
-        self.assertEqual(x["paired_cohort"]["verified_pairs"],0)
-        self.assertIsNone(x["verified_only_matched_proper_scores"])
-        self.assertIsNone(x["ET_date_cluster_bootstrap_if_sufficient"])
+        self.assertEqual(x["p_play_first_issued_total"],len(self.inputs[0]["issued"]))
+        self.assertEqual(x["historical_prelock_overlapping_issued_total"],len(self.inputs[1]["issued"]))
+        self.assertEqual(x["paired_cohort"]["verified_pairs"],len(self.inputs[1]["observed"]))
+        self.assertEqual(
+            x["paired_cohort"]["issued"],
+            x["paired_cohort"]["verified_pairs"]
+            + x["paired_cohort"]["outcome_UNKNOWN"]
+            + x["paired_cohort"]["waiting_historical_reconciliation"]
+            + x["paired_cohort"]["awaiting_finished_checked_game"]
+            + x["paired_cohort"]["final_game_not_independently_DNP_checked"])
+        if len(self.inputs[1]["observed"]) == 0:
+            self.assertIsNone(x["verified_only_matched_proper_scores"])
+        else:
+            self.assertEqual(
+                x["verified_only_matched_proper_scores"]["verified_player_games"],
+                len(self.inputs[1]["observed"]))
+        if (x["paired_cohort"]["verified_pairs"] < 100
+            or x["verified_only_matched_proper_scores"] is None
+            or x["verified_only_matched_proper_scores"]["verified_ET_dates"] < 8):
+            self.assertIsNone(x["ET_date_cluster_bootstrap_if_sufficient"])
         self.assertFalse(x["fixed_protocol_gates"]["adopt_on_site"])
-        self.assertEqual(len(x["by_NBA_ET_date"]),2)
+        self.assertTrue(x["by_NBA_ET_date"])
     def test_changed_historical_prediction_is_quarantined(self):
         x=deepcopy(self.inputs)
         x[1]["issued"][0]["current_pplay_candidate_frozen"]=0.42
