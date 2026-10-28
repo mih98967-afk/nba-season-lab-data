@@ -369,16 +369,19 @@ def build(ledger, shadow, selection, existing, identity, live, explicit,
     }
 
 
-def run():
+def run(allow_network=True):
     now = datetime.now(timezone.utc)
     load = lambda file: json.loads((DATA / file).read_text(encoding="utf8"))
     path = DATA / "official_nba_nonout_unknown_research.json"
     old = load(path.name) if path.exists() else {}
     schedule, error = None, None
-    try:
-        schedule = fetch_public_json(SCHEDULE_URL)
-    except (OSError, TimeoutError, ValueError, TypeError) as exc:
-        error = type(exc).__name__
+    if allow_network:
+        try:
+            schedule = fetch_public_json(SCHEDULE_URL)
+        except (OSError, TimeoutError, ValueError, TypeError) as exc:
+            error = type(exc).__name__
+    else:
+        error = "no_network_offline_validation"
     report = build(
         load("participation_evidence_ledger_research.json"),
         load("p_play_shadow_research.json"),
