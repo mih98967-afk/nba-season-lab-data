@@ -15,6 +15,10 @@ class ShortMinuteIssues(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.minute=load("conditional_minutes_fp_research.json")
+        # A historical replay must not load real forecasts issued AFTER FIXED.
+        # Preserve every original field; restrict only the available first-issue set.
+        cls.minute["issued"]=[x for x in cls.minute["issued"] if x["issued_at_utc"]<=FIXED.isoformat().replace("+00:00","Z")]
+        cls.minute["issued_total"]=len(cls.minute["issued"])
         cls.shadow=load("p_play_shadow_research.json")
         cls.role=load("short_minutes_role_bands_research.json")
     def make(self,time=FIXED,old=None,minute=None,shadow=None,role=None):
