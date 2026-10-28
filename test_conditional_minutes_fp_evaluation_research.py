@@ -58,6 +58,17 @@ class ConditionalMinutesProspectiveEvaluation(unittest.TestCase):
         self.assertFalse(result["quality_gate"][
             "dev_q90_bands_are_valid_future_predictive_intervals"])
 
+    def test_absent_et_metadata_uses_verified_tipoff_but_conflict_fails(self):
+        args = deepcopy(self.inputs)
+        existing = self.make()
+        target = existing["scored_played"][0]["game_id"]
+        game = next(g for g in args[4]["games"] if g["id"] == target)
+        game.pop("et_date", None)
+        self.assertEqual(self.make(args)["summary"], existing["summary"])
+        game["et_date"] = "2030-01-01"
+        with self.assertRaises(ValueError):
+            self.make(args)
+
     def test_lock_time_tampering_rejected(self):
         args = deepcopy(self.inputs)
         issue = args[0]["issued"][0]
