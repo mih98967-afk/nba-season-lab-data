@@ -13,7 +13,7 @@ class TestWorkflowOwnership(unittest.TestCase):
   self.assertIn("cron: '17 */4 * * *'",live)
   self.assertLess(live.index('python -m src.sync'),live.index('python -m src.espn_roster_pit'))
   self.assertLess(live.index('python -m src.espn_roster_pit'),
-                  live.index('python -m src.p_play_shadow_research'))
+                  live.index('python -m src.p_play_shadow_research', live.index('python -m src.espn_roster_pit')))
   self.assertIn('git add data/espn_roster_pit/*.json',live)
   espn=(ROOT/'.github/workflows/espn-roster-pit.yml').read_text()
   self.assertNotIn('  push:',espn)
