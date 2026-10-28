@@ -7,7 +7,7 @@ research archive; personal fantasy data and existing p_play labels untouched.
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[1] / "data"
 PREFIX = "https://stats.nba.com/stats/boxscoresummaryv2?GameID="
 MAX_BYTES = 3_000_000
 MAX_GAMES = 18
+RETRY_BACKOFF = timedelta(hours=24)
 VERIFIED = "VERIFIED_OFFICIAL_NBA_INACTIVE_LIST"
 UNKNOWN = "UNKNOWN"
 
@@ -105,8 +106,45 @@ def validate_summary(payload, nba_game_id, home, away):
             "teams": {home: home_id, away: away_id}}
 
 
+
+def plan_requests(official, previous, now):
+    """Request new NBA games; skip recently timed-out game IDs, never outcomes."""
+    if now.utcoffset() is None:
+        raise ValueError("Research clock requires timezone")
+    now = now.astimezone(timezone.utc)
+    if (official.get("status") != STATUS or
+            official.get("adopt_on_site") is not False or
+            official.get("model_training_negative_allowed") is not False):
+        raise ValueError("Untrusted NBA game-day source")
+    if previous and (previous.get("schema_version") != 1 or
+                     previous.get("status") != STATUS or
+                     previous.get("adopt_on_site") is not False):
+        raise ValueError("Untrusted previous NBA inactive source")
+    ids = sorted({r["nba_game_id"] for r in official.get("records") or []})
+    if not ids or len(ids) > MAX_GAMES or any(
+            not re.fullmatch(r"00226\d{5}", str(gid)) for gid in ids):
+        raise ValueError("Out-of-bounds official NBA game IDs")
+    old_games = {r["nba_game_id"] for r in previous.get("records") or []}
+    history = previous.get("source_attempted_utc_by_game") or {}
+    if not isinstance(history, dict):
+        raise ValueError("Malformed historical request provenance")
+    request, defer = [], []
+    for gid in ids:
+        seen = history.get(gid) or (
+            previous.get("updated_at_utc") if gid in old_games else None)
+        if seen:
+            elapsed = now - utc(seen)
+            if elapsed.total_seconds() < 0:
+                raise ValueError("Future request timestamp")
+            if elapsed < RETRY_BACKOFF:
+                defer.append(gid)
+                continue
+        request.append(gid)
+    return request, defer
+
+
 def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
-              now, previous=None):
+              now, previous=None, attempted_game_ids=None, deferred_game_ids=None):
     if now.utcoffset() is None:
         raise ValueError("Clock must be timezone-aware")
     now = now.astimezone(timezone.utc)
@@ -131,6 +169,18 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
     prior_rows = {(r["game_id"],r["player_id"]):r for r in old.get("records", [])}
     if len(prior_rows) != len(old.get("records", [])):
         raise ValueError("Duplicate previous evidence")
+    source_games = {r["nba_game_id"] for r in prev_cases}
+    attempted = source_games if attempted_game_ids is None else set(attempted_game_ids)
+    deferred = set(deferred_game_ids or [])
+    if (attempted & deferred or attempted | deferred != source_games
+            or deferred - {r["nba_game_id"] for r in prior_rows.values()}):
+        raise ValueError("Invalid source attempted/deferred partition")
+    attempt_history = dict(old.get("source_attempted_utc_by_game") or {})
+    for prior in prior_rows.values():
+        if prior["nba_game_id"] not in attempt_history and old.get("updated_at_utc"):
+            attempt_history[prior["nba_game_id"]] = old["updated_at_utc"]
+    for gid in attempted:
+        attempt_history[gid] = stamp(now)
     outputs = []
     checked = {}
     qa = Counter()
@@ -148,7 +198,10 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
             or utc(game["utc"]) > now):
             raise ValueError("Unsafe or mismatched game/OUT evidence")
         if nba_id not in checked:
-            if nba_id in payloads:
+            if nba_id in deferred:
+                qa["source_retry_deferred_games"] += 1
+                checked[nba_id] = None
+            elif nba_id in payloads:
                 try:
                     checked[nba_id] = validate_summary(payloads[nba_id],nba_id,game["home"],game["away"])
                     qa["verified_official_summary_games"] += 1
@@ -165,6 +218,18 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
         if method == "high" and (not str(identity or "").isdigit()):
             raise ValueError("High identity without NBA ID")
         old_item = prior_rows.get(key)
+        if nba_id in deferred:
+            if (old_item is None or old_item.get("outcome") not in (UNKNOWN, VERIFIED)
+                    or old_item.get("nba_game_id") != nba_id
+                    or old_item.get("team") != row["team"]
+                    or old_item.get("game_utc") != game["utc"]
+                    or old_item.get("first_prediction_issued_at_utc") !=
+                    row["first_prediction_issued_at_utc"]):
+                raise ValueError("Deferred source would change immutable prior identity")
+            outputs.append(old_item)
+            qa[old_item["outcome"]] += 1
+            qa["historical_evidence_preserved"] += 1
+            continue
         if old_item and old_item.get("outcome") == VERIFIED:
             outputs.append(old_item)
             continue
@@ -216,9 +281,13 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
     return {
         "schema_version":1,"status":STATUS,"model_status":STATUS,
         "adopt_on_site":False,"updated_at_utc":stamp(now),
-        "reference":"23 preissue official OUT unresolved on complete ESPN and NBA live boxscore",
+        "reference":"Frozen preissue official OUT; separate NBA Stats inactive source",
         "source_kind":"NBA_stats_BoxScoreSummaryV2_explicit_InactivePlayers",
         "source_counted_as_independent_endpoint_not_independent_provider":True,
+        "source_attempted_utc_by_game":dict(sorted(attempt_history.items())),
+        "source_attempts_this_run":len(attempted),
+        "source_retry_deferred_games":len(deferred),
+        "source_retry_backoff_hours":24,
         "original_queue_count":len(outputs),
         "verified_official_summary_games":qa["verified_official_summary_games"],
         "source_unavailable_games":qa["source_unavailable_games"],
@@ -245,9 +314,8 @@ def run():
     live=load("live.json")
     path=ROOT/"official_nba_inactive_summary_research.json"
     previous=load(path.name) if path.exists() else {}
-    ids=sorted(set(r["nba_game_id"] for r in official["records"]))
-    if len(ids)>MAX_GAMES:
-        raise ValueError("Too many NBA summary games")
+    now=datetime.now(timezone.utc)
+    ids,deferred=plan_requests(official,previous,now)
     payloads={}
     failures={}
     for gid in ids:
@@ -255,8 +323,8 @@ def run():
             payloads[gid]=request_json(PREFIX+gid)
         except (HTTPError,URLError,TimeoutError,ValueError,OSError) as exc:
             failures[gid]=(f"HTTP_{exc.code}" if isinstance(exc,HTTPError) else type(exc).__name__)
-    now=datetime.now(timezone.utc)
-    report=reconcile(official,out,live,payloads,failures,now,previous)
+    report=reconcile(official,out,live,payloads,failures,now,previous,
+                     attempted_game_ids=ids,deferred_game_ids=deferred)
     if (not previous or
             {k:v for k,v in report.items() if k!="updated_at_utc"} !=
             {k:v for k,v in previous.items() if k!="updated_at_utc"}):
@@ -264,7 +332,9 @@ def run():
         tmp.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf8")
         tmp.replace(path)
     return {k:report[k] for k in ("original_queue_count","verified_official_summary_games",
-              "source_unavailable_games","resolved_confirmed","unresolved_unknown","conflicts","qa")}
+              "source_unavailable_games","source_attempts_this_run",
+              "source_retry_deferred_games","resolved_confirmed",
+              "unresolved_unknown","conflicts","qa")}
 
 
 if __name__=="__main__":
