@@ -27,10 +27,11 @@ def case():
 def outcomes():
  return proof("sportsru_final_credits_batch","2026-11-02T08:00:00Z",
      evaluated_at_utc="2026-11-02T08:00:00Z",complete_final_fixture_set=True,
-     final_games=[{"id":"g1","utc":"2026-10-27T00:00:00Z","home":"BOS","away":"DEN","status":"final"}],
+     final_games=[{"id":"g1","utc":"2026-10-27T00:00:00Z","home":"BOS","away":"DEN","status":"final","final_verified_at_utc":"2026-10-27T03:00:00Z"}],
+     game_day_club_tenure={pid:proof("official_complete_game_day_club_tenure","2026-11-02T08:00:00Z",player_id=pid,complete_entire_window_from_official_transactions=True,independent_game_day_club_check=True,evidence_is_not_current_catalog_proxy=True,intervals=[{"from_utc":D,"until_utc":"2026-11-02T05:00:00Z","club":club}]) for pid,club in (("p0","BOS"),("incoming","DEN"))},
      credited_player_games=[
-         proof("sportsru_credited_fp","2026-10-27T04:00:00Z",player_id="p0",game_id="g1",credited_fp=15),
-         proof("sportsru_credited_fp","2026-10-27T04:00:00Z",player_id="incoming",game_id="g1",credited_fp=35)])
+         proof("sportsru_credited_fp","2026-10-27T04:00:00Z",player_id="p0",game_id="g1",club_at_game="BOS",credited_fp=15),
+         proof("sportsru_credited_fp","2026-10-27T04:00:00Z",player_id="incoming",game_id="g1",club_at_game="DEN",credited_fp=35)])
 class Tests(unittest.TestCase):
  def test_valid_case_and_immutable_inputs(self):
   s,m=case();old=copy.deepcopy(s);a=evaluate(s,m,outcomes())
@@ -66,6 +67,32 @@ class Tests(unittest.TestCase):
   self.assertEqual(evaluate(s,m)["phase"],"BLOCKED_UNVERIFIED_DECISION")
   s,m=case();s["schedule"]["games"][0]["utc"]="2026-10-26T11:00:00Z"
   self.assertEqual(evaluate(s,m)["phase"],"BLOCKED_UNVERIFIED_DECISION")
+ def test_missing_tenure_blocks_not_zero(self):
+  s,m=case();o=outcomes();del o["game_day_club_tenure"]["incoming"]
+  r=evaluate(s,m,o)
+  self.assertEqual(r["phase"],"UNSCORABLE_POSTGAME")
+  self.assertIsNone(r["actual_delta_fp"])
+ def test_tenure_gap_or_conflict_rejected(self):
+  s,m=case();o=outcomes()
+  o["game_day_club_tenure"]["incoming"]["intervals"][0]["until_utc"]="2026-11-01T05:00:00Z"
+  self.assertEqual(evaluate(s,m,o)["phase"],"UNSCORABLE_POSTGAME")
+  s,m=case();o=outcomes()
+  o["credited_player_games"][1]["club_at_game"]="BOS"
+  self.assertEqual(evaluate(s,m,o)["phase"],"UNSCORABLE_POSTGAME")
+ def test_club_change_midweek_uses_new_game_club(self):
+  s,m=case();s["schedule"]["games"].append({"id":"g2","utc":"2026-10-28T00:00:00Z","home":"NYK","away":"MIA"})
+  o=outcomes()
+  o["final_games"].append({"id":"g2","utc":"2026-10-28T00:00:00Z","home":"NYK","away":"MIA","status":"final","final_verified_at_utc":"2026-10-28T03:00:00Z"})
+  o["game_day_club_tenure"]["incoming"]["intervals"]=[
+   {"from_utc":D,"until_utc":"2026-10-27T12:00:00Z","club":"DEN"},
+   {"from_utc":"2026-10-27T12:00:00Z","until_utc":"2026-11-02T05:00:00Z","club":"NYK"}]
+  o["credited_player_games"].append(proof("sportsru_credited_fp","2026-10-28T04:00:00Z",player_id="incoming",game_id="g2",club_at_game="NYK",credited_fp=10))
+  self.assertEqual(evaluate(s,m,o)["actual_delta_fp"],30)
+ def test_missing_final_or_before_final_credit_refused(self):
+  s,m=case();o=outcomes();o["final_games"]=[]
+  self.assertEqual(evaluate(s,m,o)["phase"],"UNSCORABLE_POSTGAME")
+  s,m=case();o=outcomes();o["credited_player_games"][0]["first_observed_at_utc"]="2026-10-27T01:00:00Z"
+  self.assertEqual(evaluate(s,m,o)["phase"],"UNSCORABLE_POSTGAME")
  def test_reconstructed_fp_not_credit(self):
   s,m=case();y=outcomes()
   y["credited_player_games"][0]["source_kind"]="reconstructed_fp"
