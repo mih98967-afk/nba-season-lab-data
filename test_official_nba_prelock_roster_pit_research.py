@@ -22,7 +22,7 @@ def box():
 class Tests(unittest.TestCase):
     def get(self, now=T, payload=None, old=None):
         with patch("src.official_nba_prelock_roster_pit_research.official_schedule", return_value=[FIX]):
-            return capture(LIVE, {}, lambda url: payload if payload is not None else box(), now, old)
+            return capture(LIVE, {}, lambda url: payload if payload is not None else box(), now, old, clock=lambda: now + timedelta(seconds=2))
 
     def test_real_prelock_clock_only_and_append_only(self):
         r = self.get()
@@ -50,6 +50,29 @@ class Tests(unittest.TestCase):
         self.assertFalse(r["snapshots"])
         r = self.get(payload={"game": {"gameStatus": 3}})
         self.assertEqual(r["qa"]["unknown_or_unavailable"], 1)
+
+    def test_network_response_after_lock_never_backdated(self):
+        start = T + timedelta(minutes=89)
+        r = self.get(now=start)
+        self.assertEqual(r["qa"]["new"], 1)
+        with patch("src.official_nba_prelock_roster_pit_research.official_schedule", return_value=[FIX]):
+            late = capture(LIVE, {}, lambda _: box(), start,
+                           clock=lambda: T + timedelta(minutes=91))
+        self.assertEqual(late["qa"]["new"], 0)
+        self.assertEqual(late["qa"]["source_finished_at_or_after_lock"], 1)
+        self.assertEqual(late["snapshots"], [])
+
+    def test_diagnostics_distinguish_partial_from_unavailable(self):
+        partial = box()
+        partial["game"]["homeTeam"]["players"] = []
+        report = self.get(payload=partial)
+        self.assertEqual(report["qa"]["nba_box_incomplete_pregame_listing"], 1)
+        with patch("src.official_nba_prelock_roster_pit_research.official_schedule", return_value=[FIX]):
+            def missing(_):
+                from urllib.error import HTTPError
+                raise HTTPError("https://example.com",404,"not found",None,None)
+            report = capture(LIVE,{},missing,T,clock=lambda:T)
+        self.assertEqual(report["qa"]["nba_box_http_404"],1)
 
     def test_wrong_game_and_cross_team_rejected(self):
         p = box()
