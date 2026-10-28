@@ -1,0 +1,23 @@
+name: NBA KEEP TRANSFER economic replay evidence gate
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/keep_transfer_economic_replay.py','test_keep_transfer_economic_replay.py','.github/workflows/keep-transfer-economic-replay.yml']
+  push:
+    branches: [main]
+    paths: ['src/keep_transfer_economic_replay.py','test_keep_transfer_economic_replay.py','.github/workflows/keep-transfer-economic-replay.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline_gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Verify no fabricated Sports.ru prices, roster or credits
+        run: |
+          python -m unittest -v test_keep_transfer_economic_replay
+          python -m src.keep_transfer_economic_replay
