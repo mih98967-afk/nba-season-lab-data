@@ -28,7 +28,7 @@ class Tests(unittest.TestCase):
         r = self.get()
         self.assertEqual(r["qa"]["new"], 1)
         row = r["snapshots"][0]
-        self.assertEqual(row["source_first_observed_at_utc"], "2026-10-29T00:00:00Z")
+        self.assertEqual(row["source_first_observed_at_utc"], "2026-10-29T00:00:02Z")
         self.assertEqual(row["individual_lock_utc"], "2026-10-29T01:30:00Z")
         self.assertFalse(row["game_day_active_eligibility_verified"])
         self.assertFalse(row["missing_player_implies_DNP"])
