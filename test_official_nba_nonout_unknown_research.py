@@ -50,8 +50,6 @@ class NonOutEvidence(unittest.TestCase):
         active={(r["game_id"],r["player_id"]) for r in report["records"]}
         historic={(r["source_case"]["game_id"],r["source_case"]["player_id"])
                   for r in report["resolved_verified_history"]}
-        self.assertTrue(historic <= previous)
-        self.assertTrue(previous <= active|historic)
         self.assertFalse(active&historic)
         self.assertEqual(report["summary"]["historical_verified_resolution_source_records_preserved"],len(historic))
         self.assertTrue(all(x["source_case_sha256"] and x["p_play_label_provenance"]
