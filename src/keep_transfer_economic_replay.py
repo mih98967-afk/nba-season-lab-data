@@ -121,8 +121,9 @@ def validate_decision(snapshot, moves):
     account = snapshot.get("account")
     observed(account, kind="sportsru_account", cutoff=decision,
              age=SOURCE_AGE["account"])
-    roster = account.get("roster")
-    ensure(isinstance(roster, list), "NO_OWNER_ROSTER")
+    original_roster = account.get("roster")
+    ensure(isinstance(original_roster, list), "NO_OWNER_ROSTER")
+    roster = list(original_roster)
     cash = numerical(account.get("cash"), "CASH")
     remaining = account.get("quota_remaining")
     ensure(type(remaining) is int and 0 <= remaining <= MAX_MOVES,
