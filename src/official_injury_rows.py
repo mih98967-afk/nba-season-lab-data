@@ -88,6 +88,28 @@ def parse_pages(pages):
                            "player_name":norm(player),"official_status":status.lower()})
     return events,dict(qa)
 
+def validate_extracted_status_rows(pages, events):
+    """Verify every explicit status cell was parsed with complete PDF context.
+
+    Valid report sizes depend on the number of scheduled fixtures; a fixed
+    15-player minimum rejects genuine small slates. This checks extraction
+    completeness instead, without declaring unlisted players available.
+    """
+    cells=0
+    for page in pages:
+        for line in group_lines(page.extract_words(x_tolerance=2,y_tolerance=2)):
+            if col(line,580,663).title() in STATUS:
+                cells+=1
+    if cells == 0 or len(events) != cells:
+        raise ValueError(
+            f"Official injury status context incomplete: parsed={len(events)} cells={cells}")
+    player_games=[(e["et_date"],e["away"],e["home"],e["team"],e["player_name"])
+                  for e in events]
+    if len(set(player_games)) != len(player_games):
+        raise ValueError("Duplicate player/matchup in official PDF status cells")
+    return {"explicit_status_cells":cells,"structurally_verified_rows":len(events),
+            "status_cell_coverage_complete":True}
+
 def strict_enrich(events,catalog,identity,schedule,report_info):
     available=defaultdict(set)
     for p in catalog.get("players",[]):
@@ -139,19 +161,20 @@ def run():
     raw=get(report["url"])
     if hashlib.sha256(raw).hexdigest()!=report["sha256"]:
         raise ValueError("Official PDF changed since first observed; do not backdate")
-    with pdfopen(BytesIO(raw)) as doc:events,qa=parse_pages(doc.pages)
-    if len(events)<15:raise ValueError("Too few official rows for validated extraction")
+    with pdfopen(BytesIO(raw)) as doc:
+        events,qa=parse_pages(doc.pages)
+        extraction=validate_extracted_status_rows(doc.pages,events)
     catalog=json.loads((DATA/"catalog.json").read_text())
     identity=json.loads((DATA/"identity.json").read_text())
     schedule=json.loads((DATA/"schedule.json").read_text())
     mapped,joinqa=strict_enrich(events,catalog,identity,schedule,report)
-    if len(mapped)<10 or len(mapped)/len(events)<.50:
-        raise ValueError("Official row matching coverage below safe threshold")
+    if len(mapped) < (len(events)+1)//2:
+        raise ValueError("Official row matching coverage below 50% safe threshold")
     output={"schema_version":1,"status":"research_only_not_deployed",
       "updated_at_utc":datetime.now(timezone.utc).isoformat(),
       "report_at_utc":report["report_at_utc"],"first_seen_at_utc":report["first_seen_at_utc"],
       "source_url":report["url"],"raw_status_rows":len(events),"matched_count":len(mapped),
-      "parser_qa":qa,"join_qa":joinqa,"events":mapped,
+      "pdf_status_extraction_quality":extraction,"parser_qa":qa,"join_qa":joinqa,"events":mapped,
       "warning":"No status automatically changes FP; absent players are NOT healthy; timestamp is first observed, not guaranteed published availability",
       "adopt_on_site":False}
     # Append-only, first-seen provenance. Revisions of a PDF can never
