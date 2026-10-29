@@ -8,7 +8,9 @@ on:
     paths: ['src/historical_prior_prospective_shadow.py','test_historical_prior_prospective_shadow.py','.github/workflows/historical-prior-prospective.yml']
   workflow_dispatch:
   workflow_run:
-    workflows: ['NBA prospective p-play shadow research']
+    # Sync publishes new real first-observed outcome timestamps atomically.
+    # Reconcile the already-frozen historical competitor only AFTER success.
+    workflows: ['NBA prospective p-play shadow research', 'NBA public data sync']
     types: [completed]
     branches: [main]
   schedule:
