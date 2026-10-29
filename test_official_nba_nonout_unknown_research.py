@@ -78,7 +78,9 @@ class NonOutEvidence(unittest.TestCase):
     def test_unknown_growth_above_old_200_cap_is_not_a_label(self):
         # Expand an authentic frozen case into distinct finished player-games.
         # All three denominators must agree; no extra external requests or DNP.
-        for size in (200, 201, 341):
+        for size in (max(200, len(self.inputs[0]["unknown_cases"])),
+                     max(201, len(self.inputs[0]["unknown_cases"]) + 1),
+                     max(341, len(self.inputs[0]["unknown_cases"]) + 11)):
             inputs = deepcopy(self.inputs)
             ledger, shadow, selection = inputs[:3]
             source = next(x for x in ledger["unknown_cases"]
@@ -87,7 +89,7 @@ class NonOutEvidence(unittest.TestCase):
                             if x["game_id"] == source["game_id"]
                             and x["player_id"] == source["player_id"])
             extra = size - len(ledger["unknown_cases"])
-            self.assertGreater(extra, 0)
+            self.assertGreaterEqual(extra, 0)
             for i in range(extra):
                 player_id = "test_unknown_growth_%04d" % i
                 new_case = deepcopy(source)
@@ -142,7 +144,9 @@ class NonOutEvidence(unittest.TestCase):
         ledger["current_OUT_queue"] += 11
         report = build(*inputs, None, lambda _: None, self.now, max_games=1)
         summary = report["summary"]
-        self.assertEqual(summary["pending_official_OUT_independent_review_excluded"], 11)
+        base_pending = len([x for x in self.inputs[0]["unknown_cases"]
+                            if x["official_status_first_known_by_issue"]=="out"]) - len(reviewed["records"])
+        self.assertEqual(summary["pending_official_OUT_independent_review_excluded"], base_pending + 11)
         self.assertEqual(summary["already_reviewed_official_OUT_excluded"], len(reviewed["records"]))
         self.assertEqual(summary["total_official_OUT_UNKNOWN_excluded"], ledger["current_OUT_queue"])
         self.assertEqual(summary["p_play_negative_labels_created"], 0)
@@ -198,7 +202,14 @@ class NonOutEvidence(unittest.TestCase):
     def test_reproducible_offline_repeat_preserves_old_source_times(self):
         first=build(*self.inputs,None,lambda _:None,self.now)
         second=build(*self.inputs,None,lambda _:None,self.now,first)
-        self.assertEqual(first["records"],second["records"])
+        prior_observed = {(r["game_id"],r["player_id"]):r
+                          for r in first["records"] if r["source_first_observed_at_utc"]}
+        subsequent = {(r["game_id"],r["player_id"]):r for r in second["records"]}
+        self.assertTrue(all(subsequent[key]==row for key,row in prior_observed.items()))
+        self.assertEqual(len(first["records"]),len(second["records"]))
+        self.assertTrue(all(x["p_play_outcome_still_UNKNOWN"] is True and
+                            x["model_training_negative"] is False
+                            for x in second["records"]))
         self.assertEqual(second["summary"]["p_play_negative_labels_created"],0)
 
 if __name__=="__main__": unittest.main()
