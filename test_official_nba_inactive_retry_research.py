@@ -1,4 +1,4 @@
-"""Real-data regression: preserve 23 old cases on 27-case NBA inactive catch-up."""
+"""Growing real-data regression: preserve frozen OUT evidence across inactive retries."""
 import json
 import unittest
 from copy import deepcopy
@@ -18,24 +18,47 @@ class Catchup(unittest.TestCase):
         cls.espn=get("official_out_boxscore_evidence_research.json")
         cls.live=get("live.json")
         cls.old=get("official_nba_inactive_summary_research.json")
-        cls.test_now=max(NOW,datetime.fromisoformat(cls.old["updated_at_utc"].replace("Z","+00:00"))+timedelta(minutes=1))
+        # Use a time AFTER the latest finished game in the current upstream cohort.
+        # The archive grows independently of the older inactive research snapshot.
+        latest_game=max(datetime.fromisoformat(row["game_utc"].replace("Z","+00:00"))
+                        for row in cls.nba["records"])
+        old_update=datetime.fromisoformat(cls.old["updated_at_utc"].replace("Z","+00:00"))
+        cls.test_now=max(NOW,latest_game+timedelta(minutes=1),
+                         old_update+timedelta(minutes=1))
     def test_only_new_games_requested_and_failure_preserves_outcomes(self):
-        req,defer=plan_requests(self.nba,self.old,self.test_now)
-        old_games={x["nba_game_id"] for x in self.old["records"]}
+        # Simulate a recent retry for the historical subset. Otherwise a
+        # real archive older than 24 hours rightly becomes due for retry.
+        recent_old=deepcopy(self.old)
+        fresh_attempt=(self.test_now-timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+        recent_old["source_attempted_utc_by_game"]={
+            x["nba_game_id"]:fresh_attempt for x in recent_old["records"]}
+        req,defer=plan_requests(self.nba,recent_old,self.test_now)
+        old_games={x["nba_game_id"] for x in recent_old["records"]}
         all_games={x["nba_game_id"] for x in self.nba["records"]}
         self.assertEqual(set(defer),old_games)
         self.assertEqual(set(req),all_games-old_games)
         result=reconcile(self.nba,self.espn,self.live,{}, {gid:"TimeoutError" for gid in req},
-                         self.test_now,deepcopy(self.old),attempted_game_ids=req,deferred_game_ids=defer)
+                         self.test_now,recent_old,attempted_game_ids=req,deferred_game_ids=defer)
         self.assertEqual(result["original_queue_count"],len(self.nba["records"]))
         self.assertEqual(result["source_attempts_this_run"],len(req))
         self.assertEqual(result["source_retry_deferred_games"],len(defer))
         before={(r["game_id"],r["player_id"]):r for r in self.old["records"]}
         after={(r["game_id"],r["player_id"]):r for r in result["records"]}
         self.assertTrue(all(after[k]==v for k,v in before.items()))
-        self.assertEqual(result["unresolved_unknown"],len(after))
-        self.assertTrue(all(r["outcome"]==UNKNOWN and
-                            r["model_training_negative"] is False for r in after.values()))
+        self.assertEqual(result["unresolved_unknown"],
+                         sum(r["outcome"]==UNKNOWN for r in after.values()))
+        self.assertTrue(all(r["model_training_negative"] is False
+                            for r in after.values()))
+    def test_future_finished_game_cannot_be_backdated(self):
+        last=max(self.nba["records"],key=lambda x:x["game_utc"])
+        premature=datetime.fromisoformat(last["game_utc"].replace("Z","+00:00"))-timedelta(seconds=1)
+        games={r["nba_game_id"] for r in self.nba["records"]}
+        with self.assertRaisesRegex(ValueError,"Unsafe or mismatched game/OUT evidence"):
+            reconcile(self.nba,self.espn,self.live,{},
+                      {gid:"TimeoutError" for gid in games},premature,
+                      deepcopy(self.old),attempted_game_ids=games,
+                      deferred_game_ids=[])
+
     def test_future_provenance_rejected(self):
         old=deepcopy(self.old)
         old["source_attempted_utc_by_game"]={
@@ -59,7 +82,7 @@ class Catchup(unittest.TestCase):
             k:v for k,v in earlier.get("source_attempted_utc_by_game",{}).items()
             if k!=unseen}
         self.assertNotIn(unseen,{r["nba_game_id"] for r in earlier["records"]})
-        with self.assertRaises(ValueError):
-            reconcile(self.nba,self.espn,self.live,{}, {},NOW,earlier,
+        with self.assertRaisesRegex(ValueError,"Invalid source attempted/deferred partition"):
+            reconcile(self.nba,self.espn,self.live,{}, {},self.test_now,earlier,
                       attempted_game_ids=[],deferred_game_ids=list(games))
 if __name__=="__main__":unittest.main()
