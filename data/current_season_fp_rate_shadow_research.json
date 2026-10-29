@@ -3,7 +3,7 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-29T18:45:25Z",
+  "updated_at_utc": "2026-10-29T21:08:51Z",
   "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
   "frozen_comparison_design": {
     "name": "prospective_prelock_2026_27_current_rate_ablation_v1",
@@ -29,19 +29,1381 @@
     "adopt_on_site": false
   },
   "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
-  "issued": [],
+  "issued": [
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n004",
+      "team": "LAL",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "cf1c52250b5829dcbb536234ff9ab33e46eedb6265bb447ffd1f55867e1dc161",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "LAL",
+          "minutes": 30.0,
+          "reconstructed_FP": 26.0,
+          "source_row_sha256": "0e4e5fd4ce30f26c7b00c22207b3a2042e9588b3d2418cd2ca6e20edba3468c7"
+        },
+        {
+          "game_id": "espn_401909851",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "LAL",
+          "minutes": 37.0,
+          "reconstructed_FP": 2.0,
+          "source_row_sha256": "72f7bfc8efd97202c45f32963f92dac1eea2d7a5eb0214cb6d4ca62dc7a90cfa"
+        },
+        {
+          "game_id": "espn_401909861",
+          "first_seen_at_utc": "2026-10-26T05:13:11Z",
+          "tipoff_utc": "2026-10-25T21:00:00Z",
+          "team": "LAL",
+          "minutes": 38.0,
+          "reconstructed_FP": 51.0,
+          "source_row_sha256": "56415dd089f9dc3d64aa214402e650e6fca59c1c2d2c60753f622461e6ee071a"
+        },
+        {
+          "game_id": "espn_401909880",
+          "first_seen_at_utc": "2026-10-28T15:23:49Z",
+          "tipoff_utc": "2026-10-28T03:00:00Z",
+          "team": "LAL",
+          "minutes": 37.0,
+          "reconstructed_FP": 36.0,
+          "source_row_sha256": "089a160bb84c94db097093dcb22be1aa039495be6334faa04a7cdd8a78fd5b51"
+        }
+      ],
+      "source_asof_sha256": "1799d94b91188242e2ee64f9e7161093e3d96d333ac832ae40f2583660b90216",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 0.889969,
+      "current_fp_per_minute": 0.80985915,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 32.7877,
+        "updated_minutes_frozen_rate_FP": 32.25712,
+        "frozen_minutes_shrunk_current_rate_5_FP": 31.47599,
+        "updated_minutes_shrunk_current_rate_5_FP": 30.96663,
+        "updated_minutes_shrunk_current_rate_10_FP": 31.42752,
+        "updated_minutes_current_rate_only_FP": 29.35352
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n009",
+      "team": "GSW",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "8d32b6720f22c3e2e9f2097964b875fddc7d2ac4bb09e5dc506091190c41bdcd",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "GSW",
+          "minutes": 21.0,
+          "reconstructed_FP": 14.0,
+          "source_row_sha256": "315087d4f48d7eb6ce9bece25110367ef2139fb644a6474b22ab88fca21bd9f1"
+        },
+        {
+          "game_id": "espn_401909850",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "GSW",
+          "minutes": 30.0,
+          "reconstructed_FP": 15.0,
+          "source_row_sha256": "3101a75ac59901adeb9d37ef8703ed70afb3e380b3d166c4b12e2918acc08573"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "GSW",
+          "minutes": 27.0,
+          "reconstructed_FP": 30.0,
+          "source_row_sha256": "1391536f809b7d056e4b9ffef8657ea2aa0fa3f2f342756f5e002ce56398c150"
+        },
+        {
+          "game_id": "espn_401909888",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "GSW",
+          "minutes": 32.0,
+          "reconstructed_FP": 45.0,
+          "source_row_sha256": "3670a97cf83cb5680aa978e76c527e192b918ce14123e2b3c18d006b632e0d50"
+        }
+      ],
+      "source_asof_sha256": "19e24eb162769c01299781302b10093ad85acad6a363d49bbedf6c6cdb47a83f",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 0.678208,
+      "current_fp_per_minute": 0.94545455,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 19.06996,
+        "updated_minutes_frozen_rate_FP": 18.88363,
+        "frozen_minutes_shrunk_current_rate_5_FP": 22.40972,
+        "updated_minutes_shrunk_current_rate_5_FP": 22.19077,
+        "updated_minutes_shrunk_current_rate_10_FP": 21.00965,
+        "updated_minutes_current_rate_only_FP": 26.32469
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n047",
+      "team": "LAL",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "e8156dca67b1442b7cb8c5e50411665c3c43205dc17dffccfa4728acdba63015",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "LAL",
+          "minutes": 32.0,
+          "reconstructed_FP": 25.0,
+          "source_row_sha256": "9ddbfb050b3025f0590e4e7b49b755915936f3be165b3c5d7cc6b87693fa2147"
+        },
+        {
+          "game_id": "espn_401909851",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "LAL",
+          "minutes": 38.0,
+          "reconstructed_FP": 25.0,
+          "source_row_sha256": "ea03f8ef2d252e30515596236b083574792c286bb21da455c0ebb1ec4623425c"
+        },
+        {
+          "game_id": "espn_401909861",
+          "first_seen_at_utc": "2026-10-26T05:13:11Z",
+          "tipoff_utc": "2026-10-25T21:00:00Z",
+          "team": "LAL",
+          "minutes": 36.0,
+          "reconstructed_FP": 24.0,
+          "source_row_sha256": "f7d97e8f9b0d28b2e56bcec9768cac8751d501b1f5e5a8547fc0aced69a5d1e9"
+        },
+        {
+          "game_id": "espn_401909880",
+          "first_seen_at_utc": "2026-10-28T15:23:49Z",
+          "tipoff_utc": "2026-10-28T03:00:00Z",
+          "team": "LAL",
+          "minutes": 39.0,
+          "reconstructed_FP": 25.0,
+          "source_row_sha256": "1c27f78278808e3f1a982f4947ef499d1816f06b47daae7b95c3a35d89259862"
+        },
+        {
+          "game_id": "espn_401909892",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T02:30:00Z",
+          "team": "LAL",
+          "minutes": 31.0,
+          "reconstructed_FP": 1.0,
+          "source_row_sha256": "1cc1ea947c2a094fcb6469f2319a5025c19930295efea62d2bd502f8aef29539"
+        }
+      ],
+      "source_asof_sha256": "8b77f20116e64d21b824f4773c30c2be0c499a6095668ccd46a811f9aa176869",
+      "source_sample_n": 5,
+      "old_fp_per_minute": 0.552467,
+      "current_fp_per_minute": 0.56818182,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 20.18181,
+        "updated_minutes_frozen_rate_FP": 19.81433,
+        "frozen_minutes_shrunk_current_rate_5_FP": 20.46885,
+        "updated_minutes_shrunk_current_rate_5_FP": 20.09614,
+        "updated_minutes_shrunk_current_rate_10_FP": 20.0022,
+        "updated_minutes_current_rate_only_FP": 20.37794
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n102",
+      "team": "GSW",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "4bf3a1a18255d518cadbaeb251cea7cf3881de997f7bcbf235392683e8058587",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909850",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "GSW",
+          "minutes": 33.0,
+          "reconstructed_FP": 5.0,
+          "source_row_sha256": "dd1cb85bf66e293279fada68d18a0fdd6ce8bcf8679232a9b33898a711360c96"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "GSW",
+          "minutes": 33.0,
+          "reconstructed_FP": 27.0,
+          "source_row_sha256": "9ffb409db350d2ed3f2e7330bfa3f2358cf1038c07025431cfc26032cb930dcb"
+        },
+        {
+          "game_id": "espn_401909888",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "GSW",
+          "minutes": 32.0,
+          "reconstructed_FP": 9.0,
+          "source_row_sha256": "b2a5e73185506a76041851c9d7d97de351c040ed017d5a9a4f1cd1629724a5ff"
+        }
+      ],
+      "source_asof_sha256": "4193ff7b148750deff59d212ad95d45c94ba2b8d37ff2ac2ce597067f237daef",
+      "source_sample_n": 3,
+      "old_fp_per_minute": 0.527495,
+      "current_fp_per_minute": 0.41836735,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 15.85571,
+        "updated_minutes_frozen_rate_FP": 16.37163,
+        "frozen_minutes_shrunk_current_rate_5_FP": 14.62563,
+        "updated_minutes_shrunk_current_rate_5_FP": 15.10153,
+        "updated_minutes_shrunk_current_rate_10_FP": 15.59003,
+        "updated_minutes_current_rate_only_FP": 12.98468
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n186",
+      "team": "GSW",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "0acf33fa3bf90c40f142fdca6aba91d8cf7ac4ddcd456e87233e91e8832e238a",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "GSW",
+          "minutes": 25.0,
+          "reconstructed_FP": 11.0,
+          "source_row_sha256": "2911200aa3dc598fb466afd832f69a6e678910bb7e725a58df9d420e70a3b5be"
+        },
+        {
+          "game_id": "espn_401909850",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "GSW",
+          "minutes": 20.0,
+          "reconstructed_FP": 8.0,
+          "source_row_sha256": "aca62de8fc85d6deeca9ecfdaad661e15d319d978dfcdc9d607ad94e47f63ee5"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "GSW",
+          "minutes": 23.0,
+          "reconstructed_FP": 1.0,
+          "source_row_sha256": "93597e49dd4d962fbf31c3a7c96890535bd4ae3cc963e9ab13aa6daa9dc6991c"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "GSW",
+          "minutes": 28.0,
+          "reconstructed_FP": 18.0,
+          "source_row_sha256": "a60cfaf18522d00c94a7c2a34cd95503acb8e63adbf5f3a25bf8565cbfcffc3c"
+        }
+      ],
+      "source_asof_sha256": "89112a680ed5e80e4b43d5a96b0d42a7251e3837e77412bc8c944e6b62ca0d38",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 0.404262,
+      "current_fp_per_minute": 0.39583333,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 12.17567,
+        "updated_minutes_frozen_rate_FP": 11.0764,
+        "frozen_minutes_shrunk_current_rate_5_FP": 12.06286,
+        "updated_minutes_shrunk_current_rate_5_FP": 10.97376,
+        "updated_minutes_shrunk_current_rate_10_FP": 11.01042,
+        "updated_minutes_current_rate_only_FP": 10.84546
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n188",
+      "team": "LAL",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "77210c6c176d512ed7648be477974fd8e301b8f7718ba6ec8046cca6fbb29823",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "LAL",
+          "minutes": 18.0,
+          "reconstructed_FP": 13.0,
+          "source_row_sha256": "f8ffbaa65aa49b71c51c7416bf0f11c23c3bab9669b9148124c2b53e630bfad8"
+        },
+        {
+          "game_id": "espn_401909861",
+          "first_seen_at_utc": "2026-10-26T05:13:11Z",
+          "tipoff_utc": "2026-10-25T21:00:00Z",
+          "team": "LAL",
+          "minutes": 15.0,
+          "reconstructed_FP": 8.0,
+          "source_row_sha256": "766594a185fea524c2cf5773ba4420c8b5b366c1cd1c23989c13c3b77b177888"
+        },
+        {
+          "game_id": "espn_401909880",
+          "first_seen_at_utc": "2026-10-28T15:23:49Z",
+          "tipoff_utc": "2026-10-28T03:00:00Z",
+          "team": "LAL",
+          "minutes": 19.0,
+          "reconstructed_FP": 5.0,
+          "source_row_sha256": "30abd0c6e5a082f33de19a67131703d8351b29baf2cb87f2aa8ebfd58dd6cce3"
+        },
+        {
+          "game_id": "espn_401909892",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T02:30:00Z",
+          "team": "LAL",
+          "minutes": 35.0,
+          "reconstructed_FP": 14.0,
+          "source_row_sha256": "e9ef86df3a57a69d4eee2d110aead00a9e1b3ff5bc11327d14b8f159878f6a1b"
+        }
+      ],
+      "source_asof_sha256": "f72f50ec130920aaa726c46f25773d2f98615c315872aa024139d4869e3f86b0",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 0.392525,
+      "current_fp_per_minute": 0.45977011,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 10.56556,
+        "updated_minutes_frozen_rate_FP": 9.66417,
+        "frozen_minutes_shrunk_current_rate_5_FP": 11.37004,
+        "updated_minutes_shrunk_current_rate_5_FP": 10.4,
+        "updated_minutes_shrunk_current_rate_10_FP": 10.13721,
+        "updated_minutes_current_rate_only_FP": 11.31978
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n197",
+      "team": "GSW",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "30315926ed67737ef892a35ffbd094a1ede17279b1dfed085c12758a072443fe",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "GSW",
+          "minutes": 21.0,
+          "reconstructed_FP": 2.0,
+          "source_row_sha256": "654f419af08f63641ac6e4a9df40229b18169bdba718ec858d8dbe50ef460bea"
+        },
+        {
+          "game_id": "espn_401909850",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "GSW",
+          "minutes": 31.0,
+          "reconstructed_FP": -1.0,
+          "source_row_sha256": "9aa171d75af4bfb59325944a09d9dc29586a76c0666e189ba3f13eedd4a5e46d"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "GSW",
+          "minutes": 27.0,
+          "reconstructed_FP": 6.0,
+          "source_row_sha256": "350d71338012fcd4e2e41f3049702fdc508687af1c32252507bdeacdd5d6bec9"
+        },
+        {
+          "game_id": "espn_401909888",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "GSW",
+          "minutes": 32.0,
+          "reconstructed_FP": 11.0,
+          "source_row_sha256": "957792275fb753184f0b82c5c1a146b5d2162d4d026cf4eb5989c62519500b2d"
+        }
+      ],
+      "source_asof_sha256": "01a39ae7bf8870211d779570759fdd6d09ee6d5c68d38129bd15ea897baa4c26",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 0.356888,
+      "current_fp_per_minute": 0.16216216,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 10.56459,
+        "updated_minutes_frozen_rate_FP": 10.27084,
+        "frozen_minutes_shrunk_current_rate_5_FP": 8.0027,
+        "updated_minutes_shrunk_current_rate_5_FP": 7.78018,
+        "updated_minutes_shrunk_current_rate_10_FP": 8.6697,
+        "updated_minutes_current_rate_only_FP": 4.66685
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n214",
+      "team": "GSW",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "f1c2944260d506ec38ab7ac5040cffd43c1b1c207a66d09f5fd7a7dd7644490b",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "GSW",
+          "minutes": 17.0,
+          "reconstructed_FP": 2.0,
+          "source_row_sha256": "f3c9840cc6f62e047dae7369a02507b35954ceb06d2a9b05c1a4aab082899666"
+        },
+        {
+          "game_id": "espn_401909850",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "GSW",
+          "minutes": 19.0,
+          "reconstructed_FP": 7.0,
+          "source_row_sha256": "5de4e5aba7727379328f0f8814ea2aa924f40d8feb27e09d0bf0a53945e1dd9f"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "GSW",
+          "minutes": 19.0,
+          "reconstructed_FP": 18.0,
+          "source_row_sha256": "d2db2ce0b0e94841f2dc89f29991a2ffefe3f2fc3149424a45d81b341deeca4d"
+        },
+        {
+          "game_id": "espn_401909888",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "GSW",
+          "minutes": 18.0,
+          "reconstructed_FP": 14.0,
+          "source_row_sha256": "07033879706d96b558f19cfaacfb0a2a85a83e60ce4b9c41a2b040a9a87feb90"
+        }
+      ],
+      "source_asof_sha256": "689280f3b4f568255cfd813f92b80222cf2f124a65bd8d42b0b8f069da439d3a",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 0.563801,
+      "current_fp_per_minute": 0.56164384,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 13.58034,
+        "updated_minutes_frozen_rate_FP": 12.11768,
+        "frozen_minutes_shrunk_current_rate_5_FP": 13.55724,
+        "updated_minutes_shrunk_current_rate_5_FP": 12.09707,
+        "updated_minutes_shrunk_current_rate_10_FP": 12.10443,
+        "updated_minutes_current_rate_only_FP": 12.07132
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n224",
+      "team": "GSW",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "0dde819c52ec200d75a71cc3168a29d2c077d9203817a67bb4b633aa904dc65f",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "GSW",
+          "minutes": 21.0,
+          "reconstructed_FP": -2.0,
+          "source_row_sha256": "6001375749516f08ed9bef1c4a58c0798dec75985a623bb70da5f05464c34af2"
+        },
+        {
+          "game_id": "espn_401909850",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "GSW",
+          "minutes": 20.0,
+          "reconstructed_FP": 8.0,
+          "source_row_sha256": "9afa855c87720d183cefbb06c3bbbae4a9f1ccfe5ab9dd68e79734a7ef940833"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "GSW",
+          "minutes": 27.0,
+          "reconstructed_FP": 24.0,
+          "source_row_sha256": "1a7b3bd3ec242ca80bbc17f93d21a0b80dde74057c785561d107ef089564ced0"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "GSW",
+          "minutes": 19.0,
+          "reconstructed_FP": 6.0,
+          "source_row_sha256": "7a611df52c0f14b16d4574791c33ed56fd22ec89e92458ee4d2eea6e82cbe9d2"
+        },
+        {
+          "game_id": "espn_401909888",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "GSW",
+          "minutes": 20.0,
+          "reconstructed_FP": 12.0,
+          "source_row_sha256": "d1a9f0a23415e28f77dc39565751b90bd97054755ee1fb805d23e4f409943473"
+        }
+      ],
+      "source_asof_sha256": "079b0cc3e821ae182ccdcdcce73399316963d1e22839ac3a9c54493e2adee798",
+      "source_sample_n": 5,
+      "old_fp_per_minute": 0.397657,
+      "current_fp_per_minute": 0.44859813,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 9.51007,
+        "updated_minutes_frozen_rate_FP": 9.00996,
+        "frozen_minutes_shrunk_current_rate_5_FP": 10.1192,
+        "updated_minutes_shrunk_current_rate_5_FP": 9.58707,
+        "updated_minutes_shrunk_current_rate_10_FP": 9.3947,
+        "updated_minutes_current_rate_only_FP": 10.16417
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n248",
+      "team": "GSW",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "e6fe3eb8b4f8d53b8badd8f16d0497a9d4c7e769a2526b92bc5199dc9a835a85",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "GSW",
+          "minutes": 18.0,
+          "reconstructed_FP": 2.0,
+          "source_row_sha256": "bcc2ff02d48e27eed06fde996be4fe259f9a765591b2b51cd60384a1c18ac05c"
+        },
+        {
+          "game_id": "espn_401909850",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "GSW",
+          "minutes": 11.0,
+          "reconstructed_FP": 0.0,
+          "source_row_sha256": "e2b005437ced8bc612a2c16b678eaf831a416301c9679202546795a23328d24c"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "GSW",
+          "minutes": 17.0,
+          "reconstructed_FP": 1.0,
+          "source_row_sha256": "d851b227c7a092db20a5d226c7b25d423bfd6069dc8ea6d4a319104c91027fc7"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "GSW",
+          "minutes": 12.0,
+          "reconstructed_FP": 10.0,
+          "source_row_sha256": "ec00accfbfa66d08f159719aecf2704f0df784ef775b148cf3e73c7b70a129c0"
+        },
+        {
+          "game_id": "espn_401909888",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "GSW",
+          "minutes": 10.0,
+          "reconstructed_FP": 7.0,
+          "source_row_sha256": "39354b87758522ef1314337fdbda5ece17c46379da9fd8894bdd79f3e079e5f8"
+        }
+      ],
+      "source_asof_sha256": "25c293a140510c6bf11e4981e23bc5d2e465276c341c9b9b594a729bab229b70",
+      "source_sample_n": 5,
+      "old_fp_per_minute": 0.680586,
+      "current_fp_per_minute": 0.29411765,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 14.49555,
+        "updated_minutes_frozen_rate_FP": 11.87577,
+        "frozen_minutes_shrunk_current_rate_5_FP": 10.37994,
+        "updated_minutes_shrunk_current_rate_5_FP": 8.50396,
+        "updated_minutes_shrunk_current_rate_10_FP": 9.62789,
+        "updated_minutes_current_rate_only_FP": 5.13215
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n345",
+      "team": "GSW",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "e88fac05666508829c7bccccff8f4baff701e0c4d73a23f591243ecbe8d22219",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "GSW",
+          "minutes": 20.0,
+          "reconstructed_FP": 9.0,
+          "source_row_sha256": "7c8074eb192633b9034e149539ebc1d19421e23b511ad25c4d65c165cfa0bc8e"
+        },
+        {
+          "game_id": "espn_401909850",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-24T02:00:00Z",
+          "team": "GSW",
+          "minutes": 3.0,
+          "reconstructed_FP": -2.0,
+          "source_row_sha256": "f8dbbd7352f1e283390bf6747ecad214e17b5f919a1935240c78210e73b9480e"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "GSW",
+          "minutes": 31.0,
+          "reconstructed_FP": 3.0,
+          "source_row_sha256": "43c8a338a5301759dd83cfa04595094620dd64f6cbda397afa9aa92e7c85c2bf"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "GSW",
+          "minutes": 3.0,
+          "reconstructed_FP": 4.0,
+          "source_row_sha256": "3f2d2af573cd48d4741387df94fbd75b872cc77432d8c943c190beab5533cead"
+        },
+        {
+          "game_id": "espn_401909888",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "GSW",
+          "minutes": 23.0,
+          "reconstructed_FP": 9.0,
+          "source_row_sha256": "2d23b141b9442802b5ca9d02d00b43d5e16445c1e2015f15ed66f4006117f949"
+        }
+      ],
+      "source_asof_sha256": "9f8ab02189edf27a06f9e1d383b3471f6b9a2cc9c0cf33506122806d9ef7cfe4",
+      "source_sample_n": 5,
+      "old_fp_per_minute": 0.276788,
+      "current_fp_per_minute": 0.2875,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 5.43889,
+        "updated_minutes_frozen_rate_FP": 4.93375,
+        "frozen_minutes_shrunk_current_rate_5_FP": 5.54413,
+        "updated_minutes_shrunk_current_rate_5_FP": 5.02922,
+        "updated_minutes_shrunk_current_rate_10_FP": 4.99739,
+        "updated_minutes_current_rate_only_FP": 5.12469
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n468",
+      "team": "GSW",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "71b7100891ca4b030f8033008713eda40917bb40bd625c881b2c858dda8997f9",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909092",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "GSW",
+          "minutes": 9.0,
+          "reconstructed_FP": -3.0,
+          "source_row_sha256": "94e0ac61fb3a21748b8587889846ae515897c7e95049966da6a391542044f123"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "GSW",
+          "minutes": 4.0,
+          "reconstructed_FP": 0.0,
+          "source_row_sha256": "de3bc95e3186e4c8bcae00b10b0708cb997d023229b13312b4b5cc125e0e26ad"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "GSW",
+          "minutes": 3.0,
+          "reconstructed_FP": 4.0,
+          "source_row_sha256": "940d5e5c22f375f5d344731d1144478e03dab3d59f6a8e5f81a03eb208299fbb"
+        }
+      ],
+      "source_asof_sha256": "a4477a9c602e7864ddf79ae0553ce477cf72c438d92d17415b483f71e7e0d925",
+      "source_sample_n": 3,
+      "old_fp_per_minute": 0.321805,
+      "current_fp_per_minute": 0.0625,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 4.39568,
+        "updated_minutes_frozen_rate_FP": 3.39091,
+        "frozen_minutes_shrunk_current_rate_5_FP": 3.06744,
+        "updated_minutes_shrunk_current_rate_5_FP": 2.36628,
+        "updated_minutes_shrunk_current_rate_10_FP": 2.76037,
+        "updated_minutes_current_rate_only_FP": 0.65857
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n002",
+      "team": "DEN",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "f1fc5b0affd3d8bdb036f8426e7be7e40093cfb617b9bad2f072a4a803ac1b89",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909094",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-23T01:30:00Z",
+          "team": "DEN",
+          "minutes": 35.0,
+          "reconstructed_FP": 4.0,
+          "source_row_sha256": "03e614d1971b7a7f0c40e754e8c0f4f234630271666708e46a66322a9b9e3f61"
+        },
+        {
+          "game_id": "espn_401909859",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T01:00:00Z",
+          "team": "DEN",
+          "minutes": 44.0,
+          "reconstructed_FP": 41.0,
+          "source_row_sha256": "b0ca4d56a089977e8afb8e706d5fbe5246db778eb8dfec9aca6d392f82602864"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "DEN",
+          "minutes": 35.0,
+          "reconstructed_FP": 26.0,
+          "source_row_sha256": "3ae5cbbe3136bd01e6c2743153b1692f7b1902c05ca6192d7562028f0739afa3"
+        },
+        {
+          "game_id": "espn_401909889",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "DEN",
+          "minutes": 34.0,
+          "reconstructed_FP": 27.0,
+          "source_row_sha256": "84841bdfe4a442087ee237459796351b263ac589df2df6b31ca29171172867d1"
+        }
+      ],
+      "source_asof_sha256": "6a7302386cff9f89cd8e98b62c13eac23bcf9a4df00393927248549c4b784013",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 1.037932,
+      "current_fp_per_minute": 0.66216216,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 36.69469,
+        "updated_minutes_frozen_rate_FP": 37.45415,
+        "frozen_minutes_shrunk_current_rate_5_FP": 30.79031,
+        "updated_minutes_shrunk_current_rate_5_FP": 31.42758,
+        "updated_minutes_shrunk_current_rate_10_FP": 33.57992,
+        "updated_minutes_current_rate_only_FP": 23.89436
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n022",
+      "team": "DEN",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "4131172131be315b7512ea032de354cdacefd41abe346cf61ecba96181d1839f",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909094",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-23T01:30:00Z",
+          "team": "DEN",
+          "minutes": 37.0,
+          "reconstructed_FP": -5.0,
+          "source_row_sha256": "cd21f2157998e096810803601bba39b59f1095bb21e0da04156fe4d4bf4cf04d"
+        },
+        {
+          "game_id": "espn_401909859",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T01:00:00Z",
+          "team": "DEN",
+          "minutes": 43.0,
+          "reconstructed_FP": 38.0,
+          "source_row_sha256": "1e3e943f06d1f667ad3cc7d5d1abadf15f4adc045b41791be67ae1fd49ca9176"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "DEN",
+          "minutes": 36.0,
+          "reconstructed_FP": 24.0,
+          "source_row_sha256": "55f4e39ffa06e893ee77229aa3008405b9cedd2a85a7a24cc75cb03fd5e2391c"
+        },
+        {
+          "game_id": "espn_401909889",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "DEN",
+          "minutes": 38.0,
+          "reconstructed_FP": 22.0,
+          "source_row_sha256": "aad7154bd500cdf348e41e041fd6e6c756bcadce225c4604d8d8bbd298bebdbd"
+        }
+      ],
+      "source_asof_sha256": "0eeea8fc762c8822a26a3a8b33819c7c1aa04044000e4a30bff8e526a18549b3",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 0.682217,
+      "current_fp_per_minute": 0.51298701,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 25.51473,
+        "updated_minutes_frozen_rate_FP": 25.84835,
+        "frozen_minutes_shrunk_current_rate_5_FP": 22.70179,
+        "updated_minutes_shrunk_current_rate_5_FP": 22.99861,
+        "updated_minutes_shrunk_current_rate_10_FP": 24.01637,
+        "updated_minutes_current_rate_only_FP": 19.43644
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n035",
+      "team": "PHX",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "751db8db42d9364ff3ed006fc553f7e5fbe4873149ef0b701af5fd06e1a8a3da",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909841",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "PHX",
+          "minutes": 29.0,
+          "reconstructed_FP": 19.0,
+          "source_row_sha256": "045d1a4d3765e83a799e9054f3d4686ac132768674acab624f8c95a72d93a538"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "PHX",
+          "minutes": 36.0,
+          "reconstructed_FP": 44.0,
+          "source_row_sha256": "01e8ceec7c27c77718f356f00c2cbd759880281d1e28bc9664d7ffbcc5577772"
+        },
+        {
+          "game_id": "espn_401909873",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T00:00:00Z",
+          "team": "PHX",
+          "minutes": 34.0,
+          "reconstructed_FP": 3.0,
+          "source_row_sha256": "9e49408f0c8b03a86a9c146d77340876146aa0d0dd0cceba5723fae7a34a7333"
+        }
+      ],
+      "source_asof_sha256": "0349f4b5047fe9291b47186793f824de363d43ef046c2907482b57ce1c43aefa",
+      "source_sample_n": 3,
+      "old_fp_per_minute": 0.618916,
+      "current_fp_per_minute": 0.66666667,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 20.89668,
+        "updated_minutes_frozen_rate_FP": 20.71951,
+        "frozen_minutes_shrunk_current_rate_5_FP": 21.50126,
+        "updated_minutes_shrunk_current_rate_5_FP": 21.31896,
+        "updated_minutes_shrunk_current_rate_10_FP": 21.0884,
+        "updated_minutes_current_rate_only_FP": 22.31806
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n074",
+      "team": "DEN",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "76e99c55e7eacfa23c0d851bd9c3526caade152fc66c231606fe22ee750b6dff",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909094",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-23T01:30:00Z",
+          "team": "DEN",
+          "minutes": 29.0,
+          "reconstructed_FP": 19.0,
+          "source_row_sha256": "46a565061e9180a4a2065679e775f3fca5b233f57ad9afe18e4118f2f562b3a8"
+        },
+        {
+          "game_id": "espn_401909859",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T01:00:00Z",
+          "team": "DEN",
+          "minutes": 37.0,
+          "reconstructed_FP": 8.0,
+          "source_row_sha256": "5e09bb3ebdb2b560bfc9ae827e0b2ac38f52af76f6dea6908efeb69fdb0efd0a"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "DEN",
+          "minutes": 25.0,
+          "reconstructed_FP": 0.0,
+          "source_row_sha256": "ecce925e67701bd8037af687bcd3e2ac7cfb0ff309d104368d3eb4a0716efced"
+        },
+        {
+          "game_id": "espn_401909889",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "DEN",
+          "minutes": 31.0,
+          "reconstructed_FP": 26.0,
+          "source_row_sha256": "52d20784f044bb0fa0aec09deae8244186d9906e2cd1a3ae1504456f98e00dd7"
+        }
+      ],
+      "source_asof_sha256": "f897a463c0cb3ffd7aae5af420ab493974f5e3215d9ee93d2b02318ccf7c1cc9",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 0.63646,
+      "current_fp_per_minute": 0.43442623,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 18.36137,
+        "updated_minutes_frozen_rate_FP": 18.82833,
+        "frozen_minutes_shrunk_current_rate_5_FP": 15.77091,
+        "updated_minutes_shrunk_current_rate_5_FP": 16.172,
+        "updated_minutes_shrunk_current_rate_10_FP": 17.12069,
+        "updated_minutes_current_rate_only_FP": 12.85158
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n101",
+      "team": "PHX",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "25801ac9ec6fce37c47afbd18aa2dad8ce1abd0dc531a58467d6e5b83e001bba",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909841",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "PHX",
+          "minutes": 25.0,
+          "reconstructed_FP": 3.0,
+          "source_row_sha256": "fa695478f9dec61d1bcf740926bd904acb90f5cafa0d7bafa95416f945eb70dc"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "PHX",
+          "minutes": 26.0,
+          "reconstructed_FP": 7.0,
+          "source_row_sha256": "5f67a96a17341633e856fddcd7ef19f8fb3f85190cfb18b8a1c73713a2c993db"
+        },
+        {
+          "game_id": "espn_401909873",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T00:00:00Z",
+          "team": "PHX",
+          "minutes": 31.0,
+          "reconstructed_FP": 20.0,
+          "source_row_sha256": "54e15e807aec1d1ad2e9ad28f8688697f3aa1e13049a8116b2c4c02bd0569ad3"
+        }
+      ],
+      "source_asof_sha256": "06ae9c4ae10627d033d714cfce0ac7b7298e2ee6e27783beeeb37cdc98c98060",
+      "source_sample_n": 3,
+      "old_fp_per_minute": 0.479337,
+      "current_fp_per_minute": 0.36585366,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 13.18413,
+        "updated_minutes_frozen_rate_FP": 13.15328,
+        "frozen_minutes_shrunk_current_rate_5_FP": 12.01361,
+        "updated_minutes_shrunk_current_rate_5_FP": 11.98551,
+        "updated_minutes_shrunk_current_rate_10_FP": 12.43465,
+        "updated_minutes_current_rate_only_FP": 10.03923
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n124",
+      "team": "DEN",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "883c1a551659b4739aec15310a5eeb2a15ce1639cf58493ff5a69f47c225d605",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909094",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-23T01:30:00Z",
+          "team": "DEN",
+          "minutes": 33.0,
+          "reconstructed_FP": 1.0,
+          "source_row_sha256": "1a0ec4c66a18da4c699a8eec7aecaa41a32bbc03503d6adcee15f82b1e6e9890"
+        },
+        {
+          "game_id": "espn_401909859",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T01:00:00Z",
+          "team": "DEN",
+          "minutes": 40.0,
+          "reconstructed_FP": 21.0,
+          "source_row_sha256": "37f2d4fb4161b1954b5461d63c2991257c3ce51d3a0f1d6f35bf56243f783be7"
+        },
+        {
+          "game_id": "espn_401909876",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T02:00:00Z",
+          "team": "DEN",
+          "minutes": 34.0,
+          "reconstructed_FP": 1.0,
+          "source_row_sha256": "dc7821340cf1d2c08db90fecd013d049304d53da1df37d3f7e4eb465d8287ad0"
+        },
+        {
+          "game_id": "espn_401909889",
+          "first_seen_at_utc": "2026-10-29T14:54:32Z",
+          "tipoff_utc": "2026-10-29T00:00:00Z",
+          "team": "DEN",
+          "minutes": 36.0,
+          "reconstructed_FP": 13.0,
+          "source_row_sha256": "492b2147d58a7269af98702db70bf5ced85f09e991dc0cca3552ad2ddb71fb6b"
+        }
+      ],
+      "source_asof_sha256": "8d2ee9e89ae04e59853ac26ab2abc212679e70deb9a79d1aa544dd5cc44907c1",
+      "source_sample_n": 4,
+      "old_fp_per_minute": 0.492463,
+      "current_fp_per_minute": 0.25174825,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 15.5456,
+        "updated_minutes_frozen_rate_FP": 16.46114,
+        "frozen_minutes_shrunk_current_rate_5_FP": 12.16842,
+        "updated_minutes_shrunk_current_rate_5_FP": 12.88506,
+        "updated_minutes_shrunk_current_rate_10_FP": 14.16223,
+        "updated_minutes_current_rate_only_FP": 8.41497
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n206",
+      "team": "PHX",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "d528f31db54795fa5a7709bf2ae5c5a9ddc6997742cced3b6e933d515c87c34c",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909841",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "PHX",
+          "minutes": 17.0,
+          "reconstructed_FP": 5.0,
+          "source_row_sha256": "08a887ac7b7823486d004feb4e07627e8ee52c2e660da560a583cddca77faf8c"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "PHX",
+          "minutes": 28.0,
+          "reconstructed_FP": 17.0,
+          "source_row_sha256": "25cc8abb4209e0b1c08fbb2d34e676d25a6b0e33c0c8ed4f34f12eabf93852cc"
+        },
+        {
+          "game_id": "espn_401909873",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T00:00:00Z",
+          "team": "PHX",
+          "minutes": 26.0,
+          "reconstructed_FP": 5.0,
+          "source_row_sha256": "15de3e5ae6ff5c15182e96b3976e2e7a517c8fb3d221ca222e660b6932f2cdb9"
+        }
+      ],
+      "source_asof_sha256": "50d685fec7209270742efb13e52d9d59125b6975d86400c765fa4acf43c8e9c5",
+      "source_sample_n": 3,
+      "old_fp_per_minute": 0.572406,
+      "current_fp_per_minute": 0.38028169,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 7.75607,
+        "updated_minutes_frozen_rate_FP": 9.92765,
+        "frozen_minutes_shrunk_current_rate_5_FP": 6.77984,
+        "updated_minutes_shrunk_current_rate_5_FP": 8.67809,
+        "updated_minutes_shrunk_current_rate_10_FP": 9.15869,
+        "updated_minutes_current_rate_only_FP": 6.5955
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n217",
+      "team": "PHX",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "4ea6cd313837f66436b9571bef221791ab4492edbf8fb6650bbf6ed382e21ee4",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909841",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "PHX",
+          "minutes": 21.0,
+          "reconstructed_FP": -13.0,
+          "source_row_sha256": "cfb9189efd1e05d3069cbe29713b0e77956fde3dabb87a8d66a575a163653752"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "PHX",
+          "minutes": 28.0,
+          "reconstructed_FP": 18.0,
+          "source_row_sha256": "6facf15d436e3a86d9aae276fe1e6d9eb4e7ad61e0d6b7a707c3c603df9cf50c"
+        },
+        {
+          "game_id": "espn_401909873",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T00:00:00Z",
+          "team": "PHX",
+          "minutes": 23.0,
+          "reconstructed_FP": 1.0,
+          "source_row_sha256": "9de21b3fc9532d1d5668b8e3ddf63002f667fb0aca56e47befcf3e94214ea85f"
+        }
+      ],
+      "source_asof_sha256": "a4857100766e5d8272c8c1557d2219c3913cae42da7d0a3ba09707aa72547f19",
+      "source_sample_n": 3,
+      "old_fp_per_minute": 0.410451,
+      "current_fp_per_minute": 0.08333333,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 10.62833,
+        "updated_minutes_frozen_rate_FP": 10.33676,
+        "frozen_minutes_shrunk_current_rate_5_FP": 7.4519,
+        "updated_minutes_shrunk_current_rate_5_FP": 7.24747,
+        "updated_minutes_shrunk_current_rate_10_FP": 8.43566,
+        "updated_minutes_current_rate_only_FP": 2.09866
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n235",
+      "team": "PHX",
+      "game_utc": "2026-10-31T02:00:00Z",
+      "individual_lock_utc": "2026-10-31T01:30:00Z",
+      "original_minutes_issued_at_utc": "2026-10-29T21:08:51Z",
+      "minutes_challenger_issued_at_utc": "2026-10-29T21:08:51Z",
+      "fp_rate_issued_at_utc": "2026-10-29T21:08:51Z",
+      "source_minutes_challenger_sha256": "ff792eea745432b8b1cc7b636d22e5556a4c3d621f2298aa58b9d968fe755188",
+      "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+      "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+      "source_previous_played_rows": [
+        {
+          "game_id": "espn_401909841",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-22T02:00:00Z",
+          "team": "PHX",
+          "minutes": 22.0,
+          "reconstructed_FP": 3.0,
+          "source_row_sha256": "3fc9af9152313a11d9ef8e313e70d3e5fe0e2df542b7dcc486268c3bbf18a34c"
+        },
+        {
+          "game_id": "espn_401909860",
+          "first_seen_at_utc": "2026-10-25T19:26:06Z",
+          "tipoff_utc": "2026-10-25T02:00:00Z",
+          "team": "PHX",
+          "minutes": 20.0,
+          "reconstructed_FP": 14.0,
+          "source_row_sha256": "2396b5867a180c56c4380da7820c269dc8790437f406c5913da683e84b513b4d"
+        },
+        {
+          "game_id": "espn_401909873",
+          "first_seen_at_utc": "2026-10-27T05:30:47Z",
+          "tipoff_utc": "2026-10-27T00:00:00Z",
+          "team": "PHX",
+          "minutes": 17.0,
+          "reconstructed_FP": 10.0,
+          "source_row_sha256": "d6453a55a765d8206579056be3b4cba8b65e8bbc3e9c43516d15ed902032f54a"
+        }
+      ],
+      "source_asof_sha256": "6e86728e6d7beb948f9db69de0b4c9ad63903ee9b1341895fa4c64c7c1a16226",
+      "source_sample_n": 3,
+      "old_fp_per_minute": 0.483217,
+      "current_fp_per_minute": 0.45762712,
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 11.29215,
+        "updated_minutes_frozen_rate_FP": 10.62132,
+        "frozen_minutes_shrunk_current_rate_5_FP": 11.0679,
+        "updated_minutes_shrunk_current_rate_5_FP": 10.41039,
+        "updated_minutes_shrunk_current_rate_10_FP": 10.49152,
+        "updated_minutes_current_rate_only_FP": 10.05885
+      },
+      "forecast_type": "conditional_on_verified_positive_minutes_NOT_unconditional",
+      "outcome_at_issue": "UNKNOWN",
+      "adopt_on_site": false
+    }
+  ],
   "observed": [],
   "summary": {
-    "issued_total": 0,
-    "new_issued_this_run": 0,
+    "issued_total": 21,
+    "new_issued_this_run": 21,
     "played_verified": 0,
     "literal_DNP_not_scored": 0,
     "UNKNOWN_not_imputed": 0,
-    "awaiting_or_unchecked": 0,
+    "awaiting_or_unchecked": 21,
     "distinct_scored_ET_dates": 0,
     "distinct_scored_games": 0
   },
-  "issue_QA": {},
+  "issue_QA": {
+    "new_genuine_FP_rate_issues": 21
+  },
   "played_only_paired_metrics": {
     "played_scored": 0
   },
