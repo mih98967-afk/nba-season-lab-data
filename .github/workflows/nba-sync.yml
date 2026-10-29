@@ -9,6 +9,9 @@ on:
       - 'src/public_sync_integrity.py'
       - 'test_public_sync_integrity.py'
       - 'test_conditional_pipeline_owner.py'
+      - 'src/current_season_minutes_shadow_research.py'
+      - 'test_current_season_minutes_shadow_research.py'
+      - '.github/workflows/current-season-minutes-shadow.yml'
       - 'test_short_risk_workflow_owner.py'
       - 'src/catalog_pit_research.py'
       - 'test_catalog_pit_research.py'
@@ -54,7 +57,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test scoring without network
-        run: python -m unittest -v test_sync test_live_schedule_provenance test_schedule_workflow_owner test_public_sync_integrity test_rolling_decision_research test_participation_cohort_research test_conditional_pipeline_owner test_short_risk_workflow_owner test_catalog_pit_research test_prelock_roster_opportunities test_espn_roster_pit test_p_play_issuance_readiness_research test_keep_transfer_public_bridge test_keep_transfer_public_readiness test_keep_transfer_economic_replay
+        run: python -m unittest -v test_sync test_live_schedule_provenance test_schedule_workflow_owner test_public_sync_integrity test_rolling_decision_research test_participation_cohort_research test_conditional_pipeline_owner test_current_season_minutes_shadow_research test_short_risk_workflow_owner test_catalog_pit_research test_prelock_roster_opportunities test_espn_roster_pit test_p_play_issuance_readiness_research test_keep_transfer_public_bridge test_keep_transfer_public_readiness test_keep_transfer_economic_replay
       - name: Prove downstream participation and FP evaluation can run offline
         if: github.event_name == 'pull_request'
         run: |
@@ -66,6 +69,8 @@ jobs:
           python -m src.conditional_minutes_fp_research
           python -m src.short_minutes_prospective_research
           python -m src.conditional_minutes_fp_evaluation_research
+          # Issue prospective challenger immediately after frozen source/evaluation.
+          python -m src.current_season_minutes_shadow_research
           python -m src.conditional_minutes_robustness_research
           python -m src.short_minutes_prospective_evaluation_research
           python -m src.participation_coverage_research
@@ -105,6 +110,8 @@ jobs:
           python -m src.conditional_minutes_fp_research
           python -m src.short_minutes_prospective_research
           python -m src.conditional_minutes_fp_evaluation_research
+          # Issue prospective challenger immediately after frozen source/evaluation.
+          python -m src.current_season_minutes_shadow_research
           python -m src.conditional_minutes_robustness_research
           python -m src.short_minutes_prospective_evaluation_research
           python -m src.participation_coverage_research
@@ -125,7 +132,7 @@ jobs:
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/catalog_pit/*.json data/espn_roster_pit/*.json data/live.json data/rolling_decision_research.json data/catalog.json data/explicit_dnp_research.json data/participation_cohort_research.json data/p_play_shadow_research.json data/conditional_minutes_fp_research.json data/short_minutes_prospective_research.json data/conditional_minutes_fp_evaluation_research.json data/conditional_minutes_robustness_research.json data/short_minutes_prospective_evaluation_research.json data/participation_coverage_research.json data/p_play_selection_bias_audit.json data/participation_evidence_ledger_research.json data/p_play_precommitted_paired_evaluation_research.json data/official_nba_nonout_unknown_research.json data/availability_source_reconciliation_research.json data/catalog_pit_coverage_research.json data/p_play_issuance_readiness_research.json data/keep_transfer_public_readiness_research.json
+          git add data/catalog_pit/*.json data/espn_roster_pit/*.json data/live.json data/rolling_decision_research.json data/catalog.json data/explicit_dnp_research.json data/participation_cohort_research.json data/p_play_shadow_research.json data/conditional_minutes_fp_research.json data/short_minutes_prospective_research.json data/conditional_minutes_fp_evaluation_research.json data/conditional_minutes_robustness_research.json data/short_minutes_prospective_evaluation_research.json data/participation_coverage_research.json data/p_play_selection_bias_audit.json data/participation_evidence_ledger_research.json data/p_play_precommitted_paired_evaluation_research.json data/official_nba_nonout_unknown_research.json data/availability_source_reconciliation_research.json data/catalog_pit_coverage_research.json data/p_play_issuance_readiness_research.json data/keep_transfer_public_readiness_research.json data/current_season_minutes_shadow_research.json
           if ! git diff --cached --quiet; then
             git commit -m "data: refresh NBA scores and schedule"
             git pull --rebase origin main

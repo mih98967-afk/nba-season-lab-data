@@ -6,26 +6,21 @@ on:
       - 'src/current_season_minutes_shadow_research.py'
       - 'test_current_season_minutes_shadow_research.py'
       - '.github/workflows/current-season-minutes-shadow.yml'
+      - '.github/workflows/nba-sync.yml'
   push:
     branches: [main]
     paths:
       - 'src/current_season_minutes_shadow_research.py'
       - 'test_current_season_minutes_shadow_research.py'
       - '.github/workflows/current-season-minutes-shadow.yml'
-  workflow_run:
-    workflows: ['NBA public data sync']
-    types: [completed]
-    branches: [main]
-  schedule:
-    - cron: '47 */4 * * *'
-  workflow_dispatch:
+      - '.github/workflows/nba-sync.yml'
 permissions:
-  contents: write
+  contents: read
 concurrency:
-  group: nba-season-lab-shared-write
+  group: nba-current-season-minutes-ci-${{ github.ref }}
   cancel-in-progress: false
 jobs:
-  challenger:
+  challenger-ci:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
@@ -33,21 +28,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Test genuine prelock issuances and no retroactive results
+      - name: Test genuine prelock issuances, source clocks, and single-writer order
         run: python -m unittest -v test_current_season_minutes_shadow_research
-      - name: Capture only genuinely fresh prelock research challengers
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
-        run: |
-          git pull --ff-only origin main
-          python -m src.current_season_minutes_shadow_research
-      - name: Save isolated public research-only challenger data
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
-        run: |
-          git config user.name "nba-season-lab-bot"
-          git config user.email "nba-season-lab-bot@users.noreply.github.com"
-          git add data/current_season_minutes_shadow_research.json
-          if ! git diff --cached --quiet; then
-            git commit -m "research: capture strictly prelock minutes challenger"
-            git pull --rebase origin main
-            git push origin HEAD:main
-          fi
