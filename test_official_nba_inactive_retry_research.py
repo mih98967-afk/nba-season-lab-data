@@ -92,7 +92,7 @@ class Catchup(unittest.TestCase):
             self.old["records"][0]["nba_game_id"]:"2030-01-01T00:00:00Z"}
         with self.assertRaises(ValueError):plan_requests(self.nba,old,NOW)
     def test_retry_after_24_hours_without_backdating(self):
-        req,defer=plan_requests(self.nba,self.old,self.test_now+timedelta(days=2))
+        req,defer,pending=plan_requests(self.nba,self.old,self.test_now+timedelta(days=2))
         self.assertFalse(defer)
         self.assertEqual(len(req)+len(pending),len({r["nba_game_id"] for r in self.nba["records"]}))
     def test_new_game_cannot_be_deferred_without_prior(self):
@@ -109,7 +109,7 @@ class Catchup(unittest.TestCase):
             k:v for k,v in earlier.get("source_attempted_utc_by_game",{}).items()
             if k!=unseen}
         self.assertNotIn(unseen,{r["nba_game_id"] for r in earlier["records"]})
-        with self.assertRaisesRegex(ValueError,"Invalid source attempted/deferred partition"):
+        with self.assertRaisesRegex(ValueError,"Invalid source attempted/deferred/pending partition"):
             reconcile(self.nba,self.espn,self.live,{}, {},self.test_now,earlier,
                       attempted_game_ids=[],deferred_game_ids=list(games))
 if __name__=="__main__":unittest.main()
