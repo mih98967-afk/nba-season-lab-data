@@ -45,6 +45,41 @@ class AvailabilityProof(unittest.TestCase):
                             for r in report["case_records"]))
         self.assertFalse(report["quality_gate"]["adopt_on_site"])
         self.assertFalse(report["quality_gate"]["game_day_roster_denominator_validated"])
+    def test_out_growth_pending_reconciles_without_negative_label(self):
+        data=deepcopy(self.sources)
+        ledger, nonout, nba_out, nba_inactive, selection, shadow = data
+        seed=next(x for x in ledger["unknown_cases"]
+                  if x["official_status_first_known_by_issue"]=="out")
+        first=next(x for x in shadow["issued"]
+                   if x["game_id"]==seed["game_id"] and x["player_id"]==seed["player_id"])
+        for i in range(11):
+            pid="pending_out_source_%02d"%i
+            new_case, new_issue=deepcopy(seed),deepcopy(first)
+            new_case["player_id"]=new_issue["player_id"]=pid
+            ledger["unknown_cases"].append(new_case)
+            shadow["issued"].append(new_issue)
+        selection["unknown_postgame_results"]+=11
+        selection["total_issued_predictions"]+=11
+        ledger["overall_selected_opportunity_coverage"]["outcome_UNKNOWN"]+=11
+        ledger["issued_total_including_future"]+=11
+        ledger["current_OUT_queue"]+=11
+        nonout["summary"]["all_finished_p_play_UNKNOWN"]+=11
+        nonout["summary"]["total_official_OUT_UNKNOWN_excluded"]+=11
+        nonout["summary"]["pending_official_OUT_independent_review_excluded"]+=11
+        result=self.evaluate(data)
+        self.assertEqual(result["summary"]["pending_OUT_independent_review"],11)
+        self.assertEqual(result["summary"]["new_pplay_DNP_labels"],0)
+        pending=[x for x in result["case_records"] if x["player_id"].startswith("pending_out_source_")]
+        self.assertEqual(len(pending),11)
+        self.assertTrue(all(x["official_NBA_game_specific_verdict"]=="UNKNOWN"
+                            and x["official_NBA_game_source_observed_at_utc"] is None
+                            and x["training_negative_created"] is False
+                            for x in pending))
+        corrupt=deepcopy(data)
+        corrupt[2]["records"][0]["team"]="INVALID"
+        with self.assertRaises(ValueError):
+            self.evaluate(corrupt)
+
     def test_unlisted_not_DNP_or_membership(self):
         report=self.evaluate()
         grouped=report["summary"]["source_class_counts"]
