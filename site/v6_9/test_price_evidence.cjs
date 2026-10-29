@@ -27,6 +27,7 @@ assert.throws(()=>api.capture(local,sample),/CLOCK_BACKWARDS/);
 const exportValue=api.exportData(local);exportValue.receipts[0].quotes[0].price=12;
 assert.equal(api.read(local).receipts[0].quotes[0].price,2080);
 assert.throws(()=>api.erase(local,false),/EXPLICIT_ERASE/);
+t+=120000;
 const exported=api.exportData(local);
 const dest=storage();
 assert.throws(()=>api.importData(dest,exported,false),/EXPLICIT_IMPORT/);
