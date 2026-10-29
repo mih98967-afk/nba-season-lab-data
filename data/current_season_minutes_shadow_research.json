@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "model_status": "research_only_not_deployed",
+  "adopt_on_site": false,
+  "updated_at_utc": "2026-10-29T15:41:22Z",
+  "model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+  "frozen_exploratory_structure": {
+    "name": "current_season_minutes_shrunk_to_frozen_2025_26_v1",
+    "min_current_same_club_played_games": 3,
+    "max_recent_current_played_games": 5,
+    "frozen_prior_strength_in_games": 5,
+    "max_baseline_to_challenger_issue_lag_seconds": 1200,
+    "prospective_only_after_model_creation": true,
+    "model_selection_on_2026_27_outcomes": false,
+    "negative_labels_from_missing_allowed": false
+  },
+  "source_frozen_minutes_issue_sha256": "f3ad32104d242284cd83528e46f528f7b8c86043a51aef76348ccf1689f77f19",
+  "issued": [],
+  "observed": [],
+  "summary": {
+    "issued_total": 0,
+    "new_issued_this_run": 0,
+    "played_verified": 0,
+    "literal_DNP_excluded": 0,
+    "UNKNOWN_not_imputed": 0,
+    "awaiting_or_unchecked": 0,
+    "independent_scored_ET_dates": 0,
+    "scored_NBA_games": 0
+  },
+  "issue_QA": {
+    "not_same_asof_fresh_issue_no_backfill": 417
+  },
+  "played_only_paired_metrics": {
+    "played_scored": 0
+  },
+  "by_ET_date": {},
+  "quality_gate": {
+    "independent_ET_dates_at_least_8": false,
+    "scored_NBA_games_at_least_24": false,
+    "verified_played_at_least_100": false,
+    "valid_external_future_season_model_improvement": false,
+    "season_2026_27_model_selection_independent_of_prior_outcomes": false,
+    "selected_played_only_not_full_fantasy_population": true,
+    "calibrated_unconditional_FP_allowed": false,
+    "adopt_on_site": false
+  },
+  "limitations": [
+    "Only genuinely new minute issues within 20 minutes of baseline are compared.",
+    "Current-season played minutes have archived first-seen times before issuance.",
+    "All negative/missing/DNP outcomes are excluded from conditional FP metrics.",
+    "The 5-game prior shrinkage was defined after first 2026/27 results.",
+    "No proof that role adjustment or unconditional FP improves future decisions.",
+    "No model retraining, Firebase, Sports.ru prices, personal accounts or transfers."
+  ]
+}
