@@ -124,7 +124,11 @@ jobs:
           # Git history can prove values in previously committed public data/live.json.
           # Fetch only since 24 Oct once. NEVER fabricate provider publication times.
           if [ ! -f data/git_preversion_boxscore_proof_research.json ]; then
-            git fetch --no-tags --shallow-since=2026-10-24T00:00:00Z origin main
+            # This repository checkout is shallow; the date-limited fetch does not
+            # guarantee the fixed historical tip commit is locally reachable.
+            git fetch --no-tags --unshallow origin main
+            git cat-file -e 9806309b9eaf6192a1550749a52e8f05b24fdd03^{commit}
+            git cat-file -e d1225876a20c176a15985e481d156c8e6a5754d6^{commit}
             python -m src.git_preversion_boxscore_proof_research
           fi
       - name: Capture Sports.ru catalog PIT in reserved slot

@@ -103,7 +103,9 @@ class GitBeforeVersion(unittest.TestCase):
         self.assertIn("python -m src.git_preversion_boxscore_proof_research",yml)
         self.assertIn("data/git_preversion_boxscore_proof_research.json",yml)
         self.assertIn("test_git_preversion_boxscore_proof_research",yml)
-        self.assertIn("git fetch --no-tags --shallow-since=",yml)
+        self.assertIn("git fetch --no-tags --unshallow origin main",yml)
+        self.assertIn("git cat-file -e 9806309b9eaf6192a1550749a52e8f05b24fdd03",yml)
+        self.assertIn("git cat-file -e d1225876a20c176a15985e481d156c8e6a5754d6",yml)
         self.assertNotIn("git push",Path(__file__).resolve().with_name(
             "src").joinpath("git_preversion_boxscore_proof_research.py").read_text())
 
