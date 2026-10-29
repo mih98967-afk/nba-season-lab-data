@@ -96,7 +96,8 @@ def build(ledger, nonout, nba_out, nba_inactive, selection, shadow, now):
     out_keys = {key for key,row in unknown.items()
                 if row.get("official_status_first_known_by_issue") == "out"}
     non_keys = set(unknown) - out_keys
-    if (set(out) != out_keys or set(ina) != out_keys or set(non) != non_keys
+    if (not set(out).issubset(out_keys) or not set(ina).issubset(out_keys)
+            or not set(ina).issubset(set(out)) or set(non) != non_keys
             or out_keys & non_keys
             or len(unknown) != selection.get("unknown_postgame_results")
             or len(unknown) != ledger["overall_selected_opportunity_coverage"]["outcome_UNKNOWN"]
@@ -105,7 +106,9 @@ def build(ledger, nonout, nba_out, nba_inactive, selection, shadow, now):
             or len(labels) != selection.get("verified_postgame_results")
             or len(pindex) != ledger.get("issued_total_including_future")
             or nonout["summary"]["all_finished_p_play_UNKNOWN"] != len(unknown)
-            or nonout["summary"]["already_reviewed_official_OUT_excluded"] != len(out_keys)
+            or nonout["summary"]["already_reviewed_official_OUT_excluded"] != len(set(out) & out_keys)
+            or nonout["summary"].get("pending_official_OUT_independent_review_excluded") != len(out_keys - set(out))
+            or nonout["summary"].get("total_official_OUT_UNKNOWN_excluded") != len(out_keys)
             or nonout["summary"]["new_non_OUT_review_cohort"] != len(non_keys)):
         raise ValueError("Active unknown or frozen cohort accounting differs")
     records = []
@@ -133,8 +136,17 @@ def build(ledger, nonout, nba_out, nba_inactive, selection, shadow, now):
                 or row.get("preissue_club_link_evidence") != p.get("club_link_evidence")):
             raise ValueError("Mutated frozen issue, initial team or target")
         is_out = key in out_keys
-        original = out[key] if is_out else non[key]
-        if is_out:
+        is_pending_out = is_out and key not in out
+        original = out.get(key) if is_out else non[key]
+        if is_pending_out:
+            # Independent NBA/Stats source not yet captured. Preserve the full
+            # selected denominator without inventing an athlete or DNP verdict.
+            if key in ina:
+                raise ValueError("Pending OUT has unattached inactive evidence")
+            src_verdict, src_why, conflict = "UNKNOWN", "pending_independent_OUT_review", False
+            observed, src_sha, roster_member = None, None, False
+            stats_verified, stats_reason = False, "pending_independent_OUT_review"
+        elif is_out:
             if (original.get("game_utc") != tip
                     or original.get("first_prediction_issued_at_utc") != p["issued_at_utc"]
                     or original.get("team") != p["team"]
@@ -150,20 +162,23 @@ def build(ledger, nonout, nba_out, nba_inactive, selection, shadow, now):
             roster_member = original.get("game_day_team_membership_verified")
             if roster_member not in (True, False):
                 raise ValueError("Malformed official OUT game-specific identity")
-            inactive = ina[key]
-            if (inactive.get("team") != p["team"]
+            inactive = ina.get(key)
+            if inactive is not None and (inactive.get("team") != p["team"]
                     or inactive.get("game_utc") != tip
                     or inactive.get("first_prediction_issued_at_utc") != p["issued_at_utc"]
                     or inactive.get("model_training_negative") is not False
                     or inactive.get("outcome") not in {"UNKNOWN"} | SEPARATE_NONPLAY
                     or inactive.get("separate_from_ESPN_didNotPlay") is not True):
                 raise ValueError("NBA inactive status contradicts issued player-game")
-            observed_after_tip(inactive.get("source_first_observed_at_utc"),
-                               tip, now, "NBA Stats InactivePlayers")
-            stats_reason = inactive.get("why_unknown")
-            stats_verified = inactive["outcome"] in SEPARATE_NONPLAY
-            if stats_verified and not inactive.get("matched_explicit_official_inactive"):
-                raise ValueError("NBA inactive verified without explicit person row")
+            if inactive is not None:
+                observed_after_tip(inactive.get("source_first_observed_at_utc"),
+                                   tip, now, "NBA Stats InactivePlayers")
+                stats_reason = inactive.get("why_unknown")
+                stats_verified = inactive["outcome"] in SEPARATE_NONPLAY
+                if stats_verified and not inactive.get("matched_explicit_official_inactive"):
+                    raise ValueError("NBA inactive verified without explicit person row")
+            else:
+                stats_reason, stats_verified = "pending_independent_inactive_review", False
         else:
             if (original.get("game_utc") != tip
                     or original.get("first_prediction_issued_at_utc") != p["issued_at_utc"]
@@ -220,7 +235,7 @@ def build(ledger, nonout, nba_out, nba_inactive, selection, shadow, now):
             "official_NBA_game_source_observed_at_utc": observed,
             "official_NBA_game_source_sha256": src_sha,
             "game_day_same_club_membership_verified": roster_member,
-            "separate_NBA_stats_inactive_verdict": ina[key]["outcome"] if is_out else None,
+            "separate_NBA_stats_inactive_verdict": ina[key]["outcome"] if key in ina else None,
             "NBA_stats_source_reason": stats_reason,
             "p_play_result_still_UNKNOWN": True,
             "training_negative_created": False,
@@ -239,6 +254,8 @@ def build(ledger, nonout, nba_out, nba_inactive, selection, shadow, now):
             "UNKNOWN_checked": len(records),
             "OUT_branch": len(out_keys),
             "non_OUT_branch": len(non_keys),
+            "pending_OUT_independent_review": len(out_keys - set(out)),
+            "reviewed_OUT_independent": len(out_keys & set(out)),
             "game_specific_NBA_boxscore_observed": overall["source_game_observed"],
             "game_day_same_club_membership_verified": overall["game_day_member_verified"],
             "separate_NBA_stats_explicit_inactive_not_promoted": overall["nba_stats_verified_separate_nonplay"],
@@ -265,9 +282,9 @@ def build(ledger, nonout, nba_out, nba_inactive, selection, shadow, now):
             "adopt_on_site": False,
         },
         "limitations": [
-            "All currently unresolved 53 first-issued cases are source-triaged only, not labelled.",
+            "All currently unresolved first-issued cases are source-triaged only, not labelled.",
             "NBA boxscore successfully fetched does not show unlisted athlete belongs to team.",
-            "26 non-OUT rows and 27 OUT rows are mutually exclusive frozen review cohorts.",
+            "NON-OUT and OUT are disjoint; OUT can have pending unreviewed game-specific source rows.",
             "Actual NBA Stats endpoint remains unavailable if retrieval times out.",
             "Historical NBA ID can be strong even when game-day same-team roster lacks person.",
             "This is selected first-issued opportunities, NOT denominator for all roster choices.",
