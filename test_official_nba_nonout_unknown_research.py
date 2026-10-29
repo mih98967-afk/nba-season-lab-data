@@ -73,6 +73,53 @@ class NonOutEvidence(unittest.TestCase):
             with self.assertRaises(ValueError):
                 build(*missing,None,lambda _:None,self.now,old)
 
+    def test_unknown_growth_above_old_200_cap_is_not_a_label(self):
+        # Expand an authentic frozen case into distinct finished player-games.
+        # All three denominators must agree; no extra external requests or DNP.
+        for size in (200, 201, 341):
+            inputs = deepcopy(self.inputs)
+            ledger, shadow, selection = inputs[:3]
+            source = next(x for x in ledger["unknown_cases"]
+                          if x["official_status_first_known_by_issue"] != "out")
+            template = next(x for x in shadow["issued"]
+                            if x["game_id"] == source["game_id"]
+                            and x["player_id"] == source["player_id"])
+            extra = size - len(ledger["unknown_cases"])
+            self.assertGreater(extra, 0)
+            for i in range(extra):
+                player_id = "test_unknown_growth_%04d" % i
+                new_case = deepcopy(source)
+                new_case["player_id"] = player_id
+                new_forecast = deepcopy(template)
+                new_forecast["player_id"] = player_id
+                ledger["unknown_cases"].append(new_case)
+                shadow["issued"].append(new_forecast)
+            selection["unknown_postgame_results"] = size
+            ledger["overall_selected_opportunity_coverage"]["outcome_UNKNOWN"] = size
+            result = build(*inputs, None,
+                           lambda _: self.fail("Network should not run"),
+                           self.now, max_games=1)
+            self.assertEqual(result["summary"]["all_finished_p_play_UNKNOWN"], size)
+            self.assertEqual(result["summary"]["new_non_OUT_review_cohort"] +
+                             result["summary"]["already_reviewed_official_OUT_excluded"], size)
+            self.assertEqual(result["summary"]["p_play_negative_labels_created"], 0)
+            self.assertEqual(len(result["records"]),
+                             result["summary"]["new_non_OUT_review_cohort"])
+            self.assertTrue(all(r["p_play_outcome_still_UNKNOWN"] is True
+                                and r["model_training_negative"] is False
+                                and r["adopt_on_site"] is False
+                                for r in result["records"]))
+            self.assertLessEqual(result["summary"]["source_games_attempted_this_run"], 1)
+            # A mismatch in either independently maintained count must fail closed.
+            broken = deepcopy(inputs)
+            broken[2]["unknown_postgame_results"] -= 1
+            with self.assertRaisesRegex(ValueError, "UNKNOWN_COUNT_MISMATCH"):
+                eligible_cases(*broken, self.now)
+            broken = deepcopy(inputs)
+            broken[0]["overall_selected_opportunity_coverage"]["outcome_UNKNOWN"] -= 1
+            with self.assertRaisesRegex(ValueError, "LEDGER_SUMMARY_MISMATCH"):
+                eligible_cases(*broken, self.now)
+
     def test_literal_NBA_only_and_wrong_team_conflict(self):
         obj={"111":{"team":"BOS","played":"0","status":"INACTIVE",
                     "not_playing_reason":"Injury"},

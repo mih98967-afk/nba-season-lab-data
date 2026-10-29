@@ -23,7 +23,7 @@ from src.official_nba_gameday_status_research import (
 NO_RESULT = "UNKNOWN"
 SEPARATE = {"VERIFIED_GAME_DAY_INACTIVE", "VERIFIED_ACTIVE_NONPLAY"}
 RETRY = timedelta(hours=24)
-MAX_CASES = 200
+# Bound upstream network review by MAX_GAMES, never the number of genuine UNKNOWN rows.
 
 
 def indexed(rows, name):
@@ -127,11 +127,18 @@ def eligible_cases(ledger, shadow, selection, existing, identity, live, explicit
             or shadow.get("population_brier_enabled") is not False):
         raise ValueError("Missing negative-label safeguards")
     unknown = indexed(ledger.get("unknown_cases"), "ledger UNKNOWN")
-    if (len(unknown) != selection.get("unknown_postgame_results")
-            or len(unknown) > MAX_CASES
-            or ledger.get("overall_selected_opportunity_coverage", {}).get(
-                "outcome_UNKNOWN") != len(unknown)):
-        raise ValueError("Ledger UNKNOWN denominator drift")
+    # This is a full, dynamic cohort. A network review batch cap must not
+    # discard UNKNOWN cases when more games become final.
+    count = len(unknown)
+    selected_count = selection.get("unknown_postgame_results")
+    covered_count = ledger.get("overall_selected_opportunity_coverage", {}).get(
+        "outcome_UNKNOWN")
+    if count != selected_count:
+        raise ValueError(
+            f"UNKNOWN_COUNT_MISMATCH: ledger={count} selection={selected_count}")
+    if count != covered_count:
+        raise ValueError(
+            f"LEDGER_SUMMARY_MISMATCH: ledger={count} coverage={covered_count}")
     predictions = indexed(shadow.get("issued"), "first issued")
     observations = indexed(shadow.get("observations"), "verified outcomes")
     finals = {g["id"]: g for g in live.get("games", [])
