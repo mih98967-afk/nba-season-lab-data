@@ -36,10 +36,15 @@ def _git(*args):
 
 def git_snapshots():
     """Only use Git ancestry, SHA objects and committer time; no invented clocks."""
-    shas = _git("log", "--reverse", "--format=%H", LAST_SHA, "--", FILE).splitlines()
-    if FIRST_SHA not in shas or not shas or shas[-1] != LAST_SHA:
-        raise ValueError("Git history incomplete: first or fixed last snapshot absent")
-    shas = shas[shas.index(FIRST_SHA):]
+    # The first rolling-capture SHA need not itself CHANGE data/live.json.
+    # It still pins a real Git tree/blob, so explicitly include that anchor.
+    if _git("merge-base", "--is-ancestor", FIRST_SHA, LAST_SHA) != "":
+        raise ValueError("Unexpected ancestry output")
+    changed = _git("log", "--reverse", "--format=%H",
+                   FIRST_SHA+".."+LAST_SHA, "--", FILE).splitlines()
+    shas = [FIRST_SHA] + changed
+    if not changed or shas[-1] != LAST_SHA:
+        raise ValueError("Git history incomplete: fixed last snapshot absent")
     if not 2 <= len(shas) <= MAX_COMMITS or len(set(shas)) != len(shas):
         raise ValueError("Unexpected or unbounded historical source commits")
     for sha in shas:

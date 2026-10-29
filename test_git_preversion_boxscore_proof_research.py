@@ -47,6 +47,13 @@ def fixture():
 
 
 class GitBeforeVersion(unittest.TestCase):
+    def test_first_git_anchor_does_not_have_to_modify_live_file(self):
+        from src.git_preversion_boxscore_proof_research import git_snapshots
+        import inspect
+        implementation=inspect.getsource(git_snapshots)
+        self.assertIn('shas = [FIRST_SHA] + changed',implementation)
+        self.assertIn('FIRST_SHA+".."+LAST_SHA',implementation)
+
     def test_restores_exact_old_value_and_later_corrected_value(self):
         snapshots,anchor,issues=fixture()
         result=build(snapshots,anchor,issues)
