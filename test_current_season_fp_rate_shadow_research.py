@@ -74,7 +74,7 @@ class RateProspective(unittest.TestCase):
         row=issued["issued"][0]
         self.assertEqual(set(row["FP_variants_frozen_prelock"]),set(RATE_FIELDS))
         self.assertEqual(row["source_sample_n"],3)
-        self.assertLess(row["current_fp_per_minute"],row["old_fp_per_minute"])
+        self.assertAlmostEqual(row["current_fp_per_minute"], 33/63, places=7)
         self.assertEqual(row["FP_variants_frozen_prelock"][CONTROL],
                          args[1]["issued"][0]["challenger_decomposed_fp"])
         again=build(issued,*args[1:],when("2026-10-29T16:20:00Z"))
