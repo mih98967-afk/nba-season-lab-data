@@ -1,8 +1,11 @@
 name: NBA transfer guard offline checks
 on:
+  pull_request:
+    branches: [main]
+    paths: ['site/transfer_guard.js','site/v6_2/multi_planner.js','test_transfer_guard.cjs','test_multi_slot_v62.cjs','.github/workflows/transfer-guard.yml']
   push:
-    branches: [feat/transfer-guard-v59-20261024]
-    paths: ['site/transfer_guard.js','test_transfer_guard.cjs','.github/workflows/transfer-guard.yml']
+    branches: [main, feat/transfer-guard-v59-20261024]
+    paths: ['site/transfer_guard.js','site/v6_2/multi_planner.js','test_transfer_guard.cjs','test_multi_slot_v62.cjs','.github/workflows/transfer-guard.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -16,4 +19,5 @@ jobs:
         with:
           node-version: '22'
       - run: node --check site/transfer_guard.js
-      - run: node --test test_transfer_guard.cjs
+      - run: node --check site/v6_2/multi_planner.js
+      - run: node --test test_transfer_guard.cjs test_multi_slot_v62.cjs

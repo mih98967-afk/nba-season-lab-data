@@ -42,3 +42,31 @@ test('missing schedule must be flagged',()=>{
  const x=base([move()]);x.games=[];x.scheduleVerified=false;
  const r=g.validate(x);assert.equal(r.verified,false);assert.ok(r.warnings.some(v=>v.includes('календаря')));
 });
+test('fourth Monday afternoon move is uncertain, not falsely impossible',()=>{
+ const x=base([move(ms('2026-10-26T13:00:00Z'))]);
+ x.nowEpoch=ms('2026-10-26T12:00:00Z');
+ x.executed=['2026-10-26T07:00:00Z','2026-10-26T08:00:00Z','2026-10-26T09:00:00Z'].map(v=>({epoch:ms(v)}));
+ const result=g.validate(x);
+ assert.equal(result.valid,true);
+ assert.equal(result.verified,false);
+ assert.equal(result.quotaResetVerified,false);
+ assert.equal(result.used['2026-10-26'],4);
+ assert.ok(result.warnings.some(w=>w.includes('Разные варианты сброса')));
+});
+test('early Monday may belong to prior week under 15:00 hypothesis',()=>{
+ const x=base([move(ms('2026-10-26T07:00:00Z'))]);
+ x.nowEpoch=ms('2026-10-26T06:00:00Z');
+ x.executed=['2026-10-25T18:00:00Z','2026-10-25T19:00:00Z','2026-10-25T20:00:00Z'].map(v=>({epoch:ms(v)}));
+ const result=g.validate(x);
+ assert.equal(result.valid,true);
+ assert.equal(result.alternateQuotaWeeks['2026-10-19'],4);
+ assert.ok(result.warnings.some(w=>w.includes('Разные варианты сброса')));
+});
+test('four Tuesday moves breach both reset clocks and must fail',()=>{
+ const x=base([move(ms('2026-10-27T13:00:00Z'))]);
+ x.nowEpoch=ms('2026-10-27T12:00:00Z');
+ x.executed=['2026-10-27T07:00:00Z','2026-10-27T08:00:00Z','2026-10-27T09:00:00Z'].map(v=>({epoch:ms(v)}));
+ const result=g.validate(x);
+ assert.equal(result.valid,false);
+ assert.ok(result.errors.some(e=>e.includes('при обеих гипотезах')));
+});

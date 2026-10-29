@@ -59,12 +59,17 @@
     let roster=[...(Array.isArray(input?.roster)?input.roster:[])],cash=price(input?.cash);
     if(!Number.isFinite(cash)){errors.push('Неизвестная или отрицательная касса');cash=0;}
     const used={},alternate={};
+    // These are competing hypotheses, NOT verified Sports.ru reset clocks.
+    // A draft is definitively over quota only when BOTH hypotheses fail.
+    let midnightEverExceeded=false, fifteenEverExceeded=false;
     for(const move of executed){
       const key=weekKey(move?.epoch),alt=weekKey(move?.epoch,15);
       if(!key||!alt){warnings.push('В истории есть операция без подтверждённой даты');continue;}
       used[key]=(used[key]||0)+1;
       alternate[alt]=(alternate[alt]||0)+1;
     }
+    midnightEverExceeded=Object.values(used).some(n=>n>3);
+    fifteenEverExceeded=Object.values(alternate).some(n=>n>3);
     if(draft.length&&!schedule.length)warnings.push('Нет расписания матчей: блокировки не проверены');
     const now=Number.isFinite(input?.nowEpoch)?input.nowEpoch:Date.now();
     const sorted=[...draft].sort((a,b)=>(a.epoch||0)-(b.epoch||0));
@@ -78,11 +83,16 @@
       const stamp=t?.epoch;
       if(!Number.isFinite(stamp))ee.push('Нужно точное время операции');
       const key=weekKey(stamp),alt=weekKey(stamp,15);
-      if(key){used[key]=(used[key]||0)+1;if(used[key]>3)ee.push('Превышены три замены за календарную неделю');}
-      if(alt){alternate[alt]=(alternate[alt]||0)+1;
-        if(alternate[alt]>3&&!ee.some(x=>x.includes('Превышены три замены')))
-          ww.push('Граница сброса квоты Sports.ru не подтверждена: проверьте счётчик замен');
+      if(key){used[key]=(used[key]||0)+1;
+        if(used[key]>3)midnightEverExceeded=true;
       }
+      if(alt){alternate[alt]=(alternate[alt]||0)+1;
+        if(alternate[alt]>3)fifteenEverExceeded=true;
+      }
+      if(midnightEverExceeded&&fifteenEverExceeded)
+        ee.push('Превышены три замены при обеих гипотезах сброса недельной квоты');
+      else if(midnightEverExceeded||fifteenEverExceeded)
+        ww.push('Разные варианты сброса квоты дают разные лимиты: проверьте фактический счётчик Sports.ru');
       const sell=price(t?.sell),buy=price(t?.buy);
       if(!Number.isFinite(sell)||!Number.isFinite(buy))ee.push('Необходимы фактические цены продажи и покупки');
       const nextCash=cash+sell-buy;
@@ -114,12 +124,14 @@
     }
     if(draft.length){
       warnings.push('Сверьте фактические цены и доступность карточек на Sports.ru перед реальным ходом');
+      warnings.push('Время сброса лимита замен не подтверждено; используйте реальный счётчик Sports.ru');
       if(input?.scheduleVerified!==true)warnings.push('Не подтверждена полнота и свежесть UTC-календаря');
     }
     const uniqErrors=[...new Set(errors)],uniqWarnings=[...new Set(warnings)];
     return {valid:!uniqErrors.length,verified:!uniqErrors.length&&!uniqWarnings.length,
       requiresCheck:uniqWarnings.length>0,errors:uniqErrors,warnings:uniqWarnings,
-      steps,roster,cash,used,alternateQuotaWeeks:alternate};
+      steps,roster,cash,used,alternateQuotaWeeks:alternate,
+      quotaResetVerified:false,quotaAssumptions:['monday_00_MSK','monday_15_MSK']};
   }
   return {weekKey,calendarWeekEnd,checkRoster,validate};
 });
