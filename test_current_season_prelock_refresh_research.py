@@ -41,7 +41,7 @@ class Refresh(unittest.TestCase):
                 "id":"p","game_id":gid,"utc":tip,
                 "team":"BOS","played":True,"minutes":20+i,"fp":11+i,
             })
-            first[gid+"|p"]="2026-10-%02dT08:00:00Z"%(26+i)
+            first[gid+"|p"]=("2026-10-28T14:00:00Z" if i==2 else "2026-10-%02dT08:00:00Z"%(26+i))
         current,_=player_games(live,when("2026-10-29T20:00:00Z"))
         rolling={
             "schema_version":1,"status":"research_only_not_deployed",
