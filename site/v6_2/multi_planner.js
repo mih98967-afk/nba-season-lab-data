@@ -113,7 +113,9 @@
      const children=[];
      for(let k=parent.lastTimeIndex;k<moments.length;k++){
        const stamp=moments[k],week=weekKey(stamp);
-       if((parent.weekCounts[week]||0)>=3)continue;
+       // Do not prune by Monday 00 MSK: the real Sports.ru quota reset
+       // time is unverified. The full guard checks both possible windows.
+       // Otherwise a lawful move after Monday 15:00 can disappear entirely.
        for(const out of parent.roster){
          const root=parent.origins.get(out);
          if(!attention.has(root))continue;
@@ -220,7 +222,8 @@
      opportunityPenalty,baseline:base,moments:moments.length,
      tested,eligible,routes:withWeeks,
      coverage:covered.reason,kind:'bounded_scenario_not_validated',
-     disclaimer:'Планы ограничены несколькими датами и отобранными кандидатами. Будущие цены, участие и разблокировка не гарантированы. Резерв хода — эвристика, а не штраф Sports.ru.'};
+     quotaResetVerified:false,
+     disclaimer:'Планы ограничены несколькими датами и отобранными кандидатами. Недельная граница квоты не подтверждена: проверяйте реальный счётчик замен Sports.ru. Будущие цены, участие и разблокировка не гарантированы. Резерв хода — эвристика, а не штраф Sports.ru.'};
  }
  return {plan,decisionMoments,mondayStart,weekKey};
 });
