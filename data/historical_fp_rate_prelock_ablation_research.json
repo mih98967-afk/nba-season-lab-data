@@ -1,0 +1,3458 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "model_status": "research_only_not_deployed",
+  "adopt_on_site": false,
+  "source_history_version": "0d395ece015799c4",
+  "history_qa": {
+    "2023/24": 17794,
+    "2024/25": 19988,
+    "2025/26": 22756
+  },
+  "source_exact_historical_tipoff_status": "fully_matched_historical_tipoffs",
+  "source_T_minus_30_cohort": "historical_prelock_minutes_replay_research_v1",
+  "previous_season_FP_per_minute_source": "fixed_2025_26_frozen_structure_applied_per_prior_season",
+  "pre_registered_for_future_2026_27_evaluation": false,
+  "rate_variants_predeclared_for_this_retro_analysis": [
+    "frozen_previous_season_FP",
+    "updated_minutes_frozen_rate_FP",
+    "frozen_minutes_shrunk_current_rate_5_FP",
+    "updated_minutes_shrunk_current_rate_5_FP",
+    "updated_minutes_shrunk_current_rate_10_FP",
+    "updated_minutes_current_rate_only_FP"
+  ],
+  "rate_comparison": "historical FP/minute vs + prior same-team 3-5 games (sum FP / sum minutes)",
+  "shrinkage_priors_in_games": [
+    5,
+    10
+  ],
+  "by_target_season": {
+    "2024/25": {
+      "role": "historical_development_diagnostic",
+      "high_confidence_players_with_previous_frozen_prior": 240,
+      "by_assumed_previous_boxscore_availability_hours": {
+        "12": {
+          "prelock_proxy_issues": 13378,
+          "scored_positive_minutes_only": 10822,
+          "UNKNOWN_not_DNP_or_zero": 2556,
+          "distinct_proxy_players": 199,
+          "distinct_scored_ET_dates": 157,
+          "all_positive_played": {
+            "paired_played_only": 10822,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 10822,
+                "MAE": 7.5825,
+                "RMSE": 9.572,
+                "prediction_minus_actual_bias": 0.0555,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1777,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4566
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 10822,
+                "MAE": 7.4048,
+                "RMSE": 9.3643,
+                "prediction_minus_actual_bias": 0.0403,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1777,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 10822,
+                "MAE": 7.599,
+                "RMSE": 9.5847,
+                "prediction_minus_actual_bias": 0.0486,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0165,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1942,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4765
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 10822,
+                "MAE": 7.3924,
+                "RMSE": 9.3378,
+                "prediction_minus_actual_bias": 0.0071,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.19,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0124,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5074
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 10822,
+                "MAE": 7.3502,
+                "RMSE": 9.2869,
+                "prediction_minus_actual_bias": 0.0188,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2322,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0545,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5196
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 10822,
+                "MAE": 7.7889,
+                "RMSE": 9.8472,
+                "prediction_minus_actual_bias": -0.0334,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.2064,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3841,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4698
+              }
+            }
+          },
+          "early_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1374,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 1374,
+                "MAE": 7.2228,
+                "RMSE": 9.1347,
+                "prediction_minus_actual_bias": 0.9027,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1725,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4498
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 1374,
+                "MAE": 7.0504,
+                "RMSE": 8.9316,
+                "prediction_minus_actual_bias": 0.5325,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1725,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1374,
+                "MAE": 7.2769,
+                "RMSE": 9.1705,
+                "prediction_minus_actual_bias": 0.5528,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0541,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2266,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4709
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1374,
+                "MAE": 7.1106,
+                "RMSE": 8.9568,
+                "prediction_minus_actual_bias": 0.1742,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1123,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0602,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5095
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 1374,
+                "MAE": 7.044,
+                "RMSE": 8.8937,
+                "prediction_minus_actual_bias": 0.2983,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1789,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0064,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5189
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 1374,
+                "MAE": 7.6,
+                "RMSE": 9.5608,
+                "prediction_minus_actual_bias": -0.2411,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.3771,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5496,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4658
+              }
+            }
+          },
+          "later_form_10_plus_prior_appearances": {
+            "paired_played_only": 9448,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 9448,
+                "MAE": 7.6348,
+                "RMSE": 9.6339,
+                "prediction_minus_actual_bias": -0.0677,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1784,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4576
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 9448,
+                "MAE": 7.4563,
+                "RMSE": 9.4255,
+                "prediction_minus_actual_bias": -0.0312,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1784,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 9448,
+                "MAE": 7.6458,
+                "RMSE": 9.6435,
+                "prediction_minus_actual_bias": -0.0247,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.011,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1894,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4773
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 9448,
+                "MAE": 7.4334,
+                "RMSE": 9.392,
+                "prediction_minus_actual_bias": -0.0172,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2014,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0229,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5071
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 9448,
+                "MAE": 7.3948,
+                "RMSE": 9.3427,
+                "prediction_minus_actual_bias": -0.0219,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.24,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0616,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5197
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 9448,
+                "MAE": 7.8163,
+                "RMSE": 9.8882,
+                "prediction_minus_actual_bias": -0.0031,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1816,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.36,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4704
+              }
+            }
+          },
+          "prior_same_club_sample_n": {
+            "3": {
+              "paired_played_only": 198,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 198,
+                  "MAE": 7.2345,
+                  "RMSE": 9.608,
+                  "prediction_minus_actual_bias": 0.9321,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1484,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4394
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 198,
+                  "MAE": 7.0861,
+                  "RMSE": 9.4215,
+                  "prediction_minus_actual_bias": 0.4797,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1484,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 198,
+                  "MAE": 7.2679,
+                  "RMSE": 9.4895,
+                  "prediction_minus_actual_bias": 0.4545,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0333,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1818,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4646
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 198,
+                  "MAE": 7.095,
+                  "RMSE": 9.3437,
+                  "prediction_minus_actual_bias": 0.0185,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1396,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0088,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5303
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 198,
+                  "MAE": 7.0467,
+                  "RMSE": 9.3173,
+                  "prediction_minus_actual_bias": 0.1959,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1878,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0394,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5354
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 198,
+                  "MAE": 8.0383,
+                  "RMSE": 10.2297,
+                  "prediction_minus_actual_bias": -0.7502,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.8038,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.9522,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4495
+                }
+              }
+            },
+            "4": {
+              "paired_played_only": 194,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 194,
+                  "MAE": 7.2213,
+                  "RMSE": 9.1325,
+                  "prediction_minus_actual_bias": 1.5963,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1543,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4485
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 194,
+                  "MAE": 7.067,
+                  "RMSE": 8.9947,
+                  "prediction_minus_actual_bias": 1.1173,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1543,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 194,
+                  "MAE": 7.4752,
+                  "RMSE": 9.3389,
+                  "prediction_minus_actual_bias": 1.224,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.2539,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4082,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4124
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 194,
+                  "MAE": 7.3336,
+                  "RMSE": 9.1905,
+                  "prediction_minus_actual_bias": 0.7548,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1123,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2666,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4536
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 194,
+                  "MAE": 7.1828,
+                  "RMSE": 9.0627,
+                  "prediction_minus_actual_bias": 0.8843,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0385,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1158,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4691
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 194,
+                  "MAE": 8.0655,
+                  "RMSE": 10.0945,
+                  "prediction_minus_actual_bias": 0.3017,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.8442,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.9985,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4175
+                }
+              }
+            },
+            "5": {
+              "paired_played_only": 10430,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 10430,
+                  "MAE": 7.5958,
+                  "RMSE": 9.5793,
+                  "prediction_minus_actual_bias": 0.0102,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1787,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.457
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 10430,
+                  "MAE": 7.4171,
+                  "RMSE": 9.3699,
+                  "prediction_minus_actual_bias": 0.012,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1787,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 10430,
+                  "MAE": 7.6075,
+                  "RMSE": 9.591,
+                  "prediction_minus_actual_bias": 0.019,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0117,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1904,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4779
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 10430,
+                  "MAE": 7.3992,
+                  "RMSE": 9.3405,
+                  "prediction_minus_actual_bias": -0.007,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1966,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.018,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.508
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 10430,
+                  "MAE": 7.3591,
+                  "RMSE": 9.2905,
+                  "prediction_minus_actual_bias": -0.0007,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2367,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.058,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5202
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 10430,
+                  "MAE": 7.779,
+                  "RMSE": 9.8352,
+                  "prediction_minus_actual_bias": -0.026,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1832,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3619,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4711
+                }
+              }
+            }
+          },
+          "predicted_minutes_groups": {
+            "below_18": {
+              "paired_played_only": 1586,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 1586,
+                  "MAE": 6.3427,
+                  "RMSE": 8.2084,
+                  "prediction_minus_actual_bias": -0.8517,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4821,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4124
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 1586,
+                  "MAE": 5.8605,
+                  "RMSE": 7.5126,
+                  "prediction_minus_actual_bias": -0.3378,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.4821,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 1586,
+                  "MAE": 6.3533,
+                  "RMSE": 8.3012,
+                  "prediction_minus_actual_bias": -1.0046,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0107,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4928,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4313
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 1586,
+                  "MAE": 5.831,
+                  "RMSE": 7.4961,
+                  "prediction_minus_actual_bias": -0.5746,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5117,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0295,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.505
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 1586,
+                  "MAE": 5.814,
+                  "RMSE": 7.4643,
+                  "prediction_minus_actual_bias": -0.496,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5286,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0465,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5177
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 1586,
+                  "MAE": 6.0728,
+                  "RMSE": 7.8155,
+                  "prediction_minus_actual_bias": -0.8068,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2699,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2122,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4779
+                }
+              }
+            },
+            "18_to_30": {
+              "paired_played_only": 4359,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 4359,
+                  "MAE": 7.1611,
+                  "RMSE": 8.9708,
+                  "prediction_minus_actual_bias": 0.2765,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1862,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4618
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 4359,
+                  "MAE": 6.9749,
+                  "RMSE": 8.7608,
+                  "prediction_minus_actual_bias": -0.0468,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1862,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4359,
+                  "MAE": 7.2551,
+                  "RMSE": 9.0831,
+                  "prediction_minus_actual_bias": 0.392,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.094,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2802,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4623
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4359,
+                  "MAE": 7.0266,
+                  "RMSE": 8.8144,
+                  "prediction_minus_actual_bias": 0.0312,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1345,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0517,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5003
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 4359,
+                  "MAE": 6.9698,
+                  "RMSE": 8.7436,
+                  "prediction_minus_actual_bias": 0.0058,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1914,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0052,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5116
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 4359,
+                  "MAE": 7.4336,
+                  "RMSE": 9.3392,
+                  "prediction_minus_actual_bias": 0.1025,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.2725,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4587,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4671
+                }
+              }
+            },
+            "30_plus": {
+              "paired_played_only": 4877,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 4877,
+                  "MAE": 8.3623,
+                  "RMSE": 10.4629,
+                  "prediction_minus_actual_bias": 0.153,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.071,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4663
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 4877,
+                  "MAE": 8.2912,
+                  "RMSE": 10.3745,
+                  "prediction_minus_actual_bias": 0.2412,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.071,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4877,
+                  "MAE": 8.3114,
+                  "RMSE": 10.378,
+                  "prediction_minus_actual_bias": 0.0842,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0509,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0201,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.504
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4877,
+                  "MAE": 8.2272,
+                  "RMSE": 10.2845,
+                  "prediction_minus_actual_bias": 0.1747,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1351,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.064,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5145
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 4877,
+                  "MAE": 8.1899,
+                  "RMSE": 10.2436,
+                  "prediction_minus_actual_bias": 0.1978,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1724,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.1013,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5274
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 4877,
+                  "MAE": 8.6644,
+                  "RMSE": 10.8328,
+                  "prediction_minus_actual_bias": 0.0968,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.3022,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3732,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4696
+                }
+              }
+            }
+          },
+          "date_cluster_exploratory_gain_vs_minutes_only": {
+            "updated_minutes_shrunk_current_rate_5_FP": {
+              "ET_dates": 157,
+              "gain_95pct_exploratory": [
+                -0.029,
+                0.0516
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            },
+            "updated_minutes_shrunk_current_rate_10_FP": {
+              "ET_dates": 157,
+              "gain_95pct_exploratory": [
+                0.027,
+                0.0808
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            }
+          },
+          "source_prediction_hash_without_postgame_labels": "d7fb339de5f803c8bc25cfcba642cfcc2372a30328dbfb25cf3d03ce005fbd67"
+        },
+        "24": {
+          "prelock_proxy_issues": 13345,
+          "scored_positive_minutes_only": 10792,
+          "UNKNOWN_not_DNP_or_zero": 2553,
+          "distinct_proxy_players": 199,
+          "distinct_scored_ET_dates": 157,
+          "all_positive_played": {
+            "paired_played_only": 10792,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 10792,
+                "MAE": 7.5804,
+                "RMSE": 9.5679,
+                "prediction_minus_actual_bias": 0.0522,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1774,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4574
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 10792,
+                "MAE": 7.4029,
+                "RMSE": 9.3606,
+                "prediction_minus_actual_bias": 0.0359,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1774,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 10792,
+                "MAE": 7.5921,
+                "RMSE": 9.5792,
+                "prediction_minus_actual_bias": 0.0459,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0117,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1892,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.476
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 10792,
+                "MAE": 7.3863,
+                "RMSE": 9.3339,
+                "prediction_minus_actual_bias": 0.0037,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.194,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0166,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5091
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 10792,
+                "MAE": 7.3462,
+                "RMSE": 9.2831,
+                "prediction_minus_actual_bias": 0.0149,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2341,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0567,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5214
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 10792,
+                "MAE": 7.7814,
+                "RMSE": 9.8421,
+                "prediction_minus_actual_bias": -0.0344,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.201,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3785,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4717
+              }
+            }
+          },
+          "early_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1376,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 1376,
+                "MAE": 7.2452,
+                "RMSE": 9.1779,
+                "prediction_minus_actual_bias": 0.971,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1758,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4513
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 1376,
+                "MAE": 7.0694,
+                "RMSE": 8.9806,
+                "prediction_minus_actual_bias": 0.5986,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1758,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1376,
+                "MAE": 7.2817,
+                "RMSE": 9.2101,
+                "prediction_minus_actual_bias": 0.6394,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0365,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2123,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4695
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1376,
+                "MAE": 7.1199,
+                "RMSE": 9.0073,
+                "prediction_minus_actual_bias": 0.2636,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1253,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0505,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5109
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 1376,
+                "MAE": 7.0553,
+                "RMSE": 8.9436,
+                "prediction_minus_actual_bias": 0.379,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1899,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0141,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5225
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 1376,
+                "MAE": 7.6079,
+                "RMSE": 9.6097,
+                "prediction_minus_actual_bias": -0.1168,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.3627,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5385,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.468
+              }
+            }
+          },
+          "later_form_10_plus_prior_appearances": {
+            "paired_played_only": 9416,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 9416,
+                "MAE": 7.6294,
+                "RMSE": 9.6236,
+                "prediction_minus_actual_bias": -0.0821,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1777,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4583
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 9416,
+                "MAE": 7.4517,
+                "RMSE": 9.4148,
+                "prediction_minus_actual_bias": -0.0463,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1777,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 9416,
+                "MAE": 7.6375,
+                "RMSE": 9.6319,
+                "prediction_minus_actual_bias": -0.0409,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0081,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1858,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.477
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 9416,
+                "MAE": 7.4253,
+                "RMSE": 9.3807,
+                "prediction_minus_actual_bias": -0.0343,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2041,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0264,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5088
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 9416,
+                "MAE": 7.3887,
+                "RMSE": 9.3317,
+                "prediction_minus_actual_bias": -0.0383,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2406,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0629,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5212
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 9416,
+                "MAE": 7.8068,
+                "RMSE": 9.8756,
+                "prediction_minus_actual_bias": -0.0223,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1774,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3551,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4723
+              }
+            }
+          },
+          "prior_same_club_sample_n": {
+            "3": {
+              "paired_played_only": 192,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 192,
+                  "MAE": 7.0168,
+                  "RMSE": 9.3249,
+                  "prediction_minus_actual_bias": 1.0368,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1411,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4479
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 192,
+                  "MAE": 6.8757,
+                  "RMSE": 9.1738,
+                  "prediction_minus_actual_bias": 0.5733,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1411,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 192,
+                  "MAE": 7.0533,
+                  "RMSE": 9.2323,
+                  "prediction_minus_actual_bias": 0.6409,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0365,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1776,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4792
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 192,
+                  "MAE": 6.9011,
+                  "RMSE": 9.1278,
+                  "prediction_minus_actual_bias": 0.2074,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1157,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0254,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5417
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 192,
+                  "MAE": 6.8395,
+                  "RMSE": 9.0879,
+                  "prediction_minus_actual_bias": 0.3481,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1773,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0362,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5521
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 192,
+                  "MAE": 7.917,
+                  "RMSE": 10.0807,
+                  "prediction_minus_actual_bias": -0.4025,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.9002,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -1.0413,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4583
+                }
+              }
+            },
+            "4": {
+              "paired_played_only": 193,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 193,
+                  "MAE": 7.3559,
+                  "RMSE": 9.2755,
+                  "prediction_minus_actual_bias": 1.9423,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1576,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4404
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 193,
+                  "MAE": 7.1982,
+                  "RMSE": 9.1308,
+                  "prediction_minus_actual_bias": 1.4497,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1576,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 193,
+                  "MAE": 7.4689,
+                  "RMSE": 9.3374,
+                  "prediction_minus_actual_bias": 1.6125,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.113,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2706,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4249
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 193,
+                  "MAE": 7.3187,
+                  "RMSE": 9.1778,
+                  "prediction_minus_actual_bias": 1.1235,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0372,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1205,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4922
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 193,
+                  "MAE": 7.2282,
+                  "RMSE": 9.1041,
+                  "prediction_minus_actual_bias": 1.24,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1277,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.03,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5078
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 193,
+                  "MAE": 7.7947,
+                  "RMSE": 9.902,
+                  "prediction_minus_actual_bias": 0.7157,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.4388,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5965,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4663
+                }
+              }
+            },
+            "5": {
+              "paired_played_only": 10407,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 10407,
+                  "MAE": 7.5949,
+                  "RMSE": 9.5776,
+                  "prediction_minus_actual_bias": -0.0011,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1785,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4579
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 10407,
+                  "MAE": 7.4165,
+                  "RMSE": 9.3682,
+                  "prediction_minus_actual_bias": -0.0002,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1785,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 10407,
+                  "MAE": 7.6043,
+                  "RMSE": 9.5899,
+                  "prediction_minus_actual_bias": 0.0058,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0094,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1879,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4769
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 10407,
+                  "MAE": 7.3965,
+                  "RMSE": 9.3405,
+                  "prediction_minus_actual_bias": -0.0209,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1984,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0199,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5088
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 10407,
+                  "MAE": 7.3578,
+                  "RMSE": 9.29,
+                  "prediction_minus_actual_bias": -0.014,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2372,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0587,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5211
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 10407,
+                  "MAE": 7.7787,
+                  "RMSE": 9.8365,
+                  "prediction_minus_actual_bias": -0.0415,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1837,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3622,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4721
+                }
+              }
+            }
+          },
+          "predicted_minutes_groups": {
+            "below_18": {
+              "paired_played_only": 1582,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 1582,
+                  "MAE": 6.3467,
+                  "RMSE": 8.2176,
+                  "prediction_minus_actual_bias": -0.829,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4822,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4109
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 1582,
+                  "MAE": 5.8645,
+                  "RMSE": 7.5273,
+                  "prediction_minus_actual_bias": -0.3123,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.4822,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 1582,
+                  "MAE": 6.3553,
+                  "RMSE": 8.3145,
+                  "prediction_minus_actual_bias": -0.9816,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0085,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4908,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4298
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 1582,
+                  "MAE": 5.8335,
+                  "RMSE": 7.5155,
+                  "prediction_minus_actual_bias": -0.5478,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5132,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.031,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5095
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 1582,
+                  "MAE": 5.8175,
+                  "RMSE": 7.4816,
+                  "prediction_minus_actual_bias": -0.4698,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5293,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.047,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5228
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 1582,
+                  "MAE": 6.0834,
+                  "RMSE": 7.8437,
+                  "prediction_minus_actual_bias": -0.7768,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2634,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2189,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4836
+                }
+              }
+            },
+            "18_to_30": {
+              "paired_played_only": 4356,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 4356,
+                  "MAE": 7.1654,
+                  "RMSE": 8.9742,
+                  "prediction_minus_actual_bias": 0.258,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1888,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4614
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 4356,
+                  "MAE": 6.9767,
+                  "RMSE": 8.7614,
+                  "prediction_minus_actual_bias": -0.068,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1888,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4356,
+                  "MAE": 7.2493,
+                  "RMSE": 9.076,
+                  "prediction_minus_actual_bias": 0.3748,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0839,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2727,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4612
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4356,
+                  "MAE": 7.0198,
+                  "RMSE": 8.8083,
+                  "prediction_minus_actual_bias": 0.0118,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1456,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0432,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5009
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 4356,
+                  "MAE": 6.966,
+                  "RMSE": 8.7399,
+                  "prediction_minus_actual_bias": -0.0142,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1994,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0106,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5124
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 4356,
+                  "MAE": 7.4213,
+                  "RMSE": 9.3264,
+                  "prediction_minus_actual_bias": 0.0847,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.2558,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4446,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4667
+                }
+              }
+            },
+            "30_plus": {
+              "paired_played_only": 4854,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 4854,
+                  "MAE": 8.3548,
+                  "RMSE": 10.4523,
+                  "prediction_minus_actual_bias": 0.1546,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0679,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4689
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 4854,
+                  "MAE": 8.2869,
+                  "RMSE": 10.366,
+                  "prediction_minus_actual_bias": 0.2427,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0679,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4854,
+                  "MAE": 8.3028,
+                  "RMSE": 10.3711,
+                  "prediction_minus_actual_bias": 0.0856,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.052,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.016,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5043
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4854,
+                  "MAE": 8.2213,
+                  "RMSE": 10.2793,
+                  "prediction_minus_actual_bias": 0.176,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1335,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0655,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5163
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 4854,
+                  "MAE": 8.1857,
+                  "RMSE": 10.2375,
+                  "prediction_minus_actual_bias": 0.199,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1691,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.1012,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.529
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 4854,
+                  "MAE": 8.658,
+                  "RMSE": 10.8286,
+                  "prediction_minus_actual_bias": 0.1007,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.3032,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3712,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4724
+                }
+              }
+            }
+          },
+          "date_cluster_exploratory_gain_vs_minutes_only": {
+            "updated_minutes_shrunk_current_rate_5_FP": {
+              "ET_dates": 157,
+              "gain_95pct_exploratory": [
+                -0.0232,
+                0.0483
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            },
+            "updated_minutes_shrunk_current_rate_10_FP": {
+              "ET_dates": 157,
+              "gain_95pct_exploratory": [
+                0.0313,
+                0.079
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            }
+          },
+          "source_prediction_hash_without_postgame_labels": "3276593838b738183fe49508245c3cbff2cb7afe85e8a44e1f8c975f0b2820b0"
+        },
+        "48": {
+          "prelock_proxy_issues": 13206,
+          "scored_positive_minutes_only": 10661,
+          "UNKNOWN_not_DNP_or_zero": 2545,
+          "distinct_proxy_players": 199,
+          "distinct_scored_ET_dates": 157,
+          "all_positive_played": {
+            "paired_played_only": 10661,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 10661,
+                "MAE": 7.5834,
+                "RMSE": 9.563,
+                "prediction_minus_actual_bias": 0.0397,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1749,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4573
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 10661,
+                "MAE": 7.4085,
+                "RMSE": 9.3602,
+                "prediction_minus_actual_bias": 0.0165,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1749,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 10661,
+                "MAE": 7.6003,
+                "RMSE": 9.575,
+                "prediction_minus_actual_bias": 0.0324,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0169,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1918,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4726
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 10661,
+                "MAE": 7.394,
+                "RMSE": 9.3306,
+                "prediction_minus_actual_bias": -0.0184,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1894,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0145,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5035
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 10661,
+                "MAE": 7.353,
+                "RMSE": 9.2807,
+                "prediction_minus_actual_bias": -0.0066,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2304,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0555,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5169
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 10661,
+                "MAE": 7.7864,
+                "RMSE": 9.8378,
+                "prediction_minus_actual_bias": -0.0552,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.203,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3779,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4685
+              }
+            }
+          },
+          "early_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1349,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 1349,
+                "MAE": 7.2985,
+                "RMSE": 9.193,
+                "prediction_minus_actual_bias": 0.9403,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1753,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4574
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 1349,
+                "MAE": 7.1233,
+                "RMSE": 8.9981,
+                "prediction_minus_actual_bias": 0.5689,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1753,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1349,
+                "MAE": 7.3163,
+                "RMSE": 9.2052,
+                "prediction_minus_actual_bias": 0.6157,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0178,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.193,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4692
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1349,
+                "MAE": 7.1598,
+                "RMSE": 8.9986,
+                "prediction_minus_actual_bias": 0.2371,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1387,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0365,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4967
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 1349,
+                "MAE": 7.0991,
+                "RMSE": 8.941,
+                "prediction_minus_actual_bias": 0.349,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1995,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0242,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.513
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 1349,
+                "MAE": 7.6336,
+                "RMSE": 9.6063,
+                "prediction_minus_actual_bias": -0.1096,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.3351,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5103,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4603
+              }
+            }
+          },
+          "later_form_10_plus_prior_appearances": {
+            "paired_played_only": 9312,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 9312,
+                "MAE": 7.6247,
+                "RMSE": 9.6155,
+                "prediction_minus_actual_bias": -0.0908,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1749,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4573
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 9312,
+                "MAE": 7.4498,
+                "RMSE": 9.4115,
+                "prediction_minus_actual_bias": -0.0635,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1749,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 9312,
+                "MAE": 7.6415,
+                "RMSE": 9.6274,
+                "prediction_minus_actual_bias": -0.0521,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0168,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1917,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.473
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 9312,
+                "MAE": 7.4279,
+                "RMSE": 9.3777,
+                "prediction_minus_actual_bias": -0.0554,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1968,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0219,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5045
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 9312,
+                "MAE": 7.3898,
+                "RMSE": 9.3289,
+                "prediction_minus_actual_bias": -0.0581,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2349,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.06,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5175
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 9312,
+                "MAE": 7.8085,
+                "RMSE": 9.8709,
+                "prediction_minus_actual_bias": -0.0474,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1838,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3587,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4697
+              }
+            }
+          },
+          "prior_same_club_sample_n": {
+            "3": {
+              "paired_played_only": 181,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 181,
+                  "MAE": 7.2508,
+                  "RMSE": 9.1803,
+                  "prediction_minus_actual_bias": 1.0917,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0587,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4586
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 181,
+                  "MAE": 7.1921,
+                  "RMSE": 9.1773,
+                  "prediction_minus_actual_bias": 0.6982,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0587,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 181,
+                  "MAE": 7.5731,
+                  "RMSE": 9.4099,
+                  "prediction_minus_actual_bias": 1.041,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.3223,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.381,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.442
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 181,
+                  "MAE": 7.4669,
+                  "RMSE": 9.3902,
+                  "prediction_minus_actual_bias": 0.6416,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.2161,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2748,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4862
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 181,
+                  "MAE": 7.2867,
+                  "RMSE": 9.2518,
+                  "prediction_minus_actual_bias": 0.6634,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0359,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0946,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5138
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 181,
+                  "MAE": 8.7234,
+                  "RMSE": 10.7089,
+                  "prediction_minus_actual_bias": 0.5474,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -1.4726,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -1.5313,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4199
+                }
+              }
+            },
+            "4": {
+              "paired_played_only": 213,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 213,
+                  "MAE": 6.7263,
+                  "RMSE": 8.6373,
+                  "prediction_minus_actual_bias": 1.5498,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2392,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4178
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 213,
+                  "MAE": 6.4871,
+                  "RMSE": 8.3626,
+                  "prediction_minus_actual_bias": 1.0763,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2392,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 213,
+                  "MAE": 6.7451,
+                  "RMSE": 8.6058,
+                  "prediction_minus_actual_bias": 1.2838,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0188,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.258,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4319
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 213,
+                  "MAE": 6.5482,
+                  "RMSE": 8.3115,
+                  "prediction_minus_actual_bias": 0.8254,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1781,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0611,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.493
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 213,
+                  "MAE": 6.4829,
+                  "RMSE": 8.2687,
+                  "prediction_minus_actual_bias": 0.915,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2433,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0042,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.507
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 213,
+                  "MAE": 6.9827,
+                  "RMSE": 8.9685,
+                  "prediction_minus_actual_bias": 0.5119,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.2565,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4956,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4554
+                }
+              }
+            },
+            "5": {
+              "paired_played_only": 10267,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 10267,
+                  "MAE": 7.607,
+                  "RMSE": 9.5879,
+                  "prediction_minus_actual_bias": -0.0102,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1756,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4581
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 10267,
+                  "MAE": 7.4314,
+                  "RMSE": 9.3829,
+                  "prediction_minus_actual_bias": -0.0175,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1756,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 10267,
+                  "MAE": 7.6185,
+                  "RMSE": 9.597,
+                  "prediction_minus_actual_bias": -0.0113,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0115,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1871,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4739
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 10267,
+                  "MAE": 7.4102,
+                  "RMSE": 9.3495,
+                  "prediction_minus_actual_bias": -0.0476,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1968,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0212,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.504
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 10267,
+                  "MAE": 7.3722,
+                  "RMSE": 9.301,
+                  "prediction_minus_actual_bias": -0.0375,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2348,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0592,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5172
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 10267,
+                  "MAE": 7.7865,
+                  "RMSE": 9.839,
+                  "prediction_minus_actual_bias": -0.0776,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1795,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3551,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4697
+                }
+              }
+            }
+          },
+          "predicted_minutes_groups": {
+            "below_18": {
+              "paired_played_only": 1568,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 1568,
+                  "MAE": 6.3791,
+                  "RMSE": 8.2609,
+                  "prediction_minus_actual_bias": -0.8896,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4622,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4171
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 1568,
+                  "MAE": 5.9168,
+                  "RMSE": 7.5948,
+                  "prediction_minus_actual_bias": -0.392,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.4622,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 1568,
+                  "MAE": 6.394,
+                  "RMSE": 8.3594,
+                  "prediction_minus_actual_bias": -1.0156,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0149,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4771,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.433
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 1568,
+                  "MAE": 5.8831,
+                  "RMSE": 7.5706,
+                  "prediction_minus_actual_bias": -0.6052,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.496,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0338,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5089
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 1568,
+                  "MAE": 5.871,
+                  "RMSE": 7.5415,
+                  "prediction_minus_actual_bias": -0.5347,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5081,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0458,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5223
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 1568,
+                  "MAE": 6.1044,
+                  "RMSE": 7.882,
+                  "prediction_minus_actual_bias": -0.8119,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2747,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1875,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4872
+                }
+              }
+            },
+            "18_to_30": {
+              "paired_played_only": 4306,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 4306,
+                  "MAE": 7.1481,
+                  "RMSE": 8.9318,
+                  "prediction_minus_actual_bias": 0.2833,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1922,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4573
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 4306,
+                  "MAE": 6.9559,
+                  "RMSE": 8.7202,
+                  "prediction_minus_actual_bias": -0.0532,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1922,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4306,
+                  "MAE": 7.2373,
+                  "RMSE": 9.0329,
+                  "prediction_minus_actual_bias": 0.4161,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0892,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2814,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4601
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4306,
+                  "MAE": 7.0033,
+                  "RMSE": 8.7634,
+                  "prediction_minus_actual_bias": 0.0407,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1448,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0474,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4905
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 4306,
+                  "MAE": 6.9456,
+                  "RMSE": 8.6955,
+                  "prediction_minus_actual_bias": 0.0096,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2024,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0102,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5042
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 4306,
+                  "MAE": 7.4155,
+                  "RMSE": 9.2844,
+                  "prediction_minus_actual_bias": 0.1329,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.2674,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4596,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4568
+                }
+              }
+            },
+            "30_plus": {
+              "paired_played_only": 4787,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 4787,
+                  "MAE": 8.3695,
+                  "RMSE": 10.4669,
+                  "prediction_minus_actual_bias": 0.1248,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0653,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4704
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 4787,
+                  "MAE": 8.3042,
+                  "RMSE": 10.3839,
+                  "prediction_minus_actual_bias": 0.213,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0653,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4787,
+                  "MAE": 8.322,
+                  "RMSE": 10.3874,
+                  "prediction_minus_actual_bias": 0.0306,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0475,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0178,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4968
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4787,
+                  "MAE": 8.2403,
+                  "RMSE": 10.2973,
+                  "prediction_minus_actual_bias": 0.1206,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1292,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0639,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5135
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 4787,
+                  "MAE": 8.2048,
+                  "RMSE": 10.2555,
+                  "prediction_minus_actual_bias": 0.1518,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1646,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0994,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5266
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 4787,
+                  "MAE": 8.671,
+                  "RMSE": 10.8468,
+                  "prediction_minus_actual_bias": 0.0233,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.3015,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3668,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4729
+                }
+              }
+            }
+          },
+          "date_cluster_exploratory_gain_vs_minutes_only": {
+            "updated_minutes_shrunk_current_rate_5_FP": {
+              "ET_dates": 157,
+              "gain_95pct_exploratory": [
+                -0.0385,
+                0.0606
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            },
+            "updated_minutes_shrunk_current_rate_10_FP": {
+              "ET_dates": 157,
+              "gain_95pct_exploratory": [
+                0.02,
+                0.086
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            }
+          },
+          "source_prediction_hash_without_postgame_labels": "dd5bf6041c0a6d75a231cd5562a0ad119e755c76ac728f11b9eca8dbfbb0e10a"
+        }
+      }
+    },
+    "2025/26": {
+      "role": "reused_historical_research_not_pristine_holdout",
+      "high_confidence_players_with_previous_frozen_prior": 279,
+      "by_assumed_previous_boxscore_availability_hours": {
+        "12": {
+          "prelock_proxy_issues": 15812,
+          "scored_positive_minutes_only": 12640,
+          "UNKNOWN_not_DNP_or_zero": 3172,
+          "distinct_proxy_players": 230,
+          "distinct_scored_ET_dates": 158,
+          "all_positive_played": {
+            "paired_played_only": 12640,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 12640,
+                "MAE": 7.3756,
+                "RMSE": 9.3428,
+                "prediction_minus_actual_bias": -0.0782,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.242,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4415
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 12640,
+                "MAE": 7.1336,
+                "RMSE": 9.0767,
+                "prediction_minus_actual_bias": -0.0391,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.242,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 12640,
+                "MAE": 7.3764,
+                "RMSE": 9.3588,
+                "prediction_minus_actual_bias": -0.0939,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0008,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2428,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4752
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 12640,
+                "MAE": 7.1157,
+                "RMSE": 9.0603,
+                "prediction_minus_actual_bias": -0.0651,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2599,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0179,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5059
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 12640,
+                "MAE": 7.0771,
+                "RMSE": 9.0092,
+                "prediction_minus_actual_bias": -0.0562,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2985,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0565,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.518
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 12640,
+                "MAE": 7.4902,
+                "RMSE": 9.5521,
+                "prediction_minus_actual_bias": -0.0945,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1146,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3566,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.466
+              }
+            }
+          },
+          "early_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1586,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 1586,
+                "MAE": 7.0896,
+                "RMSE": 9.0794,
+                "prediction_minus_actual_bias": 0.6812,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2857,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4306
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 1586,
+                "MAE": 6.8039,
+                "RMSE": 8.7909,
+                "prediction_minus_actual_bias": 0.4067,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2857,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1586,
+                "MAE": 7.1098,
+                "RMSE": 9.1133,
+                "prediction_minus_actual_bias": 0.4671,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0202,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3059,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4622
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1586,
+                "MAE": 6.8222,
+                "RMSE": 8.8278,
+                "prediction_minus_actual_bias": 0.2008,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2674,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0183,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5006
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 1586,
+                "MAE": 6.7611,
+                "RMSE": 8.7576,
+                "prediction_minus_actual_bias": 0.2717,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.3285,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0428,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5158
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 1586,
+                "MAE": 7.3878,
+                "RMSE": 9.4755,
+                "prediction_minus_actual_bias": -0.0325,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.2982,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5839,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4458
+              }
+            }
+          },
+          "later_form_10_plus_prior_appearances": {
+            "paired_played_only": 11054,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 11054,
+                "MAE": 7.4166,
+                "RMSE": 9.3799,
+                "prediction_minus_actual_bias": -0.1872,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2357,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.443
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 11054,
+                "MAE": 7.1809,
+                "RMSE": 9.117,
+                "prediction_minus_actual_bias": -0.1031,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2357,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 11054,
+                "MAE": 7.4147,
+                "RMSE": 9.3935,
+                "prediction_minus_actual_bias": -0.1744,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.002,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2338,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.477
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 11054,
+                "MAE": 7.1578,
+                "RMSE": 9.0931,
+                "prediction_minus_actual_bias": -0.1033,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2588,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0231,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5067
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 11054,
+                "MAE": 7.1224,
+                "RMSE": 9.0447,
+                "prediction_minus_actual_bias": -0.1032,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2942,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0585,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5184
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 11054,
+                "MAE": 7.5049,
+                "RMSE": 9.5631,
+                "prediction_minus_actual_bias": -0.1034,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0882,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.324,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4689
+              }
+            }
+          },
+          "prior_same_club_sample_n": {
+            "3": {
+              "paired_played_only": 228,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 228,
+                  "MAE": 6.9236,
+                  "RMSE": 9.1472,
+                  "prediction_minus_actual_bias": 1.1547,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2966,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4298
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 228,
+                  "MAE": 6.627,
+                  "RMSE": 8.8578,
+                  "prediction_minus_actual_bias": 0.8762,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2966,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 228,
+                  "MAE": 6.923,
+                  "RMSE": 8.9589,
+                  "prediction_minus_actual_bias": 0.9562,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0006,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2959,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4605
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 228,
+                  "MAE": 6.6226,
+                  "RMSE": 8.6699,
+                  "prediction_minus_actual_bias": 0.6806,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.301,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0044,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4868
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 228,
+                  "MAE": 6.5818,
+                  "RMSE": 8.6797,
+                  "prediction_minus_actual_bias": 0.7558,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.3418,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0452,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 228,
+                  "MAE": 7.4757,
+                  "RMSE": 9.5019,
+                  "prediction_minus_actual_bias": 0.3546,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.5521,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.8486,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4079
+                }
+              }
+            },
+            "4": {
+              "paired_played_only": 230,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 230,
+                  "MAE": 6.9864,
+                  "RMSE": 8.9476,
+                  "prediction_minus_actual_bias": 1.2429,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2267,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4261
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 230,
+                  "MAE": 6.7597,
+                  "RMSE": 8.6506,
+                  "prediction_minus_actual_bias": 0.9277,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2267,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 230,
+                  "MAE": 7.0536,
+                  "RMSE": 9.0377,
+                  "prediction_minus_actual_bias": 1.0175,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0672,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2939,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4783
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 230,
+                  "MAE": 6.7893,
+                  "RMSE": 8.72,
+                  "prediction_minus_actual_bias": 0.6923,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1971,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0296,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 230,
+                  "MAE": 6.6904,
+                  "RMSE": 8.6238,
+                  "prediction_minus_actual_bias": 0.7764,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.296,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0693,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5304
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 230,
+                  "MAE": 7.6037,
+                  "RMSE": 9.6281,
+                  "prediction_minus_actual_bias": 0.3981,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.6172,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.8439,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4348
+                }
+              }
+            },
+            "5": {
+              "paired_played_only": 12182,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 12182,
+                  "MAE": 7.3914,
+                  "RMSE": 9.3537,
+                  "prediction_minus_actual_bias": -0.1262,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2413,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.442
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 12182,
+                  "MAE": 7.1501,
+                  "RMSE": 9.0886,
+                  "prediction_minus_actual_bias": -0.0745,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2413,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 12182,
+                  "MAE": 7.391,
+                  "RMSE": 9.372,
+                  "prediction_minus_actual_bias": -0.1346,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0004,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2409,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4754
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 12182,
+                  "MAE": 7.1311,
+                  "RMSE": 9.0737,
+                  "prediction_minus_actual_bias": -0.0934,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2603,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.019,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5064
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 12182,
+                  "MAE": 7.0936,
+                  "RMSE": 9.0224,
+                  "prediction_minus_actual_bias": -0.0871,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2978,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0565,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5181
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 12182,
+                  "MAE": 7.4883,
+                  "RMSE": 9.5516,
+                  "prediction_minus_actual_bias": -0.1122,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0969,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3382,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4677
+                }
+              }
+            }
+          },
+          "predicted_minutes_groups": {
+            "below_18": {
+              "paired_played_only": 2095,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 2095,
+                  "MAE": 6.1817,
+                  "RMSE": 7.9766,
+                  "prediction_minus_actual_bias": -0.7562,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4785,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4057
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 2095,
+                  "MAE": 5.7031,
+                  "RMSE": 7.4137,
+                  "prediction_minus_actual_bias": -0.6326,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.4785,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 2095,
+                  "MAE": 6.2502,
+                  "RMSE": 8.1004,
+                  "prediction_minus_actual_bias": -0.7813,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0686,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5471,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4434
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 2095,
+                  "MAE": 5.6804,
+                  "RMSE": 7.4199,
+                  "prediction_minus_actual_bias": -0.7283,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5013,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0227,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5045
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 2095,
+                  "MAE": 5.6513,
+                  "RMSE": 7.3773,
+                  "prediction_minus_actual_bias": -0.6958,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5304,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0518,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5193
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 2095,
+                  "MAE": 5.9658,
+                  "RMSE": 7.7964,
+                  "prediction_minus_actual_bias": -0.8307,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2159,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2627,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4668
+                }
+              }
+            },
+            "18_to_30": {
+              "paired_played_only": 6498,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 6498,
+                  "MAE": 7.1889,
+                  "RMSE": 9.0219,
+                  "prediction_minus_actual_bias": -0.1343,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2666,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4381
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 6498,
+                  "MAE": 6.9223,
+                  "RMSE": 8.7082,
+                  "prediction_minus_actual_bias": -0.0831,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2666,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 6498,
+                  "MAE": 7.1594,
+                  "RMSE": 9.0009,
+                  "prediction_minus_actual_bias": -0.1564,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0295,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2372,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.474
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 6498,
+                  "MAE": 6.8787,
+                  "RMSE": 8.6616,
+                  "prediction_minus_actual_bias": -0.1022,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.3102,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0435,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5078
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 6498,
+                  "MAE": 6.8502,
+                  "RMSE": 8.6217,
+                  "prediction_minus_actual_bias": -0.0957,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.3387,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0721,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.52
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 6498,
+                  "MAE": 7.2124,
+                  "RMSE": 9.1116,
+                  "prediction_minus_actual_bias": -0.1234,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0235,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2901,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4671
+                }
+              }
+            },
+            "30_plus": {
+              "paired_played_only": 4047,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 4047,
+                  "MAE": 8.2935,
+                  "RMSE": 10.4401,
+                  "prediction_minus_actual_bias": 0.3627,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.08,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4653
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 4047,
+                  "MAE": 8.2135,
+                  "RMSE": 10.3492,
+                  "prediction_minus_actual_bias": 0.3387,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.08,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4047,
+                  "MAE": 8.3078,
+                  "RMSE": 10.4646,
+                  "prediction_minus_actual_bias": 0.3621,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0144,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0944,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4935
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4047,
+                  "MAE": 8.2392,
+                  "RMSE": 10.3646,
+                  "prediction_minus_actual_bias": 0.3377,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0542,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0258,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5036
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 4047,
+                  "MAE": 8.1794,
+                  "RMSE": 10.2945,
+                  "prediction_minus_actual_bias": 0.3384,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.114,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.034,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5142
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 4047,
+                  "MAE": 8.7253,
+                  "RMSE": 10.9641,
+                  "prediction_minus_actual_bias": 0.3329,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.4319,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5119,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4638
+                }
+              }
+            }
+          },
+          "date_cluster_exploratory_gain_vs_minutes_only": {
+            "updated_minutes_shrunk_current_rate_5_FP": {
+              "ET_dates": 158,
+              "gain_95pct_exploratory": [
+                -0.0204,
+                0.0526
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            },
+            "updated_minutes_shrunk_current_rate_10_FP": {
+              "ET_dates": 158,
+              "gain_95pct_exploratory": [
+                0.0313,
+                0.0798
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            }
+          },
+          "source_prediction_hash_without_postgame_labels": "34ea9060380eeadbd90e5e6f39dbf701a42d7f25b3b1a78c2c8bbe4c324556d9"
+        },
+        "24": {
+          "prelock_proxy_issues": 15795,
+          "scored_positive_minutes_only": 12623,
+          "UNKNOWN_not_DNP_or_zero": 3172,
+          "distinct_proxy_players": 230,
+          "distinct_scored_ET_dates": 158,
+          "all_positive_played": {
+            "paired_played_only": 12623,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 12623,
+                "MAE": 7.3718,
+                "RMSE": 9.3371,
+                "prediction_minus_actual_bias": -0.0733,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2408,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4414
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 12623,
+                "MAE": 7.1311,
+                "RMSE": 9.0719,
+                "prediction_minus_actual_bias": -0.0345,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2408,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 12623,
+                "MAE": 7.3769,
+                "RMSE": 9.3583,
+                "prediction_minus_actual_bias": -0.091,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0051,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2459,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4751
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 12623,
+                "MAE": 7.1173,
+                "RMSE": 9.0612,
+                "prediction_minus_actual_bias": -0.062,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2546,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0138,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5058
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 12623,
+                "MAE": 7.077,
+                "RMSE": 9.0081,
+                "prediction_minus_actual_bias": -0.0525,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2948,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.054,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5179
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 12623,
+                "MAE": 7.4964,
+                "RMSE": 9.5595,
+                "prediction_minus_actual_bias": -0.0933,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1246,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3653,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.465
+              }
+            }
+          },
+          "early_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1601,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 1601,
+                "MAE": 7.1075,
+                "RMSE": 9.1072,
+                "prediction_minus_actual_bias": 0.668,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2828,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4266
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 1601,
+                "MAE": 6.8247,
+                "RMSE": 8.8235,
+                "prediction_minus_actual_bias": 0.3944,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2828,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1601,
+                "MAE": 7.1244,
+                "RMSE": 9.1274,
+                "prediction_minus_actual_bias": 0.4644,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0169,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2997,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4641
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1601,
+                "MAE": 6.8442,
+                "RMSE": 8.8506,
+                "prediction_minus_actual_bias": 0.2022,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2633,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0195,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5009
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 1601,
+                "MAE": 6.7813,
+                "RMSE": 8.7836,
+                "prediction_minus_actual_bias": 0.2688,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.3262,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0434,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5153
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 1601,
+                "MAE": 7.4106,
+                "RMSE": 9.4899,
+                "prediction_minus_actual_bias": -0.0202,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.303,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5858,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4447
+              }
+            }
+          },
+          "later_form_10_plus_prior_appearances": {
+            "paired_played_only": 11022,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 11022,
+                "MAE": 7.4102,
+                "RMSE": 9.37,
+                "prediction_minus_actual_bias": -0.181,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2347,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4436
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 11022,
+                "MAE": 7.1755,
+                "RMSE": 9.1074,
+                "prediction_minus_actual_bias": -0.0968,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2347,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 11022,
+                "MAE": 7.4136,
+                "RMSE": 9.3913,
+                "prediction_minus_actual_bias": -0.1716,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0034,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2381,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4767
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 11022,
+                "MAE": 7.1569,
+                "RMSE": 9.0914,
+                "prediction_minus_actual_bias": -0.1004,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2533,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0186,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5065
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 11022,
+                "MAE": 7.12,
+                "RMSE": 9.0403,
+                "prediction_minus_actual_bias": -0.0992,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2902,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0556,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5183
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 11022,
+                "MAE": 7.5089,
+                "RMSE": 9.5696,
+                "prediction_minus_actual_bias": -0.104,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0987,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3333,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.468
+              }
+            }
+          },
+          "prior_same_club_sample_n": {
+            "3": {
+              "paired_played_only": 233,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 233,
+                  "MAE": 6.6178,
+                  "RMSE": 8.7381,
+                  "prediction_minus_actual_bias": 1.3737,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.31,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4206
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 233,
+                  "MAE": 6.3078,
+                  "RMSE": 8.4359,
+                  "prediction_minus_actual_bias": 1.1225,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.31,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 233,
+                  "MAE": 6.7042,
+                  "RMSE": 8.6098,
+                  "prediction_minus_actual_bias": 1.1746,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0864,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3964,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4592
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 233,
+                  "MAE": 6.3727,
+                  "RMSE": 8.2879,
+                  "prediction_minus_actual_bias": 0.916,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2451,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.065,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.485
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 233,
+                  "MAE": 6.2964,
+                  "RMSE": 8.2801,
+                  "prediction_minus_actual_bias": 0.9954,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.3214,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0113,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4979
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 233,
+                  "MAE": 7.3316,
+                  "RMSE": 9.2133,
+                  "prediction_minus_actual_bias": 0.5718,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.7138,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -1.0239,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4034
+                }
+              }
+            },
+            "4": {
+              "paired_played_only": 229,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 229,
+                  "MAE": 7.3,
+                  "RMSE": 9.2643,
+                  "prediction_minus_actual_bias": 0.8251,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2109,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4148
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 229,
+                  "MAE": 7.0891,
+                  "RMSE": 8.9628,
+                  "prediction_minus_actual_bias": 0.5311,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2109,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 229,
+                  "MAE": 7.3237,
+                  "RMSE": 9.3269,
+                  "prediction_minus_actual_bias": 0.5452,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0237,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2346,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4672
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 229,
+                  "MAE": 7.0882,
+                  "RMSE": 9.0379,
+                  "prediction_minus_actual_bias": 0.2443,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2118,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0009,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5066
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 229,
+                  "MAE": 7.005,
+                  "RMSE": 8.9423,
+                  "prediction_minus_actual_bias": 0.3467,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2951,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0842,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5328
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 229,
+                  "MAE": 7.8282,
+                  "RMSE": 9.9257,
+                  "prediction_minus_actual_bias": -0.1142,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.5282,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.7391,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.441
+                }
+              }
+            },
+            "5": {
+              "paired_played_only": 12161,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 12161,
+                  "MAE": 7.3876,
+                  "RMSE": 9.3495,
+                  "prediction_minus_actual_bias": -0.1179,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.24,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4423
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 12161,
+                  "MAE": 7.1476,
+                  "RMSE": 9.0857,
+                  "prediction_minus_actual_bias": -0.0673,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.24,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 12161,
+                  "MAE": 7.3908,
+                  "RMSE": 9.3726,
+                  "prediction_minus_actual_bias": -0.1272,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0032,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2432,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4755
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 12161,
+                  "MAE": 7.1321,
+                  "RMSE": 9.0758,
+                  "prediction_minus_actual_bias": -0.0865,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2555,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0156,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5062
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 12161,
+                  "MAE": 7.0934,
+                  "RMSE": 9.0227,
+                  "prediction_minus_actual_bias": -0.0801,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2943,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0543,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.518
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 12161,
+                  "MAE": 7.4933,
+                  "RMSE": 9.559,
+                  "prediction_minus_actual_bias": -0.1057,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1057,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3457,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4667
+                }
+              }
+            }
+          },
+          "predicted_minutes_groups": {
+            "below_18": {
+              "paired_played_only": 2096,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 2096,
+                  "MAE": 6.174,
+                  "RMSE": 7.9475,
+                  "prediction_minus_actual_bias": -0.7492,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.467,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4089
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 2096,
+                  "MAE": 5.707,
+                  "RMSE": 7.3921,
+                  "prediction_minus_actual_bias": -0.6368,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.467,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 2096,
+                  "MAE": 6.2396,
+                  "RMSE": 8.0614,
+                  "prediction_minus_actual_bias": -0.7743,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0656,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5326,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4442
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 2096,
+                  "MAE": 5.6844,
+                  "RMSE": 7.3951,
+                  "prediction_minus_actual_bias": -0.7314,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.4896,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0226,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5062
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 2096,
+                  "MAE": 5.6558,
+                  "RMSE": 7.3539,
+                  "prediction_minus_actual_bias": -0.6994,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5182,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0512,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.52
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 2096,
+                  "MAE": 5.9657,
+                  "RMSE": 7.7682,
+                  "prediction_minus_actual_bias": -0.8324,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2082,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2587,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.468
+                }
+              }
+            },
+            "18_to_30": {
+              "paired_played_only": 6489,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 6489,
+                  "MAE": 7.1813,
+                  "RMSE": 9.0167,
+                  "prediction_minus_actual_bias": -0.1241,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2633,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4395
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 6489,
+                  "MAE": 6.918,
+                  "RMSE": 8.7077,
+                  "prediction_minus_actual_bias": -0.0694,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2633,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 6489,
+                  "MAE": 7.1594,
+                  "RMSE": 9.0054,
+                  "prediction_minus_actual_bias": -0.1485,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0219,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2413,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4722
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 6489,
+                  "MAE": 6.8803,
+                  "RMSE": 8.6705,
+                  "prediction_minus_actual_bias": -0.0902,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.301,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0377,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5067
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 6489,
+                  "MAE": 6.8493,
+                  "RMSE": 8.6269,
+                  "prediction_minus_actual_bias": -0.083,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.332,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0688,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5192
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 6489,
+                  "MAE": 7.228,
+                  "RMSE": 9.1344,
+                  "prediction_minus_actual_bias": -0.1139,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0467,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3099,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4649
+                }
+              }
+            },
+            "30_plus": {
+              "paired_played_only": 4038,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 4038,
+                  "MAE": 8.2997,
+                  "RMSE": 10.445,
+                  "prediction_minus_actual_bias": 0.3591,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0872,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4614
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 4038,
+                  "MAE": 8.2125,
+                  "RMSE": 10.347,
+                  "prediction_minus_actual_bias": 0.3341,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0872,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4038,
+                  "MAE": 8.3169,
+                  "RMSE": 10.4746,
+                  "prediction_minus_actual_bias": 0.3562,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0172,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.1044,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4958
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 4038,
+                  "MAE": 8.2418,
+                  "RMSE": 10.3668,
+                  "prediction_minus_actual_bias": 0.3308,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0579,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0292,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5042
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 4038,
+                  "MAE": 8.1808,
+                  "RMSE": 10.2956,
+                  "prediction_minus_actual_bias": 0.3323,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1189,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0317,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5149
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 4038,
+                  "MAE": 8.7223,
+                  "RMSE": 10.9665,
+                  "prediction_minus_actual_bias": 0.3234,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.4226,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5097,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4636
+                }
+              }
+            }
+          },
+          "date_cluster_exploratory_gain_vs_minutes_only": {
+            "updated_minutes_shrunk_current_rate_5_FP": {
+              "ET_dates": 158,
+              "gain_95pct_exploratory": [
+                -0.0292,
+                0.0603
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            },
+            "updated_minutes_shrunk_current_rate_10_FP": {
+              "ET_dates": 158,
+              "gain_95pct_exploratory": [
+                0.0259,
+                0.0839
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            }
+          },
+          "source_prediction_hash_without_postgame_labels": "78f5726197f212537ccc7242bc7b64f755551f4598b92c06e6399e7227163d84"
+        },
+        "48": {
+          "prelock_proxy_issues": 15601,
+          "scored_positive_minutes_only": 12452,
+          "UNKNOWN_not_DNP_or_zero": 3149,
+          "distinct_proxy_players": 230,
+          "distinct_scored_ET_dates": 158,
+          "all_positive_played": {
+            "paired_played_only": 12452,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 12452,
+                "MAE": 7.373,
+                "RMSE": 9.3359,
+                "prediction_minus_actual_bias": -0.093,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2371,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4401
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 12452,
+                "MAE": 7.1359,
+                "RMSE": 9.0758,
+                "prediction_minus_actual_bias": -0.0603,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2371,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 12452,
+                "MAE": 7.3834,
+                "RMSE": 9.3627,
+                "prediction_minus_actual_bias": -0.1128,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0104,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2475,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4745
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 12452,
+                "MAE": 7.1259,
+                "RMSE": 9.0696,
+                "prediction_minus_actual_bias": -0.0903,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.247,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0099,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5073
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 12452,
+                "MAE": 7.0851,
+                "RMSE": 9.0144,
+                "prediction_minus_actual_bias": -0.0799,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2879,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0508,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5182
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 12452,
+                "MAE": 7.5078,
+                "RMSE": 9.5772,
+                "prediction_minus_actual_bias": -0.1247,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1348,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.372,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4684
+              }
+            }
+          },
+          "early_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1592,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 1592,
+                "MAE": 7.1683,
+                "RMSE": 9.1746,
+                "prediction_minus_actual_bias": 0.6177,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.248,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4309
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 1592,
+                "MAE": 6.9203,
+                "RMSE": 8.91,
+                "prediction_minus_actual_bias": 0.3378,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.248,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1592,
+                "MAE": 7.1465,
+                "RMSE": 9.1958,
+                "prediction_minus_actual_bias": 0.4118,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0218,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2262,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4868
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 1592,
+                "MAE": 6.9071,
+                "RMSE": 8.9346,
+                "prediction_minus_actual_bias": 0.1475,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2612,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0132,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5195
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 1592,
+                "MAE": 6.8577,
+                "RMSE": 8.8688,
+                "prediction_minus_actual_bias": 0.2137,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.3106,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0626,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5339
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 1592,
+                "MAE": 7.4419,
+                "RMSE": 9.5655,
+                "prediction_minus_actual_bias": -0.078,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.2736,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5216,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4623
+              }
+            }
+          },
+          "later_form_10_plus_prior_appearances": {
+            "paired_played_only": 10860,
+            "by_FP_variant": {
+              "frozen_previous_season_FP": {
+                "played_pairs": 10860,
+                "MAE": 7.403,
+                "RMSE": 9.3594,
+                "prediction_minus_actual_bias": -0.1971,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2355,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4414
+              },
+              "updated_minutes_frozen_rate_FP": {
+                "played_pairs": 10860,
+                "MAE": 7.1675,
+                "RMSE": 9.0998,
+                "prediction_minus_actual_bias": -0.1187,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2355,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+              },
+              "frozen_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 10860,
+                "MAE": 7.4181,
+                "RMSE": 9.387,
+                "prediction_minus_actual_bias": -0.1897,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0152,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2507,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4727
+              },
+              "updated_minutes_shrunk_current_rate_5_FP": {
+                "played_pairs": 10860,
+                "MAE": 7.158,
+                "RMSE": 9.0892,
+                "prediction_minus_actual_bias": -0.1251,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.245,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0095,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5055
+              },
+              "updated_minutes_shrunk_current_rate_10_FP": {
+                "played_pairs": 10860,
+                "MAE": 7.1185,
+                "RMSE": 9.0355,
+                "prediction_minus_actual_bias": -0.123,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2845,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.049,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5159
+              },
+              "updated_minutes_current_rate_only_FP": {
+                "played_pairs": 10860,
+                "MAE": 7.5175,
+                "RMSE": 9.579,
+                "prediction_minus_actual_bias": -0.1315,
+                "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1145,
+                "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.35,
+                "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4693
+              }
+            }
+          },
+          "prior_same_club_sample_n": {
+            "3": {
+              "paired_played_only": 232,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 232,
+                  "MAE": 7.1397,
+                  "RMSE": 9.0488,
+                  "prediction_minus_actual_bias": 1.1391,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2852,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4224
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 232,
+                  "MAE": 6.8545,
+                  "RMSE": 8.6835,
+                  "prediction_minus_actual_bias": 0.8496,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2852,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 232,
+                  "MAE": 6.8944,
+                  "RMSE": 8.8127,
+                  "prediction_minus_actual_bias": 0.7893,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2453,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0399,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5043
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 232,
+                  "MAE": 6.5653,
+                  "RMSE": 8.4578,
+                  "prediction_minus_actual_bias": 0.5028,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5744,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.2892,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5776
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 232,
+                  "MAE": 6.6176,
+                  "RMSE": 8.4815,
+                  "prediction_minus_actual_bias": 0.6362,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5221,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.2369,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5905
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 232,
+                  "MAE": 7.2614,
+                  "RMSE": 9.2456,
+                  "prediction_minus_actual_bias": -0.0752,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1216,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4069,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4655
+                }
+              }
+            },
+            "4": {
+              "paired_played_only": 209,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 209,
+                  "MAE": 6.619,
+                  "RMSE": 8.4743,
+                  "prediction_minus_actual_bias": 0.1659,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3237,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.3732
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 209,
+                  "MAE": 6.2953,
+                  "RMSE": 8.1931,
+                  "prediction_minus_actual_bias": -0.134,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.3237,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 209,
+                  "MAE": 6.9874,
+                  "RMSE": 8.8556,
+                  "prediction_minus_actual_bias": 0.1057,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.3684,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.6921,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.3684
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 209,
+                  "MAE": 6.7354,
+                  "RMSE": 8.5899,
+                  "prediction_minus_actual_bias": -0.1775,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.1163,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.44,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4115
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 209,
+                  "MAE": 6.5146,
+                  "RMSE": 8.3756,
+                  "prediction_minus_actual_bias": -0.162,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1044,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2192,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4402
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 209,
+                  "MAE": 7.9074,
+                  "RMSE": 9.8749,
+                  "prediction_minus_actual_bias": -0.2319,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -1.2884,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -1.6121,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.3636
+                }
+              }
+            },
+            "5": {
+              "paired_played_only": 12011,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 12011,
+                  "MAE": 7.3906,
+                  "RMSE": 9.3557,
+                  "prediction_minus_actual_bias": -0.1213,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2347,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4416
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 12011,
+                  "MAE": 7.1559,
+                  "RMSE": 9.0978,
+                  "prediction_minus_actual_bias": -0.0766,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2347,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 12011,
+                  "MAE": 7.3997,
+                  "RMSE": 9.3816,
+                  "prediction_minus_actual_bias": -0.134,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0091,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2438,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4758
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 12011,
+                  "MAE": 7.1436,
+                  "RMSE": 9.0891,
+                  "prediction_minus_actual_bias": -0.1002,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.247,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0124,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5076
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 12011,
+                  "MAE": 7.1041,
+                  "RMSE": 9.0351,
+                  "prediction_minus_actual_bias": -0.0923,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2865,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0519,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5182
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 12011,
+                  "MAE": 7.5056,
+                  "RMSE": 9.5783,
+                  "prediction_minus_actual_bias": -0.1238,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.115,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3497,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4703
+                }
+              }
+            }
+          },
+          "predicted_minutes_groups": {
+            "below_18": {
+              "paired_played_only": 2072,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 2072,
+                  "MAE": 6.1657,
+                  "RMSE": 7.9521,
+                  "prediction_minus_actual_bias": -0.7997,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.4518,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4054
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 2072,
+                  "MAE": 5.7139,
+                  "RMSE": 7.4207,
+                  "prediction_minus_actual_bias": -0.7069,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.4518,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 2072,
+                  "MAE": 6.2279,
+                  "RMSE": 8.0458,
+                  "prediction_minus_actual_bias": -0.8454,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0622,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.514,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4484
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 2072,
+                  "MAE": 5.69,
+                  "RMSE": 7.4018,
+                  "prediction_minus_actual_bias": -0.8189,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.4757,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0239,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5121
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 2072,
+                  "MAE": 5.6612,
+                  "RMSE": 7.3679,
+                  "prediction_minus_actual_bias": -0.7809,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.5045,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0527,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5227
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 2072,
+                  "MAE": 5.9634,
+                  "RMSE": 7.7538,
+                  "prediction_minus_actual_bias": -0.9391,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2023,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2495,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4725
+                }
+              }
+            },
+            "18_to_30": {
+              "paired_played_only": 6401,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 6401,
+                  "MAE": 7.1881,
+                  "RMSE": 9.0048,
+                  "prediction_minus_actual_bias": -0.1307,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2619,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4363
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 6401,
+                  "MAE": 6.9263,
+                  "RMSE": 8.7007,
+                  "prediction_minus_actual_bias": -0.0803,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2619,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 6401,
+                  "MAE": 7.1866,
+                  "RMSE": 9.0171,
+                  "prediction_minus_actual_bias": -0.1454,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0015,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.2603,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4668
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 6401,
+                  "MAE": 6.905,
+                  "RMSE": 8.6835,
+                  "prediction_minus_actual_bias": -0.0945,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.2831,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0212,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5035
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 6401,
+                  "MAE": 6.8715,
+                  "RMSE": 8.6332,
+                  "prediction_minus_actual_bias": -0.0896,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.3167,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0548,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5151
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 6401,
+                  "MAE": 7.2515,
+                  "RMSE": 9.1661,
+                  "prediction_minus_actual_bias": -0.1117,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0633,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.3252,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4666
+                }
+              }
+            },
+            "30_plus": {
+              "paired_played_only": 3979,
+              "by_FP_variant": {
+                "frozen_previous_season_FP": {
+                  "played_pairs": 3979,
+                  "MAE": 8.299,
+                  "RMSE": 10.4588,
+                  "prediction_minus_actual_bias": 0.3357,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0855,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4642
+                },
+                "updated_minutes_frozen_rate_FP": {
+                  "played_pairs": 3979,
+                  "MAE": 8.2135,
+                  "RMSE": 10.3591,
+                  "prediction_minus_actual_bias": 0.3086,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.0855,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.0
+                },
+                "frozen_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 3979,
+                  "MAE": 8.3017,
+                  "RMSE": 10.4795,
+                  "prediction_minus_actual_bias": 0.3212,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.0027,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0882,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5006
+                },
+                "updated_minutes_shrunk_current_rate_5_FP": {
+                  "played_pairs": 3979,
+                  "MAE": 8.229,
+                  "RMSE": 10.3726,
+                  "prediction_minus_actual_bias": 0.2961,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.07,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.0155,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.5109
+                },
+                "updated_minutes_shrunk_current_rate_10_FP": {
+                  "played_pairs": 3979,
+                  "MAE": 8.1703,
+                  "RMSE": 10.3018,
+                  "prediction_minus_actual_bias": 0.3006,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": 0.1287,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": 0.0432,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.521
+                },
+                "updated_minutes_current_rate_only_FP": {
+                  "played_pairs": 3979,
+                  "MAE": 8.7245,
+                  "RMSE": 10.9807,
+                  "prediction_minus_actual_bias": 0.2785,
+                  "paired_MAE_gain_vs_frozen_previous_season_FP": -0.4255,
+                  "paired_MAE_gain_vs_updated_minutes_frozen_rate_FP": -0.5109,
+                  "fraction_better_than_updated_minutes_frozen_rate_FP": 0.4692
+                }
+              }
+            }
+          },
+          "date_cluster_exploratory_gain_vs_minutes_only": {
+            "updated_minutes_shrunk_current_rate_5_FP": {
+              "ET_dates": 158,
+              "gain_95pct_exploratory": [
+                -0.0334,
+                0.0523
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            },
+            "updated_minutes_shrunk_current_rate_10_FP": {
+              "ET_dates": 158,
+              "gain_95pct_exploratory": [
+                0.0219,
+                0.0785
+              ],
+              "resampling_unit": "ET_date_not_independent_player_games",
+              "repeats": 200,
+              "multiple_comparisons_not_corrected": true
+            }
+          },
+          "source_prediction_hash_without_postgame_labels": "057a5bb17eb121e68859e790dee9c4d9e6ce35c8b33c2a677a5a584b3f95e61d"
+        }
+      }
+    }
+  },
+  "source_qa": {
+    "no_previous_frozen_same_team_prior": 203
+  },
+  "quality_gate": {
+    "only_prelock_assumed_available_previous_game_stats_as_features": true,
+    "missing_positive_log_not_DNP": true,
+    "historical_source_timestamp_assumptions_not_verified": true,
+    "2025_26_is_reused_not_independent_pristine_holdout": true,
+    "no_full_P_play_or_unconditional_FP_validated": true,
+    "future_2026_27_prospective_heldout_comparison_required": true,
+    "ablation_does_not_select_production_model": true,
+    "adopt_on_site": false
+  },
+  "limitations": [
+    "Retrospective ESPN tipoffs are confirmed, but historical publication timing is not.",
+    "A past boxscore is ASSUMED available at +12/24/48h, not verified first-seen.",
+    "Candidate player/team cohort inferred from earlier positive-minute played rows.",
+    "No target-game played outcome used for candidate selection or rate calculation.",
+    "Absent positive-minute row = UNKNOWN, never zero fantasy credit or DNP.",
+    "Multiple correlated player games on same ET date; date intervals exploratory.",
+    "FP-per-minute includes team W/L and location terms, not separate forecasts of those variables.",
+    "Last 3-5 games may be noisy; previous prior strength 5/10 is exploratory.",
+    "Historical 2025/26 has already been explored; comparisons cannot prove out-of-sample gain.",
+    "No production model, Firebase, Sports.ru account, prices, transfers or Hosting changed."
+  ]
+}
