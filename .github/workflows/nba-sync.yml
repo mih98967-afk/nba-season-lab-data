@@ -18,12 +18,18 @@ on:
       - 'test_prelock_roster_opportunities.py'
       - 'src/keep_transfer_public_readiness.py'
       - 'test_keep_transfer_public_readiness.py'
+      - 'src/official_nba_nonout_unknown_research.py'
+      - 'test_official_nba_nonout_unknown_research.py'
+      - 'src/availability_source_reconciliation_research.py'
+      - 'test_availability_source_reconciliation_research.py'
   push:
     branches: [main, fix/live-schedule-provenance-20261025]
     paths:
       - 'src/**'
       - 'test_sync.py'
       - 'test_live_schedule_provenance.py'
+      - 'test_official_nba_nonout_unknown_research.py'
+      - 'test_availability_source_reconciliation_research.py'
       - '.github/workflows/nba-sync.yml'
   workflow_dispatch:
   schedule:
