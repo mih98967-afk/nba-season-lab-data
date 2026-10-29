@@ -26,10 +26,12 @@ class NonOutEvidence(unittest.TestCase):
         summary=result["summary"]
         self.assertEqual(summary["all_finished_p_play_UNKNOWN"],
                          self.inputs[2]["unknown_postgame_results"])
-        self.assertEqual(summary["already_reviewed_official_OUT_excluded"],
-                         len(self.inputs[3]["records"]))
+        self.assertEqual(summary["already_reviewed_official_OUT_excluded"] +
+                         summary["pending_official_OUT_independent_review_excluded"],
+                         len([x for x in self.inputs[0]["unknown_cases"]
+                              if x["official_status_first_known_by_issue"] == "out"]))
         self.assertEqual(summary["new_non_OUT_review_cohort"] +
-                         summary["already_reviewed_official_OUT_excluded"],
+                         summary["total_official_OUT_UNKNOWN_excluded"],
                          summary["all_finished_p_play_UNKNOWN"])
         self.assertEqual(len(result["records"]),
                          summary["new_non_OUT_review_cohort"])
@@ -119,6 +121,40 @@ class NonOutEvidence(unittest.TestCase):
             broken[0]["overall_selected_opportunity_coverage"]["outcome_UNKNOWN"] -= 1
             with self.assertRaisesRegex(ValueError, "LEDGER_SUMMARY_MISMATCH"):
                 eligible_cases(*broken, self.now)
+
+    def test_new_out_unknown_is_pending_not_a_false_DNP(self):
+        inputs = deepcopy(self.inputs)
+        ledger, shadow, selection, reviewed = inputs[:4]
+        base = next(r for r in ledger["unknown_cases"]
+                    if r["official_status_first_known_by_issue"] == "out")
+        original = next(r for r in shadow["issued"]
+                        if (r["game_id"], r["player_id"]) ==
+                           (base["game_id"], base["player_id"]))
+        for i in range(11):
+            player_id = "new_pending_out_%02d" % i
+            row, issue = deepcopy(base), deepcopy(original)
+            row["player_id"] = issue["player_id"] = player_id
+            ledger["unknown_cases"].append(row)
+            shadow["issued"].append(issue)
+        selection["unknown_postgame_results"] += 11
+        selection["official_OUT_unknown_review_priority_count"] += 11
+        ledger["overall_selected_opportunity_coverage"]["outcome_UNKNOWN"] += 11
+        ledger["current_OUT_queue"] += 11
+        report = build(*inputs, None, lambda _: None, self.now, max_games=1)
+        summary = report["summary"]
+        self.assertEqual(summary["pending_official_OUT_independent_review_excluded"], 11)
+        self.assertEqual(summary["already_reviewed_official_OUT_excluded"], len(reviewed["records"]))
+        self.assertEqual(summary["total_official_OUT_UNKNOWN_excluded"], ledger["current_OUT_queue"])
+        self.assertEqual(summary["p_play_negative_labels_created"], 0)
+        self.assertTrue(all(r["model_training_negative"] is False for r in report["records"]))
+        changed = deepcopy(inputs)
+        changed[3]["records"][0]["team"] = "INVALID"
+        with self.assertRaisesRegex(ValueError, "Independent OUT review conflicts"):
+            build(*changed, None, lambda _: None, self.now)
+        changed = deepcopy(inputs)
+        changed[0]["current_OUT_queue"] -= 1
+        with self.assertRaisesRegex(ValueError, "LEDGER_OUT_QUEUE_MISMATCH"):
+            build(*changed, None, lambda _: None, self.now)
 
     def test_literal_NBA_only_and_wrong_team_conflict(self):
         obj={"111":{"team":"BOS","played":"0","status":"INACTIVE",
