@@ -3,7 +3,7 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-29T15:41:22Z",
+  "updated_at_utc": "2026-10-29T16:28:35Z",
   "model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
   "frozen_exploratory_structure": {
     "name": "current_season_minutes_shrunk_to_frozen_2025_26_v1",
@@ -29,7 +29,14 @@
     "scored_NBA_games": 0
   },
   "issue_QA": {
-    "not_same_asof_fresh_issue_no_backfill": 417
+    "original_issue_stale_over_20_minutes_no_backfill": 170,
+    "original_issue_no_longer_prelock": 247
+  },
+  "source_clock_QA": {
+    "latest_original_frozen_issue_at_utc": "2026-10-29T13:50:21Z",
+    "max_baseline_to_challenger_issue_lag_seconds": 1200,
+    "current_minutes_first_seen_must_be_by_original_issue": true,
+    "no_retroactive_issue": true
   },
   "played_only_paired_metrics": {
     "played_scored": 0
