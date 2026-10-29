@@ -13,6 +13,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from hashlib import sha256
 from math import isfinite, sqrt
+from random import Random
 from pathlib import Path
 from zoneinfo import ZoneInfo
 import json
@@ -25,6 +26,14 @@ ET = ZoneInfo("America/New_York")
 SOURCE = "positive_minutes_verified_sportsru_fp"
 EXPLICIT = "explicit_espn_didNotPlay_true"
 NAMES = ("minutes", "fp_rate", "decomposed_fp", "direct_fp")
+POSITIONS = ("PG", "SG", "SF", "PF", "C")
+# Exploratory reporting thresholds added after the first 2026/27 outcomes.
+# They are NOT preregistered selection/adoption thresholds.
+MIN_REPORT_ET_DATES = 8
+MIN_REPORT_PLAYED = 100
+MIN_REPORT_NBA_GAMES = 24
+BOOTSTRAP_DRAWS = 1000
+BOOTSTRAP_SEED = 20261029
 
 
 def clock(value):
@@ -104,6 +113,94 @@ def metrics(rows):
     }
 
 
+def role_diagnostics(finished, played):
+    """Position-specific missingness and played-only residuals; no refitting."""
+    all_roles, scored_roles = defaultdict(list), defaultdict(list)
+    for row in finished:
+        if row["position"] not in POSITIONS:
+            raise ValueError("Unverified fantasy position in completed player-game")
+        all_roles[row["position"]].append(row)
+    for row in played:
+        if row["position"] not in POSITIONS:
+            raise ValueError("Unverified fantasy position in played score")
+        scored_roles[row["position"]].append(row)
+    result = {}
+    for position in POSITIONS:
+        scored = scored_roles[position]
+        result[position] = {
+            "outcome_coverage": profile(all_roles[position]),
+            "positive_minute_verified_ET_dates": len({r["et_date"] for r in scored}),
+            "positive_minute_verified_NBA_games": len({r["game_id"] for r in scored}),
+            "conditional_played_only_metrics": metrics(scored),
+            "position_adjustment_evidence_sufficient": False,
+        }
+    return result
+
+
+def date_cluster_fp_uncertainty(rows, *, seed=BOOTSTRAP_SEED,
+                                draws=BOOTSTRAP_DRAWS):
+    """Whole-ET-date bootstrap of frozen *descriptive* residuals only.
+
+    The reporting floor was defined after early season results. Even if met,
+    intervals are exploratory, not preregistered evidence for model adoption.
+    """
+    if type(seed) is not int or type(draws) is not int or not 200 <= draws <= 5000:
+        raise ValueError("Invalid ET-date bootstrap parameters")
+    groups, seen, games = defaultdict(list), set(), set()
+    for row in rows:
+        key = (row.get("game_id"), row.get("player_id"))
+        if (not all(isinstance(v, str) and v for v in key)
+                or key in seen):
+            raise ValueError("Duplicate/invalid scored player-game for bootstrap")
+        seen.add(key)
+        games.add(key[0])
+        date = clock(row["game_utc"]).astimezone(ET).date().isoformat()
+        if row.get("et_date") != date:
+            raise ValueError("ET date from game tipoff differs from scored date")
+        minutes, actual = number(row["actual_minutes"]), number(row["actual_fp_reconstructed"])
+        if minutes <= 0:
+            raise ValueError("Conditional uncertainty includes a nonplayed row")
+        minute_err = number(row["predicted_minutes"]) - minutes
+        direct_err = number(row["predicted_direct_fp"]) - actual
+        decomp_err = number(row["predicted_decomposed_fp"]) - actual
+        groups[date].append((minute_err, direct_err, abs(direct_err),
+                             abs(direct_err) - abs(decomp_err)))
+    if (len(groups) < MIN_REPORT_ET_DATES or len(rows) < MIN_REPORT_PLAYED
+            or len(games) < MIN_REPORT_NBA_GAMES):
+        return None
+    cohorts = [groups[k] for k in sorted(groups)]
+    rng = Random(seed)
+    estimates = [[] for _ in range(4)]
+    for _ in range(draws):
+        picked = [cohorts[rng.randrange(len(cohorts))]
+                  for unused in range(len(cohorts))]
+        n = sum(len(group) for group in picked)
+        for metric in range(4):
+            estimates[metric].append(sum(row[metric] for group in picked
+                                         for row in group) / n)
+    def interval(values):
+        values.sort()
+        def quantile(p):
+            x = (len(values)-1) * p
+            i = int(x)
+            share = x-i
+            return round(values[i]*(1-share) + values[min(i+1,len(values)-1)]*share, 4)
+        return [quantile(0.025), quantile(0.975)]
+    return {
+        "resampling_unit": "whole_NBA_ET_date_including_correlated_player_games",
+        "played_player_games": len(rows), "NBA_games": len(games),
+        "independent_ET_dates": len(cohorts),
+        "draws": draws, "seed": seed,
+        "mean_predicted_minus_actual_minutes_95pct_exploratory": interval(estimates[0]),
+        "mean_predicted_minus_actual_FP_95pct_exploratory": interval(estimates[1]),
+        "direct_FP_MAE_95pct_exploratory": interval(estimates[2]),
+        "direct_minus_decomposed_FP_MAE_95pct_exploratory": interval(estimates[3]),
+        "negative_direct_minus_decomposed_MAE_favors_direct": True,
+        "posthoc_exploratory_not_pre_registered": True,
+        "selected_played_only_not_full_roster_or_future_calibration": True,
+    }
+
+
 def build(minutes, pplay, cohort, explicit, live, now):
     if now.utcoffset() is None:
         raise ValueError("Evaluation clock must be timezone-aware")
@@ -149,6 +246,8 @@ def build(minutes, pplay, cohort, explicit, live, now):
         p = shadow.get(key)
         if p is None or p.get("team") != issue.get("team"):
             raise ValueError("Missing first-issued player/team for minutes forecast")
+        if p.get("position") not in POSITIONS:
+            raise ValueError("Invalid frozen fantasy position")
         tip, lock, initial, first = [clock(value) for value in (
             issue["game_utc"], issue["individual_lock_utc"],
             issue["issued_at_utc"], issue["p_play_first_issued_at_utc"])]
@@ -308,6 +407,7 @@ def build(minutes, pplay, cohort, explicit, live, now):
                     "played_distinct_ET_dates": et_n,
                     "finished_distinct_ET_dates": len(by_date)},
         "positive_minutes_selected_only_metrics": metrics(played),
+        "by_position_outcome_and_played_only": role_diagnostics(finished, played),
         "by_frozen_predicted_minutes_group": {k: metrics(v) for k,v in groups.items()},
         "by_ET_date": {k: {"coverage": profile(v),
                              "conditional_played": metrics(
@@ -322,9 +422,16 @@ def build(minutes, pplay, cohort, explicit, live, now):
         "scored_played": played,
         "explicit_DNP_not_in_conditional_metrics": nonplay,
         "UNKNOWN_unscored": unverified,
+        "date_cluster_uncertainty_if_exploratory_eligible": date_cluster_fp_uncertainty(played),
         "quality_gate": {
             "at_least_8_independent_ET_dates": et_n >= 8,
             "at_least_100_positive_minute_prospective_cases": len(played) >= 100,
+            "at_least_24_scored_NBA_games_for_exploratory_interval":
+                len({r["game_id"] for r in played}) >= MIN_REPORT_NBA_GAMES,
+            "posthoc_exploratory_interval_eligible":
+                et_n >= MIN_REPORT_ET_DATES and len(played) >= MIN_REPORT_PLAYED and
+                len({r["game_id"] for r in played}) >= MIN_REPORT_NBA_GAMES,
+            "position_specific_recalibration_allowed": False,
             "reconstructed_FP_is_official_account_credit": False,
             "dev_q90_bands_are_valid_future_predictive_intervals": False,
             "p_play_full_denominator_calibrated": False,
@@ -338,6 +445,8 @@ def build(minutes, pplay, cohort, explicit, live, now):
             "Sports.ru-formula FP reconstructed from NBA boxscore is not personal credited Sports.ru FP.",
             "Historical 2024/25 q90 absolute residual bands are scored only as frozen diagnostics.",
             "Small number of ET dates makes naive player-level confidence intervals unreliable.",
+            "Position-level played residuals are descriptive, not validated role adjustments.",
+            "ET-date bootstrap gates added after observed outcomes; even when met they are exploratory.",
             "No data-driven parameter tuning, prospective reissue, site deployment, Firestore or transfer action.",
         ],
     }
