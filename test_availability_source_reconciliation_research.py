@@ -37,7 +37,8 @@ class AvailabilityProof(unittest.TestCase):
         s=report["summary"]
         self.assertEqual(s["UNKNOWN_checked"],self.sources[4]["unknown_postgame_results"])
         self.assertEqual(s["OUT_branch"]+s["non_OUT_branch"],s["UNKNOWN_checked"])
-        self.assertEqual(s["game_specific_NBA_boxscore_observed"],s["UNKNOWN_checked"])
+        self.assertEqual(s["game_specific_NBA_boxscore_observed"] +
+                         s["pending_OUT_independent_review"],s["UNKNOWN_checked"])
         self.assertEqual(len(report["case_records"]),s["UNKNOWN_checked"])
         self.assertEqual(s["new_pplay_DNP_labels"],0)
         self.assertTrue(all(r["p_play_result_still_UNKNOWN"] is True and
@@ -67,7 +68,9 @@ class AvailabilityProof(unittest.TestCase):
         nonout["summary"]["total_official_OUT_UNKNOWN_excluded"]+=11
         nonout["summary"]["pending_official_OUT_independent_review_excluded"]+=11
         result=self.evaluate(data)
-        self.assertEqual(result["summary"]["pending_OUT_independent_review"],11)
+        previous_pending = len([r for r in self.sources[0]["unknown_cases"]
+                                if r["official_status_first_known_by_issue"]=="out"]) - len(self.sources[2]["records"])
+        self.assertEqual(result["summary"]["pending_OUT_independent_review"],previous_pending+11)
         self.assertEqual(result["summary"]["new_pplay_DNP_labels"],0)
         pending=[x for x in result["case_records"] if x["player_id"].startswith("pending_out_source_")]
         self.assertEqual(len(pending),11)
