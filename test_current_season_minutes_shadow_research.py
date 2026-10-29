@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 from copy import deepcopy
 from datetime import datetime,timezone,timedelta
 from src.current_season_minutes_shadow_research import build,MODEL_HASH,metrics
@@ -44,6 +45,20 @@ class ShadowTests(unittest.TestCase):
   a=self.fixture()
   a[2]["row_first_seen_at_utc"]["g2|p"]="2026-10-29T16:00:00Z"
   self.assertEqual(build(*a,when("2026-10-29T15:05:00Z"))["summary"]["issued_total"],0)
+ def test_post_baseline_source_cannot_be_leaked_into_challenger(self):
+  a=self.fixture()
+  a[2]["row_first_seen_at_utc"]["g2|p"]="2026-10-29T15:02:00Z"
+  result=build(*a,when("2026-10-29T15:05:00Z"))
+  self.assertEqual(result["summary"]["issued_total"],0)
+  self.assertEqual(result["issue_QA"]["insufficient_current_same_team_verified_played_form"],1)
+ def test_clock_qa_separates_stale_from_lock(self):
+  a=self.fixture()
+  stale=build(*a,when("2026-10-29T16:00:00Z"))
+  self.assertEqual(stale["issue_QA"]["original_issue_stale_over_20_minutes_no_backfill"],1)
+  self.assertEqual(stale["source_clock_QA"]["latest_original_frozen_issue_at_utc"],
+                   "2026-10-29T15:00:00Z")
+  locked=build(*a,when("2026-10-30T00:00:00Z"))
+  self.assertEqual(locked["issue_QA"]["original_issue_no_longer_prelock"],1)
  def test_no_dnp_zero_and_immutable_source(self):
   a=self.fixture()
   v=build(*a,when("2026-10-29T15:05:00Z"))
@@ -63,4 +78,23 @@ class ShadowTests(unittest.TestCase):
   after=build(v,*a[1:],when("2026-10-30T06:00:00Z"))
   self.assertEqual(after["summary"]["played_verified"],1)
   self.assertEqual(after["played_only_paired_metrics"]["played_scored"],1)
+class PipelineOwnership(unittest.TestCase):
+ def test_current_minutes_challenger_has_one_publisher(self):
+  root=Path(__file__).resolve().parent
+  main=(root/".github/workflows/nba-sync.yml").read_text()
+  self.assertEqual(main.count("python -m src.current_season_minutes_shadow_research"),2)
+  parts=main.split("python -m src.participation_cohort_research")
+  self.assertEqual(len(parts),3)
+  for tail in parts[1:]:
+   commands=["python -m src.conditional_minutes_fp_research",
+             "python -m src.conditional_minutes_fp_evaluation_research",
+             "python -m src.current_season_minutes_shadow_research"]
+   offsets=[tail.index(c) for c in commands]
+   self.assertEqual(offsets,sorted(offsets))
+  self.assertIn("data/current_season_minutes_shadow_research.json",main)
+  isolated=(root/".github/workflows/current-season-minutes-shadow.yml").read_text()
+  self.assertIn("contents: read",isolated)
+  for forbidden in ("contents: write","git add data/","git push origin",
+                    "  schedule:","  workflow_run:","  workflow_dispatch:"):
+   self.assertNotIn(forbidden,isolated)
 if __name__=="__main__":unittest.main()

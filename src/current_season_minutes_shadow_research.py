@@ -3,7 +3,7 @@
 A new challenger is issued ONLY alongside a genuinely fresh immutable 2025/26
 minutes forecast, before the individual T-30 lock. It blends that historical
 minutes forecast with verified same-team current-season played minutes whose
-*actual first-observed timestamps* predate challenger issuance. It never
+*actual first-observed timestamps* predate the original frozen issuance. It never
 reconstructs what was known at an old issue time or treats absence as DNP.
 
 The unoptimized 5-game prior strength is an exploratory choice made after early
@@ -189,21 +189,28 @@ def build(previous, frozen, rolling, live, evaluation, now):
         if (tip-lock).total_seconds() != 1800 or initial >= lock:
             raise ValueError("Frozen original issue violates individual lock")
         lag = (now-initial).total_seconds()
-        if not (0 <= lag <= MODEL["max_baseline_to_challenger_issue_lag_seconds"]
-                and now < lock and now < tip):
-            qa["not_same_asof_fresh_issue_no_backfill"] += 1
+        if lag < 0:
+            qa["original_issue_in_future_no_backdate"] += 1
             continue
+        if now >= lock or now >= tip:
+            qa["original_issue_no_longer_prelock"] += 1
+            continue
+        if lag > MODEL["max_baseline_to_challenger_issue_lag_seconds"]:
+            qa["original_issue_stale_over_20_minutes_no_backfill"] += 1
+            continue
+        qa["fresh_original_prelock_issues"] += 1
         prior_mins = number(base["min_if_play"])
         rate = number(base["fp_per_minute_if_play"])
         if not 0 <= prior_mins <= 70:
             raise ValueError("Invalid frozen 2025/26 minute forecast")
         candidates = [r for r in by_player.get((base["player_id"],base["team"]), [])
-                      if instant(r["first_seen_at_utc"]) <= now
+                      if instant(r["first_seen_at_utc"]) <= initial
                       and instant(r["game_utc"]) < initial]
         sample = candidates[-MODEL["max_recent_current_played_games"]:]
         if len(sample) < MODEL["min_current_same_club_played_games"]:
             qa["insufficient_current_same_team_verified_played_form"] += 1
             continue
+        qa["fresh_original_issues_with_sufficient_same_team_form"] += 1
         n = len(sample)
         fresh = sum(r["minutes"] for r in sample)/n
         strength = MODEL["frozen_prior_strength_in_games"]
@@ -308,6 +315,14 @@ def build(previous, frozen, rolling, live, evaluation, now):
             "scored_NBA_games": len({r["game_id"] for r in all_observed}),
         },
         "issue_QA": dict(qa),
+        "source_clock_QA": {
+            "latest_original_frozen_issue_at_utc": max(
+                (x["issued_at_utc"] for x in original.values()), default=None),
+            "max_baseline_to_challenger_issue_lag_seconds":
+                MODEL["max_baseline_to_challenger_issue_lag_seconds"],
+            "current_minutes_first_seen_must_be_by_original_issue": True,
+            "no_retroactive_issue": True,
+        },
         "played_only_paired_metrics": metrics(all_observed),
         "by_ET_date": {k:metrics(v) for k,v in sorted(per_date.items())},
         "quality_gate": quality,
