@@ -21,8 +21,7 @@
   const provenance = 'owner_manually_rechecked_sportsru_screen';
   const status = 'private_owner_attested_not_independently_verified';
 
-  const own = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
-  const ensure = (okay, code) => {
+    const ensure = (okay, code) => {
     if (!okay) throw new Error('PRICE_EVIDENCE_' + code);
   };
   function price(value, field) {
@@ -55,7 +54,7 @@
   function empty() {
     return {schema_version: 1, private_local_only: true,
             never_autosync: true, source_independently_verified: false,
-            receipts: []};
+            restored_from_file_unverified: false, receipts: []};
   }
   function validate(archive) {
     ensure(archive && typeof archive === 'object' && !Array.isArray(archive)
@@ -63,6 +62,8 @@
            && archive.private_local_only === true
            && archive.never_autosync === true
            && archive.source_independently_verified === false
+           && (archive.restored_from_file_unverified === undefined ||
+               typeof archive.restored_from_file_unverified === 'boolean')
            && Array.isArray(archive.receipts)
            && archive.receipts.length <= MAX, 'CORRUPT_LOCAL_ARCHIVE');
     let prev = 0;
@@ -99,7 +100,8 @@
               row.quota_remaining_from_sportsru_screen <= 3),
              'CORRUPT_QUOTA');
     }
-    return archive;
+    return {...archive,
+            restored_from_file_unverified: archive.restored_from_file_unverified === true};
   }
   function read(storage) {
     ensure(storage && typeof storage.getItem === 'function', 'NO_LOCAL_STORAGE');
@@ -149,16 +151,30 @@
     const next = {...archive, receipts: [...archive.receipts, receipt]};
     validate(next);
     // Do NOT call app.save(), nbaCloudSave(), fetch(), or any remote service.
-    storage.setItem(KEY, JSON.stringify(next));
-    return receipt;
+    try { storage.setItem(KEY, JSON.stringify(next)); }
+    catch { throw new Error('PRICE_EVIDENCE_STORAGE_WRITE_FAILED'); }
+    return JSON.parse(JSON.stringify(receipt));
   }
   function exportData(storage) {
     // User must explicitly request a download. Never silently export.
     return JSON.parse(JSON.stringify(read(storage)));
   }
+  function importData(storage, imported, explicit) {
+    ensure(explicit === true, 'EXPLICIT_IMPORT_CONFIRMATION_REQUIRED');
+    // A restore can never authenticate the timestamp of the original observation.
+    const checked = validate(JSON.parse(JSON.stringify(imported)));
+    const now = nowMs();
+    ensure(checked.receipts.every(r => Date.parse(r.observed_at_utc) <= now),
+           'FUTURE_IMPORTED_OBSERVATION');
+    const restored = {...checked, restored_from_file_unverified: true};
+    try { storage.setItem(KEY, JSON.stringify(restored)); }
+    catch { throw new Error('PRICE_EVIDENCE_STORAGE_WRITE_FAILED'); }
+    return restored.receipts.length;
+  }
   function erase(storage, explicit) {
     ensure(explicit === true, 'EXPLICIT_ERASE_CONFIRMATION_REQUIRED');
     storage.removeItem(KEY);
   }
-  return {KEY, read, capture, exportData, erase, get status() { return status; }};
+  return {KEY, read, capture, exportData, importData, erase,
+          get status() { return status; }};
 });
