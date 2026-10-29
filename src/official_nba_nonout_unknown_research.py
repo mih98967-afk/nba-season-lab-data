@@ -194,9 +194,47 @@ def eligible_cases(ledger, shadow, selection, existing, identity, live, explicit
             "historical_nba_id_if_high": str(meta["nba_id"]) if high else None,
             "NBA_ID_method": meta.get("method"),
         })
-    if outkeys != set(out) or len(outkeys) != ledger.get("current_OUT_queue"):
-        raise ValueError("Already-reviewed OUT evidence cohort is incomplete")
-    return remaining, len(unknown), len(outkeys), dict(by_status), finals
+    # The selected OUT/UNKNOWN cohort grows whenever more games are checked.
+    # Independent official-NBA review is a *historical subset* of this cohort,
+    # not a mandatory same-run prerequisite for reviewing NON-OUT cases.
+    if len(outkeys) != ledger.get("current_OUT_queue"):
+        raise ValueError("LEDGER_OUT_QUEUE_MISMATCH")
+    if existing.get("original_OUT_unknown_queue") != len(out):
+        raise ValueError("Historical official OUT source denominator changed")
+    reviewed_current = outkeys & set(out)
+    historical_reviewed = set(out) - outkeys
+    for key, source in out.items():
+        first = predictions.get(key)
+        if (first is None
+                or first.get("official_status_first_known_asof_issue") != "out"
+                or source.get("team") != first.get("team")
+                or source.get("game_utc") != first.get("tipoff_utc")
+                or source.get("first_prediction_issued_at_utc") != first.get("issued_at_utc")
+                or source.get("model_training_negative") is not False
+                or source.get("p_play_shadow_untouched") is not True):
+            raise ValueError("Independent OUT review conflicts with frozen first issue")
+        if key in historical_reviewed:
+            # A previously reviewed OUT row can leave today's UNKNOWN cohort
+            # only after a separately evidenced ESPN/Sports.ru p_play label.
+            label = observations.get(key)
+            y = label.get("actual_played") if label else None
+            expected = ("positive_minutes_verified_sportsru_fp"
+                        if type(y) is int and y == 1 else
+                        "explicit_espn_didNotPlay_true"
+                        if type(y) is int and y == 0 else None)
+            observed_at = label.get("source_first_observed_at_utc") if label else None
+            if (expected is None
+                    or label.get("label_provenance") != expected
+                    or label.get("tipoff_utc") != first["tipoff_utc"]
+                    or not isinstance(observed_at, str)
+                    or not utc(first["tipoff_utc"]) <= utc(observed_at) <= now):
+                raise ValueError("Historical OUT exited UNKNOWN without verified label")
+    out_coverage = {
+        "reviewed_current": len(reviewed_current),
+        "pending_current": len(outkeys - reviewed_current),
+        "historical_verified": len(historical_reviewed),
+    }
+    return remaining, len(unknown), len(outkeys), dict(by_status), finals, out_coverage
 
 
 def build(ledger, shadow, selection, existing, identity, live, explicit,
@@ -212,7 +250,7 @@ def build(ledger, shadow, selection, existing, identity, live, explicit,
                   prior.get("status") != STATUS or
                   prior.get("adopt_on_site") is not False):
         raise ValueError("Prior research artifact is unsafe")
-    candidates, n_unknown, n_out, by_status, finals = eligible_cases(
+    candidates, n_unknown, n_out, by_status, finals, out_coverage = eligible_cases(
         ledger, shadow, selection, existing, identity, live, explicit, now)
     if not candidates:
         raise ValueError("No NON-OUT unknown cohort")
@@ -332,7 +370,10 @@ def build(ledger, shadow, selection, existing, identity, live, explicit,
         "source_schedule_url": SCHEDULE_URL,
         "summary": {
             "all_finished_p_play_UNKNOWN": n_unknown,
-            "already_reviewed_official_OUT_excluded": n_out,
+            "already_reviewed_official_OUT_excluded": out_coverage["reviewed_current"],
+            "pending_official_OUT_independent_review_excluded": out_coverage["pending_current"],
+            "total_official_OUT_UNKNOWN_excluded": n_out,
+            "historical_official_OUT_now_independently_verified": out_coverage["historical_verified"],
             "new_non_OUT_review_cohort": len(candidates),
             "strong_historical_NBA_ID": sum(x["historical_nba_id_if_high"] is not None for x in candidates),
             "nonhigh_historical_NBA_ID": sum(x["historical_nba_id_if_high"] is None for x in candidates),
@@ -360,12 +401,13 @@ def build(ledger, shadow, selection, existing, identity, live, explicit,
             "separate_official_inactive_is_ESPN_DNP_label": False,
             "UNKNOWN_as_zero_training_allowed": False,
             "verified_source_history_preserved": True,
+            "pending_OUT_review_kept_UNKNOWN": True,
             "population_p_play_calibrated": False,
             "unconditional_FP_enabled": False,
             "adopt_on_site": False,
         },
         "limitations": [
-            "Original official-OUT queue stays in its own frozen evidence chain.",
+            "Original reviewed official-OUT queue stays frozen; new OUT cases remain UNKNOWN and pending independent review.",
             "Historical high-confidence NBA ID is not independent game-day club tenure.",
             "Official NBA athlete absent from game boxscore remains UNKNOWN, not DNP.",
             "Official NBA inactive/nonplay is separate postgame evidence, never ESPN label.",
