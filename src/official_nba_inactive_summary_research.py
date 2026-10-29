@@ -21,7 +21,8 @@ from src.official_nba_gameday_status_research import (
 ROOT = Path(__file__).resolve().parents[1] / "data"
 PREFIX = "https://stats.nba.com/stats/boxscoresummaryv2?GameID="
 MAX_BYTES = 3_000_000
-MAX_GAMES = 18
+MAX_GAMES = 18  # Network requests per run, not a source-population limit.
+MAX_SOURCE_GAMES = 2500  # Whole NBA season source history upper sanity bound.
 RETRY_BACKOFF = timedelta(hours=24)
 VERIFIED = "VERIFIED_OFFICIAL_NBA_INACTIVE_LIST"
 UNKNOWN = "UNKNOWN"
@@ -107,10 +108,12 @@ def validate_summary(payload, nba_game_id, home, away):
 
 
 
-def plan_requests(official, previous, now):
-    """Request new NBA games; skip recently timed-out game IDs, never outcomes."""
+def plan_requests(official, previous, now, max_requests=MAX_GAMES):
+    """Cap requests per invocation; preserve a complete retryable source backlog."""
     if now.utcoffset() is None:
         raise ValueError("Research clock requires timezone")
+    if type(max_requests) is not int or not 1 <= max_requests <= MAX_GAMES:
+        raise ValueError("Unbounded or invalid NBA source request cap")
     now = now.astimezone(timezone.utc)
     if (official.get("status") != STATUS or
             official.get("adopt_on_site") is not False or
@@ -121,7 +124,7 @@ def plan_requests(official, previous, now):
                      previous.get("adopt_on_site") is not False):
         raise ValueError("Untrusted previous NBA inactive source")
     ids = sorted({r["nba_game_id"] for r in official.get("records") or []})
-    if not ids or len(ids) > MAX_GAMES or any(
+    if not ids or len(ids) > MAX_SOURCE_GAMES or any(
             not re.fullmatch(r"00226\d{5}", str(gid)) for gid in ids):
         raise ValueError("Out-of-bounds official NBA game IDs")
     old_games = {r["nba_game_id"] for r in previous.get("records") or []}
@@ -140,11 +143,12 @@ def plan_requests(official, previous, now):
                 defer.append(gid)
                 continue
         request.append(gid)
-    return request, defer
+    return request[:max_requests], defer, request[max_requests:]
 
 
 def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
-              now, previous=None, attempted_game_ids=None, deferred_game_ids=None):
+              now, previous=None, attempted_game_ids=None, deferred_game_ids=None,
+              pending_game_ids=None):
     if now.utcoffset() is None:
         raise ValueError("Clock must be timezone-aware")
     now = now.astimezone(timezone.utc)
@@ -161,8 +165,8 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
     frozen = {(r["game_id"], r["player_id"]):r
               for r in first_out_report.get("records", [])}
     prev_cases = previous_nba_report.get("records", [])
-    if not 0 < len(prev_cases) <= 150 or len(frozen) != len(prev_cases):
-        raise ValueError("Original 23 OUT queue inconsistent")
+    if not 0 < len(prev_cases) <= 10_000 or len(frozen) != len(prev_cases):
+        raise ValueError("Original OUT queue inconsistent")
     games = {g["id"]: g for g in live.get("games", []) if g.get("status") == "final"}
     if len(games) != sum(g.get("status") == "final" for g in live.get("games", [])):
         raise ValueError("Duplicate live final games")
@@ -172,9 +176,13 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
     source_games = {r["nba_game_id"] for r in prev_cases}
     attempted = source_games if attempted_game_ids is None else set(attempted_game_ids)
     deferred = set(deferred_game_ids or [])
-    if (attempted & deferred or attempted | deferred != source_games
-            or deferred - {r["nba_game_id"] for r in prior_rows.values()}):
-        raise ValueError("Invalid source attempted/deferred partition")
+    pending = set(pending_game_ids or [])
+    # No batch cap is allowed to silently remove a game from the denominator.
+    if (attempted & deferred or attempted & pending or deferred & pending
+            or attempted | deferred | pending != source_games
+            or deferred - {r["nba_game_id"] for r in prior_rows.values()}
+            or len(attempted) > MAX_GAMES):
+        raise ValueError("Invalid source attempted/deferred/pending partition")
     attempt_history = dict(old.get("source_attempted_utc_by_game") or {})
     for prior in prior_rows.values():
         if prior["nba_game_id"] not in attempt_history and old.get("updated_at_utc"):
@@ -198,7 +206,10 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
             or utc(game["utc"]) > now):
             raise ValueError("Unsafe or mismatched game/OUT evidence")
         if nba_id not in checked:
-            if nba_id in deferred:
+            if nba_id in pending:
+                qa["pending_due_to_game_cap_games"] += 1
+                checked[nba_id] = None
+            elif nba_id in deferred:
                 qa["source_retry_deferred_games"] += 1
                 checked[nba_id] = None
             elif nba_id in payloads:
@@ -218,7 +229,7 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
         if method == "high" and (not str(identity or "").isdigit()):
             raise ValueError("High identity without NBA ID")
         old_item = prior_rows.get(key)
-        if nba_id in deferred:
+        if nba_id in deferred or (nba_id in pending and old_item is not None):
             if (old_item is None or old_item.get("outcome") not in (UNKNOWN, VERIFIED)
                     or old_item.get("nba_game_id") != nba_id
                     or old_item.get("team") != row["team"]
@@ -234,7 +245,9 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
             outputs.append(old_item)
             continue
         outcome = UNKNOWN
-        why = errors.get(nba_id, "NBA_summary_missing_or_invalid") if not indexed else None
+        why = ("pending_due_to_game_cap" if nba_id in pending else
+               errors.get(nba_id, "NBA_summary_missing_or_invalid")
+               if not indexed else None)
         if indexed is not None:
             if method != "high":
                 why = "not_high_confidence_NBA_person_link"
@@ -287,6 +300,7 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
         "source_attempted_utc_by_game":dict(sorted(attempt_history.items())),
         "source_attempts_this_run":len(attempted),
         "source_retry_deferred_games":len(deferred),
+        "source_requests_pending_game_cap":len(pending),
         "source_retry_backoff_hours":24,
         "original_queue_count":len(outputs),
         "verified_official_summary_games":qa["verified_official_summary_games"],
@@ -315,7 +329,7 @@ def run():
     path=ROOT/"official_nba_inactive_summary_research.json"
     previous=load(path.name) if path.exists() else {}
     now=datetime.now(timezone.utc)
-    ids,deferred=plan_requests(official,previous,now)
+    ids,deferred,pending=plan_requests(official,previous,now)
     payloads={}
     failures={}
     for gid in ids:
@@ -324,7 +338,8 @@ def run():
         except (HTTPError,URLError,TimeoutError,ValueError,OSError) as exc:
             failures[gid]=(f"HTTP_{exc.code}" if isinstance(exc,HTTPError) else type(exc).__name__)
     report=reconcile(official,out,live,payloads,failures,now,previous,
-                     attempted_game_ids=ids,deferred_game_ids=deferred)
+                     attempted_game_ids=ids,deferred_game_ids=deferred,
+                     pending_game_ids=pending)
     if (not previous or
             {k:v for k,v in report.items() if k!="updated_at_utc"} !=
             {k:v for k,v in previous.items() if k!="updated_at_utc"}):
@@ -333,7 +348,8 @@ def run():
         tmp.replace(path)
     return {k:report[k] for k in ("original_queue_count","verified_official_summary_games",
               "source_unavailable_games","source_attempts_this_run",
-              "source_retry_deferred_games","resolved_confirmed",
+              "source_retry_deferred_games","source_requests_pending_game_cap",
+              "resolved_confirmed",
               "unresolved_unknown","conflicts","qa")}
 
 
