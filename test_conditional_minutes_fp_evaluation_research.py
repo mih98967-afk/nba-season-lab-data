@@ -69,7 +69,7 @@ class ConditionalMinutesProspectiveEvaluation(unittest.TestCase):
                 for player in range(5):
                     rows.append({"game_id":f"g{i}_{game}", "player_id":f"p{player}",
                                  "et_date":f"2026-11-{i+1:02d}",
-                                 "game_utc":f"2026-11-{i+1:02d}T02:00:00Z",
+                                 "game_utc":f"2026-11-{i+1:02d}T18:00:00Z",
                                  "actual_minutes":22, "predicted_minutes":23+i,
                                  "actual_fp_reconstructed":12,
                                  "predicted_direct_fp":14+i,
