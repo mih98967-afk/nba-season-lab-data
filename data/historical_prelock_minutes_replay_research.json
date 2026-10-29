@@ -1,0 +1,1026 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "model_status": "research_only_not_deployed",
+  "adopt_on_site": false,
+  "source_history_version": "0d395ece015799c4",
+  "source_identity_high_confidence_count": 361,
+  "source_rows_by_year": {
+    "2023/24": 17794,
+    "2024/25": 19988,
+    "2025/26": 22756
+  },
+  "fixture_qa": {
+    "2024/25": {
+      "sportsdataverse_games": 1230,
+      "espn_completed_unique": 1231,
+      "matched_utc_tipoffs": 1230,
+      "missing_utc_tipoffs": 0,
+      "precision": "exact_msk_complete",
+      "unmatched_examples": [],
+      "calendar_semantics": "UTC to Europe/Moscow, Monday 00:00 MSK"
+    },
+    "2025/26": {
+      "sportsdataverse_games": 1230,
+      "espn_completed_unique": 1231,
+      "matched_utc_tipoffs": 1230,
+      "missing_utc_tipoffs": 0,
+      "precision": "exact_msk_complete",
+      "unmatched_examples": [],
+      "calendar_semantics": "UTC to Europe/Moscow, Monday 00:00 MSK"
+    }
+  },
+  "simulation": "historical_T_minus_30_with_retrospective_finals_and_assumed_boxscore_lag",
+  "genuine_original_historical_issue": false,
+  "exact_retrospective_tipoff_from_ESPN_verified": true,
+  "fixture_schedule_asof_at_historical_lock_verified": false,
+  "boxscore_first_seen_at_historical_lock_verified": false,
+  "team_roster_asof_at_historical_lock_verified": false,
+  "feature_assumption": "Prior played row usable only when tipoff + 12/24/48 hours <= simulated T-30; true ingestion unknown",
+  "candidate_universe_selection": "same-club positive minute history known by lag + last played <=16d + 3 same-club previous played",
+  "result_of_missing_positive_log": "UNKNOWN_not_explicit_DNP",
+  "by_target_season": {
+    "2024/25": {
+      "role": "historical_development_diagnostic",
+      "players_with_previous_year_same_club_prior": 240,
+      "by_assumed_history_availability_lag_hours": {
+        "12": {
+          "availability_assumption_hours_after_tipoff": 12,
+          "issue_QA": {
+            "no_previously_assumed_available_current_played_game": 899,
+            "insufficient_prior_same_club_played_minutes": 480,
+            "paired_positive_played_only": 10822,
+            "simulated_prelock_proxy_opportunities": 13378,
+            "no_positive_minutes_log_UNKNOWN": 2556,
+            "last_positive_played_too_old_abstain": 1085,
+            "last_observed_club_changed_no_prelock_membership_proof": 3838
+          },
+          "simulated_prelock_opportunities": 13378,
+          "verified_positive_played_pairs": 10822,
+          "missing_positive_log_UNKNOWN_not_DNP": 2556,
+          "proxy_played_selected_fraction_NOT_P_play": 0.80894,
+          "distinct_players_with_proxies": 199,
+          "distinct_fixture_games_with_proxies": 1188,
+          "distinct_scored_ET_dates": 157,
+          "paired_scored_only": {
+            "paired_played_only": 10822,
+            "distinct_players": 199,
+            "distinct_games": 1187,
+            "distinct_game_dates": 157,
+            "minutes_if_play": {
+              "baseline_MAE": 5.9117,
+              "challenger_MAE": 4.7738,
+              "baseline_RMSE": 7.8654,
+              "challenger_RMSE": 6.3135,
+              "baseline_prediction_minus_actual_bias": 0.1485,
+              "challenger_prediction_minus_actual_bias": 0.0331,
+              "paired_MAE_gain_positive_favors_challenger": 1.138,
+              "challenger_better_fraction": 0.6527
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.5825,
+              "challenger_MAE": 7.4048,
+              "baseline_RMSE": 9.572,
+              "challenger_RMSE": 9.3643,
+              "baseline_prediction_minus_actual_bias": 0.0555,
+              "challenger_prediction_minus_actual_bias": 0.0403,
+              "paired_MAE_gain_positive_favors_challenger": 0.1777,
+              "challenger_better_fraction": 0.5434
+            }
+          },
+          "early_prelock_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1374,
+            "distinct_players": 199,
+            "distinct_games": 340,
+            "distinct_game_dates": 98,
+            "minutes_if_play": {
+              "baseline_MAE": 5.9105,
+              "challenger_MAE": 4.7352,
+              "baseline_RMSE": 7.8609,
+              "challenger_RMSE": 6.3088,
+              "baseline_prediction_minus_actual_bias": 1.0505,
+              "challenger_prediction_minus_actual_bias": 0.2574,
+              "paired_MAE_gain_positive_favors_challenger": 1.1753,
+              "challenger_better_fraction": 0.6485
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.2228,
+              "challenger_MAE": 7.0504,
+              "baseline_RMSE": 9.1347,
+              "challenger_RMSE": 8.9316,
+              "baseline_prediction_minus_actual_bias": 0.9027,
+              "challenger_prediction_minus_actual_bias": 0.5325,
+              "paired_MAE_gain_positive_favors_challenger": 0.1725,
+              "challenger_better_fraction": 0.5502
+            }
+          },
+          "later_prelock_form_10_plus_prior_appearances": {
+            "paired_played_only": 9448,
+            "distinct_players": 199,
+            "distinct_games": 1084,
+            "distinct_game_dates": 146,
+            "minutes_if_play": {
+              "baseline_MAE": 5.9119,
+              "challenger_MAE": 4.7794,
+              "baseline_RMSE": 7.866,
+              "challenger_RMSE": 6.3141,
+              "baseline_prediction_minus_actual_bias": 0.0174,
+              "challenger_prediction_minus_actual_bias": 0.0005,
+              "paired_MAE_gain_positive_favors_challenger": 1.1325,
+              "challenger_better_fraction": 0.6534
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.6348,
+              "challenger_MAE": 7.4563,
+              "baseline_RMSE": 9.6339,
+              "challenger_RMSE": 9.4255,
+              "baseline_prediction_minus_actual_bias": -0.0677,
+              "challenger_prediction_minus_actual_bias": -0.0312,
+              "paired_MAE_gain_positive_favors_challenger": 0.1784,
+              "challenger_better_fraction": 0.5424
+            }
+          },
+          "source_hash_issued_proxy_features_only": "6fce7c52cfd496ac66e86195dd0c091af97b59fc82782ba78d1c632ff853c949",
+          "source_hash_postgame_joined": "2bbe0e3b376c67c53d8ba5be33293d782519cef69e0068e9c4908bceeee89276",
+          "first_three_issued_proxy_examples": [
+            {
+              "player_id": "n015",
+              "game_id": "0022400102",
+              "date": "2024-10-28",
+              "simulated_individual_lock_utc": "2024-10-28T22:30:00Z",
+              "source_last_played_tipoff_utc": "2024-10-27T19:30:00Z",
+              "assumed_last_played_available_utc": "2024-10-28T07:30:00Z",
+              "club_from_previous_positive_game": "IND",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 32.22395,
+              "challenger_minutes": 32.40247,
+              "baseline_fp": 22.97382,
+              "challenger_fp": 23.10108,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n031",
+              "game_id": "0022400102",
+              "date": "2024-10-28",
+              "simulated_individual_lock_utc": "2024-10-28T22:30:00Z",
+              "source_last_played_tipoff_utc": "2024-10-27T19:30:00Z",
+              "assumed_last_played_available_utc": "2024-10-28T07:30:00Z",
+              "club_from_previous_positive_game": "IND",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 30.0195,
+              "challenger_minutes": 30.67594,
+              "baseline_fp": 22.47071,
+              "challenger_fp": 22.96208,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n040",
+              "game_id": "0022400102",
+              "date": "2024-10-28",
+              "simulated_individual_lock_utc": "2024-10-28T22:30:00Z",
+              "source_last_played_tipoff_utc": "2024-10-27T00:00:00Z",
+              "assumed_last_played_available_utc": "2024-10-27T12:00:00Z",
+              "club_from_previous_positive_game": "ORL",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 36.13665,
+              "challenger_minutes": 35.75041,
+              "baseline_fp": 19.81939,
+              "challenger_fp": 19.60756,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            }
+          ]
+        },
+        "24": {
+          "availability_assumption_hours_after_tipoff": 24,
+          "issue_QA": {
+            "no_previously_assumed_available_current_played_game": 908,
+            "insufficient_prior_same_club_played_minutes": 504,
+            "paired_positive_played_only": 10792,
+            "simulated_prelock_proxy_opportunities": 13345,
+            "no_positive_minutes_log_UNKNOWN": 2553,
+            "last_positive_played_too_old_abstain": 1097,
+            "last_observed_club_changed_no_prelock_membership_proof": 3826
+          },
+          "simulated_prelock_opportunities": 13345,
+          "verified_positive_played_pairs": 10792,
+          "missing_positive_log_UNKNOWN_not_DNP": 2553,
+          "proxy_played_selected_fraction_NOT_P_play": 0.808692,
+          "distinct_players_with_proxies": 199,
+          "distinct_fixture_games_with_proxies": 1188,
+          "distinct_scored_ET_dates": 157,
+          "paired_scored_only": {
+            "paired_played_only": 10792,
+            "distinct_players": 199,
+            "distinct_games": 1187,
+            "distinct_game_dates": 157,
+            "minutes_if_play": {
+              "baseline_MAE": 5.9091,
+              "challenger_MAE": 4.7749,
+              "baseline_RMSE": 7.8625,
+              "challenger_RMSE": 6.3157,
+              "baseline_prediction_minus_actual_bias": 0.1454,
+              "challenger_prediction_minus_actual_bias": 0.0287,
+              "paired_MAE_gain_positive_favors_challenger": 1.1342,
+              "challenger_better_fraction": 0.6515
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.5804,
+              "challenger_MAE": 7.4029,
+              "baseline_RMSE": 9.5679,
+              "challenger_RMSE": 9.3606,
+              "baseline_prediction_minus_actual_bias": 0.0522,
+              "challenger_prediction_minus_actual_bias": 0.0359,
+              "paired_MAE_gain_positive_favors_challenger": 0.1774,
+              "challenger_better_fraction": 0.5426
+            }
+          },
+          "early_prelock_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1376,
+            "distinct_players": 199,
+            "distinct_games": 340,
+            "distinct_game_dates": 98,
+            "minutes_if_play": {
+              "baseline_MAE": 5.9033,
+              "challenger_MAE": 4.7437,
+              "baseline_RMSE": 7.8603,
+              "challenger_RMSE": 6.3271,
+              "baseline_prediction_minus_actual_bias": 1.0792,
+              "challenger_prediction_minus_actual_bias": 0.2863,
+              "paired_MAE_gain_positive_favors_challenger": 1.1596,
+              "challenger_better_fraction": 0.6461
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.2452,
+              "challenger_MAE": 7.0694,
+              "baseline_RMSE": 9.1779,
+              "challenger_RMSE": 8.9806,
+              "baseline_prediction_minus_actual_bias": 0.971,
+              "challenger_prediction_minus_actual_bias": 0.5986,
+              "paired_MAE_gain_positive_favors_challenger": 0.1758,
+              "challenger_better_fraction": 0.5487
+            }
+          },
+          "later_prelock_form_10_plus_prior_appearances": {
+            "paired_played_only": 9416,
+            "distinct_players": 199,
+            "distinct_games": 1082,
+            "distinct_game_dates": 146,
+            "minutes_if_play": {
+              "baseline_MAE": 5.9099,
+              "challenger_MAE": 4.7794,
+              "baseline_RMSE": 7.8629,
+              "challenger_RMSE": 6.3141,
+              "baseline_prediction_minus_actual_bias": 0.0089,
+              "challenger_prediction_minus_actual_bias": -0.009,
+              "paired_MAE_gain_positive_favors_challenger": 1.1305,
+              "challenger_better_fraction": 0.6523
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.6294,
+              "challenger_MAE": 7.4517,
+              "baseline_RMSE": 9.6236,
+              "challenger_RMSE": 9.4148,
+              "baseline_prediction_minus_actual_bias": -0.0821,
+              "challenger_prediction_minus_actual_bias": -0.0463,
+              "paired_MAE_gain_positive_favors_challenger": 0.1777,
+              "challenger_better_fraction": 0.5417
+            }
+          },
+          "source_hash_issued_proxy_features_only": "1fba8b86922b76b03a95f677c5f865135f9af134c06d8ee03513c75ddb825d37",
+          "source_hash_postgame_joined": "844279998b86edf84bf993bfdc53d1303ea012a999d41e6eb1d621ea4928e0f5",
+          "first_three_issued_proxy_examples": [
+            {
+              "player_id": "n015",
+              "game_id": "0022400102",
+              "date": "2024-10-28",
+              "simulated_individual_lock_utc": "2024-10-28T22:30:00Z",
+              "source_last_played_tipoff_utc": "2024-10-27T19:30:00Z",
+              "assumed_last_played_available_utc": "2024-10-28T19:30:00Z",
+              "club_from_previous_positive_game": "IND",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 32.22395,
+              "challenger_minutes": 32.40247,
+              "baseline_fp": 22.97382,
+              "challenger_fp": 23.10108,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n031",
+              "game_id": "0022400102",
+              "date": "2024-10-28",
+              "simulated_individual_lock_utc": "2024-10-28T22:30:00Z",
+              "source_last_played_tipoff_utc": "2024-10-27T19:30:00Z",
+              "assumed_last_played_available_utc": "2024-10-28T19:30:00Z",
+              "club_from_previous_positive_game": "IND",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 30.0195,
+              "challenger_minutes": 30.67594,
+              "baseline_fp": 22.47071,
+              "challenger_fp": 22.96208,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n040",
+              "game_id": "0022400102",
+              "date": "2024-10-28",
+              "simulated_individual_lock_utc": "2024-10-28T22:30:00Z",
+              "source_last_played_tipoff_utc": "2024-10-27T00:00:00Z",
+              "assumed_last_played_available_utc": "2024-10-28T00:00:00Z",
+              "club_from_previous_positive_game": "ORL",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 36.13665,
+              "challenger_minutes": 35.75041,
+              "baseline_fp": 19.81939,
+              "challenger_fp": 19.60756,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            }
+          ]
+        },
+        "48": {
+          "availability_assumption_hours_after_tipoff": 48,
+          "issue_QA": {
+            "no_previously_assumed_available_current_played_game": 1051,
+            "insufficient_prior_same_club_played_minutes": 478,
+            "paired_positive_played_only": 10661,
+            "simulated_prelock_proxy_opportunities": 13206,
+            "no_positive_minutes_log_UNKNOWN": 2545,
+            "last_positive_played_too_old_abstain": 1147,
+            "last_observed_club_changed_no_prelock_membership_proof": 3798
+          },
+          "simulated_prelock_opportunities": 13206,
+          "verified_positive_played_pairs": 10661,
+          "missing_positive_log_UNKNOWN_not_DNP": 2545,
+          "proxy_played_selected_fraction_NOT_P_play": 0.807285,
+          "distinct_players_with_proxies": 199,
+          "distinct_fixture_games_with_proxies": 1179,
+          "distinct_scored_ET_dates": 157,
+          "paired_scored_only": {
+            "paired_played_only": 10661,
+            "distinct_players": 199,
+            "distinct_games": 1178,
+            "distinct_game_dates": 157,
+            "minutes_if_play": {
+              "baseline_MAE": 5.904,
+              "challenger_MAE": 4.7906,
+              "baseline_RMSE": 7.8535,
+              "challenger_RMSE": 6.3375,
+              "baseline_prediction_minus_actual_bias": 0.1159,
+              "challenger_prediction_minus_actual_bias": -0.0137,
+              "paired_MAE_gain_positive_favors_challenger": 1.1134,
+              "challenger_better_fraction": 0.6469
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.5834,
+              "challenger_MAE": 7.4085,
+              "baseline_RMSE": 9.563,
+              "challenger_RMSE": 9.3602,
+              "baseline_prediction_minus_actual_bias": 0.0397,
+              "challenger_prediction_minus_actual_bias": 0.0165,
+              "paired_MAE_gain_positive_favors_challenger": 0.1749,
+              "challenger_better_fraction": 0.5427
+            }
+          },
+          "early_prelock_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1349,
+            "distinct_players": 199,
+            "distinct_games": 333,
+            "distinct_game_dates": 96,
+            "minutes_if_play": {
+              "baseline_MAE": 5.8555,
+              "challenger_MAE": 4.732,
+              "baseline_RMSE": 7.7488,
+              "challenger_RMSE": 6.3111,
+              "baseline_prediction_minus_actual_bias": 0.9254,
+              "challenger_prediction_minus_actual_bias": 0.1336,
+              "paired_MAE_gain_positive_favors_challenger": 1.1234,
+              "challenger_better_fraction": 0.6397
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.2985,
+              "challenger_MAE": 7.1233,
+              "baseline_RMSE": 9.193,
+              "challenger_RMSE": 8.9981,
+              "baseline_prediction_minus_actual_bias": 0.9403,
+              "challenger_prediction_minus_actual_bias": 0.5689,
+              "paired_MAE_gain_positive_favors_challenger": 0.1753,
+              "challenger_better_fraction": 0.5426
+            }
+          },
+          "later_prelock_form_10_plus_prior_appearances": {
+            "paired_played_only": 9312,
+            "distinct_players": 199,
+            "distinct_games": 1076,
+            "distinct_game_dates": 145,
+            "minutes_if_play": {
+              "baseline_MAE": 5.911,
+              "challenger_MAE": 4.7991,
+              "baseline_RMSE": 7.8686,
+              "challenger_RMSE": 6.3413,
+              "baseline_prediction_minus_actual_bias": -0.0014,
+              "challenger_prediction_minus_actual_bias": -0.035,
+              "paired_MAE_gain_positive_favors_challenger": 1.112,
+              "challenger_better_fraction": 0.648
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.6247,
+              "challenger_MAE": 7.4498,
+              "baseline_RMSE": 9.6155,
+              "challenger_RMSE": 9.4115,
+              "baseline_prediction_minus_actual_bias": -0.0908,
+              "challenger_prediction_minus_actual_bias": -0.0635,
+              "paired_MAE_gain_positive_favors_challenger": 0.1749,
+              "challenger_better_fraction": 0.5427
+            }
+          },
+          "source_hash_issued_proxy_features_only": "cada816c209d461107156d31842b0c0f72b5e592ed33e436e87690b95a5cfe5d",
+          "source_hash_postgame_joined": "1f78c2b8b47f168ccc50e520e5c410194eb7218c9d56ba5efea43eb276f3e4b0",
+          "first_three_issued_proxy_examples": [
+            {
+              "player_id": "n007",
+              "game_id": "0022400104",
+              "date": "2024-10-28",
+              "simulated_individual_lock_utc": "2024-10-28T23:00:00Z",
+              "source_last_played_tipoff_utc": "2024-10-26T23:00:00Z",
+              "assumed_last_played_available_utc": "2024-10-28T23:00:00Z",
+              "club_from_previous_positive_game": "BOS",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 35.9312,
+              "challenger_minutes": 34.592,
+              "baseline_fp": 26.24431,
+              "challenger_fp": 25.26617,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n038",
+              "game_id": "0022400104",
+              "date": "2024-10-28",
+              "simulated_individual_lock_utc": "2024-10-28T23:00:00Z",
+              "source_last_played_tipoff_utc": "2024-10-26T23:00:00Z",
+              "assumed_last_played_available_utc": "2024-10-28T23:00:00Z",
+              "club_from_previous_positive_game": "BOS",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 33.7635,
+              "challenger_minutes": 33.39594,
+              "baseline_fp": 21.15098,
+              "challenger_fp": 20.92072,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n056",
+              "game_id": "0022400104",
+              "date": "2024-10-28",
+              "simulated_individual_lock_utc": "2024-10-28T23:00:00Z",
+              "source_last_played_tipoff_utc": "2024-10-26T23:00:00Z",
+              "assumed_last_played_available_utc": "2024-10-28T23:00:00Z",
+              "club_from_previous_positive_game": "BOS",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 33.9805,
+              "challenger_minutes": 33.14656,
+              "baseline_fp": 19.49375,
+              "challenger_fp": 19.01535,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            }
+          ]
+        }
+      }
+    },
+    "2025/26": {
+      "role": "historical_reused_not_pristine_independent_holdout",
+      "players_with_previous_year_same_club_prior": 279,
+      "by_assumed_history_availability_lag_hours": {
+        "12": {
+          "availability_assumption_hours_after_tipoff": 12,
+          "issue_QA": {
+            "no_previously_assumed_available_current_played_game": 1279,
+            "insufficient_prior_same_club_played_minutes": 550,
+            "paired_positive_played_only": 12640,
+            "simulated_prelock_proxy_opportunities": 15812,
+            "no_positive_minutes_log_UNKNOWN": 3172,
+            "last_positive_played_too_old_abstain": 1294,
+            "last_observed_club_changed_no_prelock_membership_proof": 3943
+          },
+          "simulated_prelock_opportunities": 15812,
+          "verified_positive_played_pairs": 12640,
+          "missing_positive_log_UNKNOWN_not_DNP": 3172,
+          "proxy_played_selected_fraction_NOT_P_play": 0.799393,
+          "distinct_players_with_proxies": 230,
+          "distinct_fixture_games_with_proxies": 1188,
+          "distinct_scored_ET_dates": 158,
+          "paired_scored_only": {
+            "paired_played_only": 12640,
+            "distinct_players": 230,
+            "distinct_games": 1188,
+            "distinct_game_dates": 158,
+            "minutes_if_play": {
+              "baseline_MAE": 6.2977,
+              "challenger_MAE": 5.0229,
+              "baseline_RMSE": 8.3197,
+              "challenger_RMSE": 6.5841,
+              "baseline_prediction_minus_actual_bias": -0.0596,
+              "challenger_prediction_minus_actual_bias": -0.0614,
+              "paired_MAE_gain_positive_favors_challenger": 1.2748,
+              "challenger_better_fraction": 0.6597
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.3756,
+              "challenger_MAE": 7.1336,
+              "baseline_RMSE": 9.3428,
+              "challenger_RMSE": 9.0767,
+              "baseline_prediction_minus_actual_bias": -0.0782,
+              "challenger_prediction_minus_actual_bias": -0.0391,
+              "paired_MAE_gain_positive_favors_challenger": 0.242,
+              "challenger_better_fraction": 0.5585
+            }
+          },
+          "early_prelock_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1586,
+            "distinct_players": 230,
+            "distinct_games": 350,
+            "distinct_game_dates": 111,
+            "minutes_if_play": {
+              "baseline_MAE": 6.1037,
+              "challenger_MAE": 4.8104,
+              "baseline_RMSE": 8.0,
+              "challenger_RMSE": 6.2917,
+              "baseline_prediction_minus_actual_bias": 0.9998,
+              "challenger_prediction_minus_actual_bias": 0.3012,
+              "paired_MAE_gain_positive_favors_challenger": 1.2933,
+              "challenger_better_fraction": 0.6772
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.0896,
+              "challenger_MAE": 6.8039,
+              "baseline_RMSE": 9.0794,
+              "challenger_RMSE": 8.7909,
+              "baseline_prediction_minus_actual_bias": 0.6812,
+              "challenger_prediction_minus_actual_bias": 0.4067,
+              "paired_MAE_gain_positive_favors_challenger": 0.2857,
+              "challenger_better_fraction": 0.5694
+            }
+          },
+          "later_prelock_form_10_plus_prior_appearances": {
+            "paired_played_only": 11054,
+            "distinct_players": 227,
+            "distinct_games": 1085,
+            "distinct_game_dates": 145,
+            "minutes_if_play": {
+              "baseline_MAE": 6.3255,
+              "challenger_MAE": 5.0534,
+              "baseline_RMSE": 8.3645,
+              "challenger_RMSE": 6.625,
+              "baseline_prediction_minus_actual_bias": -0.2116,
+              "challenger_prediction_minus_actual_bias": -0.1135,
+              "paired_MAE_gain_positive_favors_challenger": 1.2721,
+              "challenger_better_fraction": 0.6572
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.4166,
+              "challenger_MAE": 7.1809,
+              "baseline_RMSE": 9.3799,
+              "challenger_RMSE": 9.117,
+              "baseline_prediction_minus_actual_bias": -0.1872,
+              "challenger_prediction_minus_actual_bias": -0.1031,
+              "paired_MAE_gain_positive_favors_challenger": 0.2357,
+              "challenger_better_fraction": 0.557
+            }
+          },
+          "source_hash_issued_proxy_features_only": "79c86750e1979d679ccbc0cd36faa0cdb613aba665e5b0e17c566a3abc8fa47e",
+          "source_hash_postgame_joined": "b6b281a8584ffd26e830a2b1897d86105c52f977a55c642406c668576810a7aa",
+          "first_three_issued_proxy_examples": [
+            {
+              "player_id": "n013",
+              "game_id": "0022500007",
+              "date": "2025-10-27",
+              "simulated_individual_lock_utc": "2025-10-27T22:30:00Z",
+              "source_last_played_tipoff_utc": "2025-10-26T19:30:00Z",
+              "assumed_last_played_available_utc": "2025-10-27T07:30:00Z",
+              "club_from_previous_positive_game": "DET",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 33.48955,
+              "challenger_minutes": 34.84347,
+              "baseline_fp": 22.24312,
+              "challenger_fp": 23.14237,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n019",
+              "game_id": "0022500007",
+              "date": "2025-10-27",
+              "simulated_individual_lock_utc": "2025-10-27T22:30:00Z",
+              "source_last_played_tipoff_utc": "2025-10-26T19:30:00Z",
+              "assumed_last_played_available_utc": "2025-10-27T07:30:00Z",
+              "club_from_previous_positive_game": "DET",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 27.02445,
+              "challenger_minutes": 24.38653,
+              "baseline_fp": 20.53113,
+              "challenger_fp": 18.52703,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n023",
+              "game_id": "0022500007",
+              "date": "2025-10-27",
+              "simulated_individual_lock_utc": "2025-10-27T22:30:00Z",
+              "source_last_played_tipoff_utc": "2025-10-26T22:00:00Z",
+              "assumed_last_played_available_utc": "2025-10-27T10:00:00Z",
+              "club_from_previous_positive_game": "CLE",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 32.1559,
+              "challenger_minutes": 33.11619,
+              "baseline_fp": 20.59651,
+              "challenger_fp": 21.21158,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            }
+          ]
+        },
+        "24": {
+          "availability_assumption_hours_after_tipoff": 24,
+          "issue_QA": {
+            "no_previously_assumed_available_current_played_game": 1292,
+            "insufficient_prior_same_club_played_minutes": 555,
+            "paired_positive_played_only": 12623,
+            "simulated_prelock_proxy_opportunities": 15795,
+            "no_positive_minutes_log_UNKNOWN": 3172,
+            "last_positive_played_too_old_abstain": 1304,
+            "last_observed_club_changed_no_prelock_membership_proof": 3932
+          },
+          "simulated_prelock_opportunities": 15795,
+          "verified_positive_played_pairs": 12623,
+          "missing_positive_log_UNKNOWN_not_DNP": 3172,
+          "proxy_played_selected_fraction_NOT_P_play": 0.799177,
+          "distinct_players_with_proxies": 230,
+          "distinct_fixture_games_with_proxies": 1188,
+          "distinct_scored_ET_dates": 158,
+          "paired_scored_only": {
+            "paired_played_only": 12623,
+            "distinct_players": 230,
+            "distinct_games": 1188,
+            "distinct_game_dates": 158,
+            "minutes_if_play": {
+              "baseline_MAE": 6.2946,
+              "challenger_MAE": 5.0216,
+              "baseline_RMSE": 8.3163,
+              "challenger_RMSE": 6.583,
+              "baseline_prediction_minus_actual_bias": -0.0567,
+              "challenger_prediction_minus_actual_bias": -0.0592,
+              "paired_MAE_gain_positive_favors_challenger": 1.273,
+              "challenger_better_fraction": 0.6597
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.3718,
+              "challenger_MAE": 7.1311,
+              "baseline_RMSE": 9.3371,
+              "challenger_RMSE": 9.0719,
+              "baseline_prediction_minus_actual_bias": -0.0733,
+              "challenger_prediction_minus_actual_bias": -0.0345,
+              "paired_MAE_gain_positive_favors_challenger": 0.2408,
+              "challenger_better_fraction": 0.5586
+            }
+          },
+          "early_prelock_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1601,
+            "distinct_players": 230,
+            "distinct_games": 349,
+            "distinct_game_dates": 111,
+            "minutes_if_play": {
+              "baseline_MAE": 6.0728,
+              "challenger_MAE": 4.788,
+              "baseline_RMSE": 7.965,
+              "challenger_RMSE": 6.2617,
+              "baseline_prediction_minus_actual_bias": 0.984,
+              "challenger_prediction_minus_actual_bias": 0.2962,
+              "paired_MAE_gain_positive_favors_challenger": 1.2849,
+              "challenger_better_fraction": 0.6777
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.1075,
+              "challenger_MAE": 6.8247,
+              "baseline_RMSE": 9.1072,
+              "challenger_RMSE": 8.8235,
+              "baseline_prediction_minus_actual_bias": 0.668,
+              "challenger_prediction_minus_actual_bias": 0.3944,
+              "paired_MAE_gain_positive_favors_challenger": 0.2828,
+              "challenger_better_fraction": 0.5734
+            }
+          },
+          "later_prelock_form_10_plus_prior_appearances": {
+            "paired_played_only": 11022,
+            "distinct_players": 227,
+            "distinct_games": 1084,
+            "distinct_game_dates": 145,
+            "minutes_if_play": {
+              "baseline_MAE": 6.3268,
+              "challenger_MAE": 5.0556,
+              "baseline_RMSE": 8.3661,
+              "challenger_RMSE": 6.6283,
+              "baseline_prediction_minus_actual_bias": -0.2078,
+              "challenger_prediction_minus_actual_bias": -0.1109,
+              "paired_MAE_gain_positive_favors_challenger": 1.2712,
+              "challenger_better_fraction": 0.657
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.4102,
+              "challenger_MAE": 7.1755,
+              "baseline_RMSE": 9.37,
+              "challenger_RMSE": 9.1074,
+              "baseline_prediction_minus_actual_bias": -0.181,
+              "challenger_prediction_minus_actual_bias": -0.0968,
+              "paired_MAE_gain_positive_favors_challenger": 0.2347,
+              "challenger_better_fraction": 0.5564
+            }
+          },
+          "source_hash_issued_proxy_features_only": "65f21ed91e2042a1319bee664f65611aa0ba1831a97d87290826ab2a925cead2",
+          "source_hash_postgame_joined": "9be419c9aa5b202e96cfbf73d66051274cd46c04d3e85ab66e64d3f0fd4ab6dd",
+          "first_three_issued_proxy_examples": [
+            {
+              "player_id": "n013",
+              "game_id": "0022500007",
+              "date": "2025-10-27",
+              "simulated_individual_lock_utc": "2025-10-27T22:30:00Z",
+              "source_last_played_tipoff_utc": "2025-10-26T19:30:00Z",
+              "assumed_last_played_available_utc": "2025-10-27T19:30:00Z",
+              "club_from_previous_positive_game": "DET",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 33.48955,
+              "challenger_minutes": 34.84347,
+              "baseline_fp": 22.24312,
+              "challenger_fp": 23.14237,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n019",
+              "game_id": "0022500007",
+              "date": "2025-10-27",
+              "simulated_individual_lock_utc": "2025-10-27T22:30:00Z",
+              "source_last_played_tipoff_utc": "2025-10-26T19:30:00Z",
+              "assumed_last_played_available_utc": "2025-10-27T19:30:00Z",
+              "club_from_previous_positive_game": "DET",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 27.02445,
+              "challenger_minutes": 24.38653,
+              "baseline_fp": 20.53113,
+              "challenger_fp": 18.52703,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n023",
+              "game_id": "0022500007",
+              "date": "2025-10-27",
+              "simulated_individual_lock_utc": "2025-10-27T22:30:00Z",
+              "source_last_played_tipoff_utc": "2025-10-26T22:00:00Z",
+              "assumed_last_played_available_utc": "2025-10-27T22:00:00Z",
+              "club_from_previous_positive_game": "CLE",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 32.1559,
+              "challenger_minutes": 33.11619,
+              "baseline_fp": 20.59651,
+              "challenger_fp": 21.21158,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            }
+          ]
+        },
+        "48": {
+          "availability_assumption_hours_after_tipoff": 48,
+          "issue_QA": {
+            "no_previously_assumed_available_current_played_game": 1434,
+            "insufficient_prior_same_club_played_minutes": 561,
+            "paired_positive_played_only": 12452,
+            "simulated_prelock_proxy_opportunities": 15601,
+            "no_positive_minutes_log_UNKNOWN": 3149,
+            "last_positive_played_too_old_abstain": 1376,
+            "last_observed_club_changed_no_prelock_membership_proof": 3906
+          },
+          "simulated_prelock_opportunities": 15601,
+          "verified_positive_played_pairs": 12452,
+          "missing_positive_log_UNKNOWN_not_DNP": 3149,
+          "proxy_played_selected_fraction_NOT_P_play": 0.798154,
+          "distinct_players_with_proxies": 230,
+          "distinct_fixture_games_with_proxies": 1180,
+          "distinct_scored_ET_dates": 158,
+          "paired_scored_only": {
+            "paired_played_only": 12452,
+            "distinct_players": 230,
+            "distinct_games": 1180,
+            "distinct_game_dates": 158,
+            "minutes_if_play": {
+              "baseline_MAE": 6.2876,
+              "challenger_MAE": 5.0459,
+              "baseline_RMSE": 8.3108,
+              "challenger_RMSE": 6.6203,
+              "baseline_prediction_minus_actual_bias": -0.0928,
+              "challenger_prediction_minus_actual_bias": -0.1081,
+              "paired_MAE_gain_positive_favors_challenger": 1.2417,
+              "challenger_better_fraction": 0.6552
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.373,
+              "challenger_MAE": 7.1359,
+              "baseline_RMSE": 9.3359,
+              "challenger_RMSE": 9.0758,
+              "baseline_prediction_minus_actual_bias": -0.093,
+              "challenger_prediction_minus_actual_bias": -0.0603,
+              "paired_MAE_gain_positive_favors_challenger": 0.2371,
+              "challenger_better_fraction": 0.5599
+            }
+          },
+          "early_prelock_form_3_to_9_prior_appearances": {
+            "paired_played_only": 1592,
+            "distinct_players": 230,
+            "distinct_games": 349,
+            "distinct_game_dates": 113,
+            "minutes_if_play": {
+              "baseline_MAE": 6.0128,
+              "challenger_MAE": 4.8193,
+              "baseline_RMSE": 7.8971,
+              "challenger_RMSE": 6.2896,
+              "baseline_prediction_minus_actual_bias": 0.8511,
+              "challenger_prediction_minus_actual_bias": 0.1534,
+              "paired_MAE_gain_positive_favors_challenger": 1.1935,
+              "challenger_better_fraction": 0.6639
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.1683,
+              "challenger_MAE": 6.9203,
+              "baseline_RMSE": 9.1746,
+              "challenger_RMSE": 8.91,
+              "baseline_prediction_minus_actual_bias": 0.6177,
+              "challenger_prediction_minus_actual_bias": 0.3378,
+              "paired_MAE_gain_positive_favors_challenger": 0.248,
+              "challenger_better_fraction": 0.5691
+            }
+          },
+          "later_prelock_form_10_plus_prior_appearances": {
+            "paired_played_only": 10860,
+            "distinct_players": 226,
+            "distinct_games": 1075,
+            "distinct_game_dates": 144,
+            "minutes_if_play": {
+              "baseline_MAE": 6.3279,
+              "challenger_MAE": 5.0792,
+              "baseline_RMSE": 8.3698,
+              "challenger_RMSE": 6.6674,
+              "baseline_prediction_minus_actual_bias": -0.2311,
+              "challenger_prediction_minus_actual_bias": -0.1464,
+              "paired_MAE_gain_positive_favors_challenger": 1.2488,
+              "challenger_better_fraction": 0.654
+            },
+            "FP_given_played": {
+              "baseline_MAE": 7.403,
+              "challenger_MAE": 7.1675,
+              "baseline_RMSE": 9.3594,
+              "challenger_RMSE": 9.0998,
+              "baseline_prediction_minus_actual_bias": -0.1971,
+              "challenger_prediction_minus_actual_bias": -0.1187,
+              "paired_MAE_gain_positive_favors_challenger": 0.2355,
+              "challenger_better_fraction": 0.5586
+            }
+          },
+          "source_hash_issued_proxy_features_only": "037ffe78eeeff140c446867b35361b214dfbc5da186860d487fa1f91e8932d75",
+          "source_hash_postgame_joined": "cfadab2626b80e7ccfaa83fffdf84d684cd38c0407834f3e3b9f689a9996aee6",
+          "first_three_issued_proxy_examples": [
+            {
+              "player_id": "n046",
+              "game_id": "0022500115",
+              "date": "2025-10-27",
+              "simulated_individual_lock_utc": "2025-10-27T23:30:00Z",
+              "source_last_played_tipoff_utc": "2025-10-25T23:30:00Z",
+              "assumed_last_played_available_utc": "2025-10-27T23:30:00Z",
+              "club_from_previous_positive_game": "ATL",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 35.8318,
+              "challenger_minutes": 34.65488,
+              "baseline_fp": 21.73511,
+              "challenger_fp": 21.0212,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n071",
+              "game_id": "0022500115",
+              "date": "2025-10-27",
+              "simulated_individual_lock_utc": "2025-10-27T23:30:00Z",
+              "source_last_played_tipoff_utc": "2025-10-25T23:30:00Z",
+              "assumed_last_played_available_utc": "2025-10-27T23:30:00Z",
+              "club_from_previous_positive_game": "ATL",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 33.54725,
+              "challenger_minutes": 31.23078,
+              "baseline_fp": 19.30181,
+              "challenger_fp": 17.969,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            },
+            {
+              "player_id": "n076",
+              "game_id": "0022500115",
+              "date": "2025-10-27",
+              "simulated_individual_lock_utc": "2025-10-27T23:30:00Z",
+              "source_last_played_tipoff_utc": "2025-10-25T23:30:00Z",
+              "assumed_last_played_available_utc": "2025-10-27T23:30:00Z",
+              "club_from_previous_positive_game": "ATL",
+              "prior_current_same_team_n": 3,
+              "prior_current_appearances_total": 3,
+              "baseline_minutes": 33.81365,
+              "challenger_minutes": 33.34103,
+              "baseline_fp": 22.31934,
+              "challenger_fp": 22.00738,
+              "historical_schedule_known_prelock": false,
+              "historical_boxscore_first_seen_verified": false,
+              "adopt_on_site": false,
+              "result_label": "positive_minutes_verified_historical_boxscore"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "qa": {
+    "insufficient_previous_same_team_20_for_audited_player": 203
+  },
+  "quality_gate": {
+    "future_2026_27_prospective_still_required": true,
+    "only_conditional_positive_minutes_FP_scored": true,
+    "true_P_play_denominator_known": false,
+    "unconditional_FP_or_transfers_proven": false,
+    "retrospective_historical_parameters_not_independently_preregistered": true,
+    "adopt_on_site": false
+  },
+  "limitations": [
+    "Actual historical tipoff is independently verified, but historical published schedule PIT is not.",
+    "Past boxscore availability is ASSUMED at +12/+24/+48h after tipoff, not documented as first-seen.",
+    "Historical current roster membership is inferred only from earlier positive minutes, never confirmed prelock.",
+    "Absent positive game row is UNKNOWN, not a DNP or zero fantasy FP.",
+    "The previous/current minutes mixture was designed after 2026/27 started; 2025/26 is reused, not untouched.",
+    "Output is a selected researched population, not all Sports.ru fantasy-eligible players.",
+    "Correlations within player, teams and game dates make row-level p-values invalid.",
+    "Original Sports.ru credited fantasy FP may differ from reconstructed historical formula.",
+    "No production adoption, Firebase writes, prices, transfers or web UI publication."
+  ]
+}
