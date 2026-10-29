@@ -108,3 +108,97 @@ test('null FP is missing, not zero, so the candidate is excluded',()=>{
  assert.equal(result.routes.length,1);
  assert.equal(result.routes[0].kind,'keep');
 });
+
+const guard=require('./site/transfer_guard.js');
+// Independent fixture-by-fixture oracle: a bought player never earns FP
+// from fixtures that occurred before that transfer's execution time.
+function chainScenario(){
+ const start=Date.parse('2026-10-26T12:00:00Z'); // Monday 15 MSK
+ const DAY=86400000, dates=[1,5,9,16].map(d=>start+d*DAY);
+ const positions=['PG','PG','SG','SG','SF','SF','PF','PF','C','C'];
+ const clubs=['BOS','NYK','ATL','MIA','DEN','CLE','PHI','SAS','GSW','LAL'];
+ const roster=positions.map((_,i)=>'p'+i),players={};
+ roster.forEach((id,i)=>{players[id]={id,pos:positions[i],team:clubs[i],forecast:{}};});
+ players.mid={id:'mid',pos:'PG',team:'WAS',forecast:{}};
+ players.target={id:'target',pos:'PG',team:'DET',forecast:{}};
+ const table={p0:[10,10,10,10],mid:[30,30,0,0],target:[0,0,40,40]};
+ const fp=(id,i)=>(table[id]||[0,0,0,0])[i];
+ const scorePlayer=(id,a,b)=>dates.reduce((s,g,i)=>s+(g>=a&&g<b?fp(id,i):0),0);
+ const project=(moves,a,b)=>{
+  let total=0;
+  for(let i=0;i<dates.length;i++){
+   const game=dates[i];
+   if(game<a||game>=b)continue;
+   const owned=[...roster];
+   for(const t of [...moves].sort((x,y)=>x.epoch-y.epoch)){
+    if(t.epoch>game-30*60000)break;
+    const index=owned.indexOf(t.out);
+    if(index>=0)owned[index]=t.in_;
+   }
+   total+=owned.reduce((s,id)=>s+fp(id,i),0);
+  }
+  return total;
+ };
+ const games=dates.map(epoch=>({epoch,home:'BOS',away:'NYK',status:'scheduled'}));
+ const validator=executed=>draft=>guard.validate({
+  players,roster,cash:100,executed,draft,games,
+  scheduleVerified:true,nowEpoch:start
+ });
+ return {start,dates,players,roster,candidates:[{id:'mid'},{id:'target'}],
+  existingDraft:[],nowEpoch:start,whenEpoch:start,horizonDays:21,
+  maxMoves:2,opportunityPenalty:0,focusIds:['p0'],
+  priceOf:()=>100,isCandidateAvailable:()=>true,
+  coverage:()=>({ok:true,reason:'synthetic complete fixture list'}),
+  scorePlayer,project,validateDraft:validator([]),validator};
+}
+test('cross-week two-step chain adds only fixtures owned AFTER each purchase',()=>{
+ const s=chainScenario(), result=p.plan(s);
+ assert.equal(result.ready,true);
+ const c=result.routes.find(r=>r.kind==='same_slot_chain'&&
+  r.moves.length===2&&r.moves[0].out==='p0'&&r.moves[0].in_==='mid'&&
+  r.moves[1].out==='mid'&&r.moves[1].in_==='target');
+ assert.ok(c,'valid cross-week chain should be present in top routes');
+ assert.equal(c.moves[0].epoch,s.start);
+ assert.ok(c.moves[1].epoch>s.dates[1]&&c.moves[1].epoch<s.dates[2]-30*60000);
+ assert.equal(result.baseline,40);
+ assert.equal(s.project(c.moves,s.start,result.end),140);
+ assert.equal(c.gain,100);
+ assert.equal(c.net,100);
+ assert.equal(c.weeks.reduce((sum,w)=>sum+w.gain,0),c.gain);
+ assert.equal(c.usedByWeek['2026-10-26'],1);
+ assert.equal(c.usedByWeek['2026-11-02'],1);
+ assert.equal(c.alternateQuotaWeeks['2026-10-26'],1);
+ assert.equal(c.alternateQuotaWeeks['2026-11-02'],1);
+ assert.equal(c.weeks[0].usedIf15,1);
+ assert.equal(c.weeks[1].usedIf15,1);
+ assert.equal(c.quotaResetVerified,false);
+});
+test('Monday 15 reset hypothesis is shown alongside midnight quota, not hidden',()=>{
+ const s=chainScenario();
+ const executed=[
+  '2026-10-26T07:00:00Z','2026-10-26T08:00:00Z','2026-10-26T09:00:00Z'
+ ].map(t=>({epoch:Date.parse(t)}));
+ s.validateDraft=s.validator(executed);
+ s.candidates=[{id:'mid'}];s.maxMoves=1;
+ const result=p.plan(s);
+ assert.equal(result.ready,true);
+ const now=result.routes.find(r=>r.kind==='now');
+ assert.ok(now,'Monday 15:00 move should remain a marked scenario');
+ assert.equal(now.weeks[0].used,4);
+ assert.equal(now.weeks[0].usedIf15,1);
+ assert.equal(now.weeks[0].quotaResetVerified,false);
+ assert.ok(now.warnings.some(w=>w.includes('Разные варианты сброса')));
+});
+test('missing alternate quota evidence stays UNKNOWN, never displayed as zero',()=>{
+ const s=chainScenario();
+ const original=s.validateDraft;
+ s.validateDraft=draft=>{
+  const result=original(draft);
+  delete result.alternateQuotaWeeks;
+  return result;
+ };
+ const result=p.plan(s);
+ assert.equal(result.ready,true);
+ assert.equal(result.routes[0].weeks[0].usedIf15,null);
+ assert.ok(result.disclaimer.includes('две доступные квоты'));
+});

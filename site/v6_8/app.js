@@ -596,13 +596,13 @@ function multiPanel(){
        : route.samePairNow?.status==='not_comparable'
          ? `<p class="small warntext">Сравнение с немедленной заменой невозможно: ${esc(route.samePairNow.reason)}.</p>`
          : ''}
-    <div class="chain-weeks">${route.weeks.map(w=>`<span class="chain-week">${esc(w.week)}: ${w.gain==null?'н/д':(w.gain>=0?'+':'')+round(w.gain,1)} FP · ходов ${w.used}/3</span>`).join('')}</div>
+    <div class="chain-weeks">${route.weeks.map(w=>`<span class="chain-week">${esc(w.week)}: ${w.gain==null?'н/д':(w.gain>=0?'+':'')+round(w.gain,1)} FP · квота (Пн 00 / Пн 15 МСК): ${w.used==null?'н/д':w.used}/3 · ${w.usedIf15==null?'н/д':w.usedIf15}/3${w.quotaResetVerified?'':' (гипотезы)'}</span>`).join('')}</div>
     ${route.warnings?.length?`<p class="small warntext">Проверить перед покупкой: ${esc(route.warnings.slice(0,2).join(' · '))}</p>`:''}
     ${route.moves.length?`<button class="button" data-multi-apply="${i}">Добавить ${route.moves.length} шаг(а) только в черновик</button>`:''}</div>`).join('')}
    <p class="small">Результаты планов — сценарные FP, не измеренная выгода. Будущие цены и разблокировки неизвестны; при необходимости проверьте статус в официальном отчёте NBA. Сигналы Telegram не повышают вероятность участия автоматически.</p></div>`;
  }
  return `<div class="card multi-panel" id="multi-panel"><div class="titledetail"><h2>План замен для всей команды</h2><span class="pill">Не совершает трансферы</span></div>
-  <p>Что выгоднее: сохранить три хода, заменить одного игрока или распределить их по нескольким слотам и неделям? Учитываются общая касса, позиции и не более двух игроков из клуба.</p>
+  <p>Что выгоднее: сохранить три хода, заменить одного игрока или распределить их по нескольким слотам и неделям? Учитываются общая касса, позиции и не более двух игроков из клуба. Счётчики Пн 00:00 и Пн 15:00 — разные гипотезы сброса одной квоты Sports.ru, а не два разрешённых лимита.</p>
   <div class="formgrid"><label>Игроки для поиска<select id="multi-focus">${choices}</select></label>
    <label>Окно<select id="multi-days">${[14,21,28].map(v=>`<option value="${v}" ${UI.multiDays===v?'selected':''}>${v} дней</option>`).join('')}</select></label>
    <label>Новых ходов максимум<select id="multi-moves">${[1,2,3,4].map(v=>`<option value="${v}" ${UI.multiMoves===v?'selected':''}>${v} ${v===1?'ход':'хода'}</option>`).join('')}</select></label>

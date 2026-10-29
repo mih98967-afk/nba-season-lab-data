@@ -190,12 +190,18 @@
        moves.length>1?'same_slot_chain':
        moves[0].epoch===whenEpoch?'now':'later';
      valid.push({kind:categories,moves,gain,net,
-       usedByWeek:checked.used||{},cash:checked.cash,
-       touched:state.touched.length,warnings:checked.warnings||[]});
+       usedByWeek:checked.used||{},
+       alternateQuotaWeeks:checked.alternateQuotaWeeks||null,
+       quotaResetVerified:checked.quotaResetVerified===true,
+       cash:checked.cash,touched:state.touched.length,
+       warnings:checked.warnings||[]});
    }
    valid.sort((a,b)=>b.net-a.net||b.gain-a.gain||a.moves.length-b.moves.length);
    const keep={kind:'keep',moves:[],gain:0,net:0,cash:current.cash,
-     touched:0,usedByWeek:current.used||{},warnings:current.warnings||[]};
+     touched:0,usedByWeek:current.used||{},
+     alternateQuotaWeeks:current.alternateQuotaWeeks||null,
+     quotaResetVerified:current.quotaResetVerified===true,
+     warnings:current.warnings||[]};
    const chosen=[];
    const seenSignature=new Set();
    function push(route){
@@ -222,8 +228,17 @@
        if(b<=t)throw Error('Немонотонная московская неделя');
        const prev=project(existingDraft,t,b);
        const current=project([...existingDraft,...route.moves],t,b);
-       weeks.push({week:weekKey(t),gain:finite(prev)&&finite(current)?current-prev:null,
-         used:route.usedByWeek[weekKey(t)]||0});
+       const key=weekKey(t);
+       // Each count is for its OWN 7-day quota window beginning on
+       // this Monday at 00:00 or 15:00 Moscow; neither reset is verified.
+       // A missing audit count must not be represented as 0/3.
+       const used00=route.usedByWeek?.[key];
+       const used15=route.alternateQuotaWeeks?.[key];
+       weeks.push({week:key,
+         gain:finite(prev)&&finite(current)?current-prev:null,
+         used:finite(used00)?used00:null,
+         usedIf15:finite(used15)?used15:null,
+         quotaResetVerified:route.quotaResetVerified===true});
        t=b;
      }
      let samePairNow=null;
@@ -254,7 +269,7 @@
      tested,eligible,routes:withWeeks,
      coverage:covered.reason,kind:'bounded_scenario_not_validated',
      quotaResetVerified:false,
-     disclaimer:'Планы ограничены несколькими датами и отобранными кандидатами. Сравнение сейчас/позже одной пары использует одинаковые гипотетические цены и текущий прогноз, а не доказанную выгоду. Недельная граница квоты не подтверждена: проверяйте реальный счётчик замен Sports.ru. Будущие цены, участие и разблокировка не гарантированы. Резерв хода — эвристика, а не штраф Sports.ru.'};
+     disclaimer:'Планы ограничены несколькими датами и отобранными кандидатами. Два недельных счётчика — гипотезы сброса Пн 00:00 и Пн 15:00 МСК, а не две доступные квоты. Сравнение сейчас/позже одной пары использует одинаковые гипотетические цены и текущий прогноз, а не доказанную выгоду. Недельная граница квоты не подтверждена: проверяйте реальный счётчик замен Sports.ru. Будущие цены, участие и разблокировка не гарантированы. Резерв хода — эвристика, а не штраф Sports.ru.'};
  }
  return {plan,decisionMoments,mondayStart,weekKey};
 });
