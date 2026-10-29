@@ -591,10 +591,15 @@ function multiPanel(){
    ${result.routes.map((route,i)=>`<div class="multi-route"><div class="horizontal" style="justify-content:space-between"><b>${esc(types[route.kind]||route.kind)}</b>${gain(route.gain)}</div>
     <div class="small">С резервом ${result.opportunityPenalty} FP за ход: ${gain(route.net)} · новых ходов ${route.moves.length} · касса ${round(route.cash)}</div>
     ${route.moves.length?route.moves.map((m,j)=>`<div class="multi-step"><span>${j+1}.</span> ${esc(P[m.out]?.name||m.out)} → <b>${esc(P[m.in_]?.name||m.in_)}</b><span class="small">${dateText(m.epoch)} МСК · ${round(m.sell)} → ${round(m.buy)}</span></div>`).join(''):'<p class="small">Состав сохраняется, новые ходы не расходуются.</p>'}
+    ${route.samePairNow?.status==='comparable_scenario'
+       ? `<p class="small">Эта же пара при замене сейчас: ${gain(route.samePairNow.gainNowFP)}. Разница ожидания относительно замены сейчас: ${gain(route.samePairNow.waitMinusNowFP)}. Одинаковые условные цены; реальная выгода не доказана.</p>`
+       : route.samePairNow?.status==='not_comparable'
+         ? `<p class="small warntext">Сравнение с немедленной заменой невозможно: ${esc(route.samePairNow.reason)}.</p>`
+         : ''}
     <div class="chain-weeks">${route.weeks.map(w=>`<span class="chain-week">${esc(w.week)}: ${w.gain==null?'н/д':(w.gain>=0?'+':'')+round(w.gain,1)} FP · ходов ${w.used}/3</span>`).join('')}</div>
     ${route.warnings?.length?`<p class="small warntext">Проверить перед покупкой: ${esc(route.warnings.slice(0,2).join(' · '))}</p>`:''}
     ${route.moves.length?`<button class="button" data-multi-apply="${i}">Добавить ${route.moves.length} шаг(а) только в черновик</button>`:''}</div>`).join('')}
-   <p class="small">Будущие цены и разблокировки неизвестны; при необходимости проверьте статус в официальном отчёте NBA. Сигналы Telegram не повышают вероятность участия автоматически.</p></div>`;
+   <p class="small">Результаты планов — сценарные FP, не измеренная выгода. Будущие цены и разблокировки неизвестны; при необходимости проверьте статус в официальном отчёте NBA. Сигналы Telegram не повышают вероятность участия автоматически.</p></div>`;
  }
  return `<div class="card multi-panel" id="multi-panel"><div class="titledetail"><h2>План замен для всей команды</h2><span class="pill">Не совершает трансферы</span></div>
   <p>Что выгоднее: сохранить три хода, заменить одного игрока или распределить их по нескольким слотам и неделям? Учитываются общая касса, позиции и не более двух игроков из клуба.</p>
