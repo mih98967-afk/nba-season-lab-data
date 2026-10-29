@@ -1,5 +1,11 @@
 name: Official injury rows isolated research
 on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/official_injury_rows.py'
+      - 'test_official_injury_rows.py'
+      - '.github/workflows/official-injury-rows.yml'
   push:
     branches: [main, research/official-injury-row-extraction-20261025]
     paths:
@@ -25,16 +31,17 @@ jobs:
       - name: Offline parser safeguards
         run: python -m unittest -v test_official_injury_rows
       - name: Extract and match official PDF statuses without updating live model
+        if: github.event_name != 'pull_request'
         run: python -m src.official_injury_rows
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: github.event_name != 'pull_request' && always()
         with:
           name: official-injury-rows-research
           path: data/official_injury_status_research.json
           if-no-files-found: ignore
           retention-days: 7
       - name: Publish research-only player status observations on main
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
           git config user.name "nba-season-lab-bot"
           git config user.email "nba-season-lab-bot@users.noreply.github.com"
