@@ -105,7 +105,7 @@ class NonOutEvidence(unittest.TestCase):
                            self.now, max_games=1)
             self.assertEqual(result["summary"]["all_finished_p_play_UNKNOWN"], size)
             self.assertEqual(result["summary"]["new_non_OUT_review_cohort"] +
-                             result["summary"]["already_reviewed_official_OUT_excluded"], size)
+                             result["summary"]["total_official_OUT_UNKNOWN_excluded"], size)
             self.assertEqual(result["summary"]["p_play_negative_labels_created"], 0)
             self.assertEqual(len(result["records"]),
                              result["summary"]["new_non_OUT_review_cohort"])
