@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "status": "research_only_not_deployed",
+  "model_status": "research_only_not_deployed",
+  "adopt_on_site": false,
+  "updated_at_utc": "2026-10-29T17:35:34Z",
+  "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
+  "frozen_comparison_design": {
+    "name": "prospective_prelock_2026_27_current_rate_ablation_v1",
+    "rate_prior_strength_games": [
+      5,
+      10
+    ],
+    "models_compared": [
+      "frozen_previous_season_FP",
+      "updated_minutes_frozen_rate_FP",
+      "frozen_minutes_shrunk_current_rate_5_FP",
+      "updated_minutes_shrunk_current_rate_5_FP",
+      "updated_minutes_shrunk_current_rate_10_FP",
+      "updated_minutes_current_rate_only_FP"
+    ],
+    "comparison_vs": "updated_minutes_frozen_rate_FP",
+    "max_original_to_rate_issue_lag_seconds": 1200,
+    "original_and_minutes_issues_must_be_prelock": true,
+    "prior_positive_minutes_observed_by_original_issue": true,
+    "posthoc_selected_on_historical_2024_25_2025_26_not_preregistered_in_2026": true,
+    "unconditional_fp_allowed": false,
+    "no_missing_to_negative_label": true,
+    "adopt_on_site": false
+  },
+  "source_minutes_model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+  "issued": [],
+  "observed": [],
+  "summary": {
+    "issued_total": 0,
+    "new_issued_this_run": 0,
+    "played_verified": 0,
+    "literal_DNP_not_scored": 0,
+    "UNKNOWN_not_imputed": 0,
+    "awaiting_or_unchecked": 0,
+    "distinct_scored_ET_dates": 0,
+    "distinct_scored_games": 0
+  },
+  "issue_QA": {},
+  "played_only_paired_metrics": {
+    "played_scored": 0
+  },
+  "by_ET_date": {},
+  "quality_gate": {
+    "independent_ET_dates_at_least_8": false,
+    "played_scored_at_least_100": false,
+    "NBA_games_scored_at_least_24": false,
+    "rate_weights_chosen_before_2026_27_outcomes": false,
+    "historical_2025_26_pristine_holdout": false,
+    "selected_played_only_not_full_fantasy_population": true,
+    "calibrated_unconditional_FP_allowed": false,
+    "adopt_on_site": false
+  },
+  "limitations": [
+    "Historical 2024/25-2025/26 motivated the variants; not prespecified at season start.",
+    "Original frozen baseline and current-season minutes issue must be genuinely prelock.",
+    "Current FP/minute uses only real positive boxscore rows first observed BEFORE original baseline issue.",
+    "Original-source FP values are frozen at issue; later edits cannot retroactively change them.",
+    "Research compares only independently verified played rows, not true population P(play).",
+    "Literal DNP/UNKNOWN outcomes are counted, not scored as zero or negatives.",
+    "Multiple player forecasts within an ET date are correlated; apparent gains on few dates are not proof.",
+    "No trained site weights, Firebase, account prices, transfers, or personal data."
+  ]
+}
