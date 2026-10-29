@@ -3,7 +3,7 @@ import unittest
 from copy import deepcopy
 from datetime import datetime, timezone, timedelta
 from src.sync import DATA
-from src.conditional_minutes_fp_evaluation_research import build
+from src.conditional_minutes_fp_evaluation_research import build, date_cluster_fp_uncertainty, MIN_REPORT_ET_DATES, MIN_REPORT_NBA_GAMES
 
 FILES = ("conditional_minutes_fp_research.json", "p_play_shadow_research.json",
          "participation_cohort_research.json", "explicit_dnp_research.json", "live.json")
@@ -49,6 +49,45 @@ class ConditionalMinutesProspectiveEvaluation(unittest.TestCase):
         self.assertTrue(all(r["outcome"] == "played" for r in actual))
         self.assertTrue(all(r["not_scored_as_zero_FP"] for r in
                             result["explicit_DNP_not_in_conditional_metrics"]))
+
+    def test_position_denominator_and_no_role_adoption(self):
+        result = self.make()
+        by_role = result["by_position_outcome_and_played_only"]
+        self.assertEqual(sum(v["outcome_coverage"]["finished_checked"]
+                             for v in by_role.values()), result["summary"]["finished_checked"])
+        self.assertEqual(sum(v["conditional_played_only_metrics"]["played_scored"]
+                             for v in by_role.values()), result["summary"]["played"])
+        self.assertTrue(all(v["position_adjustment_evidence_sufficient"] is False
+                            for v in by_role.values()))
+        self.assertFalse(result["quality_gate"]["position_specific_recalibration_allowed"])
+        self.assertIsNone(result["date_cluster_uncertainty_if_exploratory_eligible"])
+
+    def test_whole_et_date_resampling_not_player_level(self):
+        rows = []
+        for i in range(MIN_REPORT_ET_DATES):
+            for game in range(3):
+                for player in range(5):
+                    rows.append({"game_id":f"g{i}_{game}", "player_id":f"p{player}",
+                                 "et_date":f"2026-11-{i+1:02d}",
+                                 "game_utc":f"2026-11-{i+1:02d}T02:00:00Z",
+                                 "actual_minutes":22, "predicted_minutes":23+i,
+                                 "actual_fp_reconstructed":12,
+                                 "predicted_direct_fp":14+i,
+                                 "predicted_decomposed_fp":13+i})
+        self.assertGreaterEqual(len({r["game_id"] for r in rows}),MIN_REPORT_NBA_GAMES)
+        result = date_cluster_fp_uncertainty(rows)
+        self.assertEqual(result,date_cluster_fp_uncertainty(rows))
+        self.assertEqual(result["independent_ET_dates"],MIN_REPORT_ET_DATES)
+        self.assertTrue(result["posthoc_exploratory_not_pre_registered"])
+        self.assertIsNone(date_cluster_fp_uncertainty(rows[:-1] if len(rows)<100 else rows[:99]))
+        tampered = deepcopy(rows)
+        tampered[0]["et_date"]="2026-10-01"
+        with self.assertRaises(ValueError):
+            date_cluster_fp_uncertainty(tampered)
+        tampered = deepcopy(rows)
+        tampered[1] = deepcopy(tampered[0])
+        with self.assertRaises(ValueError):
+            date_cluster_fp_uncertainty(tampered)
 
     def test_missing_boxscore_keeps_unknown(self):
         result = self.make()
