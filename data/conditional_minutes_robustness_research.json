@@ -3,27 +3,27 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-29T14:32:04.539893Z",
+  "updated_at_utc": "2026-10-29T14:54:33.608291Z",
   "scope": "same_first_issued_prelock_selected_prospective_minutes_if_play_only",
   "frozen_issue_sha256": "f3ad32104d242284cd83528e46f528f7b8c86043a51aef76348ccf1689f77f19",
   "frozen_model_sha256": "96fe3f30009c36de525ec089d03cad6b8bd14fb07f46137ae991031568d5e6f0",
-  "input_evaluation_last_updated_at_utc": "2026-10-29T14:32:04.415564Z",
+  "input_evaluation_last_updated_at_utc": "2026-10-29T14:54:33.524565Z",
   "summary": {
     "frozen_issues_total": 417,
     "finished_checked": 247,
-    "played_scored_conditional": 54,
+    "played_scored_conditional": 201,
     "explicit_DNP_not_scored_as_zero": 23,
-    "UNKNOWN_not_imputed": 170,
-    "independent_ET_date_clusters": 1,
-    "distinct_NBA_games": 4,
-    "observed_pairwise_direct_minus_decomposed_FP_MAE_gain": 0.0908,
-    "relative_gain_pct_descriptive_ONLY": 1.29,
+    "UNKNOWN_not_imputed": 23,
+    "independent_ET_date_clusters": 2,
+    "distinct_NBA_games": 16,
+    "observed_pairwise_direct_minus_decomposed_FP_MAE_gain": -0.008,
+    "relative_gain_pct_descriptive_ONLY": -0.11,
     "positive_gain_does_not_prove_future_generalization": true
   },
   "frozen_bands_descriptive_played_only": {
-    "minutes_coverage": 0.907407,
-    "minutes_mean_width": 22.8797,
-    "FP_coverage": 0.925926,
+    "minutes_coverage": 0.905473,
+    "minutes_mean_width": 22.8992,
+    "FP_coverage": 0.935323,
     "FP_mean_width": 29.7006,
     "not_validated_prospective_individual_intervals": true
   },
@@ -37,6 +37,16 @@
       "minutes_MAE": 5.3827,
       "minutes_frozen_band_empirical_coverage": 0.907407,
       "FP_frozen_band_empirical_coverage": 0.925926
+    },
+    "2026-10-28": {
+      "played": 147,
+      "distinct_NBA_games": 12,
+      "paired_direct_minus_decomposed_FP_MAE": -0.0443,
+      "decomposed_FP_MAE": 7.1066,
+      "direct_FP_MAE": 7.0622,
+      "minutes_MAE": 5.7799,
+      "minutes_frozen_band_empirical_coverage": 0.904762,
+      "FP_frozen_band_empirical_coverage": 0.938776
     }
   },
   "fixed_research_thresholds": {
@@ -44,7 +54,7 @@
     "min_positive_minutes_cases": 100,
     "min_distinct_NBA_games": 24,
     "date_gate": false,
-    "played_gate": false,
+    "played_gate": true,
     "game_gate": false,
     "first_exploratory_interval_eligible": false
   },
