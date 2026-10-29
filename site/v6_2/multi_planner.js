@@ -74,7 +74,11 @@
    function val(id,a,b=end){
      if(b<=a)return 0;
      const key=id+'|'+a+'|'+b;
-     if(!scoreCache.has(key))scoreCache.set(key,Number(scorePlayer(id,a,b)));
+     if(!scoreCache.has(key)){
+       const raw=scorePlayer(id,a,b);
+       // An absent FP forecast must never be coerced to a real zero.
+       scoreCache.set(key,finite(raw)?raw:NaN);
+     }
      const number=scoreCache.get(key);
      return finite(number)?number:NaN;
    }
@@ -170,7 +174,9 @@
    const valid=[];
    // Rerun authoritative guard before claiming eligibility. This catches
    // 30-minute locks, real confirmed transfers and all quota/roster conditions.
-   const sorted=[...allStates].sort((a,b)=>b.net-a.net).slice(0,125);
+   // At most 34 retained states per depth (136 total). Do not
+   // discard potentially viable NOW/LATER routes before the final guard.
+   const sorted=[...allStates].sort((a,b)=>b.net-a.net);
    for(const state of sorted){
      const moves=state.moves.map(({root,...m})=>m);
      const checked=validateDraft([...existingDraft,...moves]);
@@ -200,9 +206,13 @@
    }
    // Show the trade-off between 1, 2 and 3+ moves, not four nearly
    // identical permutations of a greedy three-move recommendation.
+   // Reserve room for KEEP, best overall, one NOW and one LATER.
+   // Previously 2/3/4-step routes could displace a valid single LATER.
    push(valid[0]);
+   push(valid.find(r=>r.moves.length===1&&r.kind==='now'));
+   push(valid.find(r=>r.moves.length===1&&r.kind==='later'));
+   for(const kind of ['multi_slot','same_slot_chain'])push(valid.find(r=>r.kind===kind));
    for(const count of [1,2,3,4])push(valid.find(r=>r.moves.length===count));
-   for(const kind of ['later','now','multi_slot','same_slot_chain'])push(valid.find(r=>r.kind===kind));
    for(const r of valid)push(r);
    const routes=[keep,...chosen].sort((a,b)=>b.net-a.net||a.moves.length-b.moves.length);
    const withWeeks=routes.map(route=>{
@@ -216,14 +226,35 @@
          used:route.usedByWeek[weekKey(t)]||0});
        t=b;
      }
-     return {...route,weeks};
+     let samePairNow=null;
+     if(route.kind==='later'&&route.moves.length===1){
+       // Hold OUT, IN, forecast and today's assumed quotes constant;
+       // only the proposed execution time changes.
+       const alternative={...route.moves[0],epoch:whenEpoch};
+       const check=validateDraft([...existingDraft,alternative]);
+       if(!check?.valid){
+         samePairNow={status:'not_comparable',
+           reason:'Немедленная замена не проходит проверку состава, квоты или блокировки'};
+       }else{
+         const immediate=project([...existingDraft,alternative],whenEpoch,end);
+         samePairNow=finite(immediate)
+           ? {status:'comparable_scenario',
+              gainNowFP:immediate-base,
+              waitMinusNowFP:route.gain-(immediate-base),
+              identicalPair:true,futurePricesAssumedUnchanged:true,
+              resultIsConditionalForecastNotMeasuredBenefit:true}
+           : {status:'not_comparable',
+              reason:'Для этой пары нет прогноза немедленной замены'};
+       }
+     }
+     return {...route,weeks,...(samePairNow?{samePairNow}:{})};
    });
    return {ready:true,start:whenEpoch,end,horizonDays,maxMoves,
      opportunityPenalty,baseline:base,moments:moments.length,
      tested,eligible,routes:withWeeks,
      coverage:covered.reason,kind:'bounded_scenario_not_validated',
      quotaResetVerified:false,
-     disclaimer:'Планы ограничены несколькими датами и отобранными кандидатами. Недельная граница квоты не подтверждена: проверяйте реальный счётчик замен Sports.ru. Будущие цены, участие и разблокировка не гарантированы. Резерв хода — эвристика, а не штраф Sports.ru.'};
+     disclaimer:'Планы ограничены несколькими датами и отобранными кандидатами. Сравнение сейчас/позже одной пары использует одинаковые гипотетические цены и текущий прогноз, а не доказанную выгоду. Недельная граница квоты не подтверждена: проверяйте реальный счётчик замен Sports.ru. Будущие цены, участие и разблокировка не гарантированы. Резерв хода — эвристика, а не штраф Sports.ru.'};
  }
  return {plan,decisionMoments,mondayStart,weekKey};
 });
