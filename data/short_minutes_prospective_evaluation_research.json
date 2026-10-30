@@ -2,28 +2,28 @@
   "schema_version": 1,
   "status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-29T21:09:06Z",
+  "updated_at_utc": "2026-10-30T14:48:40Z",
   "target": "short_minutes_given_verified_positive_minutes_only",
   "summary": {
-    "issued": 383,
-    "played_verified": 147,
-    "explicit_DNP_excluded": 20,
-    "UNKNOWN_not_imputed": 18,
-    "awaiting_or_unchecked": 198,
-    "distinct_ET_dates_scored": 1,
-    "distinct_NBA_games_scored": 12
+    "issued": 488,
+    "played_verified": 182,
+    "explicit_DNP_excluded": 23,
+    "UNKNOWN_not_imputed": 22,
+    "awaiting_or_unchecked": 261,
+    "distinct_ET_dates_scored": 2,
+    "distinct_NBA_games_scored": 15
   },
   "conditional_played_only_metrics": {
-    "n": 147,
-    "Brier_global": 0.04863,
-    "Brier_group": 0.046737,
-    "logloss_global": 0.2129,
-    "logloss_group": 0.172904,
-    "band_coverage_global": 0.904762,
-    "band_coverage_group": 0.891156,
-    "actual_under_10": 7,
-    "paired_global_minus_group_Brier_gain": 0.001893,
-    "paired_global_minus_group_logloss_gain": 0.039997
+    "n": 182,
+    "Brier_global": 0.058762,
+    "Brier_group": 0.059419,
+    "logloss_global": 0.240389,
+    "logloss_group": 0.215766,
+    "band_coverage_global": 0.901099,
+    "band_coverage_group": 0.879121,
+    "actual_under_10": 11,
+    "paired_global_minus_group_Brier_gain": -0.000657,
+    "paired_global_minus_group_logloss_gain": 0.024623
   },
   "by_ET_date": {
     "2026-10-28": {
@@ -37,32 +37,44 @@
       "actual_under_10": 7,
       "paired_global_minus_group_Brier_gain": 0.001893,
       "paired_global_minus_group_logloss_gain": 0.039997
+    },
+    "2026-10-29": {
+      "n": 35,
+      "Brier_global": 0.101313,
+      "Brier_group": 0.112682,
+      "logloss_global": 0.355842,
+      "logloss_group": 0.395787,
+      "band_coverage_global": 0.885714,
+      "band_coverage_group": 0.828571,
+      "actual_under_10": 4,
+      "paired_global_minus_group_Brier_gain": -0.01137,
+      "paired_global_minus_group_logloss_gain": -0.039945
     }
   },
   "by_predicted_minutes": {
     "15_to_under_25": {
-      "n": 44,
-      "Brier_global": 0.06488,
-      "Brier_group": 0.063628,
-      "logloss_global": 0.256989,
-      "logloss_group": 0.249596,
-      "band_coverage_global": 0.818182,
-      "band_coverage_group": 0.818182,
-      "actual_under_10": 3,
-      "paired_global_minus_group_Brier_gain": 0.001252,
-      "paired_global_minus_group_logloss_gain": 0.007394
+      "n": 51,
+      "Brier_global": 0.103969,
+      "Brier_group": 0.105385,
+      "logloss_global": 0.363049,
+      "logloss_group": 0.37183,
+      "band_coverage_global": 0.784314,
+      "band_coverage_group": 0.784314,
+      "actual_under_10": 6,
+      "paired_global_minus_group_Brier_gain": -0.001416,
+      "paired_global_minus_group_logloss_gain": -0.008781
     },
     "25_to_under_35": {
-      "n": 81,
-      "Brier_global": 0.020756,
-      "Brier_group": 0.012193,
-      "logloss_global": 0.13727,
-      "logloss_group": 0.066522,
-      "band_coverage_global": 0.950617,
-      "band_coverage_group": 0.901235,
-      "actual_under_10": 1,
-      "paired_global_minus_group_Brier_gain": 0.008563,
-      "paired_global_minus_group_logloss_gain": 0.070748
+      "n": 107,
+      "Brier_global": 0.025771,
+      "Brier_group": 0.018383,
+      "logloss_global": 0.150876,
+      "logloss_group": 0.094349,
+      "band_coverage_global": 0.953271,
+      "band_coverage_group": 0.897196,
+      "actual_under_10": 2,
+      "paired_global_minus_group_Brier_gain": 0.007388,
+      "paired_global_minus_group_logloss_gain": 0.056527
     },
     "35_plus": {
       "n": 8,
@@ -77,16 +89,16 @@
       "paired_global_minus_group_logloss_gain": 0.087242
     },
     "under_15": {
-      "n": 14,
-      "Brier_global": 0.180337,
-      "Brier_group": 0.219912,
-      "logloss_global": 0.570255,
-      "logloss_group": 0.632708,
-      "band_coverage_global": 0.857143,
+      "n": 16,
+      "Brier_global": 0.15917,
+      "Brier_group": 0.216768,
+      "logloss_global": 0.512823,
+      "logloss_group": 0.626392,
+      "band_coverage_global": 0.875,
       "band_coverage_group": 1.0,
       "actual_under_10": 3,
-      "paired_global_minus_group_Brier_gain": -0.039575,
-      "paired_global_minus_group_logloss_gain": -0.062453
+      "paired_global_minus_group_Brier_gain": -0.057599,
+      "paired_global_minus_group_logloss_gain": -0.113569
     }
   },
   "outcome_audit": [
@@ -1798,211 +1810,736 @@
     {
       "game_id": "espn_401909893",
       "player_id": "n018",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n023",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n025",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n028",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n033",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n071",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n076",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n081",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n082",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n187",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "explicit_DNP"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n246",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n278",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "explicit_DNP"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n301",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n320",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909893",
       "player_id": "n442",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n041",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n057",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n083",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n108",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "UNKNOWN"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n131",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n174",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n175",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "UNKNOWN"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n196",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n203",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n208",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "UNKNOWN"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n227",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n241",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n257",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n343",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "explicit_DNP"
     },
     {
       "game_id": "espn_401909894",
       "player_id": "n390",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n037",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n062",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n122",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n146",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n170",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n192",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n213",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "UNKNOWN"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n225",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n250",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n271",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n287",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909895",
       "player_id": "n370",
+      "outcome": "played"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n037",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n050",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n062",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n080",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n122",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n133",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n146",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n213",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n220",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n250",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n264",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n284",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n339",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909896",
+      "player_id": "n370",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n014",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n020",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n087",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n089",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n151",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n279",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n292",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n298",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n365",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n381",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909897",
+      "player_id": "n403",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n018",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n041",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n057",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n071",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n076",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n081",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n082",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n131",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n175",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n187",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n203",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n208",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n227",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n257",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n278",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n301",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n390",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909898",
+      "player_id": "n436",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n083",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n108",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n170",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n174",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n192",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n196",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n225",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n241",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n271",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n287",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n343",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909899",
+      "player_id": "n461",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n023",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n025",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n028",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n033",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n094",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n098",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n234",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n246",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n276",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n320",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n358",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n417",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909900",
+      "player_id": "n442",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n005",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n016",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n043",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n054",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n065",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n067",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n125",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n135",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n149",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n168",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n181",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n183",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n290",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n300",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n315",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n328",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909901",
+      "player_id": "n380",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n003",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n010",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n026",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n036",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n039",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n042",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n078",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n090",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n121",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n163",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n179",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n185",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n201",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n202",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n209",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n239",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n245",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n268",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n374",
+      "outcome": "awaiting_or_unchecked"
+    },
+    {
+      "game_id": "espn_401909902",
+      "player_id": "n432",
       "outcome": "awaiting_or_unchecked"
     }
   ],
