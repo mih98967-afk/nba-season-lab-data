@@ -61,15 +61,39 @@ def provenance_index(git_proof, observed):
                 "historical_commit_blobs_anchored_to_original_immutable_git_SHA")
             or observed.get("status") != STATUS
             or observed.get("adopt_on_site") is not False
-            or git_proof.get("summary", {}).get(
-                "first_row_version_archive_keys_exactly_reconciled")
-                != observed.get("summary", {}).get("unique_player_games")
             or not isinstance(git_proof.get("versions"), dict)
             or not isinstance(observed.get("versions"), dict)):
         raise ValueError("Missing audited Git-to-row-version source bridge")
     if (instant(git_proof["first_row_version_archive_at_utc"]) !=
             instant(observed["first_version_archive_at_utc"])):
         raise ValueError("Git recovery not anchored to first official value archive")
+    # The Git proof is anchored to the FIRST sealed row-value archive.
+    # The current archive is append-only: newly observed player-games must NOT
+    # invalidate this immutable initial bridge or be given earlier timestamps.
+    first_capture = instant(observed["first_version_archive_at_utc"])
+    original_keys = set()
+    for key, events in observed["versions"].items():
+        if not isinstance(events, list) or not events:
+            raise ValueError("Missing observed row-version chain")
+        recorded_at = instant(events[0]["version_observed_at_utc"])
+        if recorded_at < first_capture:
+            raise ValueError("Observed row version falsely predates sealed archive")
+        if recorded_at == first_capture:
+            original_keys.add(key)
+    if (original_keys != set(git_proof["versions"])
+            or len(original_keys) != git_proof.get("summary", {}).get(
+                "first_row_version_archive_keys_exactly_reconciled")
+            or len(observed["versions"]) != observed.get("summary", {}).get(
+                "unique_player_games")):
+        raise ValueError("Original Git-to-row-version source bridge drift")
+    for key in original_keys:
+        first = observed["versions"][key][0]
+        git_events = git_proof["versions"][key]
+        if (not git_events or git_events[-1].get("kind") != "observed"
+                or instant(git_events[-1]["observed_at_utc"]) > first_capture
+                or git_events[-1].get("row_sha256") != first.get("row_sha256")
+                or canonical_hash(first["row"]) != first["row_sha256"]):
+            raise ValueError("Original observed value differs from sealed Git proof")
     result = {}
     for key in sorted(set(git_proof["versions"]) | set(observed["versions"])):
         timeline = []

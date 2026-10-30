@@ -58,6 +58,42 @@ class GitAsOfReplayTests(unittest.TestCase):
             "postgame_evidence":None,
         }
 
+    def test_post_anchor_new_player_game_keeps_original_git_bridge_valid(self):
+        # New genuine game rows cannot make the frozen 1346-row origin count
+        # look incorrect. They are only visible from their actual capture.
+        from src.rolling_decision_research import instant
+        proof, versions = self.sources()
+        new_row = {"game_id":"g1","player_id":"q","team":"NYK",
+                   "fp":7,"minutes":14,"utc":"2026-10-30T00:00:00Z"}
+        versions["versions"]["g1|q"] = [{
+            "version_observed_at_utc":"2026-10-30T07:00:00Z",
+            "row":new_row,"row_sha256":canonical_hash(new_row),
+        }]
+        versions["summary"]["unique_player_games"] = 2
+        timeline = provenance_index(proof, versions)
+        self.assertNotIn("q", values_at(timeline, instant("2026-10-29T22:00:00Z")))
+        self.assertEqual(values_at(timeline, instant("2026-10-30T08:00:00Z"))
+                         ["q"][0]["fp"], 7)
+
+    def test_original_git_bridge_still_fails_closed_if_tampered(self):
+        proof, versions = self.sources()
+        lost = deepcopy(versions)
+        lost["versions"]["g0|p"][0]["version_observed_at_utc"] = (
+            "2026-10-30T07:00:00Z")
+        with self.assertRaisesRegex(ValueError, "bridge drift"):
+            provenance_index(proof, lost)
+        forged = deepcopy(versions)
+        forged_row = forged["versions"]["g0|p"][0]["row"]
+        forged_row["fp"] = 19
+        forged["versions"]["g0|p"][0]["row_sha256"] = canonical_hash(forged_row)
+        with self.assertRaisesRegex(ValueError, "differs from sealed Git proof"):
+            provenance_index(proof, forged)
+        backdated = deepcopy(versions)
+        backdated["versions"]["g0|p"][0]["version_observed_at_utc"] = (
+            "2026-10-29T18:09:34Z")
+        with self.assertRaisesRegex(ValueError, "falsely predates"):
+            provenance_index(proof, backdated)
+
     def test_git_values_are_timestamped_not_latest_revision(self):
         proof,versions=self.sources()
         tl=provenance_index(proof,versions)
