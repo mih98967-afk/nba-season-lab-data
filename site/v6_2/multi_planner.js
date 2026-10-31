@@ -224,17 +224,21 @@
    const withWeeks=routes.map(route=>{
      const weeks=[];
      for(let t=whenEpoch;t<end;){
-       const b=Math.min(end,mondayStart(t)+7*DAY);
+       // Split at BOTH possible quota reset clocks. A Monday 00:00-to-15:00
+       // segment belongs to different weeks under the two hypotheses.
+       const end00=mondayStart(t)+7*DAY;
+       const end15=mondayStart(t-15*HOUR)+7*DAY+15*HOUR;
+       const b=Math.min(end,end00,end15);
        if(b<=t)throw Error('Немонотонная московская неделя');
        const prev=project(existingDraft,t,b);
        const current=project([...existingDraft,...route.moves],t,b);
-       const key=weekKey(t);
-       // Each count is for its OWN 7-day quota window beginning on
-       // this Monday at 00:00 or 15:00 Moscow; neither reset is verified.
-       // A missing audit count must not be represented as 0/3.
-       const used00=route.usedByWeek?.[key];
-       const used15=route.alternateQuotaWeeks?.[key];
-       weeks.push({week:key,
+       const key00=weekKey(t);
+       const key15=weekKey(t-15*HOUR);
+       // Each hypothesis is indexed by its OWN real calendar window;
+       // an absent audited value must remain UNKNOWN, never synthetic zero.
+       const used00=route.usedByWeek?.[key00];
+       const used15=route.alternateQuotaWeeks?.[key15];
+       weeks.push({week:key00,weekIf15:key15,startEpoch:t,endEpoch:b,
          gain:finite(prev)&&finite(current)?current-prev:null,
          used:finite(used00)?used00:null,
          usedIf15:finite(used15)?used15:null,
