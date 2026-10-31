@@ -2,10 +2,10 @@ name: NBA transfer guard offline checks
 on:
   pull_request:
     branches: [main]
-    paths: ['site/transfer_guard.js','site/v6_2/multi_planner.js','site/v6_8/app.js','test_transfer_guard.cjs','test_multi_slot_v62.cjs','.github/workflows/transfer-guard.yml']
+    paths: ['site/transfer_guard.js','site/v6_2/multi_planner.js','site/v6_8/app.js','test_transfer_guard.cjs','test_multi_slot_v62.cjs','site/v6_11/decision_evidence.js','test_v611_decision_evidence.cjs','.github/workflows/transfer-guard.yml']
   push:
     branches: [main, feat/transfer-guard-v59-20261024]
-    paths: ['site/transfer_guard.js','site/v6_2/multi_planner.js','site/v6_8/app.js','test_transfer_guard.cjs','test_multi_slot_v62.cjs','.github/workflows/transfer-guard.yml']
+    paths: ['site/transfer_guard.js','site/v6_2/multi_planner.js','site/v6_8/app.js','test_transfer_guard.cjs','test_multi_slot_v62.cjs','site/v6_11/decision_evidence.js','test_v611_decision_evidence.cjs','.github/workflows/transfer-guard.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -21,4 +21,5 @@ jobs:
       - run: node --check site/transfer_guard.js
       - run: node --check site/v6_2/multi_planner.js
       - run: node --check site/v6_8/app.js
-      - run: node --test test_transfer_guard.cjs test_multi_slot_v62.cjs
+      - run: node --check site/v6_11/decision_evidence.js
+      - run: node --test test_transfer_guard.cjs test_multi_slot_v62.cjs test_v611_decision_evidence.cjs
