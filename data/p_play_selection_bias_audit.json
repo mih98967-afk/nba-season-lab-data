@@ -2,15 +2,15 @@
   "schema_version": 1,
   "status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-31T21:49:55Z",
+  "updated_at_utc": "2026-10-31T23:25:24Z",
   "prediction_target": "player_positive_minutes_with_verified_explicit_DNP_if_available",
   "reference_population": "first_issued_prelock_predictions_with_completed_checked_NBA_games",
   "total_issued_predictions": 1330,
-  "finished_checked": 1031,
-  "verified_postgame_results": 855,
-  "unknown_postgame_results": 176,
-  "future_or_not_checked": 299,
-  "distinct_finished_ET_dates": 5,
+  "finished_checked": 1056,
+  "verified_postgame_results": 876,
+  "unknown_postgame_results": 180,
+  "future_or_not_checked": 274,
+  "distinct_finished_ET_dates": 6,
   "by_first_observed_official_status": {
     "available": {
       "finished_checked": 2,
@@ -21,10 +21,10 @@
       "outcome_UNKNOWN": 3
     },
     "no_observed_official_status": {
-      "finished_checked": 971,
-      "verified_played": 737,
+      "finished_checked": 996,
+      "verified_played": 758,
       "explicit_DNP": 103,
-      "outcome_UNKNOWN": 131
+      "outcome_UNKNOWN": 135
     },
     "out": {
       "finished_checked": 39,
@@ -262,6 +262,11 @@
       "finished_checked": 28,
       "verified_played": 25,
       "outcome_UNKNOWN": 3
+    },
+    "espn_401909896": {
+      "finished_checked": 25,
+      "verified_played": 21,
+      "outcome_UNKNOWN": 4
     }
   },
   "out_status_missing_review_queue": [
@@ -762,37 +767,37 @@
   ],
   "official_OUT_unknown_review_priority_count": 38,
   "selected_verified_only": {
-    "n": 855,
-    "verified": 855,
+    "n": 876,
+    "verified": 876,
     "missing": 0,
     "bounds": {
       "brier": {
         "baseline_range": [
-          0.1084,
-          0.1084
+          0.106247,
+          0.106247
         ],
         "candidate_range": [
-          0.092617,
-          0.092617
+          0.090813,
+          0.090813
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.015782,
-          0.015782
+          0.015434,
+          0.015434
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       },
       "logloss": {
         "baseline_range": [
-          0.375223,
-          0.375223
+          0.369745,
+          0.369745
         ],
         "candidate_range": [
-          0.318717,
-          0.318717
+          0.314286,
+          0.314286
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.056506,
-          0.056506
+          0.055459,
+          0.055459
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       }
@@ -801,37 +806,37 @@
     "not_a_population_estimate": true
   },
   "all_finished_with_unknown_binary_sensitivity": {
-    "n": 1031,
-    "verified": 855,
-    "missing": 176,
+    "n": 1056,
+    "verified": 876,
+    "missing": 180,
     "bounds": {
       "brier": {
         "baseline_range": [
-          0.093426,
-          0.215142
+          0.091655,
+          0.213243
         ],
         "candidate_range": [
-          0.080518,
-          0.202064
+          0.079012,
+          0.200564
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.010295,
-          0.01569
+          0.009963,
+          0.015359
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       },
       "logloss": {
         "baseline_range": [
-          0.337623,
-          0.642952
+          0.333103,
+          0.638193
         ],
         "candidate_range": [
-          0.290975,
-          0.59855
+          0.287231,
+          0.595131
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.034992,
-          0.056058
+          0.033874,
+          0.055059
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       }
@@ -840,37 +845,37 @@
     "not_a_population_estimate": true
   },
   "high_confidence_ESPN_ID_subset_binary_sensitivity": {
-    "n": 883,
-    "verified": 816,
-    "missing": 67,
+    "n": 906,
+    "verified": 837,
+    "missing": 69,
     "bounds": {
       "brier": {
         "baseline_range": [
-          0.089388,
-          0.143516
+          0.087592,
+          0.141951
         ],
         "candidate_range": [
-          0.078365,
-          0.133393
+          0.076801,
+          0.132188
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.007973,
-          0.013174
+          0.007667,
+          0.012887
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       },
       "logloss": {
         "baseline_range": [
-          0.327412,
-          0.463236
+          0.322825,
+          0.459274
         ],
         "candidate_range": [
-          0.28526,
-          0.427198
+          0.28136,
+          0.424488
         ],
         "paired_baseline_minus_candidate_gain_range": [
-          0.028543,
-          0.049647
+          0.027481,
+          0.048769
         ],
         "all_unknown_are_binary_only_as_a_mathematical_sensitivity": true
       }
