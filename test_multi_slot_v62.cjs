@@ -202,3 +202,34 @@ test('missing alternate quota evidence stays UNKNOWN, never displayed as zero',(
  assert.equal(result.routes[0].weeks[0].usedIf15,null);
  assert.ok(result.disclaimer.includes('две доступные квоты'));
 });
+
+test('early Monday uses previous 15h week and current midnight week, with split at 15h',()=>{
+ const s=chainScenario();
+ const earlyMonday=Date.parse('2026-10-26T09:00:00Z'); // Monday 12:00 MSK
+ const monday15=Date.parse('2026-10-26T12:00:00Z');
+ s.nowEpoch=earlyMonday;s.whenEpoch=earlyMonday;s.maxMoves=1;
+ s.candidates=[{id:'mid'}];
+ const sundayExecutions=[
+  '2026-10-25T16:00:00Z','2026-10-25T17:00:00Z',
+  '2026-10-25T18:00:00Z'
+ ].map(epoch=>({epoch:Date.parse(epoch)}));
+ s.validateDraft=s.validator(sundayExecutions);
+ const result=p.plan(s);
+ assert.equal(result.ready,true);
+ const now=result.routes.find(r=>r.kind==='now');
+ assert.ok(now,'one conditional Monday morning candidate should remain viable');
+ const early=now.weeks[0];
+ assert.equal(early.week,'2026-10-26');
+ assert.equal(early.weekIf15,'2026-10-19');
+ assert.equal(early.used,1);
+ assert.equal(early.usedIf15,4);
+ assert.equal(early.startEpoch,earlyMonday);
+ assert.equal(early.endEpoch,monday15);
+ assert.equal(now.weeks[1].startEpoch,monday15);
+ assert.equal(now.weeks[1].weekIf15,'2026-10-26');
+ assert.equal(now.weeks[1].usedIf15,null,
+   'no observed move in new 15h window remains unknown, not zero');
+ assert.equal(now.weeks.reduce((total,w)=>total+w.gain,0),now.gain);
+ assert.equal(now.quotaResetVerified,false);
+ assert.ok(now.warnings.some(w=>w.includes('Разные варианты сброса')));
+});
