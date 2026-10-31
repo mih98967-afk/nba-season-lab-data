@@ -3,7 +3,7 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-31T23:25:25Z",
+  "updated_at_utc": "2026-10-31T23:26:26Z",
   "protocol_frozen_before_first_historical_paired_outcome": true,
   "model_selection_frozen_season": "2024/25",
   "historical_source_holdout": "2025/26",
@@ -19,11 +19,11 @@
     "awaiting_finished_checked_game": 144,
     "final_game_not_independently_DNP_checked": 0,
     "finished_checked": 428,
-    "verified_pairs": 387,
+    "verified_pairs": 398,
     "outcome_UNKNOWN": 30,
-    "waiting_historical_reconciliation": 11,
-    "label_missing_or_waiting_fraction": 0.095794,
-    "known_positive": 353,
+    "waiting_historical_reconciliation": 0,
+    "label_missing_or_waiting_fraction": 0.070093,
+    "known_positive": 364,
     "known_explicit_DNP": 34
   },
   "by_first_issue_injury_status": {
@@ -32,11 +32,11 @@
       "awaiting_finished_checked_game": 144,
       "final_game_not_independently_DNP_checked": 0,
       "finished_checked": 418,
-      "verified_pairs": 385,
+      "verified_pairs": 396,
       "outcome_UNKNOWN": 22,
-      "waiting_historical_reconciliation": 11,
-      "label_missing_or_waiting_fraction": 0.078947,
-      "known_positive": 351,
+      "waiting_historical_reconciliation": 0,
+      "label_missing_or_waiting_fraction": 0.052632,
+      "known_positive": 362,
       "known_explicit_DNP": 34
     },
     "out": {
@@ -198,13 +198,32 @@
       "awaiting_finished_checked_game": 83,
       "final_game_not_independently_DNP_checked": 0,
       "finished_checked": 11,
-      "verified_pairs": 0,
+      "verified_pairs": 11,
       "outcome_UNKNOWN": 0,
-      "waiting_historical_reconciliation": 11,
-      "label_missing_or_waiting_fraction": 1.0,
-      "known_positive": 0,
+      "waiting_historical_reconciliation": 0,
+      "label_missing_or_waiting_fraction": 0.0,
+      "known_positive": 11,
       "known_explicit_DNP": 0,
-      "verified_only_loss": null
+      "verified_only_loss": {
+        "scope": "strict_same_game_same_person_verified_selected_only",
+        "verified_player_games": 11,
+        "verified_ET_dates": 1,
+        "verified_NBA_games": 1,
+        "mean_proper_losses": {
+          "Brier": {
+            "current_baseline": 0.018618,
+            "current_candidate": 0.013487,
+            "frozen_historical_appearance_proxy": 0.059601
+          },
+          "logloss": {
+            "current_baseline": 0.1467,
+            "current_candidate": 0.118902,
+            "frozen_historical_appearance_proxy": 0.215946
+          }
+        },
+        "not_population_p_play_calibration": true,
+        "cannot_ignore_unknown_for_adoption": true
+      }
     },
     "2026-11-01": {
       "issued": 61,
@@ -222,19 +241,19 @@
   },
   "verified_only_matched_proper_scores": {
     "scope": "strict_same_game_same_person_verified_selected_only",
-    "verified_player_games": 387,
-    "verified_ET_dates": 4,
-    "verified_NBA_games": 29,
+    "verified_player_games": 398,
+    "verified_ET_dates": 5,
+    "verified_NBA_games": 30,
     "mean_proper_losses": {
       "Brier": {
-        "current_baseline": 0.083342,
-        "current_candidate": 0.071988,
-        "frozen_historical_appearance_proxy": 0.143966
+        "current_baseline": 0.081553,
+        "current_candidate": 0.070371,
+        "frozen_historical_appearance_proxy": 0.141634
       },
       "logloss": {
-        "current_baseline": 0.312159,
-        "current_candidate": 0.269767,
-        "frozen_historical_appearance_proxy": 0.448972
+        "current_baseline": 0.307586,
+        "current_candidate": 0.265598,
+        "frozen_historical_appearance_proxy": 0.442532
       }
     },
     "not_population_p_play_calibration": true,
@@ -242,45 +261,45 @@
   },
   "sharp_unknown_label_sensitivity": {
     "completed_checked_pair_denominator": 428,
-    "verified_pairs": 387,
-    "unknown_or_pending_labels": 41,
+    "verified_pairs": 398,
+    "unknown_or_pending_labels": 30,
     "sharp_missing_label_gain_range": {
       "Brier": {
         "current_candidate_over_current_baseline": {
-          "lower_gain": 0.005617,
-          "upper_gain": 0.012353,
+          "lower_gain": 0.007264,
+          "upper_gain": 0.011991,
           "positive_favors": "current_candidate",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
-          "lower_gain": -0.079569,
-          "upper_gain": -0.039911,
+          "lower_gain": -0.07819,
+          "upper_gain": -0.044022,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
-          "lower_gain": -0.069871,
-          "upper_gain": -0.031638,
+          "lower_gain": -0.067409,
+          "upper_gain": -0.035548,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         }
       },
       "logloss": {
         "current_candidate_over_current_baseline": {
-          "lower_gain": 0.017506,
-          "upper_gain": 0.045956,
+          "lower_gain": 0.025436,
+          "upper_gain": 0.044685,
           "positive_favors": "current_candidate",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
-          "lower_gain": -0.207899,
-          "upper_gain": -0.088298,
+          "lower_gain": -0.198371,
+          "upper_gain": -0.100351,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
-          "lower_gain": -0.173194,
-          "upper_gain": -0.059541,
+          "lower_gain": -0.158497,
+          "upper_gain": -0.070105,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         }
