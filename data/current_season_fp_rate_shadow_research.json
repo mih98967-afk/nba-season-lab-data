@@ -3,7 +3,7 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-10-30T20:49:00Z",
+  "updated_at_utc": "2026-10-31T05:45:08Z",
   "model_sha256": "465e975209e84dd80a19f78cf55e3eaebff7c626816dc083ade4e4dc2682fd7f",
   "frozen_comparison_design": {
     "name": "prospective_prelock_2026_27_current_rate_ablation_v1",
@@ -8005,24 +8005,481 @@
       "adopt_on_site": false
     }
   ],
-  "observed": [],
+  "observed": [
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n004",
+      "et_date": "2026-10-30",
+      "position": "PG",
+      "team": "LAL",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 37.0,
+      "actual_fp_reconstructed": 28.0,
+      "source_minutes_verified_outcome_sha256": "184ab1763a74f7ee0c5344feed8b3fa98df84fdfd8d4030a2a8324c73d445dd8",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 32.7877,
+        "updated_minutes_frozen_rate_FP": 32.25712,
+        "frozen_minutes_shrunk_current_rate_5_FP": 31.47599,
+        "updated_minutes_shrunk_current_rate_5_FP": 30.96663,
+        "updated_minutes_shrunk_current_rate_10_FP": 31.42752,
+        "updated_minutes_current_rate_only_FP": 29.35352
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n009",
+      "et_date": "2026-10-30",
+      "position": "PG",
+      "team": "GSW",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 31.0,
+      "actual_fp_reconstructed": 31.0,
+      "source_minutes_verified_outcome_sha256": "fe1d122e61cfb9da9b1bebb5d1f8a0715e72bc17428d2728706f0688cb4d1c8b",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 19.06996,
+        "updated_minutes_frozen_rate_FP": 18.88363,
+        "frozen_minutes_shrunk_current_rate_5_FP": 22.40972,
+        "updated_minutes_shrunk_current_rate_5_FP": 22.19077,
+        "updated_minutes_shrunk_current_rate_10_FP": 21.00965,
+        "updated_minutes_current_rate_only_FP": 26.32469
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n047",
+      "et_date": "2026-10-30",
+      "position": "SG",
+      "team": "LAL",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 37.0,
+      "actual_fp_reconstructed": 2.0,
+      "source_minutes_verified_outcome_sha256": "72701628253e3dd9fe4d37538e9a9e370ec869ea0b8d71f9e35312b13e01b90a",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 20.18181,
+        "updated_minutes_frozen_rate_FP": 19.81433,
+        "frozen_minutes_shrunk_current_rate_5_FP": 20.46885,
+        "updated_minutes_shrunk_current_rate_5_FP": 20.09614,
+        "updated_minutes_shrunk_current_rate_10_FP": 20.0022,
+        "updated_minutes_current_rate_only_FP": 20.37794
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n102",
+      "et_date": "2026-10-30",
+      "position": "SG",
+      "team": "GSW",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 33.0,
+      "actual_fp_reconstructed": 26.0,
+      "source_minutes_verified_outcome_sha256": "8ad228f285d81357639597dbf9343c30851e48aea408bf1d3321b16571809ee8",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 15.85571,
+        "updated_minutes_frozen_rate_FP": 16.37163,
+        "frozen_minutes_shrunk_current_rate_5_FP": 14.62563,
+        "updated_minutes_shrunk_current_rate_5_FP": 15.10153,
+        "updated_minutes_shrunk_current_rate_10_FP": 15.59003,
+        "updated_minutes_current_rate_only_FP": 12.98468
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n186",
+      "et_date": "2026-10-30",
+      "position": "SF",
+      "team": "GSW",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 16.0,
+      "actual_fp_reconstructed": 3.0,
+      "source_minutes_verified_outcome_sha256": "3b6810e4bce93cdd81b2fc316caaa5476929d949c07de09572684be370282087",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 12.17567,
+        "updated_minutes_frozen_rate_FP": 11.0764,
+        "frozen_minutes_shrunk_current_rate_5_FP": 12.06286,
+        "updated_minutes_shrunk_current_rate_5_FP": 10.97376,
+        "updated_minutes_shrunk_current_rate_10_FP": 11.01042,
+        "updated_minutes_current_rate_only_FP": 10.84546
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n188",
+      "et_date": "2026-10-30",
+      "position": "SF",
+      "team": "LAL",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 28.0,
+      "actual_fp_reconstructed": -2.0,
+      "source_minutes_verified_outcome_sha256": "20c7ecefe0c71f9b10d322d32e2037dd6d44d1a0c87f8022d8dc46d5d7b15d3c",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 10.56556,
+        "updated_minutes_frozen_rate_FP": 9.66417,
+        "frozen_minutes_shrunk_current_rate_5_FP": 11.37004,
+        "updated_minutes_shrunk_current_rate_5_FP": 10.4,
+        "updated_minutes_shrunk_current_rate_10_FP": 10.13721,
+        "updated_minutes_current_rate_only_FP": 11.31978
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n197",
+      "et_date": "2026-10-30",
+      "position": "PF",
+      "team": "GSW",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 32.0,
+      "actual_fp_reconstructed": 18.0,
+      "source_minutes_verified_outcome_sha256": "dfa08a3259ff812511ee6723180ed207821e188897c7ec51d78c18b69fb9b45d",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 10.56459,
+        "updated_minutes_frozen_rate_FP": 10.27084,
+        "frozen_minutes_shrunk_current_rate_5_FP": 8.0027,
+        "updated_minutes_shrunk_current_rate_5_FP": 7.78018,
+        "updated_minutes_shrunk_current_rate_10_FP": 8.6697,
+        "updated_minutes_current_rate_only_FP": 4.66685
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n214",
+      "et_date": "2026-10-30",
+      "position": "C",
+      "team": "GSW",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 17.0,
+      "actual_fp_reconstructed": 0.0,
+      "source_minutes_verified_outcome_sha256": "80ee180e6d85e9dcba8ec64c4d85de8d9c62612acded81bfc0adcca411772a68",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 13.58034,
+        "updated_minutes_frozen_rate_FP": 12.11768,
+        "frozen_minutes_shrunk_current_rate_5_FP": 13.55724,
+        "updated_minutes_shrunk_current_rate_5_FP": 12.09707,
+        "updated_minutes_shrunk_current_rate_10_FP": 12.10443,
+        "updated_minutes_current_rate_only_FP": 12.07132
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n224",
+      "et_date": "2026-10-30",
+      "position": "PG",
+      "team": "GSW",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 21.0,
+      "actual_fp_reconstructed": 21.0,
+      "source_minutes_verified_outcome_sha256": "18a694706b78d481a2ec380b16b8bd15a9d7afd8fb2edc157899bdb6faa110f1",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 9.51007,
+        "updated_minutes_frozen_rate_FP": 9.00996,
+        "frozen_minutes_shrunk_current_rate_5_FP": 10.1192,
+        "updated_minutes_shrunk_current_rate_5_FP": 9.58707,
+        "updated_minutes_shrunk_current_rate_10_FP": 9.3947,
+        "updated_minutes_current_rate_only_FP": 10.16417
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n248",
+      "et_date": "2026-10-30",
+      "position": "SG",
+      "team": "GSW",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 8.0,
+      "actual_fp_reconstructed": 6.0,
+      "source_minutes_verified_outcome_sha256": "f86ecd68760bc1d4c8b90a4aa88319aa69f98682f1f91997433e07a35b7c7407",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 14.49555,
+        "updated_minutes_frozen_rate_FP": 11.87577,
+        "frozen_minutes_shrunk_current_rate_5_FP": 10.37994,
+        "updated_minutes_shrunk_current_rate_5_FP": 8.50396,
+        "updated_minutes_shrunk_current_rate_10_FP": 9.62789,
+        "updated_minutes_current_rate_only_FP": 5.13215
+      }
+    },
+    {
+      "game_id": "espn_401909285",
+      "player_id": "n345",
+      "et_date": "2026-10-30",
+      "position": "SG",
+      "team": "GSW",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 13.0,
+      "actual_fp_reconstructed": 9.0,
+      "source_minutes_verified_outcome_sha256": "f059957be0778abac0f5b8111ad8902c16e53d8640da8e68fd7f69ff8bd02c83",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 5.43889,
+        "updated_minutes_frozen_rate_FP": 4.93375,
+        "frozen_minutes_shrunk_current_rate_5_FP": 5.54413,
+        "updated_minutes_shrunk_current_rate_5_FP": 5.02922,
+        "updated_minutes_shrunk_current_rate_10_FP": 4.99739,
+        "updated_minutes_current_rate_only_FP": 5.12469
+      }
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n002",
+      "et_date": "2026-10-30",
+      "position": "C",
+      "team": "DEN",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 37.0,
+      "actual_fp_reconstructed": 26.0,
+      "source_minutes_verified_outcome_sha256": "a5b00d654c988024d3608a6e43078e600fc97fb2866448ff3015899392080d3c",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 36.69469,
+        "updated_minutes_frozen_rate_FP": 37.45415,
+        "frozen_minutes_shrunk_current_rate_5_FP": 30.79031,
+        "updated_minutes_shrunk_current_rate_5_FP": 31.42758,
+        "updated_minutes_shrunk_current_rate_10_FP": 33.57992,
+        "updated_minutes_current_rate_only_FP": 23.89436
+      }
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n022",
+      "et_date": "2026-10-30",
+      "position": "PG",
+      "team": "DEN",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 37.0,
+      "actual_fp_reconstructed": 37.0,
+      "source_minutes_verified_outcome_sha256": "bf6370c4da7712aeddf6a3a793b12126c7e639de98cc749643cc0e6cfc69d14a",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 25.51473,
+        "updated_minutes_frozen_rate_FP": 25.84835,
+        "frozen_minutes_shrunk_current_rate_5_FP": 22.70179,
+        "updated_minutes_shrunk_current_rate_5_FP": 22.99861,
+        "updated_minutes_shrunk_current_rate_10_FP": 24.01637,
+        "updated_minutes_current_rate_only_FP": 19.43644
+      }
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n035",
+      "et_date": "2026-10-30",
+      "position": "PG",
+      "team": "PHX",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 39.0,
+      "actual_fp_reconstructed": 2.0,
+      "source_minutes_verified_outcome_sha256": "765f920864584ca282d42dc2842b6abee490609812d741c4e6e9bf28c64d8669",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 20.89668,
+        "updated_minutes_frozen_rate_FP": 20.71951,
+        "frozen_minutes_shrunk_current_rate_5_FP": 21.50126,
+        "updated_minutes_shrunk_current_rate_5_FP": 21.31896,
+        "updated_minutes_shrunk_current_rate_10_FP": 21.0884,
+        "updated_minutes_current_rate_only_FP": 22.31806
+      }
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n074",
+      "et_date": "2026-10-30",
+      "position": "PF",
+      "team": "DEN",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 29.0,
+      "actual_fp_reconstructed": 16.0,
+      "source_minutes_verified_outcome_sha256": "166dd923b0d2e4f752dbad3ab50042a41bef19f44b62637c6cfd4ea921949f1c",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 18.36137,
+        "updated_minutes_frozen_rate_FP": 18.82833,
+        "frozen_minutes_shrunk_current_rate_5_FP": 15.77091,
+        "updated_minutes_shrunk_current_rate_5_FP": 16.172,
+        "updated_minutes_shrunk_current_rate_10_FP": 17.12069,
+        "updated_minutes_current_rate_only_FP": 12.85158
+      }
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n101",
+      "et_date": "2026-10-30",
+      "position": "SG",
+      "team": "PHX",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 25.0,
+      "actual_fp_reconstructed": -4.0,
+      "source_minutes_verified_outcome_sha256": "70db737f650635b019f42404be92e7964dbdb6532beb55d7d74036821a7b7fd0",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 13.18413,
+        "updated_minutes_frozen_rate_FP": 13.15328,
+        "frozen_minutes_shrunk_current_rate_5_FP": 12.01361,
+        "updated_minutes_shrunk_current_rate_5_FP": 11.98551,
+        "updated_minutes_shrunk_current_rate_10_FP": 12.43465,
+        "updated_minutes_current_rate_only_FP": 10.03923
+      }
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n124",
+      "et_date": "2026-10-30",
+      "position": "SG",
+      "team": "DEN",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 37.0,
+      "actual_fp_reconstructed": 35.0,
+      "source_minutes_verified_outcome_sha256": "b4ab6ec731043753ca333b0661c19dac1cd99a29c59af8d592f1ba9085d01528",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 15.5456,
+        "updated_minutes_frozen_rate_FP": 16.46114,
+        "frozen_minutes_shrunk_current_rate_5_FP": 12.16842,
+        "updated_minutes_shrunk_current_rate_5_FP": 12.88506,
+        "updated_minutes_shrunk_current_rate_10_FP": 14.16223,
+        "updated_minutes_current_rate_only_FP": 8.41497
+      }
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n206",
+      "et_date": "2026-10-30",
+      "position": "C",
+      "team": "PHX",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 17.0,
+      "actual_fp_reconstructed": 7.0,
+      "source_minutes_verified_outcome_sha256": "07325a684ffa951dbbea4906e56df266fbd67c264aafdf58fd0f01a1a534a217",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 7.75607,
+        "updated_minutes_frozen_rate_FP": 9.92765,
+        "frozen_minutes_shrunk_current_rate_5_FP": 6.77984,
+        "updated_minutes_shrunk_current_rate_5_FP": 8.67809,
+        "updated_minutes_shrunk_current_rate_10_FP": 9.15869,
+        "updated_minutes_current_rate_only_FP": 6.5955
+      }
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n217",
+      "et_date": "2026-10-30",
+      "position": "PG",
+      "team": "PHX",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 33.0,
+      "actual_fp_reconstructed": 22.0,
+      "source_minutes_verified_outcome_sha256": "727b9a8c0ff67a092225171a1074290531629a984441f34196b7415c9682a3e9",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 10.62833,
+        "updated_minutes_frozen_rate_FP": 10.33676,
+        "frozen_minutes_shrunk_current_rate_5_FP": 7.4519,
+        "updated_minutes_shrunk_current_rate_5_FP": 7.24747,
+        "updated_minutes_shrunk_current_rate_10_FP": 8.43566,
+        "updated_minutes_current_rate_only_FP": 2.09866
+      }
+    },
+    {
+      "game_id": "espn_401909286",
+      "player_id": "n235",
+      "et_date": "2026-10-30",
+      "position": "SG",
+      "team": "PHX",
+      "postgame_first_seen_at_utc": "2026-10-31T05:45:05Z",
+      "actual_minutes": 25.0,
+      "actual_fp_reconstructed": 14.0,
+      "source_minutes_verified_outcome_sha256": "dca71a0768b4f64a085215913e64c36b37ac5e2a91a78416c634c49b611cae22",
+      "FP_variants_frozen_prelock": {
+        "frozen_previous_season_FP": 11.29215,
+        "updated_minutes_frozen_rate_FP": 10.62132,
+        "frozen_minutes_shrunk_current_rate_5_FP": 11.0679,
+        "updated_minutes_shrunk_current_rate_5_FP": 10.41039,
+        "updated_minutes_shrunk_current_rate_10_FP": 10.49152,
+        "updated_minutes_current_rate_only_FP": 10.05885
+      }
+    }
+  ],
   "summary": {
     "issued_total": 114,
     "new_issued_this_run": 0,
-    "played_verified": 0,
+    "played_verified": 20,
     "literal_DNP_not_scored": 0,
-    "UNKNOWN_not_imputed": 0,
-    "awaiting_or_unchecked": 114,
-    "distinct_scored_ET_dates": 0,
-    "distinct_scored_games": 0
+    "UNKNOWN_not_imputed": 1,
+    "awaiting_or_unchecked": 93,
+    "distinct_scored_ET_dates": 1,
+    "distinct_scored_games": 2
   },
   "issue_QA": {
     "existing_immutable": 114
   },
   "played_only_paired_metrics": {
-    "played_scored": 0
+    "played_scored": 20,
+    "frozen_previous_season_FP": {
+      "MAE": 10.313,
+      "RMSE": 11.6562,
+      "prediction_minus_actual_bias": 1.355,
+      "MAE_gain_over_minutes_only_positive_is_better": -0.1554
+    },
+    "updated_minutes_frozen_rate_FP": {
+      "MAE": 10.1576,
+      "RMSE": 11.3701,
+      "prediction_minus_actual_bias": 1.1313,
+      "MAE_gain_over_minutes_only_positive_is_better": 0.0
+    },
+    "frozen_minutes_shrunk_current_rate_5_FP": {
+      "MAE": 10.0989,
+      "RMSE": 11.9504,
+      "prediction_minus_actual_bias": 0.1631,
+      "MAE_gain_over_minutes_only_positive_is_better": 0.0587
+    },
+    "updated_minutes_shrunk_current_rate_5_FP": {
+      "MAE": 9.9195,
+      "RMSE": 11.6828,
+      "prediction_minus_actual_bias": -0.0575,
+      "MAE_gain_over_minutes_only_positive_is_better": 0.2381
+    },
+    "updated_minutes_shrunk_current_rate_10_FP": {
+      "MAE": 9.9962,
+      "RMSE": 11.5105,
+      "prediction_minus_actual_bias": 0.373,
+      "MAE_gain_over_minutes_only_positive_is_better": 0.1613
+    },
+    "updated_minutes_current_rate_only_FP": {
+      "MAE": 10.3789,
+      "RMSE": 12.8019,
+      "prediction_minus_actual_bias": -1.6464,
+      "MAE_gain_over_minutes_only_positive_is_better": -0.2213
+    }
   },
-  "by_ET_date": {},
+  "by_ET_date": {
+    "2026-10-30": {
+      "played_scored": 20,
+      "frozen_previous_season_FP": {
+        "MAE": 10.313,
+        "RMSE": 11.6562,
+        "prediction_minus_actual_bias": 1.355,
+        "MAE_gain_over_minutes_only_positive_is_better": -0.1554
+      },
+      "updated_minutes_frozen_rate_FP": {
+        "MAE": 10.1576,
+        "RMSE": 11.3701,
+        "prediction_minus_actual_bias": 1.1313,
+        "MAE_gain_over_minutes_only_positive_is_better": 0.0
+      },
+      "frozen_minutes_shrunk_current_rate_5_FP": {
+        "MAE": 10.0989,
+        "RMSE": 11.9504,
+        "prediction_minus_actual_bias": 0.1631,
+        "MAE_gain_over_minutes_only_positive_is_better": 0.0587
+      },
+      "updated_minutes_shrunk_current_rate_5_FP": {
+        "MAE": 9.9195,
+        "RMSE": 11.6828,
+        "prediction_minus_actual_bias": -0.0575,
+        "MAE_gain_over_minutes_only_positive_is_better": 0.2381
+      },
+      "updated_minutes_shrunk_current_rate_10_FP": {
+        "MAE": 9.9962,
+        "RMSE": 11.5105,
+        "prediction_minus_actual_bias": 0.373,
+        "MAE_gain_over_minutes_only_positive_is_better": 0.1613
+      },
+      "updated_minutes_current_rate_only_FP": {
+        "MAE": 10.3789,
+        "RMSE": 12.8019,
+        "prediction_minus_actual_bias": -1.6464,
+        "MAE_gain_over_minutes_only_positive_is_better": -0.2213
+      }
+    }
+  },
   "quality_gate": {
     "independent_ET_dates_at_least_8": false,
     "played_scored_at_least_100": false,
