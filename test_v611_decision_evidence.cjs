@@ -1,0 +1,13 @@
+const test=require('node:test'),assert=require('node:assert/strict');
+const m=require('./site/v6_11/decision_evidence.js');
+const now=Date.parse('2026-10-31T10:00:00Z');
+const move={out:'n422',in_:'n433',epoch:now+60000,sell:1300,buy:1200};
+const quote=(sell,buy)=>({observed_at_utc:'2026-10-31T09:50:00Z',quotes:[{side:'sell',player_id:'n422',price:sell},{side:'buy',player_id:'n433',price:buy}]});
+const archive=(...receipts)=>({schema_version:1,private_local_only:true,never_autosync:true,receipts});
+const audit=(x={})=>m.audit({route:{moves:[move]},nowEpoch:now,priceArchive:archive(),officialFeedValid:true,...x});
+test('no receipt is not a verified market price',()=>{const x=audit();assert.equal(x.counts.missingQuote,1);assert.equal(x.allowAutoTransfer,false);});
+test('same pair only and mismatched quote are detected',()=>{const x=audit({priceArchive:archive(quote(1400,1200))});assert.equal(x.counts.priceConflict,1);assert.equal(x.entries[0].manualSell,1400);});
+test('original pair observations cannot be combined across different players',()=>{const x=audit({priceArchive:archive({observed_at_utc:'2026-10-31T09:50:00Z',quotes:[{side:'sell',player_id:'n422',price:1300},{side:'buy',player_id:'n444',price:1200}]})});assert.equal(x.counts.missingQuote,1);});
+test('official prelock OUT remains an advisory high-risk flag',()=>{const x=audit({officialReports:[{playerId:'n433',status:'out',tipoffEpoch:now+3600000,firstSeenEpoch:now-3600000}]});assert.equal(x.counts.officialOut,1);assert.equal(x.verifiedMarketOrMedicalDecision,false);});
+test('future unseen official signal cannot be used',()=>{const x=audit({officialReports:[{playerId:'n433',status:'out',tipoffEpoch:now+3600000,firstSeenEpoch:now+1000}]});assert.equal(x.counts.officialOut,0);});
+test('KEEP does not trigger a market quote requirement',()=>{const x=audit({route:{moves:[]}});assert.equal(x.counts.missingQuote,0);assert.equal(x.requiresManualReview,false);});
