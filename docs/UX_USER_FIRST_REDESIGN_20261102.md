@@ -2,6 +2,17 @@
 
 Status: DESIGN PROPOSAL, not deployed. Existing Hosting v6.17 retained, no model/scoring/Firestore mutations.
 
+## Owner decisions (confirmed 2026-11-02)
+- Default opening goal: decide whether to make any transfer **today**.
+- Display **both near and long horizons**: near = 7 days, default bounded optimizer comparison = 21 days; optional 14/28 day controls remain.
+- Balanced risk and possible gain, do not imply low risk when model is uncalibrated.
+- Present **one conclusion and 2–3 reasons**, with advanced math hidden until asked.
+- Desktop-first, with fully accessible mobile navigation.
+- Basketball knowledge is not a prerequisite: explain roles, recent minutes, fantasy FP and player relevance, not basketball biographies.
+- Prioritize usable decisions over visual decoration and model buzzwords.
+- Source-only v6.18 candidate will implement initial Today hierarchy and warm restrained palette; remaining calendar difficulty and owner-scored decision validation stay separately gated.
+
+
 ## Method and limitations
 - Inspected actual v6.17 ZIP HTML/CSS/JS, 8 tab routes.
 - Rendered all eight screens at 1440×900 and 390×844 in headless Chromium, with empty local account and a synthetic 10-player roster.
