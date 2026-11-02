@@ -1,0 +1,31 @@
+name: NBA v6.18 full Hosting offline QA
+on:
+  pull_request:
+    branches: [main]
+    paths: ['site/hosting_v618/**','.github/workflows/hosting-v618.yml']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: |
+          cd site/hosting_v618
+          for f in *.js; do node --check "$f"; done
+          for f in test_*.cjs; do node "$f"; done
+      - run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('site/hosting_v618')
+          spec=json.loads((root/'SOURCE_MANIFEST_v618.json').read_text())['files']
+          assert len(spec)==33
+          for n,h in spec.items():
+              assert (root/n).exists(), n
+              assert hashlib.sha256((root/n).read_bytes()).hexdigest()==h,n
+          print('PASS 33 exact release assets')
+          PY
