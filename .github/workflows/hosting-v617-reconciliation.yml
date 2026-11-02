@@ -1,0 +1,54 @@
+name: NBA v6.17 Sports.ru reconciliation offline QA
+on:
+  pull_request:
+    branches: [main]
+    paths: ['site/hosting_v617/**','.github/workflows/hosting-v617-reconciliation.yml']
+  push:
+    branches: [main]
+    paths: ['site/hosting_v617/**','.github/workflows/hosting-v617-reconciliation.yml']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Verify all runtime hashes and exact inherited assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,json,re
+          root=Path('site/hosting_v617')
+          base=Path('site/hosting_v616')
+          lock=json.loads((root/'release-docs/HOSTING_V617_SHA256_LOCK.json').read_text())
+          assert len(lock['runtime_files'])==23
+          for name, expected in lock['runtime_files'].items():
+              assert hashlib.sha256((root/name).read_bytes()).hexdigest()==expected, name
+          for p in base.rglob('*'):
+              if not p.is_file(): continue
+              rel=p.relative_to(base)
+              if str(rel) in ['app.js','styles.css','index.html','transfer_history.js']: continue
+              assert (root/rel).read_bytes()==p.read_bytes(),str(rel)
+          html=(root/'index.html').read_text()
+          refs=re.findall(r'<script[^>]+src="([^"]+)"',html)
+          assert len(refs)>=15
+          for ref in refs:
+              assert not ref.startswith(('https:','http:','/'))
+              assert (root/ref.split('?',1)[0]).is_file(),ref
+          print('PASS: 23 runtime hashes, inherited assets and references')
+          PY
+      - name: JS syntax and all release tests
+        run: |
+          cd site/hosting_v617
+          for f in *.js; do node --check "$f" || exit 1; done
+          node test_decision_breakdown.cjs
+          node test_decision_journal.cjs
+          node test_team_court.cjs
+          node test_transfer_history_quota.cjs
+          node test_sports_reconciliation.cjs
+          node test_sports_ui_vm.cjs
