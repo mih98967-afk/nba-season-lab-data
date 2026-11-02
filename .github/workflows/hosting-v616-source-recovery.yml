@@ -1,0 +1,39 @@
+name: NBA v6.16 Hosting source recovery offline gate
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/recover_hosting_v616.py'
+      - 'docs/HOSTING_V616_SOURCE_HASH_LOCK.json'
+      - '.github/workflows/hosting-v616-source-recovery.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/recover_hosting_v616.py'
+      - 'docs/HOSTING_V616_SOURCE_HASH_LOCK.json'
+      - '.github/workflows/hosting-v616-source-recovery.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: |
+          python -m py_compile scripts/recover_hosting_v616.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('docs/HOSTING_V616_SOURCE_HASH_LOCK.json')
+          m=json.loads(p.read_text())
+          assert m['schema_version']==1
+          assert len(m['files'])==22
+          for k,v in m['files'].items():
+              assert not k.startswith('/') and '..' not in Path(k).parts
+              assert len(v['v616'])==64 and all(x in '0123456789abcdef' for x in v['v616'])
+          print('Verified SHA schema for',len(m['files']),'public assets')
+          PY
+          python scripts/recover_hosting_v616.py --help
