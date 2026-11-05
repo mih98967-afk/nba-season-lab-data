@@ -73,8 +73,9 @@ class ShortMinuteIssues(unittest.TestCase):
         first=self.make()
         newer=deepcopy(self.minute)
         original=newer["historical_source_index_version"]
+        previously_registered=newer.get("historical_source_index_versions",[original])
         newer["historical_source_index_version"]="new_complete_index"
-        newer["historical_source_index_versions"]=sorted([original,"new_complete_index"])
+        newer["historical_source_index_versions"]=sorted(set(previously_registered)|{"new_complete_index"})
         newer_report=self.make(minute=newer)
         self.assertEqual(first["issued"],newer_report["issued"])
         self.assertEqual(first["historical_source_index_version"],

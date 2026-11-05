@@ -50,8 +50,9 @@ class Robustness(unittest.TestCase):
         baseline=build(self.evaluation,self.frozen,self.now)
         old_version=self.frozen["historical_source_index_version"]
         newer=deepcopy(self.frozen)
+        previously_registered=newer.get("historical_source_index_versions",[old_version])
         newer["historical_source_index_version"]="new_complete_index"
-        newer["historical_source_index_versions"]=sorted([old_version,"new_complete_index"])
+        newer["historical_source_index_versions"]=sorted(set(previously_registered)|{"new_complete_index"})
         after=build(self.evaluation,newer,self.now)
         self.assertEqual(after["summary"],baseline["summary"])
         self.assertEqual(after["ET_date_cluster_paired_MAE_gain_95pct_interval_if_eligible"],
