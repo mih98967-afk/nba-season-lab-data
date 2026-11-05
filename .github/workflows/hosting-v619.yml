@@ -1,0 +1,45 @@
+name: NBA v6.19 full Hosting offline QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'site/hosting_v619/**'
+      - '.github/workflows/hosting-v619.yml'
+      - 'docs/NBA_SEASON_LAB_CONTINUATION_20261105.md'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax and regression tests
+        run: |
+          cd site/hosting_v619
+          for f in *.js; do node --check "$f"; done
+          for f in test_*.cjs; do node "$f"; done
+      - name: Exact source identity and runtime references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, re
+          root=Path('site/hosting_v619')
+          spec=json.loads((root/'SOURCE_MANIFEST_v619.json').read_text())['files']
+          assert len(spec)==36, f"expected 36 files, got {len(spec)}"
+          actual={p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file()}
+          assert actual==set(spec)|{'SOURCE_MANIFEST_v619.json'}, (sorted(actual-set(spec)), sorted(set(spec)-actual))
+          for name,sha in spec.items():
+              assert hashlib.sha256((root/name).read_bytes()).hexdigest()==sha, name
+          html=(root/'index.html').read_text()
+          scripts=re.findall(r'<script[^>]+src="([^"]+)"',html)
+          names=[ref.split('?')[0] for ref in scripts]
+          for name in names:
+              assert (root/name).is_file(), f"missing script {name}"
+          assert names.index('calendar_context.js')<names.index('app.js')
+          assert 'styles.css?v=6.19' in html
+          print('PASS: 36 exact source assets and calendar script load order')
+          PY
