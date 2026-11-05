@@ -247,6 +247,38 @@ def historical_holdout(players, q):
     }
 
 
+def verified_history_versions(archive):
+    """Verify every issuance retains its original observed history-index version.
+
+    Historical backfills must not re-date old immutable forecasts. New pre-lock
+    issues can use a newer complete audited history index at their real issue time.
+    Unregistered versions, malformed archives and invented lineages fail closed.
+    """
+    if not isinstance(archive, dict):
+        raise ValueError("Invalid immutable minutes archive")
+    current = archive.get("historical_source_index_version")
+    issues = archive.get("issued")
+    versions = archive.get("historical_source_index_versions")
+    if versions is None:
+        versions = [current]  # Legacy single-version archives.
+    if (not isinstance(current, str) or not current
+            or not isinstance(issues, list)
+            or not isinstance(versions, list)
+            or not 1 <= len(versions) <= 512
+            or any(not isinstance(v, str) or not v for v in versions)
+            or versions != sorted(set(versions)) or current not in versions):
+        raise ValueError("Invalid immutable history version registry")
+    observed = set()
+    for issue in issues:
+        v = issue.get("historical_source_index_version") if isinstance(issue, dict) else None
+        if not isinstance(v, str) or v not in versions:
+            raise ValueError("Minutes issue history version is not registered")
+        observed.add(v)
+    if set(versions) != observed | {current}:
+        raise ValueError("Unreferenced or deleted immutable history version")
+    return set(versions)
+
+
 def prospective(prior, shadow, players, q, version, now):
     if now.utcoffset() is None:
         raise ValueError("Prospective research clock requires timezone")
@@ -259,9 +291,9 @@ def prospective(prior, shadow, players, q, version, now):
     if (prior and (prior.get("schema_version") != SCHEMA
                    or prior.get("status") != STATUS
                    or prior.get("adopt_on_site") is not False
-                   or prior.get("historical_source_index_version") != version
                    or prior.get("frozen_rule_hash") != canonical_hash(MODEL))):
         raise ValueError("Existing minutes research incompatible with immutable model")
+    old_versions = verified_history_versions(prior) if prior else set()
     old=list((prior or {}).get("issued",[]))
     bykey={}
     source={}
@@ -282,7 +314,7 @@ def prospective(prior, shadow, players, q, version, now):
                 or oldrow.get("p_play_first_issued_at_utc") != p["issued_at_utc"]
                 or oldrow.get("team") != p["team"]
                 or oldrow.get("frozen_rule_hash") != canonical_hash(MODEL)
-                or oldrow.get("historical_source_index_version") != version
+                or oldrow.get("historical_source_index_version") not in old_versions
                 or oldrow.get("observed_game_outcome") != "UNKNOWN"
                 or oldrow.get("adopt_on_site") is not False
                 or instant(oldrow["issued_at_utc"]) >= instant(p["individual_lock_utc"])):
@@ -359,12 +391,16 @@ def build(index, loader, pplay, now, previous=None):
     quantiles,dev=calibration(people)
     holdout=historical_holdout(people,quantiles)
     issues,qa=prospective(previous,pplay,people,quantiles,index["version"],now)
+    versions=sorted((verified_history_versions(previous) if previous else set())
+                    | {index["version"]})
     return {
         "schema_version":SCHEMA,"status":STATUS,"model_status":STATUS,
         "adopt_on_site":False,"updated_at_utc":stamp(now),
         "target":"positive_minutes_only_then_FP_per_minute_if_play",
         "full_game_day_roster_denominator_known":False,
         "historical_source_index_version":index["version"],
+        "historical_source_index_versions":versions,
+        "earlier_issues_keep_original_history_version":len(versions)>1,
         "frozen_rule_hash":canonical_hash(MODEL),
         "frozen_structure_development_only":MODEL,
         "source_qa":hqa,

@@ -126,6 +126,31 @@ class ConditionalMinutesProspectiveEvaluation(unittest.TestCase):
         self.assertTrue(any((r["game_id"], r["player_id"]) == key
                             for r in updated["UNKNOWN_unscored"]))
 
+    def test_mixed_historical_versions_preserve_original_issued_scores(self):
+        base = self.make()
+        args = deepcopy(self.inputs)
+        minutes = args[0]
+        archived = minutes["historical_source_index_version"]
+        self.assertTrue(minutes["issued"])
+        minutes["historical_source_index_version"] = "complete-index-newer"
+        minutes["historical_source_index_versions"] = sorted(
+            [archived, "complete-index-newer"])
+        newer = self.make(args)
+        self.assertEqual(newer["frozen_minutes_issue_sha256"],
+                         base["frozen_minutes_issue_sha256"])
+        self.assertEqual(newer["summary"], base["summary"])
+        self.assertEqual(newer["scored_played"], base["scored_played"])
+        # An unregistered source version never turns an old issue into a
+        # forecast from the latest backfilled history.
+        broken = deepcopy(args)
+        broken[0]["issued"][0]["historical_source_index_version"] = "unregistered"
+        with self.assertRaises(ValueError):
+            self.make(broken)
+        broken = deepcopy(args)
+        broken[0]["historical_source_index_versions"] = ["complete-index-newer"]
+        with self.assertRaises(ValueError):
+            self.make(broken)
+
     def test_lock_time_tampering_rejected(self):
         args = deepcopy(self.inputs)
         issue = args[0]["issued"][0]
