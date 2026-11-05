@@ -132,9 +132,10 @@ class ConditionalMinutesProspectiveEvaluation(unittest.TestCase):
         minutes = args[0]
         archived = minutes["historical_source_index_version"]
         self.assertTrue(minutes["issued"])
+        previously_registered = minutes.get("historical_source_index_versions",[archived])
         minutes["historical_source_index_version"] = "complete-index-newer"
         minutes["historical_source_index_versions"] = sorted(
-            [archived, "complete-index-newer"])
+            set(previously_registered)|{"complete-index-newer"})
         newer = self.make(args)
         self.assertEqual(newer["frozen_minutes_issue_sha256"],
                          base["frozen_minutes_issue_sha256"])

@@ -46,6 +46,22 @@ class Robustness(unittest.TestCase):
         e=deepcopy(self.evaluation)
         e["explicit_DNP_not_in_conditional_metrics"][0]["not_scored_as_zero_FP"]=False
         with self.assertRaises(ValueError):build(e,self.frozen,self.now)
+    def test_new_history_index_keeps_issued_prediction_source(self):
+        baseline=build(self.evaluation,self.frozen,self.now)
+        old_version=self.frozen["historical_source_index_version"]
+        newer=deepcopy(self.frozen)
+        previously_registered=newer.get("historical_source_index_versions",[old_version])
+        newer["historical_source_index_version"]="new_complete_index"
+        newer["historical_source_index_versions"]=sorted(set(previously_registered)|{"new_complete_index"})
+        after=build(self.evaluation,newer,self.now)
+        self.assertEqual(after["summary"],baseline["summary"])
+        self.assertEqual(after["ET_date_cluster_paired_MAE_gain_95pct_interval_if_eligible"],
+                         baseline["ET_date_cluster_paired_MAE_gain_95pct_interval_if_eligible"])
+        unregistered=deepcopy(newer)
+        unregistered["historical_source_index_versions"]=["new_complete_index"]
+        with self.assertRaises(ValueError):
+            build(self.evaluation,unregistered,self.now)
+
     def test_future_postgame_clock_rejected(self):
         e=deepcopy(self.evaluation)
         e["scored_played"][0]["postgame_first_seen_at_utc"]="2030-01-01T00:00:00Z"

@@ -15,6 +15,7 @@ import json
 
 from src.sync import DATA
 from src.rolling_decision_research import canonical_hash, instant, stamp
+from src.conditional_minutes_fp_research import verified_history_versions
 from src.short_minutes_role_bands_research import (
     STATUS, MODEL, GROUPS, group_by_predicted_minutes,
 )
@@ -24,10 +25,13 @@ MAX_ISSUES = 20000
 
 
 def validate_role(role, minute_source):
+    # The development-only role fit is frozen to its ORIGINAL audited source.
+    # Newer completed history indices may issue new minutes forecasts but cannot
+    # rewrite the original source index of this already fitted model.
+    versions = verified_history_versions(minute_source)
     if (role.get("schema_version") != 1 or role.get("status") != STATUS
             or role.get("adopt_on_site") is not False
-            or role.get("historical_index_version") != minute_source.get(
-                "historical_source_index_version")
+            or role.get("historical_index_version") not in versions
             or role.get("immutable_2024_25_model_hash") != minute_source.get("frozen_rule_hash")
             or role.get("development_source") != "2024_25_rolling_same_team_past_played_only"
             or role.get("test_source") != "2025_26_first_five_played_only_already_inspected_by_PR65"
@@ -59,7 +63,9 @@ def validate_role(role, minute_source):
     return params, canonical_hash(params)
 
 
-def validate_minute_first_issue(issue, pplay, minute_source, now):
+def validate_minute_first_issue(issue, pplay, minute_source, now, history_versions=None):
+    if history_versions is None:
+        history_versions = verified_history_versions(minute_source)
     tip = instant(issue["game_utc"])
     lock = instant(issue["individual_lock_utc"])
     minutes_issued = instant(issue["issued_at_utc"])
@@ -74,7 +80,7 @@ def validate_minute_first_issue(issue, pplay, minute_source, now):
             or tip-lock != LOCK or minutes_issued > now
             or issue.get("historical_training_season") != "2025/26"
             or issue.get("historical_source_last_game_date","9999") >= "2026-07-01"
-            or issue.get("historical_source_index_version") != minute_source["historical_source_index_version"]
+            or issue.get("historical_source_index_version") not in history_versions
             or issue.get("frozen_rule_hash") != minute_source["frozen_rule_hash"]
             or issue.get("observed_game_outcome") != "UNKNOWN"
             or issue.get("research_only") is not True
@@ -141,6 +147,7 @@ def build(minute_source, shadow, role, now, previous=None):
             or shadow.get("population_brier_enabled") is not False):
         raise ValueError("Unsafe original research input")
     params,seal=validate_role(role, minute_source)
+    history_versions=verified_history_versions(minute_source)
     if instant(role["updated_at_utc"]) > now:
         raise ValueError("Fitted role report not available at proposed issue time")
     minute_issues={}
@@ -154,7 +161,7 @@ def build(minute_source, shadow, role, now, previous=None):
         key=m["game_id"],m["player_id"]
         if key in minute_issues:
             raise ValueError("Duplicate original minutes issue")
-        validate_minute_first_issue(m,shadow_issues.get(key),minute_source,now)
+        validate_minute_first_issue(m,shadow_issues.get(key),minute_source,now,history_versions)
         minute_issues[key]=m
     if not minute_issues or len(minute_issues) != minute_source.get("issued_total"):
         raise ValueError("Frozen minutes source count drift")
@@ -164,8 +171,8 @@ def build(minute_source, shadow, role, now, previous=None):
                      or previous.get("adopt_on_site") is not False
                      or previous.get("dev_only_model_sha256") != seal
                      or previous.get("minutes_model_sha256") != minute_source["frozen_rule_hash"]
-                     or previous.get("historical_source_index_version") != minute_source[
-                        "historical_source_index_version"]):
+                     or previous.get("historical_source_index_version") != role[
+                        "historical_index_version"]):
         raise ValueError("Prior risk research parameters changed")
     old=list(previous.get("issued",[]))
     already={}
@@ -211,7 +218,7 @@ def build(minute_source, shadow, role, now, previous=None):
         "development_role_parameters_first_observed_at_utc":role["updated_at_utc"],
         "dev_only_model_sha256":seal,
         "minutes_model_sha256":minute_source["frozen_rule_hash"],
-        "historical_source_index_version":minute_source["historical_source_index_version"],
+        "historical_source_index_version":role["historical_index_version"],
         "issued":all_issued,
         "issued_total":len(all_issued),
         "issue_QA":{**dict(skipped),"new_genuine_prelock_issues":len(added),

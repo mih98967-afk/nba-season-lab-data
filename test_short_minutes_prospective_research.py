@@ -69,6 +69,29 @@ class ShortMinuteIssues(unittest.TestCase):
         role["dev_only_fit"]["group_parameters_fitted_on_dev_only"]["under_15"][
             "dev_only_smoothed_conditional_short_probability"]=1.2
         with self.assertRaises(ValueError):self.make(role=role)
+    def test_history_rotation_does_not_rewrite_frozen_short_risk(self):
+        first=self.make()
+        newer=deepcopy(self.minute)
+        original=newer["historical_source_index_version"]
+        previously_registered=newer.get("historical_source_index_versions",[original])
+        newer["historical_source_index_version"]="new_complete_index"
+        newer["historical_source_index_versions"]=sorted(set(previously_registered)|{"new_complete_index"})
+        newer_report=self.make(minute=newer)
+        self.assertEqual(first["issued"],newer_report["issued"])
+        self.assertEqual(first["historical_source_index_version"],
+                         newer_report["historical_source_index_version"])
+        later=self.make(time=datetime(2026,11,1,tzinfo=timezone.utc),
+                        old=first,minute=newer)
+        self.assertEqual(later["issued"],first["issued"])
+        broken=deepcopy(newer)
+        broken["historical_source_index_versions"]=["new_complete_index"]
+        with self.assertRaises(ValueError):
+            self.make(minute=broken)
+        broken=deepcopy(newer)
+        broken["issued"][0]["historical_source_index_version"]="fake"
+        with self.assertRaises(ValueError):
+            self.make(minute=broken)
+
     def test_2025_holdout_is_never_an_issuance_feature(self):
         params,_=validate_role(self.role,self.minute)
         altered=deepcopy(self.role)

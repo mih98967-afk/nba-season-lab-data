@@ -71,12 +71,22 @@ class Test(unittest.TestCase):
    failures=[
     {"historical_source_index_version":"new","issued":deepcopy(one["issued"])},
     {"historical_source_index_version":"new","historical_source_index_versions":["new"],"issued":deepcopy(one["issued"])},
-    {"historical_source_index_version":"new","historical_source_index_versions":["old","new","invented"],"issued":deepcopy(one["issued"])},
     {"historical_source_index_version":"new","historical_source_index_versions":["new","old"],"issued":deepcopy(one["issued"])},
     {"historical_source_index_version":"new","historical_source_index_versions":["old","new","new"],"issued":deepcopy(one["issued"])},
    ]
    for archive in failures:
     with self.subTest(archive=archive), self.assertRaises(ValueError):
      verified_history_versions(archive)
+   # A source index can be refreshed when no new prospective issues exist.
+   # An unreferenced registry member is NOT an invented forecast.
+   rotated={"historical_source_index_version":"new",
+            "historical_source_index_versions":["new","old"],
+            "issued":deepcopy(one["issued"])}
+   rotated["historical_source_index_versions"].sort()
+   self.assertEqual(verified_history_versions(rotated),{"old","new"})
+   next_rotation=deepcopy(rotated)
+   next_rotation["historical_source_index_version"]="next"
+   next_rotation["historical_source_index_versions"]=sorted(["old","new","next"])
+   self.assertEqual(verified_history_versions(next_rotation),{"old","new","next"})
 
 if __name__=="__main__": unittest.main()
