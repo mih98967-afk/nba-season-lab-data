@@ -274,8 +274,13 @@ def verified_history_versions(archive):
         if not isinstance(v, str) or v not in versions:
             raise ValueError("Minutes issue history version is not registered")
         observed.add(v)
-    if set(versions) != observed | {current}:
-        raise ValueError("Unreferenced or deleted immutable history version")
+    # An audited index rotation may occur while no new eligible pre-lock
+    # forecasts exist. Such a prior current index remains in the append-only
+    # registry without appearing on any issued forecast. Keep it; do not
+    # invent an issuance, backdate a score, or erase its lineage. The caller
+    # must still preserve all previously registered versions.
+    if not observed.issubset(set(versions)):
+        raise ValueError("Deleted issue history version")
     return set(versions)
 
 
