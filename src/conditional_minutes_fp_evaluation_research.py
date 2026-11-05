@@ -19,6 +19,7 @@ from zoneinfo import ZoneInfo
 import json
 
 from src.sync import DATA
+from src.conditional_minutes_fp_research import verified_history_versions
 
 STATUS = "research_only_not_deployed"
 UTC = timezone.utc
@@ -231,6 +232,9 @@ def build(minutes, pplay, cohort, explicit, live, now):
         raise ValueError("DNP checked game not completed")
     if len(issued) != minutes.get("issued_total"):
         raise ValueError("Minutes issuance report internally inconsistent")
+    # Old issues are immutable and legitimately reference their own index version,
+    # even when a new complete history index is used for genuine later issuances.
+    registered_history_versions = verified_history_versions(minutes)
     if not issued:
         raise ValueError("No frozen prospective issue cohort")
     result = []
@@ -264,8 +268,8 @@ def build(minutes, pplay, cohort, explicit, live, now):
                 issue.get("adopt_on_site") is not False or
                 issue.get("research_only") is not True or
                 issue.get("frozen_rule_hash") != minutes["frozen_rule_hash"] or
-                issue.get("historical_source_index_version") !=
-                minutes["historical_source_index_version"] or
+                issue.get("historical_source_index_version") not in
+                registered_history_versions or
                 issue.get("historical_training_season") != "2025/26" or
                 issue.get("historical_source_last_game_date", "9999") >= "2026-07-01"):
             raise ValueError("Issued model illegally revised or future-leaked")
