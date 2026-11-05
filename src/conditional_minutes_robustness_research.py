@@ -18,6 +18,7 @@ from zoneinfo import ZoneInfo
 import json
 
 from src.sync import DATA
+from src.conditional_minutes_fp_research import verified_history_versions
 
 STATUS = "research_only_not_deployed"
 ET = ZoneInfo("America/New_York")
@@ -94,6 +95,7 @@ def validate(evaluation, source, now):
             or source.get("training_negative_from_UNKNOWN") is not False
             or source.get("model_selection_on_2025_26_holdout") is not False):
         raise ValueError("Unsafe original research claims")
+    history_versions = verified_history_versions(source)
     originals = identity(source.get("issued"), "original immutable issues")
     if len(originals) != source.get("issued_total") or not originals:
         raise ValueError("Malformed frozen issued population")
@@ -128,8 +130,8 @@ def validate(evaluation, source, now):
                     or old.get("adopt_on_site") is not False
                     or old.get("frozen_rule_hash") != source["frozen_rule_hash"]
                     or old.get("historical_training_season") != "2025/26"
-                    or old.get("historical_source_index_version") !=
-                       source["historical_source_index_version"]
+                    or old.get("historical_source_index_version") not in
+                       history_versions
                     or old.get("historical_source_last_game_date", "9999") >= "2026-07-01"):
                 raise ValueError("Invalid original pre-lock issue or source cutoff")
             et = tip.astimezone(ET).date().isoformat()
