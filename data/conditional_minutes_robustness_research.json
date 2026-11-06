@@ -3,27 +3,27 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-11-05T22:00:38.603757Z",
+  "updated_at_utc": "2026-11-06T06:51:33.648794Z",
   "scope": "same_first_issued_prelock_selected_prospective_minutes_if_play_only",
   "frozen_issue_sha256": "1b878cfa51c5a85ca81ea38db40510f4984bca253b34f71fecb6de77d786b74e",
   "frozen_model_sha256": "96fe3f30009c36de525ec089d03cad6b8bd14fb07f46137ae991031568d5e6f0",
-  "input_evaluation_last_updated_at_utc": "2026-11-05T22:00:17.095031Z",
+  "input_evaluation_last_updated_at_utc": "2026-11-06T06:51:13.040108Z",
   "summary": {
     "frozen_issues_total": 787,
-    "finished_checked": 615,
-    "played_scored_conditional": 506,
-    "explicit_DNP_not_scored_as_zero": 53,
-    "UNKNOWN_not_imputed": 56,
-    "independent_ET_date_clusters": 6,
-    "distinct_NBA_games": 40,
-    "observed_pairwise_direct_minus_decomposed_FP_MAE_gain": 0.052,
+    "finished_checked": 650,
+    "played_scored_conditional": 535,
+    "explicit_DNP_not_scored_as_zero": 54,
+    "UNKNOWN_not_imputed": 61,
+    "independent_ET_date_clusters": 7,
+    "distinct_NBA_games": 42,
+    "observed_pairwise_direct_minus_decomposed_FP_MAE_gain": 0.0517,
     "relative_gain_pct_descriptive_ONLY": 0.74,
     "positive_gain_does_not_prove_future_generalization": true
   },
   "frozen_bands_descriptive_played_only": {
-    "minutes_coverage": 0.899209,
-    "minutes_mean_width": 22.8862,
-    "FP_coverage": 0.922925,
+    "minutes_coverage": 0.895327,
+    "minutes_mean_width": 22.8806,
+    "FP_coverage": 0.925234,
     "FP_mean_width": 29.7006,
     "not_validated_prospective_individual_intervals": true
   },
@@ -87,6 +87,16 @@
       "minutes_MAE": 5.7534,
       "minutes_frozen_band_empirical_coverage": 0.901961,
       "FP_frozen_band_empirical_coverage": 0.960784
+    },
+    "2026-11-05": {
+      "played": 29,
+      "distinct_NBA_games": 2,
+      "paired_direct_minus_decomposed_FP_MAE": 0.0463,
+      "decomposed_FP_MAE": 6.7192,
+      "direct_FP_MAE": 6.7655,
+      "minutes_MAE": 6.1548,
+      "minutes_frozen_band_empirical_coverage": 0.827586,
+      "FP_frozen_band_empirical_coverage": 0.965517
     }
   },
   "fixed_research_thresholds": {
