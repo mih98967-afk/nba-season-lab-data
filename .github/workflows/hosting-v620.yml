@@ -1,0 +1,45 @@
+name: NBA v6.20 Today / Transfers advice integrity
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'site/hosting_v620/**'
+      - '.github/workflows/hosting-v620.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and regression tests
+        run: |
+          cd site/hosting_v620
+          for f in *.js; do node --check "$f"; done
+          for f in test_*.cjs; do node "$f"; done
+      - name: Complete SHA-256 manifest and dependency order
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, re
+          root=Path('site/hosting_v620')
+          entries=json.loads((root/'SOURCE_MANIFEST_v620.json').read_text())['files']
+          assert len(entries)==40, f"Expected 40 release assets, got {len(entries)}"
+          paths={p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file()}
+          assert paths==set(entries)|{'SOURCE_MANIFEST_v620.json'}, (
+              sorted(paths-set(entries)), sorted(set(entries)-paths))
+          for rel,sha in entries.items():
+              actual=hashlib.sha256((root/rel).read_bytes()).hexdigest()
+              assert actual==sha, f"release source mismatch: {rel}"
+          html=(root/'index.html').read_text()
+          scripts=re.findall(r'<script[^>]+src="([^"]+)"',html)
+          bare=[s.split('?')[0] for s in scripts]
+          assert all((root/name).is_file() for name in bare), 'Missing linked script'
+          assert bare.index('advice_readiness.js')<bare.index('today_brief.js')<bare.index('app.js')
+          assert 'styles.css?v=6.20' in html
+          print('PASS 40 SHA-256 assets, dependency order and runtime references')
+          PY
