@@ -2,50 +2,52 @@
   "schema_version": 2,
   "status": "prospective_observation_only_no_model_adoption",
   "model_status": "research_only_not_deployed",
-  "updated_at_utc": "2026-11-06T21:47:10Z",
+  "updated_at_utc": "2026-11-07T06:39:08Z",
   "unit_of_analysis": "unique_sports_ru_player_id_x_verified_scheduled_game_id",
-  "archive_report_events": 1092,
-  "eligible_unique_player_games": 492,
+  "archive_report_events": 1149,
+  "eligible_unique_player_games": 500,
   "verified_played": 82,
   "verified_dnp": 0,
   "unlisted_unknown": 356,
   "qa": {
     "not_known_before_lock": 13,
-    "superseded_pdf_observations": 563,
-    "player_games_with_multiple_reports": 280,
-    "not_known_at_monday_15_msk": 442,
-    "telegram_context_unverified": 439,
+    "superseded_pdf_observations": 612,
+    "player_games_with_multiple_reports": 306,
+    "not_known_at_monday_15_msk": 450,
+    "telegram_context_unverified": 443,
     "missing_row_unknown": 356,
-    "player_games_with_status_revision": 24,
-    "future_game": 51,
+    "player_games_with_status_revision": 30,
+    "not_verified_final": 55,
     "conflicting_player_team_or_fixture": 7,
     "known_at_monday_15_msk": 50,
-    "insufficient_team_boxscore": 3
+    "insufficient_team_boxscore": 3,
+    "future_game": 4
   },
   "by_status": {
     "available": {
       "played_verified": 20,
-      "future_game": 2,
+      "not_verified_final": 5,
       "missing_row_unknown": 3
     },
     "doubtful": {
       "missing_row_unknown": 14,
-      "future_game": 1
+      "not_verified_final": 1
     },
     "out": {
       "missing_row_unknown": 302,
-      "future_game": 35,
-      "incomplete_active_boxscore": 2
+      "not_verified_final": 38,
+      "incomplete_active_boxscore": 2,
+      "future_game": 4
     },
     "probable": {
       "played_verified": 24,
       "missing_row_unknown": 4,
-      "future_game": 3
+      "not_verified_final": 4
     },
     "questionable": {
       "played_verified": 38,
       "missing_row_unknown": 33,
-      "future_game": 10,
+      "not_verified_final": 7,
       "incomplete_active_boxscore": 1
     }
   },
@@ -1837,11 +1839,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909287|n008",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909287|n008",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n008:9",
         "status": "questionable",
@@ -1851,7 +1853,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -1865,11 +1867,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909287|n018",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909287|n018",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n018:13",
         "status": "questionable",
@@ -1879,7 +1881,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -1893,11 +1895,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909287|n254",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909287|n254",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n254:10",
         "status": "out",
@@ -1907,7 +1909,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -1921,11 +1923,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909287|n278",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909287|n278",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n278:14",
         "status": "out",
@@ -1935,7 +1937,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -1949,11 +1951,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909287|n301",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909287|n301",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n301:15",
         "status": "out",
@@ -1963,7 +1965,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -1977,11 +1979,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909287|n387",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909287|n387",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n387:17",
         "status": "out",
@@ -1991,7 +1993,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2005,11 +2007,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909287|n410",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909287|n410",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n410:11",
         "status": "out",
@@ -2019,7 +2021,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2032,12 +2034,12 @@
       "individual_lock_utc": "2026-11-06T23:30:00Z",
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
-      "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909288|n064",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_status": "available",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909288|n064",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52010:n064:0",
         "status": "available",
@@ -2047,7 +2049,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2061,11 +2063,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909288|n066",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909288|n066",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n066:6",
         "status": "out",
@@ -2075,7 +2077,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2088,12 +2090,12 @@
       "individual_lock_utc": "2026-11-06T23:30:00Z",
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
-      "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909288|n151",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_status": "out",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909288|n151",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52016:n151:0",
         "status": "out",
@@ -2103,7 +2105,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2116,12 +2118,12 @@
       "individual_lock_utc": "2026-11-06T23:30:00Z",
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
-      "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909288|n164",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_status": "out",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909288|n164",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52015:n164:0",
         "status": "out",
@@ -2131,7 +2133,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2145,11 +2147,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909288|n280",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909288|n280",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n280:7",
         "status": "out",
@@ -2159,7 +2161,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2173,13 +2175,13 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909288|n309",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909288|n309",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2193,13 +2195,13 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909288|n482",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909288|n482",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2213,13 +2215,13 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909288|n483",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909288|n483",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2233,11 +2235,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909289|n033",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909289|n033",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n033:23",
         "status": "questionable",
@@ -2247,7 +2249,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2261,11 +2263,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909289|n141",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909289|n141",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n141:24",
         "status": "questionable",
@@ -2275,7 +2277,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2289,11 +2291,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "doubtful",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909289|n292",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909289|n292",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n292:19",
         "status": "doubtful",
@@ -2303,7 +2305,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2317,11 +2319,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909289|n384",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909289|n384",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n384:21",
         "status": "out",
@@ -2331,7 +2333,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2345,11 +2347,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909289|n400",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909289|n400",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n400:27",
         "status": "out",
@@ -2359,7 +2361,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2373,11 +2375,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909289|n484",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909289|n484",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n484:20",
         "status": "out",
@@ -2387,7 +2389,35 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
+      "membership_evidence": "unknown"
+    },
+    {
+      "game_id": "espn_401909290",
+      "player_id": "n027",
+      "team": "DAL",
+      "home": "DAL",
+      "away": "UTA",
+      "tipoff_utc": "2026-11-07T01:00:00Z",
+      "individual_lock_utc": "2026-11-07T00:30:00Z",
+      "weekly_deadline_utc": "2026-11-02T12:00:00Z",
+      "official_known_by_weekly_deadline": false,
+      "official_status": "probable",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909290|n027",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 1,
+      "telegram_context": {
+        "signal_id": "nba_injurynews/52019:n027:0",
+        "status": "probable",
+        "published_at": "2026-11-06T19:01:25Z",
+        "first_seen_at": "2026-11-06T21:35:22Z",
+        "url": "https://t.me/nba_injurynews/52019",
+        "fixture_verified": false,
+        "verification": "unconfirmed_player_context_only"
+      },
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2401,11 +2431,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909290|n075",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909290|n075",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n075:51",
         "status": "out",
@@ -2415,7 +2445,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2429,11 +2459,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "probable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909290|n143",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909290|n143",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n143:55",
         "status": "probable",
@@ -2443,7 +2473,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2457,11 +2487,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909290|n153",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909290|n153",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52018:n153:0",
         "status": "out",
@@ -2471,7 +2501,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2485,11 +2515,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909290|n204",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909290|n204",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n204:57",
         "status": "out",
@@ -2499,7 +2529,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2513,11 +2543,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "probable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909290|n243",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909290|n243",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n243:54",
         "status": "probable",
@@ -2527,7 +2557,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2541,13 +2571,13 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "available",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909290|n366",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909290|n366",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2561,11 +2591,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909291|n039",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909291|n039",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n039:39",
         "status": "out",
@@ -2575,7 +2605,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2589,11 +2619,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909291|n042",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909291|n042",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n042:38",
         "status": "out",
@@ -2603,7 +2633,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2617,11 +2647,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909291|n159",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909291|n159",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n159:44",
         "status": "out",
@@ -2631,7 +2661,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2645,11 +2675,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909291|n179",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909291|n179",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n179:37",
         "status": "out",
@@ -2659,7 +2689,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2673,11 +2703,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909291|n201",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909291|n201",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n201:36",
         "status": "out",
@@ -2687,7 +2717,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2701,11 +2731,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909291|n304",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909291|n304",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n304:43",
         "status": "out",
@@ -2715,7 +2745,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2729,11 +2759,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909292|n011",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909292|n011",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n011:47",
         "status": "out",
@@ -2743,7 +2773,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2757,11 +2787,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909292|n024",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909292|n024",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n024:46",
         "status": "questionable",
@@ -2771,7 +2801,63 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
+      "membership_evidence": "unknown"
+    },
+    {
+      "game_id": "espn_401909292",
+      "player_id": "n093",
+      "team": "TOR",
+      "home": "MIL",
+      "away": "TOR",
+      "tipoff_utc": "2026-11-07T01:00:00Z",
+      "individual_lock_utc": "2026-11-07T00:30:00Z",
+      "weekly_deadline_utc": "2026-11-02T12:00:00Z",
+      "official_known_by_weekly_deadline": false,
+      "official_status": "probable",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909292|n093",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 1,
+      "telegram_context": {
+        "signal_id": "nba_injurynews/52013:n093:0",
+        "status": "probable",
+        "published_at": "2026-11-06T17:46:25Z",
+        "first_seen_at": "2026-11-06T21:35:22Z",
+        "url": "https://t.me/nba_injurynews/52013",
+        "fixture_verified": false,
+        "verification": "unconfirmed_player_context_only"
+      },
+      "outcome": "not_verified_final",
+      "membership_evidence": "unknown"
+    },
+    {
+      "game_id": "espn_401909292",
+      "player_id": "n097",
+      "team": "TOR",
+      "home": "MIL",
+      "away": "TOR",
+      "tipoff_utc": "2026-11-07T01:00:00Z",
+      "individual_lock_utc": "2026-11-07T00:30:00Z",
+      "weekly_deadline_utc": "2026-11-02T12:00:00Z",
+      "official_known_by_weekly_deadline": false,
+      "official_status": "questionable",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909292|n097",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 1,
+      "telegram_context": {
+        "signal_id": "nba_injurynews/52011:n097:0",
+        "status": "questionable",
+        "published_at": "2026-11-06T17:46:24Z",
+        "first_seen_at": "2026-11-06T21:35:22Z",
+        "url": "https://t.me/nba_injurynews/52011",
+        "fixture_verified": false,
+        "verification": "unconfirmed_player_context_only"
+      },
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2791,7 +2877,7 @@
       "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
       "official_versions_observed_before_lock": 1,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2805,11 +2891,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909293|n016",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909293|n016",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n016:30",
         "status": "out",
@@ -2819,7 +2905,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2832,12 +2918,12 @@
       "individual_lock_utc": "2026-11-07T00:30:00Z",
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
-      "official_status": "probable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909293|n057",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_status": "available",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909293|n057",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52012:n057:0",
         "status": "available",
@@ -2847,7 +2933,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2861,11 +2947,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909293|n119",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909293|n119",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n119:31",
         "status": "out",
@@ -2875,7 +2961,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2889,11 +2975,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909293|n208",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 2,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909293|n208",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 3,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n208:34",
         "status": "out",
@@ -2903,7 +2989,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2916,12 +3002,12 @@
       "individual_lock_utc": "2026-11-07T00:30:00Z",
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
-      "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909293|n380",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_status": "out",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909293|n380",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52014:n380:0",
         "status": "out",
@@ -2931,7 +3017,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2945,13 +3031,13 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "available",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909294|n061",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909294|n061",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2965,11 +3051,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909294|n084",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909294|n084",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n084:60",
         "status": "out",
@@ -2979,7 +3065,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -2993,11 +3079,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909294|n130",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909294|n130",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n130:61",
         "status": "out",
@@ -3007,7 +3093,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -3020,12 +3106,12 @@
       "individual_lock_utc": "2026-11-07T02:30:00Z",
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
-      "official_status": "questionable",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909294|n199",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_status": "available",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909294|n199",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52022:n199:0",
         "status": "available",
@@ -3035,7 +3121,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -3049,11 +3135,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909294|n313",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909294|n313",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n313:62",
         "status": "out",
@@ -3063,7 +3149,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -3083,7 +3169,7 @@
       "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
       "official_versions_observed_before_lock": 1,
       "telegram_context": null,
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -3097,11 +3183,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909295|n108",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909295|n108",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n108:69",
         "status": "out",
@@ -3111,7 +3197,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -3125,11 +3211,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909295|n110",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909295|n110",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n110:66",
         "status": "out",
@@ -3139,7 +3225,35 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
+      "membership_evidence": "unknown"
+    },
+    {
+      "game_id": "espn_401909295",
+      "player_id": "n193",
+      "team": "SAC",
+      "home": "SAC",
+      "away": "SAS",
+      "tipoff_utc": "2026-11-07T03:00:00Z",
+      "individual_lock_utc": "2026-11-07T02:30:00Z",
+      "weekly_deadline_utc": "2026-11-02T12:00:00Z",
+      "official_known_by_weekly_deadline": false,
+      "official_status": "questionable",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909295|n193",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 1,
+      "telegram_context": {
+        "signal_id": "nba_injurynews/52021:n193:0",
+        "status": "questionable",
+        "published_at": "2026-11-06T21:00:25Z",
+        "first_seen_at": "2026-11-06T21:35:22Z",
+        "url": "https://t.me/nba_injurynews/52021",
+        "fixture_verified": false,
+        "verification": "unconfirmed_player_context_only"
+      },
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -3153,11 +3267,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909295|n210",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909295|n210",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n210:71",
         "status": "out",
@@ -3167,7 +3281,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -3181,11 +3295,11 @@
       "weekly_deadline_utc": "2026-11-02T12:00:00Z",
       "official_known_by_weekly_deadline": false,
       "official_status": "out",
-      "official_event_id": "72f77940471b2706ad59432a7061a3183b029bb2496243cc6f69d994e1080f9a|espn_401909295|n323",
-      "official_report_at_utc": "2026-11-06T07:15:00Z",
-      "official_first_seen_at_utc": "2026-11-06T07:24:40Z",
-      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_02_15AM.pdf",
-      "official_versions_observed_before_lock": 1,
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909295|n323",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 2,
       "telegram_context": {
         "signal_id": "nba_injurynews/52008:n323:70",
         "status": "out",
@@ -3195,7 +3309,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "not_verified_final",
       "membership_evidence": "unknown"
     },
     {
@@ -13564,6 +13678,86 @@
       "official_versions_observed_before_lock": 1,
       "telegram_context": null,
       "outcome": "missing_row_unknown",
+      "membership_evidence": "unknown"
+    },
+    {
+      "game_id": "espn_401909939",
+      "player_id": "n166",
+      "team": "BKN",
+      "home": "ATL",
+      "away": "BKN",
+      "tipoff_utc": "2026-11-08T00:30:00Z",
+      "individual_lock_utc": "2026-11-08T00:00:00Z",
+      "weekly_deadline_utc": "2026-11-02T12:00:00Z",
+      "official_known_by_weekly_deadline": false,
+      "official_status": "out",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909939|n166",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 1,
+      "telegram_context": null,
+      "outcome": "future_game",
+      "membership_evidence": "unknown"
+    },
+    {
+      "game_id": "espn_401909939",
+      "player_id": "n321",
+      "team": "BKN",
+      "home": "ATL",
+      "away": "BKN",
+      "tipoff_utc": "2026-11-08T00:30:00Z",
+      "individual_lock_utc": "2026-11-08T00:00:00Z",
+      "weekly_deadline_utc": "2026-11-02T12:00:00Z",
+      "official_known_by_weekly_deadline": false,
+      "official_status": "out",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909939|n321",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 1,
+      "telegram_context": null,
+      "outcome": "future_game",
+      "membership_evidence": "unknown"
+    },
+    {
+      "game_id": "espn_401909943",
+      "player_id": "n202",
+      "team": "HOU",
+      "home": "PHX",
+      "away": "HOU",
+      "tipoff_utc": "2026-11-08T02:00:00Z",
+      "individual_lock_utc": "2026-11-08T01:30:00Z",
+      "weekly_deadline_utc": "2026-11-02T12:00:00Z",
+      "official_known_by_weekly_deadline": false,
+      "official_status": "out",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909943|n202",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 1,
+      "telegram_context": null,
+      "outcome": "future_game",
+      "membership_evidence": "unknown"
+    },
+    {
+      "game_id": "espn_401909943",
+      "player_id": "n209",
+      "team": "HOU",
+      "home": "PHX",
+      "away": "HOU",
+      "tipoff_utc": "2026-11-08T02:00:00Z",
+      "individual_lock_utc": "2026-11-08T01:30:00Z",
+      "weekly_deadline_utc": "2026-11-02T12:00:00Z",
+      "official_known_by_weekly_deadline": false,
+      "official_status": "out",
+      "official_event_id": "3c72d49e7278c790ef21fa826561da3f8a99f65f26bab9e0ad1421a88a7b194b|espn_401909943|n209",
+      "official_report_at_utc": "2026-11-06T21:30:00Z",
+      "official_first_seen_at_utc": "2026-11-06T21:45:25Z",
+      "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-06_04_30PM.pdf",
+      "official_versions_observed_before_lock": 1,
+      "telegram_context": null,
+      "outcome": "future_game",
       "membership_evidence": "unknown"
     }
   ],
