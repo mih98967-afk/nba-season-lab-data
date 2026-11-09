@@ -775,7 +775,8 @@ function chainPanel(out,when){
   <p>Сравните KEEP, покупку сейчас, ожидание и двухшаговую цепочку. Доступные ходы и лимит команд проверяются на каждой стадии. Условная цена сохранённого хода помогает не менять игрока ради небольшого преимущества.</p>
   <div class="formgrid"><label>Горизонт оценки<select id="chain-days">${[14,21,28].map(n=>`<option value="${n}" ${UI.chainDays===n?'selected':''}>${n} дней</option>`).join('')}</select></label>
   <label>Резерв одного трансфера<select id="chain-penalty">${[0,4,8].map(n=>`<option value="${n}" ${UI.chainPenalty===n?'selected':''}>${n===0?'0 FP · максимальный риск':n===4?'4 FP · баланс':'8 FP · беречь ходы'}</option>`).join('')}</select></label></div>
-  <div class="toolbar"><button class="primary" data-action="calculate-chains">Сравнить цепочки для ${esc(P[out]?.name||'игрока')}</button><span class="small">Старт: ${dateText(when)} МСК</span></div>
+  ${!readiness.ready?`<div class="info warning" role="status">Рекомендации заблокированы: ${esc(readiness.reasons.slice(0,2).join(' '))}</div>`:''}
+  <div class="toolbar"><button class="primary" data-action="calculate-chains" ${readiness.ready?'':'disabled'}>Сравнить цепочки для ${esc(P[out]?.name||'игрока')}</button><span class="small">Старт: ${dateText(when)} МСК</span></div>
   ${resultHtml}<div class="small">* Резерв хода — не реальный штраф Sports.ru и не доказанная оптимальная стоимость замены. Он влияет только на сортировку стратегий. Цены будущих игроков моделируются по текущей оценке.</div></div>`;
 }
 function scenarioScorePlayer(id,start,end){
@@ -837,7 +838,8 @@ function budgetPanel(){
     <label>Резерв за потраченный ход<select id="budget-penalty">${[0,4,8].map(n=>`<option value="${n}" ${UI.budgetPenalty===n?'selected':''}>${n} FP ${n===0?'· не беречь':n===4?'· баланс':'· беречь ходы'}</option>`).join('')}</select></label>
   </div>
   ${target?`<div class="info budget-need"><b>Касса по текущему черновику: ${round(checked.cash)}.</b> Цель стоит ${round(buy)}.${deficits.length?`<div>Не хватает при продаже выбранного игрока: ${deficits.map(d=>`${esc(P[d.id]?.name||d.id)} — ${round(d.short)}`).join(' · ')}.</div>`:''}<div class="small">Цены остальных игроков берутся из раздела «Данные» (или расчётно). Проверьте их на Sports.ru.</div></div>`:''}
-  <div class="toolbar"><button class="primary" data-action="calculate-budget" ${!target||!remaining?'disabled':''}>Найти пакеты под покупку</button><span class="small">Свободно: ${remaining} из 3 ходов · момент ${dateText(t)} МСК</span></div>
+  ${!readiness.ready?`<div class="info warning" role="status">Рекомендации заблокированы: ${esc(readiness.reasons.slice(0,2).join(' '))}</div>`:''}
+  <div class="toolbar"><button class="primary" data-action="calculate-budget" ${!readiness.ready||!target||!remaining?'disabled':''}>Найти пакеты под покупку</button><span class="small">Свободно: ${remaining} из 3 ходов · момент ${dateText(t)} МСК</span></div>
   ${detail}<p class="small">Черновик не совершает трансферы. Если цены на Sports.ru отличаются, обновите их и пересчитайте. Цена цели в этом поле используется только для сценария, не меняя профиль.</p></div>`;
 }
 function calculateBudget(){
