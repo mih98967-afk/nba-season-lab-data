@@ -68,8 +68,13 @@
       used[key]=(used[key]||0)+1;
       alternate[alt]=(alternate[alt]||0)+1;
     }
-    fifteenExceeded=Object.values(used).some(n=>n>3);
-    midnightExceeded=Object.values(alternate).some(n=>n>3);
+    // Past owner-attested over-quota weeks remain visible as ledger facts, not
+    // a permanent block on unrelated future weeks. The new move's own week
+    // is checked against both possible reset boundaries below.
+    const historicalQuotaConflict=Object.values(used).some(n=>n>3)&&
+      Object.values(alternate).some(n=>n>3);
+    if(historicalQuotaConflict)
+      warnings.push('В сохранённой истории есть недели с более чем тремя операциями при обеих гипотезах сброса; новые недели проверяются отдельно.');
     if(draft.length&&!schedule.length)warnings.push('Нет расписания матчей: блокировки не проверены');
     const now=Number.isFinite(input?.nowEpoch)?input.nowEpoch:Date.now();
     const sorted=[...draft].sort((a,b)=>(a.epoch||0)-(b.epoch||0));
@@ -83,12 +88,10 @@
       const stamp=t?.epoch;
       if(!Number.isFinite(stamp))ee.push('Нужно точное время операции');
       const key=weekKey(stamp),alt=weekKey(stamp,0);
-      if(key){used[key]=(used[key]||0)+1;
-        if(used[key]>3)fifteenExceeded=true;
-      }
-      if(alt){alternate[alt]=(alternate[alt]||0)+1;
-        if(alternate[alt]>3)midnightExceeded=true;
-      }
+      if(key)used[key]=(used[key]||0)+1;
+      if(alt)alternate[alt]=(alternate[alt]||0)+1;
+      fifteenExceeded=key!==null&&(used[key]||0)>3;
+      midnightExceeded=alt!==null&&(alternate[alt]||0)>3;
       if(fifteenExceeded&&midnightExceeded)
         ee.push('Превышены три замены при обеих гипотезах сброса недельной квоты');
       else if(fifteenExceeded||midnightExceeded)
@@ -131,6 +134,7 @@
     return {valid:!uniqErrors.length,verified:!uniqErrors.length&&!uniqWarnings.length,
       requiresCheck:uniqWarnings.length>0,errors:uniqErrors,warnings:uniqWarnings,
       steps,roster,cash,used,alternateQuotaWeeks:alternate,
+      historicalQuotaConflict,
       quotaResetVerified:false,quotaAssumptions:['monday_15_MSK','monday_00_MSK']};
   }
   return {weekKey,calendarWeekEnd,checkRoster,validate};
