@@ -176,6 +176,7 @@ function cardMetric(k,n,sub){return `<div class="metric"><span class="k">${k}</s
 function rosterRow(p){const alert=rosterNews(p.id).length;const official=officialForRoster().find(e=>e.playerId===p.id);const a=playerActual(p.id);const last=a.length?a.at(-1):null;const pred=prediction(p.id,now(),7);const next=futureGames(p.id,now(),7).slice(0,2);
  return `<div class="roster-row"><div><button class="ghost person" data-player="${p.id}">${esc(p.name)}</button>${official?`<span class="pill ${window.NBAOfficialStatus.isHighRisk(official.status)?'warn':''}" title="Официальный отчёт NBA; не изменяет FP автоматически">NBA: ${esc(official.status.toUpperCase())}</span>`:''}${alert?'<span class="pill warn" title="Неофициальный пост Telegram — требуется проверка">Новость</span>':''}<small>${p.team} · ${esc(p.pos)}</small></div><div class="v"><strong>${round(prices(p.id))}</strong><small>цена*</small></div><div class="v"><strong>${last?round(last.fp):'—'}</strong><small>посл. FP</small></div><div class="v"><strong>${pred.available?round(pred.fp):'—'}</strong><small>7 дней</small></div><div class="v last"><strong>${next.map(g=>g.home===p.team?'· '+g.away:'@'+g.home).join(' ')||'—'}</strong><small>соперники</small></div></div>`;}
 function scoreAuditPanel(a){
+ if(a.complete===false)return `<div class="info warning" role="status"><b>Сумма NBA FP не подтверждена</b><p>В истории есть повторы игроко-матчей или отсутствующие FP. Сервис не подставляет нули и не выдаёт неполную сумму за реальный итог.</p><p class="small">${a.warnings.map(esc).join(' · ')}</p></div>`;
  if(!a.days.length)return '<div class="info warning">Пока нет подтверждённых сыгранных строк NBA в вашем периоде владения.</div>';
  const fmtDay=d=>d.slice(8,10)+'.'+d.slice(5,7);
  const dayRows=a.days.map(d=>`<div class="horizontal" style="margin:3px 0"><span>${fmtDay(d.day)} ET</span><span class="spacer"></span><b>${round(d.fp)} FP</b><span class="small">(${d.matches} игроко-матчей)</span></div>`).join('');
@@ -379,7 +380,7 @@ function overview(){
  const ng=normalizedGames().filter(g=>g.epoch>now()&&(S.roster||[]).some(id=>P[id]?.team===g.home||P[id]?.team===g.away)).slice(0,5);
  const stale=(now()-Date.parse(LIVE.updated_at_utc||0))>24*3600e3||LIVE.mode==='schedule_sync_only';
  return header('Команда','Мой состав','Десять игроков, календарь и ближайшее решение. Состав на Sports.ru изменяется только вручную.')+rosterWarnings()+
- `<div class="grid metrics">${cardMetric('NBA boxscore · не Sports.ru',round(at.fp)+' FP',at.matches+' сыгранных игроко-матчей')}
+ `<div class="grid metrics">${cardMetric('NBA boxscore · не Sports.ru',(Number.isFinite(at.fp)?round(at.fp)+' FP':'н/д'),at.complete?at.matches+' сыгранных игроко-матчей':'Данные NBA FP неполны; см. проверку ниже')}
  ${cardMetric('До конца недели · модель',Number.isFinite(remainingMean)?approx(remainingMean)+' FP':'н/д',Number.isFinite(remainingMean)?'Ожидаемые FP, не зачёт':'Календарь недостаточно полон')}
  ${cardMetric(SRU.cashTile,round(free),SRU.cashTileNote)}
  ${cardMetric(SRU.quotaTile,quotaText,SRU.quotaTileNote)}</div>
