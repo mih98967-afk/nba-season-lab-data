@@ -753,10 +753,12 @@ function shortlistPanel(out,when,available){
 }
 function chainSignature(){return JSON.stringify({r:S.roster,d:S.draft,c:S.cash,e:S.executed,
  p:S.prices,t:S.teamOverrides,m:S.medical,live:LIVE.updated_at_utc,cal:CALENDAR?.updated_at_utc,
+ official:OFFICIAL_FEED?.updated_at_utc,
  model:S.modelMode,risk:S.riskMode});}
 function chainPanel(out,when){
  if(!window.NBAChainPlanner||S.roster.length!==10)return '';
- const result=UI.chainResult;
+ const readiness=advicePreflight(UI.chainDays,when);
+ const result=readiness.ready&&UI.chainResult?.signature===chainSignature()?UI.chainResult:null;
  const gain=n=>`<strong class="${n>=0?'delta-plus':'delta-minus'}">${n>=0?'+':''}${round(n,1)} FP</strong>`;
  const kind={keep:'KEEP · сохранить игрока',now:'Одна замена в выбранный момент',later:'Одна замена позже',chain:'Цепочка из двух замен'};
  const resultHtml=!result?'':!result.ready?
@@ -773,7 +775,8 @@ function chainPanel(out,when){
   <p>Сравните KEEP, покупку сейчас, ожидание и двухшаговую цепочку. Доступные ходы и лимит команд проверяются на каждой стадии. Условная цена сохранённого хода помогает не менять игрока ради небольшого преимущества.</p>
   <div class="formgrid"><label>Горизонт оценки<select id="chain-days">${[14,21,28].map(n=>`<option value="${n}" ${UI.chainDays===n?'selected':''}>${n} дней</option>`).join('')}</select></label>
   <label>Резерв одного трансфера<select id="chain-penalty">${[0,4,8].map(n=>`<option value="${n}" ${UI.chainPenalty===n?'selected':''}>${n===0?'0 FP · максимальный риск':n===4?'4 FP · баланс':'8 FP · беречь ходы'}</option>`).join('')}</select></label></div>
-  <div class="toolbar"><button class="primary" data-action="calculate-chains">Сравнить цепочки для ${esc(P[out]?.name||'игрока')}</button><span class="small">Старт: ${dateText(when)} МСК</span></div>
+  ${!readiness.ready?`<div class="info warning" role="status">Рекомендации заблокированы: ${esc(readiness.reasons.slice(0,2).join(' '))}</div>`:''}
+  <div class="toolbar"><button class="primary" data-action="calculate-chains" ${readiness.ready?'':'disabled'}>Сравнить цепочки для ${esc(P[out]?.name||'игрока')}</button><span class="small">Старт: ${dateText(when)} МСК</span></div>
   ${resultHtml}<div class="small">* Резерв хода — не реальный штраф Sports.ru и не доказанная оптимальная стоимость замены. Он влияет только на сортировку стратегий. Цены будущих игроков моделируются по текущей оценке.</div></div>`;
 }
 function scenarioScorePlayer(id,start,end){
@@ -808,7 +811,8 @@ function budgetPanel(){
  const buy=UI.budgetBuy!=null?UI.budgetBuy:(target?prices(target.id):null);
  const deficits=target&&checked.valid?outs.filter(id=>out==='auto'||out===id)
   .map(id=>({id,short:Math.max(0,buy-checked.cash-prices(id))})):[];
- const result=UI.budgetResult?.signature===budgetSignature()?UI.budgetResult:null;
+ const readiness=advicePreflight(UI.budgetDays,t);
+ const result=readiness.ready&&UI.budgetResult?.signature===budgetSignature()?UI.budgetResult:null;
  const routes=result?.ready?result.routes:[];
  const signed=n=>`<strong class="${n>=0?'delta-plus':'delta-minus'}">${n>=0?'+':''}${round(n,1)} FP</strong>`;
  const detail=!result?'':!result.ready?
@@ -834,13 +838,16 @@ function budgetPanel(){
     <label>Резерв за потраченный ход<select id="budget-penalty">${[0,4,8].map(n=>`<option value="${n}" ${UI.budgetPenalty===n?'selected':''}>${n} FP ${n===0?'· не беречь':n===4?'· баланс':'· беречь ходы'}</option>`).join('')}</select></label>
   </div>
   ${target?`<div class="info budget-need"><b>Касса по текущему черновику: ${round(checked.cash)}.</b> Цель стоит ${round(buy)}.${deficits.length?`<div>Не хватает при продаже выбранного игрока: ${deficits.map(d=>`${esc(P[d.id]?.name||d.id)} — ${round(d.short)}`).join(' · ')}.</div>`:''}<div class="small">Цены остальных игроков берутся из раздела «Данные» (или расчётно). Проверьте их на Sports.ru.</div></div>`:''}
-  <div class="toolbar"><button class="primary" data-action="calculate-budget" ${!target||!remaining?'disabled':''}>Найти пакеты под покупку</button><span class="small">Свободно: ${remaining} из 3 ходов · момент ${dateText(t)} МСК</span></div>
+  ${!readiness.ready?`<div class="info warning" role="status">Рекомендации заблокированы: ${esc(readiness.reasons.slice(0,2).join(' '))}</div>`:''}
+  <div class="toolbar"><button class="primary" data-action="calculate-budget" ${!readiness.ready||!target||!remaining?'disabled':''}>Найти пакеты под покупку</button><span class="small">Свободно: ${remaining} из 3 ходов · момент ${dateText(t)} МСК</span></div>
   ${detail}<p class="small">Черновик не совершает трансферы. Если цены на Sports.ru отличаются, обновите их и пересчитайте. Цена цели в этом поле используется только для сценария, не меняя профиль.</p></div>`;
 }
 function calculateBudget(){
  if(!window.NBABudgetPackage)return showMsg('Модуль финансирования покупки недоступен.');
  const t=moscowEpoch(document.getElementById('budget-when')?.value);
  if(!Number.isFinite(t))return showMsg('Укажите момент замены по Москве.');
+ const readiness=advicePreflight(UI.budgetDays,t);
+ if(!readiness.ready){UI.budgetResult=null;return showMsg('Рекомендации заблокированы: '+readiness.reasons.slice(0,2).join(' '));}
  const target=document.getElementById('budget-target')?.value;
  if(!P[target])return showMsg('Выбери игрока, которого хочешь купить.');
  const buy=num(document.getElementById('budget-buy')?.value);
@@ -863,6 +870,8 @@ function calculateBudget(){
  view();document.getElementById('budget-panel')?.scrollIntoView?.({behavior:'smooth',block:'start'});
 }
 function applyBudget(index){
+ const readiness=advicePreflight(UI.budgetDays,UI.budgetResult?.start??now());
+ if(!readiness.ready)return showMsg('Рекомендации заблокированы: '+readiness.reasons.slice(0,2).join(' '));
  const r=UI.budgetResult;
  if(!r?.ready||r.signature!==budgetSignature())return showMsg('Данные изменились — пересчитайте пакет.');
  const route=r.routes?.[index];
@@ -1097,6 +1106,8 @@ function calculateChains(){
  const t=moscowEpoch(document.getElementById('when')?.value);
  const out=document.getElementById('out')?.value;
  if(!Number.isFinite(t)||!out)return showMsg('Укажите игрока OUT и время начала.');
+ const readiness=advicePreflight(UI.chainDays,t);
+ if(!readiness.ready){UI.chainResult=null;return showMsg('Рекомендации заблокированы: '+readiness.reasons.slice(0,2).join(' '));}
  UI.plannerOut=out;UI.plannerWhen=t;
  const checked=planResult(S.draft);
  const roster=checked.valid?checked.roster:S.roster;
@@ -1112,6 +1123,8 @@ function calculateChains(){
  const panel=document.getElementById('chain-panel');panel?.scrollIntoView?.({behavior:'smooth',block:'start'});
 }
 function applyChain(index){
+ const readiness=advicePreflight(UI.chainDays,UI.chainResult?.start??now());
+ if(!readiness.ready)return showMsg('Рекомендации заблокированы: '+readiness.reasons.slice(0,2).join(' '));
  const result=UI.chainResult;
  if(!result?.ready||result.signature!==chainSignature())return showMsg('Данные изменились — сначала пересчитайте цепочку.');
  const route=result.routes?.[index];if(!route?.moves?.length)return showMsg('Нет замен для добавления.');
@@ -1762,7 +1775,7 @@ function setOfficialStatus(payload,source){
  const qa=window.NBAOfficialStatus?.validate(payload);
  if(!qa?.ok){OFFICIAL_STATUS='Некорректные официальные данные: '+String(qa?.reason||'неизвестно');return false;}
  if(OFFICIAL_FEED && qa.updatedAt<Date.parse(OFFICIAL_FEED.updated_at_utc))return false;
- OFFICIAL_FEED=payload;
+ OFFICIAL_FEED=payload;UI.chainResult=null;UI.multiResult=null;UI.multiCalculatedAt=null;UI.budgetResult=null;
  const age=(now()-qa.updatedAt)/3600000;
  OFFICIAL_STATUS=(age>12?'Последний снимок старше 12 часов · ':'Получено из GitHub · ')+source+' · '+dateText(qa.updatedAt);
  view();return true;
