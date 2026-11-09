@@ -32,17 +32,19 @@
  }
  function audit(live,state){
   const games=new Map((live?.games||[]).filter(g=>g&&g.status==='final'&&Number.isFinite(g.epoch)).map(g=>[g.id,g]));
-  const grouped=new Map();let fp=0,matches=0;
+  const grouped=new Map();let fp=0,matches=0,incomplete=false;
   const unique=new Set(),warnings=[];
   for(const r of live?.rows||[]){
    const g=games.get(r?.game_id);
    if(!g||!r?.id||r.played!==true)continue;
    if(!ownedAt(state,g.epoch-30*60000).includes(r.id))continue;
    const key=g.id+'|'+r.id;
-   if(unique.has(key)){warnings.push('Повтор player-game в NBA feed; проверка очков неполная');continue;}
+   if(unique.has(key)){warnings.push('Повтор player-game в NBA feed; проверка очков неполная');incomplete=true;continue;}
+   const raw=r.fp;
+   // Number(null), Number('') and Number(' ') are zero in JS, but missing FP are UNKNOWN.
+   const value=raw==null||(typeof raw==='string'&&!raw.trim())?NaN:Number(raw);
+   if(!Number.isFinite(value)){warnings.push('Некорректные или отсутствующие FP в NBA feed');incomplete=true;continue;}
    unique.add(key);
-   const value=Number(r.fp);
-   if(!Number.isFinite(value)){warnings.push('Некорректные FP в NBA feed');continue;}
    const day=validDay(g.et_date)?g.et_date:dayET(g.epoch);
    const group=grouped.get(day)||{day,fp:0,matches:0};
    group.fp+=value;group.matches++;
@@ -51,8 +53,9 @@
   }
   const days=[...grouped.values()].sort((a,b)=>a.day.localeCompare(b.day));
   const last=days.at(-1)||null;
-  return {fp,matches,days,latestETDay:last?.day||null,latestETFP:last?.fp||0,
-   earlierETFP:fp-(last?.fp||0),warnings:[...new Set(warnings)],
+  return {fp:incomplete?NaN:fp,matches,days,complete:!incomplete,
+   latestETDay:last?.day||null,latestETFP:incomplete?NaN:(last?.fp||0),
+   earlierETFP:incomplete?NaN:fp-(last?.fp||0),warnings:[...new Set(warnings)],
    officialSportsFPTotal:null,officialSportsWeekCreditKnown:false,
    sourceUpdatedAt:live?.updated_at_utc||null,
    disclaimer:'ESPN/NBA boxscores, not Sports.ru credited FP. The newest ET date may be pending. Historical source stat corrections are possible.'};
