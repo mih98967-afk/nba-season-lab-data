@@ -94,7 +94,10 @@
     const exceeded15=Object.values(used).some(v=>v>WEEK_CAP);
     const exceeded00=Object.values(altUsed).some(v=>v>WEEK_CAP);
     if(exceeded15&&exceeded00)
-      errors.push('\u0411\u043e\u043b\u0435\u0435 \u0442\u0440\u0451\u0445 \u0437\u0430\u043c\u0435\u043d \u0437\u0430 \u043d\u0435\u0434\u0435\u043b\u044e \u043f\u0440\u0438 \u041e\u0411\u0415\u0418\u0425 \u0433\u0438\u043f\u043e\u0442\u0435\u0437\u0430\u0445 \u0441\u0431\u0440\u043e\u0441\u0430; \u0441\u0432\u0435\u0440\u044c\u0442\u0435 \u0436\u0443\u0440\u043d\u0430\u043b \u0441\u043e Sports.ru');
+      // Completed Sports.ru transactions are historical facts. Do not erase or
+      // reject them solely because our guessed reset windows disagree.
+      // Keep the mismatch visible; future moves are guarded independently.
+      warnings.push('В истории Sports.ru больше трёх замен за одну предполагаемую неделю при обеих гипотезах сброса. Сохраняем выполненные операции; лимит новых замен сверяйте на Sports.ru.');
     else if(exceeded15||exceeded00)
       warnings.push('\u0420\u0430\u0437\u043d\u044b\u0435 \u0433\u0440\u0430\u043d\u0438\u0446\u044b \u0441\u0431\u0440\u043e\u0441\u0430 \u043d\u0435\u0434\u0435\u043b\u044c\u043d\u043e\u0439 \u043a\u0432\u043e\u0442\u044b \u0434\u0430\u044e\u0442 \u0440\u0430\u0437\u043d\u044b\u0435 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u044b; \u043f\u0440\u043e\u0432\u0435\u0440\u044c\u0442\u0435 \u0441\u0447\u0451\u0442\u0447\u0438\u043a Sports.ru');
     return {valid:errors.length===0,errors:[...new Set(errors)],warnings,roster,cash,
@@ -147,7 +150,9 @@
     return {valid:errors.length===0,errors:[...new Set(errors)],warnings:[...new Set(warnings)],
       currentCash:cash,cash:cash+newDelta,deltaCash:newDelta,impliedOpeningCash:opening,
       roster:merged.roster,mergedExecuted:mergedItems.map(q=>q.x),newExecuted,
-      timeline:merged.timeline,used:merged.used,stepsAdded:added.length};
+      timeline:merged.timeline,used:merged.used,stepsAdded:added.length,
+      historicalQuotaConflict:merged.quotaHypotheses.monday15Exceeded&&merged.quotaHypotheses.monday00Exceeded,
+      quotaResetVerified:false};
   }
   /** What players should be offered as OUT at a historical moment? Read-only. */
   function rosterBefore(input,at,index){
