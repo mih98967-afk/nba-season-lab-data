@@ -39,3 +39,29 @@ assert.equal(x.checks.quota.localRemaining15,null);
 assert.equal(x.checks.quota.localRemaining00,2);
 assert.equal(compare({...input,owner:{fp:'',cash:'',remaining:'0',confirmedNow:true},service:{...service,executed:moves}}).checks.quota.kind,'AGREES_NEITHER');
 console.log('sports reconciliation: read-only checks passed');
+
+// Missing FP and duplicated owned player-games cannot become a valid season total.
+const {audit}=require('./score_audit.js');
+const gameEpoch=Date.parse('2026-11-01T23:00:00Z');
+const state={initialRoster:['owner-p'],initialEpoch:gameEpoch-86400000,executed:[]};
+const fixture={games:[{id:'g1',epoch:gameEpoch,status:'final',et_date:'2026-11-01'}],
+ rows:[{id:'owner-p',game_id:'g1',played:true,fp:0}]};
+let summary=audit(fixture,state);
+assert.equal(summary.complete,true);
+assert.equal(summary.fp,0,'An actual zero FP must remain a valid zero');
+summary=audit({...fixture,rows:[{...fixture.rows[0],fp:-2}]},state);
+assert.equal(summary.complete,true);
+assert.equal(summary.fp,-2,'Negative actual FP are legitimate');
+for(const invalid of [null,undefined,'',' ',NaN,'unknown']){
+ summary=audit({...fixture,rows:[{...fixture.rows[0],fp:invalid}]},state);
+ assert.equal(summary.complete,false,'Missing FP must fail closed: '+String(invalid));
+ assert.equal(Number.isFinite(summary.fp),false);
+ assert.equal(Number.isFinite(summary.earlierETFP),false);
+}
+summary=audit({...fixture,rows:[fixture.rows[0],{...fixture.rows[0]}]},state);
+assert.equal(summary.complete,false,'Duplicate ownership row invalidates total');
+assert.equal(Number.isFinite(summary.fp),false);
+summary=audit({...fixture,rows:[fixture.rows[0],{id:'not-owned',game_id:'g1',played:true,fp:null}]},state);
+assert.equal(summary.complete,true,'Unowned players do not affect private total');
+assert.equal(summary.fp,0);
+assert.equal(compare({...input,service:{...service,calculatedNBAFP:NaN}}).checks.fp.kind,'LOCAL_SCORE_UNAVAILABLE');
