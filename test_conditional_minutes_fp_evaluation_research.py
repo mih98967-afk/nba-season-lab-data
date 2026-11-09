@@ -3,7 +3,10 @@ import unittest
 from copy import deepcopy
 from datetime import datetime, timezone, timedelta
 from src.sync import DATA
-from src.conditional_minutes_fp_evaluation_research import build, date_cluster_fp_uncertainty, MIN_REPORT_ET_DATES, MIN_REPORT_NBA_GAMES
+from src.conditional_minutes_fp_evaluation_research import (
+    build, date_cluster_fp_uncertainty, MIN_REPORT_ET_DATES, MIN_REPORT_PLAYED,
+    MIN_REPORT_NBA_GAMES, BOOTSTRAP_DRAWS,
+)
 
 FILES = ("conditional_minutes_fp_research.json", "p_play_shadow_research.json",
          "participation_cohort_research.json", "explicit_dnp_research.json", "live.json")
@@ -60,7 +63,44 @@ class ConditionalMinutesProspectiveEvaluation(unittest.TestCase):
         self.assertTrue(all(v["position_adjustment_evidence_sufficient"] is False
                             for v in by_role.values()))
         self.assertFalse(result["quality_gate"]["position_specific_recalibration_allowed"])
-        self.assertIsNone(result["date_cluster_uncertainty_if_exploratory_eligible"])
+        # The live played-only cohort grows. Crossing the pre-existing
+        # exploratory reporting floor is valid; it is NOT a model-adoption gate.
+        summary = result["summary"]
+        eligible = (
+            summary["played_distinct_ET_dates"] >= MIN_REPORT_ET_DATES
+            and summary["played"] >= MIN_REPORT_PLAYED
+            and summary["played_distinct_games"] >= MIN_REPORT_NBA_GAMES
+        )
+        self.assertEqual(
+            result["quality_gate"]["posthoc_exploratory_interval_eligible"], eligible
+        )
+        interval = result["date_cluster_uncertainty_if_exploratory_eligible"]
+        if not eligible:
+            self.assertIsNone(interval)
+        else:
+            self.assertIsNotNone(interval)
+            self.assertEqual(interval["resampling_unit"],
+                             "whole_NBA_ET_date_including_correlated_player_games")
+            self.assertEqual(interval["independent_ET_dates"],
+                             summary["played_distinct_ET_dates"])
+            self.assertEqual(interval["played_player_games"], summary["played"])
+            self.assertEqual(interval["NBA_games"], summary["played_distinct_games"])
+            self.assertEqual(interval["draws"], BOOTSTRAP_DRAWS)
+            self.assertTrue(interval["posthoc_exploratory_not_pre_registered"])
+            self.assertTrue(interval[
+                "selected_played_only_not_full_roster_or_future_calibration"])
+            for key in (
+                "mean_predicted_minus_actual_minutes_95pct_exploratory",
+                "mean_predicted_minus_actual_FP_95pct_exploratory",
+                "direct_FP_MAE_95pct_exploratory",
+                "direct_minus_decomposed_FP_MAE_95pct_exploratory",
+            ):
+                bounds = interval[key]
+                self.assertEqual(len(bounds), 2)
+                self.assertLessEqual(bounds[0], bounds[1])
+        self.assertFalse(result["quality_gate"]["KEEP_TRANSFER_value_proven"])
+        self.assertFalse(result["quality_gate"]["unconditional_FP_allowed"])
+        self.assertFalse(result["quality_gate"]["adopt_on_site"])
 
     def test_whole_et_date_resampling_not_player_level(self):
         rows = []

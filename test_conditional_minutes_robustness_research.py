@@ -25,7 +25,29 @@ class Robustness(unittest.TestCase):
                          counts["UNKNOWN_not_imputed"])
         self.assertEqual(report["summary"]["independent_ET_date_clusters"],
                          counts["played_distinct_ET_dates"])
-        self.assertEqual(report["ET_date_cluster_paired_MAE_gain_95pct_interval_if_eligible"],None)
+        # A larger genuine prospective cohort may pass the exploratory
+        # ET-date reporting thresholds. This never changes the adoption gate.
+        gates = report["fixed_research_thresholds"]
+        eligible = (
+            report["summary"]["independent_ET_date_clusters"] >= MIN_ET_DATES
+            and report["summary"]["played_scored_conditional"] >= MIN_PLAYED
+            and report["summary"]["distinct_NBA_games"] >= MIN_GAMES
+        )
+        self.assertEqual(gates["first_exploratory_interval_eligible"], eligible)
+        interval = report["ET_date_cluster_paired_MAE_gain_95pct_interval_if_eligible"]
+        if not eligible:
+            self.assertIsNone(interval)
+        else:
+            self.assertIsNotNone(interval)
+            self.assertEqual(interval["resampling_unit"],
+                             "NBA_ET_date_with_all_verified_played_player_games")
+            self.assertEqual(interval["resamples"], 2000)
+            self.assertEqual(interval["seed"], 20261028)
+            self.assertLessEqual(interval["lower"], interval["upper"])
+            self.assertTrue(interval["different_ET_dates_are_the_resampling_clusters"])
+            self.assertFalse(interval["can_establish_full_population_effect"])
+        self.assertFalse(report["quality_gate"]["actual_KEEP_TRANSFER_gain_demonstrated"])
+        self.assertFalse(report["quality_gate"]["p_play_population_probabilities_calibrated"])
         self.assertFalse(report["quality_gate"]["adopt_on_site"])
         self.assertFalse(report["quality_gate"]["unconditional_FP_allowed"])
     def test_tampered_source_issue_hash_or_prediction_rejected(self):
