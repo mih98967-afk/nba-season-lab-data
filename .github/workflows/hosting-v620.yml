@@ -43,3 +43,32 @@ jobs:
           assert 'styles.css?v=6.20' in html
           print('PASS 40 SHA-256 assets, dependency order and runtime references')
           PY
+      - name: Assemble verified v6.20 Hosting ZIP (no deployment)
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          import hashlib, json
+          root=Path('site/hosting_v620')
+          expected=json.loads((root/'SOURCE_MANIFEST_v620.json').read_text())['files']
+          bundle=Path('nba-season-lab-v6.20-hosting.zip')
+          with ZipFile(bundle,'w',compression=ZIP_DEFLATED,compresslevel=8) as archive:
+              for path in sorted(root.rglob('*')):
+                  if path.is_file():
+                      archive.write(path,path.relative_to(root).as_posix())
+          with ZipFile(bundle) as archive:
+              included=set(archive.namelist())
+              assert included==set(expected)|{'SOURCE_MANIFEST_v620.json'}
+              for name,sha in expected.items():
+                  assert hashlib.sha256(archive.read(name)).hexdigest()==sha, name
+              assert archive.read('firebase.json')
+              assert archive.read('index.html')
+          print('PASS v6.20 verified offline Hosting bundle',bundle,bundle.stat().st_size)
+          PY
+      - name: Upload verified Hosting ZIP (no Firebase deploy)
+        uses: actions/upload-artifact@v4
+        with:
+          name: nba-season-lab-v6.20-hosting
+          path: nba-season-lab-v6.20-hosting.zip
+          if-no-files-found: error
+          retention-days: 14
