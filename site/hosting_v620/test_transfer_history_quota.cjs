@@ -18,8 +18,17 @@ assert.equal(result.roster.length,10);
 assert.equal(result.cash,200);
 const both=make(['2026-10-27T09:00:00Z','2026-10-28T09:00:00Z','2026-10-29T09:00:00Z','2026-10-30T09:00:00Z']);
 result=preview({...input,proposed:both});
+assert.equal(result.valid,true,'Owner-attested completed moves must not be discarded solely because both guessed quota windows disagree');
+assert.equal(result.historicalQuotaConflict,true);
+assert.equal(result.stepsAdded,4);
+assert.equal(result.warnings.some(x=>/Sports\.ru/.test(x)),true);
+assert.equal(result.roster.length,10);
+// A bad move still fails: only the historical quota assumption is downgraded.
+const invalid=[...both.map(m=>({...m}))];
+invalid[3].out=invalid[2].out;
+result=preview({...input,proposed:invalid});
 assert.equal(result.valid,false);
-assert.equal(result.errors.some(x=>/Sports\.ru/.test(x)),true);
+assert.equal(result.errors.some(x=>/OUT/.test(x)),true);
 const duplicate=make(['2026-10-30T09:00:00Z','2026-10-30T09:00:00Z']);
 result=preview({...input,proposed:duplicate});
 assert.equal(result.valid,true);
