@@ -1,5 +1,6 @@
 const assert=require('node:assert/strict');
 const {preview,weekKey}=require('./transfer_history.js');
+const guard=require('./transfer_guard.js');
 const POS=['PG','SG','SF','PF','C'];
 const initial=Array.from({length:10},(_,i)=>'p'+i);
 const players={};
@@ -38,4 +39,28 @@ result=preview({...input,proposed:badCash});
 assert.equal(result.valid,false);
 assert.equal(weekKey(Date.parse('2026-11-02T07:00:00Z'),15),'2026-10-26');
 assert.equal(weekKey(Date.parse('2026-11-02T07:00:00Z'),0),'2026-11-02');
+// A historical week in disagreement must not permanently block a fresh week.
+// New moves in their OWN week still face the 3-transfer safety hypotheses.
+const oldFive=[
+ '2026-10-26T17:00:00Z','2026-10-27T17:00:00Z',
+ '2026-10-28T17:00:00Z','2026-10-29T17:00:00Z',
+ '2026-10-30T17:00:00Z'
+].map(epoch=>({epoch:Date.parse(epoch)}));
+const freshMove={out:'p0',in_:'q0',sell:100,buy:100,
+ epoch:Date.parse('2026-11-10T17:00:00Z')};
+const futureInput={players,roster:initial,cash:200,executed:oldFive,
+ nowEpoch:Date.parse('2026-11-09T20:00:00Z'),
+ draft:[freshMove],games:[]};
+let future=guard.validate(futureInput);
+assert.equal(future.historicalQuotaConflict,true);
+assert.equal(future.valid,true,JSON.stringify(future.errors));
+assert.equal(future.used['2026-11-09'],1);
+const extraFresh=[
+ {out:'p1',in_:'q1',sell:100,buy:100,epoch:Date.parse('2026-11-10T18:00:00Z')},
+ {out:'p2',in_:'q2',sell:100,buy:100,epoch:Date.parse('2026-11-11T18:00:00Z')},
+ {out:'p3',in_:'q3',sell:100,buy:100,epoch:Date.parse('2026-11-12T18:00:00Z')}
+];
+future=guard.validate({...futureInput,draft:[freshMove,...extraFresh]});
+assert.equal(future.valid,false,'Four proposed transfers within the new week must remain blocked');
+assert.equal(future.errors.some(x=>/Превышены три замены/.test(x)),true);
 console.log('transfer history two-hypothesis quota: regression passed');
