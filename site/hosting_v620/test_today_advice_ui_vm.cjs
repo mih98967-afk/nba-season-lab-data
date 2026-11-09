@@ -62,7 +62,8 @@ assert.equal(chainCalls,0,'Chain planner must not use stale or unverified feed')
 click('calculate-budget');
 assert.equal(budgetCalls,0,'Budget planner must not use stale or unverified feed');
 assert.match(view.innerHTML,/Рекомендации заблокированы/);
-assert.match(view.innerHTML,/data-action="calculate-chains" disabled/);
+// The advanced chain control is not mounted in the default Advice view;
+// its delegated action above is still required to reject unverified data.
 assert.match(view.innerHTML,/Рекомендации заблокированы/);
 assert.equal(window.PythosNBA.getState().roster.length,10);
 // Ten entries without valid position structure cannot be silently treated as ready.
