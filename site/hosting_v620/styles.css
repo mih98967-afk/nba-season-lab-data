@@ -548,3 +548,29 @@ button.ghost{color:#904B36}
 
 /* Schedule interpretation: contextual, not a strength ranking */
 .calendar-rest-hint{display:block;margin-top:4px;color:var(--muted,#81786f);font-size:11px;line-height:1.5;font-weight:400}
+
+/* v6.20 polish: restrained interaction feedback and readable actionable alerts. */
+button.primary,.button,button.ghost,.navinner button{
+ transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease;
+}
+button.primary:not(:disabled):active,.button:not(:disabled):active{transform:translateY(1px)}
+.today-alerts{padding:20px 24px;}
+.today-alerts .titledetail h2{margin:0}
+.today-alert{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:13px;padding:11px 0;border-top:1px solid var(--line);font-size:12px}
+.today-alert:first-of-type{border-top:0}
+.today-alert b{font-size:13px;color:#6f312a}
+.today-alert span{color:var(--muted)}
+.today-alert a{white-space:nowrap;font-weight:650}
+.planner-more-tools{grid-column:1/-1;padding:8px 10px;border:1px solid var(--line);border-radius:10px}
+.planner-more-tools .planner-task{display:flex;flex-direction:column;text-align:left;margin-top:10px;width:100%}
+@media(max-width:650px){.today-alert{grid-template-columns:1fr;gap:4px}.today-alerts{padding:18px}.roster-row .v small{font-size:11px}}
+@media(prefers-reduced-motion:reduce){button.primary,.button,button.ghost,.navinner button{transition:none!important;transform:none!important}}
+
+.today-quick-route{margin:15px 0 6px;padding:15px;border:1px solid #e6d4c7;background:#fbf6f0;border-radius:11px}
+.today-quick-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:9px}
+.today-quick-head span,.today-quick-foot{font-size:11px;color:#8b6f60}
+.today-quick-head strong{font-size:21px;font-variant-numeric:tabular-nums;color:#8c4b33}
+.today-quick-step{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:8px 0;border-top:1px solid #f0e4d9}
+.today-quick-step b{font-size:13px;line-height:1.35}.today-quick-step span{font-size:11px;color:#846e60;white-space:nowrap}
+.today-quick-foot{margin-top:8px;line-height:1.4}
+@media(max-width:650px){.today-quick-step{flex-direction:column;gap:3px;align-items:flex-start}.today-quick-head strong{font-size:19px}}
