@@ -391,9 +391,9 @@ function todayPage(){
        ?'<button type="button" class="primary today-primary" data-tabto="news">Проверить статусы игроков</button>'
        :brief.state==='market'
          ?'<button type="button" class="primary today-primary" data-action="market-review-best">Проверить цены Sports.ru</button>'
-         :'<button type="button" class="primary today-primary" data-action="today-review">Сравнить варианты замен</button>';
+         :`<button type="button" class="primary today-primary" data-action="today-review">${brief.hasResults?'Посмотреть план и альтернативы':'Сравнить варианты замен'}</button>`;
  const secondary=brief.state==='onboarding'?''
-   :brief.state==='risk'?'<button type="button" class="button" data-action="today-review">Сравнить после проверки риска</button>'
+   :brief.state==='risk'?'<button type="button" class="button" data-action="today-review">Сравнить с учётом риска</button>'
    :brief.state==='blocked'?'<button type="button" class="button" data-tabto="planner">Открыть планировщик</button>'
    :'<button type="button" class="button" data-tabto="overview">Моя команда</button>';
  const fact=(fp,games,days)=>`<section class="today-window"><div class="today-window-head"><b>${days} ${days===21?'день':'дней'}</b><span>${games===null?'Матчи: н/д':games+' игроко-матчей'}</span></div><strong>${fp===null?'н/д':round(fp,1)+' FP'}</strong><p>${fp===null?'Нет проверенного прогноза':'Ожидаемые очки текущей десятки без новых замен'}</p></section>`;
@@ -1089,12 +1089,13 @@ function multiPanel(){
  const fresh=UI.multiCalculatedAt!=null&&now()-UI.multiCalculatedAt<=30*60000;
  const bestExplanation=best?explanations[result.routes.indexOf(best)]:null;
  const bestAllowed=fresh&&bestExplanation?.ready;
+ const fragileIncoming=best?.moves?.map(m=>P[m.in_]).filter(Boolean).find(p=>lastSeasonHistoryCaution(p));
  const bestReasons=best?[
   best.kind==='keep'
     ?'В ограниченном поиске не найден сценарий с более высоким модельным результатом после условного резерва за ход.'
     :'Для выбранного горизонта рассчитан прирост относительно сохранения состава; это не фактически полученные очки.',
   best.kind==='later'?'Ожидание сравнивается с немедленной покупкой при предположении неизменных цен.'
-    :'Учитываются количество матчей и модельные ожидания участия, но сложность соперников не подтверждена.',
+    :fragileIncoming?'У '+fragileIncoming.name+' мало матчей в прошлом сезоне; прогноз и вероятность участия особенно ненадёжны.':'Учитываются количество матчей и модельные ожидания участия, но сложность соперников не подтверждена.',
   'Реальные цены, остаток замен и разблокировки обязательно проверь на Sports.ru.'
  ]:[];
  const decisionSummary=best?`<div class="planner-outcome" role="status">
@@ -1113,7 +1114,7 @@ function multiPanel(){
  return `<div class="card multi-panel" id="multi-panel"><div class="titledetail"><h2>Совет по составу</h2><span class="pill">Не совершает трансферы</span></div>
   <p>Сравним сохранение состава, замену сейчас, ожидание и цепочки. Сначала посмотрите результат; настройка модели и прочие расчёты доступны по запросу.</p>
   ${!readiness.ready?`<div class="info warning" role="status"><b>Рекомендации пока недоступны.</b> ${esc(readiness.reasons.slice(0,2).join(' '))} Состав и календарь можно изучать без расчёта замен.</div>`:''}
-  <div class="formgrid"><label>На какой срок смотрим<select id="multi-days">${[14,21,28].map(v=>`<option value="${v}" ${UI.multiDays===v?'selected':''}>${v} дней</option>`).join('')}</select></label>
+  <div class="formgrid"><label>На какой срок смотрим<select id="multi-days">${[7,14,21,28].map(v=>`<option value="${v}" ${UI.multiDays===v?'selected':''}>${v} дней</option>`).join('')}</select></label>
   <div class="toolbar"><button class="primary" data-action="calculate-multi" ${readiness.ready?'':'disabled'}>Сравнить варианты</button></div></div>
   <div class="planner-reveal"><button type="button" class="ghost" data-action="multi-options-toggle" aria-expanded="${UI.multiOptions}">${UI.multiOptions?'Скрыть параметры поиска':'Уточнить поиск'}</button></div>
   ${UI.multiOptions?`<div class="formgrid"><label>Какие слоты учитывать<select id="multi-focus">${choices}</select></label>
@@ -1367,10 +1368,10 @@ function plannerTaskNav(){
  const tasks=[
   ['advice','Нужна ли замена?','Сравнить оставить / сейчас / позже'],
   ['specific','Подобрать игрока','Найти замену для конкретного слота'],
-  ['sequence','План на недели','Составить несколько ходов заранее'],
   ['record','Записать сделанную замену','Внести реальный ход со Sports.ru']
  ];
- const current=tasks.find(x=>x[0]===UI.plannerTask)||tasks[0];
+ const current=tasks.find(x=>x[0]===UI.plannerTask)||
+  (UI.plannerTask==='sequence'?['sequence','План на недели','Дополнительный режим для цепочек и дорогих игроков']:tasks[0]);
  return `<div id="planner-task" class="card planner-entry planner-entry--compact">
   <div class="planner-task-current"><div><span class="small">Текущая задача</span><h2>${esc(current[1])}</h2><p>${esc(current[2])}</p></div>
   <button type="button" class="button" data-action="planner-task-toggle" aria-expanded="${UI.plannerTaskListOpen}">${UI.plannerTaskListOpen?'Скрыть':'Другая задача'}</button></div>
@@ -1587,7 +1588,7 @@ function applyPublicFeed(feed,origin){
  if(newAt<oldAt && LIVE.rows?.length>=v.rows.length)return false;
  // Never replace a verified set of game rows with an empty or smaller partial response.
  if((LIVE.rows?.length||0)>v.rows.length&&newAt<=oldAt)return false;
- LIVE=v;publicFeedValidated=true;UI.chainResult=null;UI.multiResult=null;UI.multiCalculatedAt=null;UI.budgetResult=null;liveSource=origin;onlineError='';
+ LIVE=v;publicFeedValidated=true;UI.todayResult=null;UI.todayCalculatedAt=null;UI.todayAutoAttempt=null;UI.chainResult=null;UI.multiResult=null;UI.multiCalculatedAt=null;UI.budgetResult=null;liveSource=origin;onlineError='';
  try{const str=JSON.stringify(v);if(str.length<3_300_000)localStorage.setItem(FEED_CACHE_KEY,str);}catch{}
  view();return true;
 }
@@ -1642,13 +1643,18 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-action],[
  if(el.dataset.removeDraft!==undefined){S.draft.splice(Number(el.dataset.removeDraft),1);save();view();return;}
  if(el.dataset.priceReset){delete S.prices[el.dataset.priceReset];save();view();return;}
  switch(el.dataset.action){case 'market-review-best':{
-  const candidate=UI.multiResult?.signature===chainSignature()?UI.multiResult?.routes?.[0]?.moves?.[0]:null;
+  const candidate=(UI.todayResult?.signature===chainSignature()?UI.todayResult?.routes?.[0]?.moves?.[0]:null)||
+    (UI.multiResult?.signature===chainSignature()?UI.multiResult?.routes?.[0]?.moves?.[0]:null);
   if(!candidate)return showMsg('Сначала рассчитайте вариант замены.');
   UI.plannerTask='specific';UI.plannerOut=candidate.out;UI.plannerIn=candidate.in_;
   UI.plannerWhen=candidate.epoch;UI.plannerSell=candidate.sell;UI.plannerBuy=candidate.buy;
   UI.plannerManualOpen=true;tab='planner';view();
   document.getElementById('price-evidence-card')?.scrollIntoView?.({block:'start'});break;
- }case 'planner-task-toggle':UI.plannerTaskListOpen=!UI.plannerTaskListOpen;view();break;case 'today-review':{UI.plannerTask='advice';UI.multiDays=21;UI.multiFocus='all';UI.plannerWhen=null;tab='planner';view();calculateMulti();break;}case 'sports-check-toggle':UI.sportsOpen=!UI.sportsOpen;view();break;case 'sports-check-run':sportsCheckRun();break;case 'dismiss':notice='';view();break;case 'create-roster':createRoster();break;case 'reset-roster':resetRoster();break;case 'close-modal':MODAL=null;renderModal();break;case 'compare':if(UI.compare.length>=2){MODAL='compare';renderModal();}else showMsg('Выберите хотя бы двух игроков.');break;case 'cal-prev-tours':UI.calendarTour=Math.max(1,(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))-UI.calendarTourCount);view();break;case 'cal-next-tours':UI.calendarTour=Math.min(Math.max(1,window.NBACalendarTours.seasonTourCount()-UI.calendarTourCount+1),(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))+UI.calendarTourCount);view();break;case 'cal-current-tours':UI.calendarTour=window.NBACalendarTours.tourNumber(now());view();break;case 'cal-prev-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(T.FIRST_DATE,UI.calendarStart));UI.calendarStart=T.addDays(UI.calendarStart,-n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'cal-next-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(UI.calendarEnd,T.LAST_DATE));UI.calendarStart=T.addDays(UI.calendarStart,n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'market-advanced':UI.marketAdvanced=!UI.marketAdvanced;view();break;case 'market-more':UI.marketLimit=Math.min(BASE.players.length,UI.marketLimit+50);view();break;case 'planner-advanced-toggle':UI.plannerAdvanced=!UI.plannerAdvanced;view();break;case 'planner-detail-toggle':UI.plannerDetail=!UI.plannerDetail;view();break;case 'planner-manual-toggle':UI.plannerManualOpen=!UI.plannerManualOpen;view();break;case 'multi-options-toggle':UI.multiOptions=!UI.multiOptions;view();break;case 'calculate-chains':calculateChains();break;case 'calculate-multi':calculateMulti();break;case 'calculate-budget':calculateBudget();break;case 'retro-toggle':UI.retroOpen=!UI.retroOpen;UI.retroPreview=null;view();break;case 'retro-add':UI.retroRows.push(retroBlank());UI.retroPreview=null;view();break;case 'retro-remove':if(UI.retroRows.length>1){UI.retroRows.splice(Number(el.dataset.idx),1);UI.retroPreview=null;view();}break;case 'retro-preview':retroPreviewHistory();break;case 'retro-save':retroCommitHistory();break;case 'add-draft':addDraft();break;case 'preview-transfer':previewTransfer();break;case 'clear-draft':S.draft=[];save();view();break;case 'confirm-draft':confirmDraft();break;case 'refresh':remoteRefresh();break;case 'history-more':UI.histLimit=Math.min(10000,UI.histLimit+100);view();break;case 'retry-history':{const pid=UI.playerId||S.roster[0];if(HISTORY_INDEX){const file=HISTORY_INDEX.player_shards?.[pid];if(file)HISTORY_SHARD_ERRORS.delete(file);scheduleHistory(pid);}else loadAux();break;}case 'journal-export':decisionJournalExport();break;case 'journal-clear':decisionJournalClear();break;case 'price-proof-save':privatePriceCapture();break;case 'price-proof-export':privatePriceExport();break;case 'price-proof-delete':privatePriceDelete();break;case 'export-state':download('nba-season-lab-backup.json',S);break;case 'set-cash':{const val=num(document.getElementById('cash')?.value);if(!Number.isFinite(val)||val<0)return showMsg('Некорректная касса');S.cash=val;save();view();break;}}});
+ }case 'planner-task-toggle':UI.plannerTaskListOpen=!UI.plannerTaskListOpen;view();break;case 'today-review':{UI.plannerTask='advice';UI.multiDays=7;UI.multiFocus='all';
+  const cached=UI.todayResult?.ready&&UI.todayResult.signature===chainSignature()&&
+    UI.todayCalculatedAt&&now()-UI.todayCalculatedAt<=30*60000&&UI.todayResult.start>=now()-60000;
+  if(cached){UI.multiResult=UI.todayResult;UI.multiCalculatedAt=UI.todayCalculatedAt;UI.plannerWhen=UI.todayResult.start;tab='planner';view();}
+  else{UI.plannerWhen=null;tab='planner';view();calculateMulti();}break;}case 'sports-check-toggle':UI.sportsOpen=!UI.sportsOpen;view();break;case 'sports-check-run':sportsCheckRun();break;case 'dismiss':notice='';view();break;case 'create-roster':createRoster();break;case 'reset-roster':resetRoster();break;case 'close-modal':MODAL=null;renderModal();break;case 'compare':if(UI.compare.length>=2){MODAL='compare';renderModal();}else showMsg('Выберите хотя бы двух игроков.');break;case 'cal-prev-tours':UI.calendarTour=Math.max(1,(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))-UI.calendarTourCount);view();break;case 'cal-next-tours':UI.calendarTour=Math.min(Math.max(1,window.NBACalendarTours.seasonTourCount()-UI.calendarTourCount+1),(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))+UI.calendarTourCount);view();break;case 'cal-current-tours':UI.calendarTour=window.NBACalendarTours.tourNumber(now());view();break;case 'cal-prev-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(T.FIRST_DATE,UI.calendarStart));UI.calendarStart=T.addDays(UI.calendarStart,-n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'cal-next-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(UI.calendarEnd,T.LAST_DATE));UI.calendarStart=T.addDays(UI.calendarStart,n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'market-advanced':UI.marketAdvanced=!UI.marketAdvanced;view();break;case 'market-more':UI.marketLimit=Math.min(BASE.players.length,UI.marketLimit+50);view();break;case 'planner-advanced-toggle':UI.plannerAdvanced=!UI.plannerAdvanced;view();break;case 'planner-detail-toggle':UI.plannerDetail=!UI.plannerDetail;view();break;case 'planner-manual-toggle':UI.plannerManualOpen=!UI.plannerManualOpen;view();break;case 'multi-options-toggle':UI.multiOptions=!UI.multiOptions;view();break;case 'calculate-chains':calculateChains();break;case 'calculate-multi':calculateMulti();break;case 'calculate-budget':calculateBudget();break;case 'retro-toggle':UI.retroOpen=!UI.retroOpen;UI.retroPreview=null;view();break;case 'retro-add':UI.retroRows.push(retroBlank());UI.retroPreview=null;view();break;case 'retro-remove':if(UI.retroRows.length>1){UI.retroRows.splice(Number(el.dataset.idx),1);UI.retroPreview=null;view();}break;case 'retro-preview':retroPreviewHistory();break;case 'retro-save':retroCommitHistory();break;case 'add-draft':addDraft();break;case 'preview-transfer':previewTransfer();break;case 'clear-draft':S.draft=[];save();view();break;case 'confirm-draft':confirmDraft();break;case 'refresh':remoteRefresh();break;case 'history-more':UI.histLimit=Math.min(10000,UI.histLimit+100);view();break;case 'retry-history':{const pid=UI.playerId||S.roster[0];if(HISTORY_INDEX){const file=HISTORY_INDEX.player_shards?.[pid];if(file)HISTORY_SHARD_ERRORS.delete(file);scheduleHistory(pid);}else loadAux();break;}case 'journal-export':decisionJournalExport();break;case 'journal-clear':decisionJournalClear();break;case 'price-proof-save':privatePriceCapture();break;case 'price-proof-export':privatePriceExport();break;case 'price-proof-delete':privatePriceDelete();break;case 'export-state':download('nba-season-lab-backup.json',S);break;case 'set-cash':{const val=num(document.getElementById('cash')?.value);if(!Number.isFinite(val)||val<0)return showMsg('Некорректная касса');S.cash=val;save();view();break;}}});
 document.getElementById('navigation').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab);});
 document.addEventListener('change',e=>{const el=e.target;if(!el)return;
  if(el.dataset.historyField!==undefined){const i=Number(el.dataset.historyIndex),field=el.dataset.historyField;
@@ -1696,7 +1702,7 @@ let searchTimer;document.addEventListener('input',e=>{
   document.querySelector('.sports-check-result')?.remove();return;}
  if(e.target.id==='search'){UI.search=e.target.value;UI.marketLimit=50;clearTimeout(searchTimer);searchTimer=setTimeout(()=>{const field=document.activeElement===e.target;const cursor=e.target.selectionStart;view();const n=document.getElementById('search');if(field&&n){n.focus();n.setSelectionRange(cursor,cursor);}},180);}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&MODAL){MODAL=null;renderModal();}});
-window.PythosNBA={base:BASE,getState:()=>JSON.parse(JSON.stringify(S)),getFeed:()=>LIVE,getFeedSource:()=>liveSource,getFeedError:()=>onlineError,validateFeed:checkPublicFeed,refreshFeed:loadFeed,score:(s,home,win)=>{const minutes=Number(s.min)||0;if(!minutes)return 0;return s.pts+s.reb+s.ast+s.stl+s.blk+s.fgm+s.ftm-s.fga-s.fta-s.pf-2*s.tov+(minutes>=10?2:1)+(win?(home?2:3):(home?-3:-2));},check:hardCheck,planCheck:planResult,setState:x=>{S=x;save();view();},updateFeed:x=>{LIVE=x;publicFeedValidated=false;UI.multiResult=null;UI.multiCalculatedAt=null;view();},preview:plannedMean,planWorlds,modelSignal:id=>validatedModelSignal(P[id]),estimate:(id,g)=>learnedMean(P[id],g),modelReport:()=>MODEL_V2};
+window.PythosNBA={base:BASE,getState:()=>JSON.parse(JSON.stringify(S)),getFeed:()=>LIVE,getFeedSource:()=>liveSource,getFeedError:()=>onlineError,validateFeed:checkPublicFeed,refreshFeed:loadFeed,score:(s,home,win)=>{const minutes=Number(s.min)||0;if(!minutes)return 0;return s.pts+s.reb+s.ast+s.stl+s.blk+s.fgm+s.ftm-s.fga-s.fta-s.pf-2*s.tov+(minutes>=10?2:1)+(win?(home?2:3):(home?-3:-2));},check:hardCheck,planCheck:planResult,setState:x=>{S=x;save();view();},updateFeed:x=>{LIVE=x;publicFeedValidated=false;UI.multiResult=null;UI.multiCalculatedAt=null;view();},preview:plannedMean,planWorlds,modelSignal:id=>validatedModelSignal(P[id]),estimate:(id,g)=>learnedMean(P[id],g),modelReport:()=>MODEL_V2,pPlay:(id,g)=>P[id]?probability(P[id],g):NaN,officialGame:(id,g)=>P[id]?verifiedOfficialForGame(P[id],g):null};
 
 
 function nbaSeasons(pid){return NBA_HISTORY?.players?.[pid]||[];}
@@ -1725,7 +1731,7 @@ function rosterWarnings(){
  if(!official.length&&!alerts.length)return '';
  const officialHtml=official.length?`<div class="titledetail"><h2>Официальные статусы NBA · ${official.length}</h2><span class="pill">По конкретным ближайшим матчам</span></div>${official.slice(0,8).map(officialCard).join('')}`:'';
  const telegramHtml=alerts.length?`<div class="titledetail" style="margin-top:${official.length?'15':'0'}px"><h2>Telegram · ${alerts.length} сигналов</h2><span class="pill warn">Не подтверждено</span></div>${alerts.slice(0,5).map(x=>`<div class="lined"><div class="horizontal"><b>${esc(P[x.id]?.name)}</b><span class="small">${esc(x.published_at?dateText(x.published_at):'Дата не определена')}</span></div><p class="small">${esc(x.text)}</p><a target="_blank" rel="noopener noreferrer" href="${esc(x.url)}">Исходный пост</a></div>`).join('')}`:'';
- return `<div class="card official-evidence" style="margin-bottom:16px"><div class="small">ИСТОЧНИКИ ДОСТУПНОСТИ · ТОЛЬКО ИНФОРМАЦИЯ, НЕ ПРОГНОЗ</div>${officialHtml}${telegramHtml}<p class="small">Отсутствие статуса не означает здоровье или участие. Даже статус Available не гарантирует выход. FP и вероятности автоматически не меняются.</p></div>`;
+ return `<div class="card official-evidence" style="margin-bottom:16px"><div class="small">ИСТОЧНИКИ ДОСТУПНОСТИ · ТОЛЬКО ИНФОРМАЦИЯ, НЕ ПРОГНОЗ</div>${officialHtml}${telegramHtml}<p class="small">Отсутствие статуса не означает здоровье или участие. Даже статус Available не гарантирует выход. Только точно сопоставленный свежий NBA OUT даёт нулевой прогноз на указанный матч; прочие статусы — предупреждения, не подтверждённые вероятности.</p></div>`;
 }
 function onboarding(){const selectFor=(pos,n)=>`<label>${pos} · ${n+1}<select data-roster-slot="${pos}"><option value="">Выберите игрока</option>${BASE.players.filter(p=>p.pos===pos).sort((a,b)=>b.start_price-a.start_price).map(p=>`<option value="${p.id}">${esc(p.name)} · ${esc(p.team)} · ${round(p.start_price)}</option>`).join('')}</select></label>`;
  return header('Начало','Моя команда','Составы пользователей независимы. Сначала укажите десять игроков Sports.ru.')+
@@ -1826,7 +1832,7 @@ function checkCalendar(v){
 function setCalendar(v,source){
  const incoming=checkCalendar(v);
  if(CALENDAR&&Date.parse(incoming.updated_at_utc)<Date.parse(CALENDAR.updated_at_utc))return;
- CALENDAR=incoming;UI.chainResult=null;UI.multiResult=null;UI.budgetResult=null;CALENDAR_STATUS=source;
+ CALENDAR=incoming;UI.todayResult=null;UI.todayCalculatedAt=null;UI.todayAutoAttempt=null;UI.chainResult=null;UI.multiResult=null;UI.budgetResult=null;CALENDAR_STATUS=source;
  try{localStorage.setItem(CALENDAR_CACHE_KEY,JSON.stringify(v));}catch{}
  view();
 }
@@ -1844,7 +1850,7 @@ function setOfficialStatus(payload,source){
  const qa=window.NBAOfficialStatus?.validate(payload);
  if(!qa?.ok){OFFICIAL_STATUS='Некорректные официальные данные: '+String(qa?.reason||'неизвестно');return false;}
  if(OFFICIAL_FEED && qa.updatedAt<Date.parse(OFFICIAL_FEED.updated_at_utc))return false;
- OFFICIAL_FEED=payload;UI.chainResult=null;UI.multiResult=null;UI.multiCalculatedAt=null;UI.budgetResult=null;
+ OFFICIAL_FEED=payload;officialGameCache.clear();UI.todayResult=null;UI.todayCalculatedAt=null;UI.todayAutoAttempt=null;UI.chainResult=null;UI.multiResult=null;UI.multiCalculatedAt=null;UI.budgetResult=null;
  const age=(now()-qa.updatedAt)/3600000;
  OFFICIAL_STATUS=(age>12?'Последний снимок старше 12 часов · ':'Получено из GitHub · ')+source+' · '+dateText(qa.updatedAt);
  view();return true;
