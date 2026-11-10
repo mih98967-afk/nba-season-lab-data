@@ -72,9 +72,15 @@
       reasons.push('Актуальность официальных NBA Injury Reports не подтверждена: проверь статусы перед покупкой.');
     }
     if (hasResults && state === 'review') {
-      state = 'scenario'; title = decisionTitles[x.bestRoute.kind];
-      description = 'Сценарное сравнение за 21 день, а не гарантия результата. Проверь цены и ограничения перед действием.';
-      reasons.unshift('Сравнивались KEEP / NOW / LATER на одном горизонте.');
+      if (x.bestRoute.kind === 'now' && x.marketReady !== true) {
+        state = 'market'; title = 'По модели есть замена сейчас — проверь Sports.ru';
+        description = 'Потенциальный прирост FP рассчитан, но реальная цена, касса и доступность хода требуют сверки.';
+        reasons.unshift(x.marketReason || 'Не подтверждены обе цены и реальный остаток замен.');
+      } else {
+        state = 'scenario'; title = decisionTitles[x.bestRoute.kind];
+        description = 'Сценарное сравнение за 21 день, а не гарантия результата. Проверь цены и ограничения перед действием.';
+        reasons.unshift('Сравнивались KEEP / NOW / LATER на одном горизонте.');
+      }
     }
     if (fresh && shortOK && longOK && !reasons.some(s => s.includes('календар'))) {
       reasons.push('Расписание на 7 и 21 день доступно; число игр само по себе не означает лёгких соперников.');

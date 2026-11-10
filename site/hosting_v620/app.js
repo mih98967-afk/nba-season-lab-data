@@ -323,6 +323,7 @@ function todayPage(){
  const result=valid.ready&&UI.multiResult?.signature===chainSignature()&&UI.multiCalculatedAt&&tick-UI.multiCalculatedAt<30*60000?UI.multiResult:null;
  const best=result?.ready&&result.horizonDays===21?result.routes?.[0]:null;
  const verifiedExplanation=best?explainMulti(best,result)?.ready===true:false;
+ const ownerMarket=best?.moves?.length?ownerMarketReadiness(best):null;
  const forecast7=complete&&valid.feedReady&&short.ok?projectionPeriod(S.roster,7):NaN;
  const forecast21=complete&&valid.feedReady&&long.ok?projectionPeriod(S.roster,21):NaN;
  const games7=complete&&short.ok?S.roster.reduce((n,id)=>n+futureGames(id,tick,7).length,0):null;
@@ -333,14 +334,17 @@ function todayPage(){
  const brief=window.NBATodayBrief?.build({rosterCount:S.roster?.length||0,rosterValid:valid.rosterReady,cashReady:valid.cashReady,feedVerified:publicFeedValidated,feedAgeHours:liveAge,feedMode,officialFeedReady,
   calendar7:short.ok,calendar21:long.ok,officialRiskNames,manualOutCount,telegramCount,
   fp7:forecast7,fp21:forecast21,games7,games21,
-  resultFresh:!!best,bestRoute:best,bestExplanationVerified:verifiedExplanation})||{state:'blocked',title:'Не удалось загрузить модуль решений',description:'Проверь источники и повтори после обновления.',reasons:['Расчётные показатели временно недоступны.'],shortFP:null,longFP:null,games7:null,games21:null};
+  resultFresh:!!best,bestRoute:best,bestExplanationVerified:verifiedExplanation,
+  marketReady:ownerMarket?.ready===true,marketReason:ownerMarket?.reasons?.[0]})||{state:'blocked',title:'Не удалось загрузить модуль решений',description:'Проверь источники и повтори после обновления.',reasons:['Расчётные показатели временно недоступны.'],shortFP:null,longFP:null,games7:null,games21:null};
  const primary=brief.state==='onboarding'||brief.state==='fix_roster'
    ?'<button type="button" class="primary today-primary" data-tabto="overview">Добавить состав</button>'
    :brief.state==='blocked'
      ?'<button type="button" class="primary today-primary" data-tabto="data">Проверить источники</button>'
      :brief.state==='risk'
        ?'<button type="button" class="primary today-primary" data-tabto="news">Проверить статусы игроков</button>'
-       :'<button type="button" class="primary today-primary" data-action="today-review">Сравнить варианты замен</button>';
+       :brief.state==='market'
+         ?'<button type="button" class="primary today-primary" data-action="market-review-best">Проверить цены Sports.ru</button>'
+         :'<button type="button" class="primary today-primary" data-action="today-review">Сравнить варианты замен</button>';
  const secondary=brief.state==='onboarding'?''
    :brief.state==='risk'?'<button type="button" class="button" data-action="today-review">Сравнить после проверки риска</button>'
    :brief.state==='blocked'?'<button type="button" class="button" data-tabto="planner">Открыть планировщик</button>'
@@ -818,7 +822,7 @@ function budgetPanel(){
  const signed=n=>`<strong class="${n>=0?'delta-plus':'delta-minus'}">${n>=0?'+':''}${round(n,1)} FP</strong>`;
  const detail=!result?'':!result.ready?
   `<div class="info warning" role="status">${esc(result.reason)}${result.requiredByOut?.length?`<div class="small">Нужно дополнительно: ${result.requiredByOut.map(v=>esc(P[v.out]?.name||v.out)+': '+round(v.deficit)).join(' · ')}</div>`:''}</div>`:
-  `<div class="budget-results" role="status">${routes.length&&routes[0].net<=0?'<div class="info warning"><b>KEEP выглядит выгоднее.</b> Цель можно профинансировать, но найденные пакеты теряют ожидаемые FP или не оправдывают расход ходов.</div>':''}<p class="small">KEEP: ${round(result.baseline,1)} FP за ${result.horizonDays} дней. Свободных ходов на этой неделе: ${result.remaining}. Найдено допустимых пакетов при полной проверке: ${result.eligible}. Ограниченный поиск — не гарантия глобального оптимума.</p>
+  `<div class="budget-results" role="status">${routes.length&&routes[0].net<=0?'<div class="info warning"><b>KEEP выглядит выгоднее.</b> Цель можно профинансировать, но найденные пакеты теряют ожидаемые FP или не оправдывают расход ходов.</div>':''}<p class="small">KEEP: ${round(result.baseline,1)} FP за ${result.horizonDays} дней. Оценочно доступно ходов по журналу (граница Пн 15:00): ${result.remaining}; фактическую квоту проверьте на Sports.ru. Найдено допустимых пакетов при полной проверке: ${result.eligible}. Ограниченный поиск — не гарантия глобального оптимума.</p>
     ${routes.map((r,i)=>`<div class="budget-route"><div class="horizontal" style="justify-content:space-between;gap:10px"><b>${r.moves.length===1?'Прямая покупка':r.moves.length===2?'Покупка + 1 замена для бюджета':'Покупка + 2 замены для бюджета'}</b>${signed(r.gain)}</div>
       <div class="small">С резервом ${UI.budgetPenalty} FP за ход: ${signed(r.net)} · ходов ${r.moves.length} · касса после ${round(r.cash)}</div>
       ${r.moves.map((m,j)=>`<div class="budget-step"><span class="budget-step-index">${j+1}</span><div><b>${j===r.moves.length-1?'Целевая покупка':'Сначала освободить бюджет'}</b><div>${esc(P[m.out]?.name||m.out)} → <b>${esc(P[m.in_]?.name||m.in_)}</b></div><div class="small">${round(m.sell)} → ${round(m.buy)} · касса после ${round(r.stepCash?.[j])} · ${dateText(m.epoch)} МСК</div></div></div>`).join('')}
@@ -840,7 +844,7 @@ function budgetPanel(){
   </div>
   ${target?`<div class="info budget-need"><b>Касса по текущему черновику: ${round(checked.cash)}.</b> Цель стоит ${round(buy)}.${deficits.length?`<div>Не хватает при продаже выбранного игрока: ${deficits.map(d=>`${esc(P[d.id]?.name||d.id)} — ${round(d.short)}`).join(' · ')}.</div>`:''}<div class="small">Цены остальных игроков берутся из раздела «Данные» (или расчётно). Проверьте их на Sports.ru.</div></div>`:''}
   ${!readiness.ready?`<div class="info warning" role="status">Рекомендации заблокированы: ${esc(readiness.reasons.slice(0,2).join(' '))}</div>`:''}
-  <div class="toolbar"><button class="primary" data-action="calculate-budget" ${!readiness.ready||!target||!remaining?'disabled':''}>Найти пакеты под покупку</button><span class="small">Свободно: ${remaining} из 3 ходов · момент ${dateText(t)} МСК</span></div>
+  <div class="toolbar"><button class="primary" data-action="calculate-budget" ${!readiness.ready||!target||!remaining?'disabled':''}>Найти пакеты под покупку</button><span class="small">По журналу: до ${remaining}/3 ходов (гипотеза Пн 15:00) · реальный остаток — Sports.ru · ${dateText(t)} МСК</span></div>
   ${detail}<p class="small">Черновик не совершает трансферы. Если цены на Sports.ru отличаются, обновите их и пересчитайте. Цена цели в этом поле используется только для сценария, не меняя профиль.</p></div>`;
 }
 function calculateBudget(){
@@ -884,6 +888,14 @@ function applyBudget(index){
  const summary=route.moves.map((m,i)=>`${i+1}. ${P[m.out]?.name||m.out} → ${P[m.in_]?.name||m.in_} · ${round(m.sell)} → ${round(m.buy)}`).join('\n');
  if(!confirm('Добавить '+route.moves.length+' шаг(а) ТОЛЬКО В ЧЕРНОВИК?\n\n'+summary+'\n\nВыполните реальные замены на Sports.ru вручную, по порядку, проверяя цены и блокировки.'))return;
  S.draft.push(...route.moves);save();view();showMsg('Все шаги добавлены только в черновик. Реальных трансферов не совершено.');
+}
+function ownerMarketReadiness(route){
+ if(!route?.moves?.length||!window.NBADecisionEvidence?.marketReadiness)return null;
+ let priceArchive=null;
+ try{priceArchive=window.NBAPriceEvidence?.read(localStorage)||null;}catch{}
+ return window.NBADecisionEvidence.marketReadiness({route,nowEpoch:now(),
+  priceArchive,cash:S.cash,draftCount:S.draft.length,
+  weekKey:window.NBATransferGuard.weekKey});
 }
 function multiEvidence(route){
  // Read-only: a private price receipt is never copied to S or Firebase.
@@ -1026,6 +1038,7 @@ function multiPanel(){
    <p class="small">Результаты планов — сценарные FP, а не фактически измеренная выгода. Будущие цены и разблокировки неизвестны; при необходимости проверьте официальный статус NBA. Сигналы Telegram не повышают вероятность участия автоматически.</p></div>`;
  }
  const best=result?.ready?result.routes?.[0]:null;
+ const bestMarket=best?.moves?.length?ownerMarketReadiness(best):null;
  const fresh=UI.multiCalculatedAt!=null&&now()-UI.multiCalculatedAt<=30*60000;
  const bestExplanation=best?explanations[result.routes.indexOf(best)]:null;
  const bestAllowed=fresh&&bestExplanation?.ready;
@@ -1043,6 +1056,7 @@ function multiPanel(){
    <div class="planner-outcome-value">${bestExplanation?.ready?gain(best.net):'н/д'}<span>с учётом условного резерва за ходы</span></div></div>
    ${best.moves.length?best.moves.map((m,i)=>`<div class="planner-best-step"><b>${i+1}.</b> ${esc(P[m.out]?.name||m.out)} → <b>${esc(P[m.in_]?.name||m.in_)}</b> · ${dateText(m.epoch)} МСК</div>`).join(''):'<p>Не тратить трансфер — тоже полноценное решение.</p>'}
    <ol class="planner-best-reasons">${bestReasons.map((s,i)=>`<li><span>${i+1}</span>${esc(s)}</li>`).join('')}</ol>
+   ${bestMarket?`<div class="info ${bestMarket.ready?'':'warning'}" role="status"><b>${bestMarket.ready?'Цены и лимит сверены вручную недавно':'Для реального хода нужна сверка Sports.ru'}</b><p class="small">${esc(bestMarket.ready?'Пары цен, касса и оставшиеся ходы совпадают с ручной отметкой за последний час. Это не независимое подтверждение котировок или права на трансфер.':bestMarket.reasons.slice(0,2).join(' '))}</p>${bestMarket.ready?'':`<button class="button" data-action="market-review-best">Проверить цены первой пары</button>`}</div>`:''}
    <p class="small">Это ограниченный сценарный поиск, не доказанная выгода или гарантия оптимума.</p>
    ${best.moves.length?explainMultiHtml(bestExplanation):''}
    ${!fresh?'<div class="info warning">Расчёт старше 30 минут; обновите варианты перед реальной заменой.</div>':''}
@@ -1580,7 +1594,14 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-action],[
  if(el.dataset.shortlist){UI.plannerTask='specific';UI.plannerIn=el.dataset.shortlist;UI.plannerBuy=null;UI.quickPreview=null;view();document.getElementById('planner-manual')?.scrollIntoView({block:'start',behavior:'smooth'});return;}
  if(el.dataset.removeDraft!==undefined){S.draft.splice(Number(el.dataset.removeDraft),1);save();view();return;}
  if(el.dataset.priceReset){delete S.prices[el.dataset.priceReset];save();view();return;}
- switch(el.dataset.action){case 'planner-task-toggle':UI.plannerTaskListOpen=!UI.plannerTaskListOpen;view();break;case 'today-review':{UI.plannerTask='advice';UI.multiDays=21;UI.multiFocus='all';UI.plannerWhen=null;tab='planner';view();calculateMulti();break;}case 'sports-check-toggle':UI.sportsOpen=!UI.sportsOpen;view();break;case 'sports-check-run':sportsCheckRun();break;case 'dismiss':notice='';view();break;case 'create-roster':createRoster();break;case 'reset-roster':resetRoster();break;case 'close-modal':MODAL=null;renderModal();break;case 'compare':if(UI.compare.length>=2){MODAL='compare';renderModal();}else showMsg('Выберите хотя бы двух игроков.');break;case 'cal-prev-tours':UI.calendarTour=Math.max(1,(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))-UI.calendarTourCount);view();break;case 'cal-next-tours':UI.calendarTour=Math.min(Math.max(1,window.NBACalendarTours.seasonTourCount()-UI.calendarTourCount+1),(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))+UI.calendarTourCount);view();break;case 'cal-current-tours':UI.calendarTour=window.NBACalendarTours.tourNumber(now());view();break;case 'cal-prev-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(T.FIRST_DATE,UI.calendarStart));UI.calendarStart=T.addDays(UI.calendarStart,-n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'cal-next-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(UI.calendarEnd,T.LAST_DATE));UI.calendarStart=T.addDays(UI.calendarStart,n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'market-advanced':UI.marketAdvanced=!UI.marketAdvanced;view();break;case 'market-more':UI.marketLimit=Math.min(BASE.players.length,UI.marketLimit+50);view();break;case 'planner-advanced-toggle':UI.plannerAdvanced=!UI.plannerAdvanced;view();break;case 'planner-detail-toggle':UI.plannerDetail=!UI.plannerDetail;view();break;case 'planner-manual-toggle':UI.plannerManualOpen=!UI.plannerManualOpen;view();break;case 'multi-options-toggle':UI.multiOptions=!UI.multiOptions;view();break;case 'calculate-chains':calculateChains();break;case 'calculate-multi':calculateMulti();break;case 'calculate-budget':calculateBudget();break;case 'retro-toggle':UI.retroOpen=!UI.retroOpen;UI.retroPreview=null;view();break;case 'retro-add':UI.retroRows.push(retroBlank());UI.retroPreview=null;view();break;case 'retro-remove':if(UI.retroRows.length>1){UI.retroRows.splice(Number(el.dataset.idx),1);UI.retroPreview=null;view();}break;case 'retro-preview':retroPreviewHistory();break;case 'retro-save':retroCommitHistory();break;case 'add-draft':addDraft();break;case 'preview-transfer':previewTransfer();break;case 'clear-draft':S.draft=[];save();view();break;case 'confirm-draft':confirmDraft();break;case 'refresh':remoteRefresh();break;case 'history-more':UI.histLimit=Math.min(10000,UI.histLimit+100);view();break;case 'retry-history':{const pid=UI.playerId||S.roster[0];if(HISTORY_INDEX){const file=HISTORY_INDEX.player_shards?.[pid];if(file)HISTORY_SHARD_ERRORS.delete(file);scheduleHistory(pid);}else loadAux();break;}case 'journal-export':decisionJournalExport();break;case 'journal-clear':decisionJournalClear();break;case 'price-proof-save':privatePriceCapture();break;case 'price-proof-export':privatePriceExport();break;case 'price-proof-delete':privatePriceDelete();break;case 'export-state':download('nba-season-lab-backup.json',S);break;case 'set-cash':{const val=num(document.getElementById('cash')?.value);if(!Number.isFinite(val)||val<0)return showMsg('Некорректная касса');S.cash=val;save();view();break;}}});
+ switch(el.dataset.action){case 'market-review-best':{
+  const candidate=UI.multiResult?.signature===chainSignature()?UI.multiResult?.routes?.[0]?.moves?.[0]:null;
+  if(!candidate)return showMsg('Сначала рассчитайте вариант замены.');
+  UI.plannerTask='specific';UI.plannerOut=candidate.out;UI.plannerIn=candidate.in_;
+  UI.plannerWhen=candidate.epoch;UI.plannerSell=candidate.sell;UI.plannerBuy=candidate.buy;
+  UI.plannerManualOpen=true;tab='planner';view();
+  document.getElementById('price-evidence-card')?.scrollIntoView?.({block:'start'});break;
+ }case 'planner-task-toggle':UI.plannerTaskListOpen=!UI.plannerTaskListOpen;view();break;case 'today-review':{UI.plannerTask='advice';UI.multiDays=21;UI.multiFocus='all';UI.plannerWhen=null;tab='planner';view();calculateMulti();break;}case 'sports-check-toggle':UI.sportsOpen=!UI.sportsOpen;view();break;case 'sports-check-run':sportsCheckRun();break;case 'dismiss':notice='';view();break;case 'create-roster':createRoster();break;case 'reset-roster':resetRoster();break;case 'close-modal':MODAL=null;renderModal();break;case 'compare':if(UI.compare.length>=2){MODAL='compare';renderModal();}else showMsg('Выберите хотя бы двух игроков.');break;case 'cal-prev-tours':UI.calendarTour=Math.max(1,(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))-UI.calendarTourCount);view();break;case 'cal-next-tours':UI.calendarTour=Math.min(Math.max(1,window.NBACalendarTours.seasonTourCount()-UI.calendarTourCount+1),(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))+UI.calendarTourCount);view();break;case 'cal-current-tours':UI.calendarTour=window.NBACalendarTours.tourNumber(now());view();break;case 'cal-prev-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(T.FIRST_DATE,UI.calendarStart));UI.calendarStart=T.addDays(UI.calendarStart,-n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'cal-next-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(UI.calendarEnd,T.LAST_DATE));UI.calendarStart=T.addDays(UI.calendarStart,n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'market-advanced':UI.marketAdvanced=!UI.marketAdvanced;view();break;case 'market-more':UI.marketLimit=Math.min(BASE.players.length,UI.marketLimit+50);view();break;case 'planner-advanced-toggle':UI.plannerAdvanced=!UI.plannerAdvanced;view();break;case 'planner-detail-toggle':UI.plannerDetail=!UI.plannerDetail;view();break;case 'planner-manual-toggle':UI.plannerManualOpen=!UI.plannerManualOpen;view();break;case 'multi-options-toggle':UI.multiOptions=!UI.multiOptions;view();break;case 'calculate-chains':calculateChains();break;case 'calculate-multi':calculateMulti();break;case 'calculate-budget':calculateBudget();break;case 'retro-toggle':UI.retroOpen=!UI.retroOpen;UI.retroPreview=null;view();break;case 'retro-add':UI.retroRows.push(retroBlank());UI.retroPreview=null;view();break;case 'retro-remove':if(UI.retroRows.length>1){UI.retroRows.splice(Number(el.dataset.idx),1);UI.retroPreview=null;view();}break;case 'retro-preview':retroPreviewHistory();break;case 'retro-save':retroCommitHistory();break;case 'add-draft':addDraft();break;case 'preview-transfer':previewTransfer();break;case 'clear-draft':S.draft=[];save();view();break;case 'confirm-draft':confirmDraft();break;case 'refresh':remoteRefresh();break;case 'history-more':UI.histLimit=Math.min(10000,UI.histLimit+100);view();break;case 'retry-history':{const pid=UI.playerId||S.roster[0];if(HISTORY_INDEX){const file=HISTORY_INDEX.player_shards?.[pid];if(file)HISTORY_SHARD_ERRORS.delete(file);scheduleHistory(pid);}else loadAux();break;}case 'journal-export':decisionJournalExport();break;case 'journal-clear':decisionJournalClear();break;case 'price-proof-save':privatePriceCapture();break;case 'price-proof-export':privatePriceExport();break;case 'price-proof-delete':privatePriceDelete();break;case 'export-state':download('nba-season-lab-backup.json',S);break;case 'set-cash':{const val=num(document.getElementById('cash')?.value);if(!Number.isFinite(val)||val<0)return showMsg('Некорректная касса');S.cash=val;save();view();break;}}});
 document.getElementById('navigation').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab);});
 document.addEventListener('change',e=>{const el=e.target;if(!el)return;
  if(el.dataset.historyField!==undefined){const i=Number(el.dataset.historyIndex),field=el.dataset.historyField;
