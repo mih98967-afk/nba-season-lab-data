@@ -19,3 +19,9 @@
 - User-attested transfer timestamps remain unverified Sports.ru history; even successfully replayed ESPN FP is not the credited Sports.ru total.
 - Team tile displays `н/д` with a reason when ownership/source is incomplete. No numbers guessed; no roster, history, Firestore, scoring model or Sports.ru mutations.
 - Extended pure and UI-VM regression tests. Existing Hosting is untouched until a separate owner deploy.
+
+## Owner-attested NOW readiness — follow-up (2026-11-10)
+- The existing multi-slot optimizer remains a **hypothetical scenario search** using estimated price fallback; it must not be mistaken for a verified Sports.ru order.
+- Today distinguishes a modelled NOW route from a route with manually rechecked pair prices, cash and actual remaining moves in a fresh, local, non-imported snapshot (up to 1 hour). No future quote or week-boundary assumption is ever certified.
+- A focused link opens the existing manual price-proof form for the first proposed OUT/IN pair; receipts stay local and require an explicit owner checkbox. Nothing is sent to Firebase.
+- Multi-route summary labels readiness, and the budget planner's apparent quota is explicitly an estimate from recorded transactions. All calls and fallback scenarios remain read-only; no pricing model, fantasy FP, transfer or database mutation.
