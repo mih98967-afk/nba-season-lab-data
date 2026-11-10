@@ -398,7 +398,7 @@ function todayPage(){
    :'<button type="button" class="button" data-tabto="overview">Моя команда</button>';
  const fact=(fp,games,days)=>`<section class="today-window"><div class="today-window-head"><b>${days} ${days===21?'день':'дней'}</b><span>${games===null?'Матчи: н/д':games+' игроко-матчей'}</span></div><strong>${fp===null?'н/д':round(fp,1)+' FP'}</strong><p>${fp===null?'Нет проверенного прогноза':'Ожидаемые очки текущей десятки без новых замен'}</p></section>`;
  const reasons=brief.reasons.map((r,i)=>`<li><span aria-hidden="true">${i+1}</span><p>${esc(r)}</p></li>`).join(''); 
- const quickRoute=best&&verifiedExplanation?
+ const quickRoute=best&&verifiedExplanation&&['scenario','market'].includes(brief.state)?
   '<div class="today-quick-route" role="group" aria-label="Предлагаемый сценарий">'+
   '<div class="today-quick-head"><span>Быстрый анализ · 7 дней · до 2 замен</span><strong>'+
   (best.net>=0?'+':'')+round(best.net,1)+' FP</strong></div>'+
