@@ -6,7 +6,7 @@ let a=build(known);assert.equal(a.state,'review');assert.equal(a.hasResults,fals
 a=build({...known,rosterCount:0});assert.equal(a.state,'onboarding');assert.equal(a.showForecast,false);
 a=build({...known,feedMode:'seed'});assert.equal(a.state,'blocked');assert.equal(a.shortFP,null);
 a=build({...known,feedAgeHours:28});assert.equal(a.state,'blocked');assert.equal(a.longFP,null);
-a=build({...known,calendar21:false});assert.equal(a.state,'blocked');assert.equal(a.longFP,null);assert.equal(a.games21,null);
+a=build({...known,calendar21:false});assert.equal(a.state,'review');assert.equal(a.longFP,null);assert.equal(a.games21,null);assert.equal(a.shortFP,179.3);
 a=build({...known,fp7:NaN,fp21:Infinity});assert.equal(a.shortFP,null);assert.equal(a.longFP,null);
 a=build({...known,officialRiskNames:['Игрок А']});assert.equal(a.state,'risk');assert.match(a.reasons[0],/Игрок А/);
 a=build({...known,manualOutCount:1});assert.equal(a.state,'risk');
@@ -28,6 +28,11 @@ a=build({...known,resultFresh:true,bestExplanationVerified:true,bestRoute:{kind:
 assert.equal(a.state,'scenario');
 a=build({...known,resultFresh:true,bestExplanationVerified:true,bestRoute:{kind:'later'},marketReady:false});
 assert.equal(a.state,'scenario','LATER remains hypothetical and is not mislabeled an executable NOW move');
+a=build({...known,calendar21:false,resultFresh:true,bestExplanationVerified:true,bestRoute:{kind:'keep'},resultDays:7});
+assert.equal(a.state,'scenario','A valid 7-day KEEP stays actionable while NBA Cup 21-day is unknown');
+assert.equal(a.longFP,null);assert.equal(a.shortFP,179.3);
+a=build({...known,calendar7:false,calendar21:true,resultFresh:true,bestExplanationVerified:true,bestRoute:{kind:'now'}});
+assert.equal(a.state,'blocked','Unknown 7-day data must never inherit a 21-day route');
 // Price/real-quota evidence is independent from model scenario ranking.
 (()=>{
 const evidence=require('./decision_evidence.js');
@@ -77,4 +82,44 @@ const monday=storage();pair(MON-60000,monday,move('n101','n222',MON+20*60000));
 assert.equal(evidence.marketReadiness({route:{moves:[move('n101','n222',MON+20*60000)]},priceArchive:receipts.read(monday),nowEpoch:MON,cash:500,draftCount:0,weekKey}).ready,false);
 const frozen=JSON.stringify(archive);run(route,archive);assert.equal(JSON.stringify(archive),frozen);
 console.log('PASS market readiness: real vs modelled prices, local cash/quota, clock, week boundary, no mutation');
+})();
+
+// NBA official OUT is attached to the EXACT known fixture and verified point-in-time report.
+(()=>{
+const official=require('./official_status.js');
+const at=Date.parse('2026-11-10T15:00:00Z');
+const tip=Date.parse('2026-11-11T00:30:00Z');
+const p={id:'n1',name:'Игрок теста',team:'NYK',pos:'PG'};
+const game={id:'espn_401909960',home:'NYK',away:'MIL',epoch:tip};
+const event={player_id:p.id,team:p.team,home:'NYK',away:'MIL',game_id:game.id,
+ tipoff_utc:new Date(tip).toISOString(),report_at_utc:'2026-11-10T12:45:00Z',
+ first_seen_at_utc:'2026-11-10T12:58:59Z',status:'out',
+ source_url:'https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-10_07_45AM.pdf'};
+const feed={schema_version:1,status:'research_only_not_deployed',updated_at_utc:'2026-11-10T13:04:20Z',events:[event]};
+assert.equal(official.forGame(feed,p,game,{n1:p},at)?.status,'out');
+assert.equal(official.forGame(feed,p,{...game,id:'espn_401909961'},{n1:p},at),null);
+assert.equal(official.forGame(feed,p,{...game,away:'BOS'},{n1:p},at),null);
+assert.equal(official.forGame(feed,{...p,team:'MIL'},game,{n1:{...p,team:'MIL'}},at),null);
+assert.equal(official.forGame(feed,p,game,{n1:p},at-3*3600000),null,'Future information must not leak backwards');
+assert.equal(official.forGame(feed,p,game,{n1:p},at+13*3600000),null,'Expired/in-play report is not an actionable fresh OUT');
+const q={...feed,events:[{...event,status:'questionable'}]};
+assert.equal(official.forGame(q,p,game,{n1:p},at)?.status,'questionable');
+const bad={...feed,events:[{...event,first_seen_at_utc:'2026-11-11T00:01:00Z'}]};
+assert.equal(official.forGame(bad,p,game,{n1:p},Date.parse('2026-11-11T00:05:00Z')),null,'After-lock evidence must not reassign prelock risk');
+})();
+// Seven-day bounded search must have an explicit calendar horizon contract.
+(()=>{
+const planner=require('./multi_planner.js');
+const names=['PG','SG','SF','PF','C'];const roster=[],players={};
+for(const pos of names)for(let i=0;i<2;i++){
+ const id=pos+i;roster.push(id);players[id]={id,pos,team:pos+i,forecast:true,mean_if_play:15};
+}
+const t=Date.parse('2026-11-10T18:00:00Z');
+const draftCheck=()=>({valid:true,roster:roster.slice(),cash:500,used:{},alternateQuotaWeeks:{},warnings:[]});
+const project=(_moves,a,b)=>(b-a)/86400000*100;
+const res=planner.plan({roster,players,candidates:Object.values(players),nowEpoch:t-1200000,
+ whenEpoch:t,horizonDays:7,maxMoves:2,priceOf:()=>100,validateDraft:draftCheck,
+ coverage:()=>({ok:true,reason:'seven days complete'}),scorePlayer:(_id,a,b)=>(b-a)/86400000*10,project});
+assert.equal(res.ready,true,JSON.stringify(res));
+assert.equal(res.horizonDays,7);assert.equal(res.routes[0].kind,'keep');
 })();
