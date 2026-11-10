@@ -25,7 +25,7 @@
     const riskNames = Array.isArray(x.officialRiskNames) ? x.officialRiskNames.filter(s => typeof s === 'string' && s) : [];
     const manualOutCount = Number.isInteger(x.manualOutCount) && x.manualOutCount >= 0 ? x.manualOutCount : 0;
     const telegramCount = Number.isInteger(x.telegramCount) && x.telegramCount >= 0 ? x.telegramCount : 0;
-    const hasResults = complete && fresh && shortOK && longOK && x.resultFresh === true &&
+    const hasResults = complete && fresh && shortOK && x.resultFresh === true &&
       x.bestExplanationVerified === true && x.bestRoute && decisionTitles[x.bestRoute.kind];
     if (x.rosterCount === 10 && x.rosterValid === false) return {
       state: 'fix_roster', title: 'Сначала проверь свой состав',
@@ -53,11 +53,12 @@
       description = 'Без свежих данных решение о замене не стоит принимать по расчёту.';
       reasons.push('Последняя версия статистики недоступна или старше 24 часов.');
     }
-    if (!shortOK || !longOK) {
+    if (!shortOK) {
       if (state !== 'blocked') { state = 'blocked'; title = 'Сначала проверь полноту календаря';
-        description = 'Недостаточно данных, чтобы честно сопоставить 7 и 21 день.'; }
-      reasons.push(!shortOK ? 'Не подтверждён полный календарь на 7 дней.' : 'Не подтверждён полный календарь на 21 день.');
+        description = 'Нет подтверждённого расписания на ближайшую неделю.'; }
+      reasons.push('Не подтверждён полный календарь на 7 дней.');
     }
+    if (shortOK && !longOK) reasons.push('На 21 день календарь неполный: дальний прогноз скрыт, ближайшая неделя доступна.');
     if (riskNames.length || manualOutCount) {
       if (state !== 'blocked') {
         state = 'risk'; title = 'Сначала проверь риски своего состава';
@@ -78,10 +79,11 @@
         reasons.unshift(x.marketReason || 'Не подтверждены обе цены и реальный остаток замен.');
       } else {
         state = 'scenario'; title = decisionTitles[x.bestRoute.kind];
-        description = 'Сценарное сравнение за 21 день, а не гарантия результата. Проверь цены и ограничения перед действием.';
+        description = 'Сценарное сравнение за ' + (x.resultDays === 7 ? 7 : 21) + ' дней, не гарантия результата. Перед ходом проверь цены.';
         reasons.unshift('Сравнивались KEEP / NOW / LATER на одном горизонте.');
       }
     }
+    if (hasResults && typeof x.modelCaution === 'string' && x.modelCaution) reasons.unshift(x.modelCaution);
     if (fresh && shortOK && longOK && !reasons.some(s => s.includes('календар'))) {
       reasons.push('Расписание на 7 и 21 день доступно; число игр само по себе не означает лёгких соперников.');
     }
