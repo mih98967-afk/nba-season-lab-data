@@ -54,11 +54,19 @@
     }
     return [...byGame.values()].sort((a,b)=>a.tipoffEpoch-b.tipoffEpoch||a.playerName.localeCompare(b.playerName,'ru'));
   }
+  function forGame(feed,player,game,players,at=Date.now()){
+    if(!player?.id||!game?.id||!Number.isFinite(game.epoch)||!players)return null;
+    const report=select(feed,[player.id],players,at,72).find(e=>
+      e.gameId===game.id && !e.stale && e.team===player.team &&
+      e.home===game.home && e.away===game.away &&
+      Math.abs(e.tipoffEpoch-game.epoch)<=60000);
+    return report||null;
+  }
   function translate(status){
     return ({out:'OUT · не сыграет по отчёту',doubtful:'Doubtful · маловероятен',
       questionable:'Questionable · под вопросом',probable:'Probable · вероятен',
       available:'Available · доступен по отчёту'})[status]||'Статус неизвестен';
   }
   function isHighRisk(status){return ['out','doubtful','questionable'].includes(status);}
-  return {validate,select,translate,isHighRisk};
+  return {validate,select,forGame,translate,isHighRisk};
 });
