@@ -46,9 +46,9 @@
      horizonDays=21,opportunityPenalty=4,maxMoves=3,
      priceOf,validateDraft,coverage,scorePlayer,project,
      isCandidateAvailable=()=>true,focusIds=[],maxRoutes=5}=o;
-   if(![14,21,28].includes(horizonDays)||![0,4,8].includes(opportunityPenalty)||
+   if(![7,14,21,28].includes(horizonDays)||![0,4,8].includes(opportunityPenalty)||
       ![1,2,3,4].includes(maxMoves))
-     return fail('Горизонт: 14/21/28 дней; резерв: 0/4/8 FP; максимум новых ходов: 1–4');
+     return fail('Горизонт: 7/14/21/28 дней; резерв: 0/4/8 FP; максимум новых ходов: 1–4');
    if(!finite(nowEpoch)||!finite(whenEpoch)||whenEpoch<nowEpoch-60000)
      return fail('Укажите актуальный момент начала анализа');
    if(!Array.isArray(roster)||roster.length!==10||new Set(roster).size!==10||!players||
