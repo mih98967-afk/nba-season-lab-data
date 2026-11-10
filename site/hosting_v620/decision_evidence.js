@@ -89,5 +89,57 @@
     allowAutoTransfer:false,sourceType:'read_only_local_receipt_and_prelock_official_evidence',
     disclaimer:'Ни ручная отметка цены, ни NBA Injury Report не гарантируют цену, участие или право на замену на Sports.ru.'};
  }
- return {audit};
+
+ // An owner-attested current quote is useful evidence, not independent market verification.
+ // Never treat a modelled price or an inferred weekly reset as a Sports.ru counter.
+ function marketReadiness(x={}){
+  const moves=x.route?.moves;
+  if(!Array.isArray(moves))return {status:'needs_check',ready:false,reasons:['Сценарий не сформирован.']};
+  if(!moves.length)return {status:'keep',ready:false,reasons:[]};
+  const now=x.nowEpoch;
+  if(!finite(now))return {status:'needs_check',ready:false,reasons:['Время проверки неизвестно.']};
+  if(moves.some(m=>!finite(m?.epoch)||m.epoch<now-60000||m.epoch>now+30*60000))
+   return {status:'future_scenario',ready:false,reasons:['Будущие цены и остаток замен нельзя подтверждать заранее.']};
+  if(x.draftCount!==0)
+   return {status:'needs_check',ready:false,reasons:['Уже есть черновик: сначала сверьте его с фактическими заменами Sports.ru.']};
+  const wk=x.weekKey;
+  if(typeof wk!=='function'||[0,15].some(hour=>new Set([wk(now,hour),...moves.map(m=>wk(m.epoch,hour))]).size!==1))
+   return {status:'needs_check',ready:false,reasons:['Время операции близко к возможной границе недели: проверьте новый счётчик Sports.ru.']};
+  const archive=x.priceArchive;
+  if(!archive||archive.schema_version!==1||archive.private_local_only!==true||archive.never_autosync!==true||!Array.isArray(archive.receipts))
+   return {status:'needs_check',ready:false,reasons:['Нет локального журнала ручной проверки цен Sports.ru.']};
+  if(archive.restored_from_file_unverified===true)
+   return {status:'needs_check',ready:false,reasons:['Журнал цен восстановлен из файла: отметьте реальные значения заново.']};
+  const recent=archive.receipts.filter(r=>{
+   const t=Date.parse(r?.observed_at_utc||'');
+   return r?.user_confirmed_now===true&&r?.private_local_only===true&&
+    r?.provenance==='owner_manually_rechecked_sportsru_screen'&&r?.transfer_executed===false&&
+    finite(t)&&t<=now&&now-t<=HOUR;
+  });
+  const reasons=[];
+  for(const m of moves){
+   if(!nonnegative(m?.sell)||!nonnegative(m?.buy)){
+    reasons.push('В сценарии нет двух корректных цен.');continue;
+   }
+   const found=recent.some(r=>r.quotes?.length===2&&
+    r.quotes[0]?.side==='sell'&&r.quotes[0].player_id===m.out&&r.quotes[0].price===m.sell&&
+    r.quotes[1]?.side==='buy'&&r.quotes[1].player_id===m.in_&&r.quotes[1].price===m.buy);
+   if(!found)reasons.push('Не для каждой пары OUT/IN есть совпадающая ручная отметка цен за последний час.');
+  }
+  const current=recent.filter(r=>Number.isSafeInteger(r.cash_from_sportsru_screen)&&
+   Number.isInteger(r.quota_remaining_from_sportsru_screen)).at(-1);
+  if(!current)reasons.push('Нет свежей ручной отметки кассы и остатка замен Sports.ru.');
+  else{
+   if(!nonnegative(x.cash)||x.cash!==current.cash_from_sportsru_screen)
+    reasons.push('Касса в сервисе не совпадает с последней отметкой Sports.ru.');
+   if(moves.length>current.quota_remaining_from_sportsru_screen)
+    reasons.push('На Sports.ru отмечено меньше свободных замен, чем в сценарии.');
+  }
+  const ready=reasons.length===0;
+  return {status:ready?'owner_checked_now':'needs_check',ready,
+   remainingOwner:current?.quota_remaining_from_sportsru_screen??null,
+   cashOwner:current?.cash_from_sportsru_screen??null,
+   reasons:[...new Set(reasons)],independentlyVerified:false,allowAutoTransfer:false};
+ }
+ return {audit,marketReadiness};
 });
