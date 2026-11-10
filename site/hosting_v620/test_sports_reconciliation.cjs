@@ -43,25 +43,45 @@ console.log('sports reconciliation: read-only checks passed');
 // Missing FP and duplicated owned player-games cannot become a valid season total.
 const {audit}=require('./score_audit.js');
 const gameEpoch=Date.parse('2026-11-01T23:00:00Z');
-const state={initialRoster:['owner-p'],initialEpoch:gameEpoch-86400000,executed:[]};
-const fixture={games:[{id:'g1',epoch:gameEpoch,status:'final',et_date:'2026-11-01'}],
+const state={initialRoster:['owner-p',...Array.from({length:9},(_,i)=>'filler'+i)],initialEpoch:gameEpoch-86400000,executed:[]};
+const fixture={mode:'live_sync',games:[{id:'g1',epoch:gameEpoch,status:'final',et_date:'2026-11-01'}],
  rows:[{id:'owner-p',game_id:'g1',played:true,fp:0}]};
-let summary=audit(fixture,state);
+let summary=audit(fixture,state,{sourceVerified:true});
 assert.equal(summary.complete,true);
 assert.equal(summary.fp,0,'An actual zero FP must remain a valid zero');
-summary=audit({...fixture,rows:[{...fixture.rows[0],fp:-2}]},state);
+summary=audit({...fixture,rows:[{...fixture.rows[0],fp:-2}]},state,{sourceVerified:true});
 assert.equal(summary.complete,true);
 assert.equal(summary.fp,-2,'Negative actual FP are legitimate');
 for(const invalid of [null,undefined,'',' ',NaN,'unknown']){
- summary=audit({...fixture,rows:[{...fixture.rows[0],fp:invalid}]},state);
+ summary=audit({...fixture,rows:[{...fixture.rows[0],fp:invalid}]},state,{sourceVerified:true});
  assert.equal(summary.complete,false,'Missing FP must fail closed: '+String(invalid));
  assert.equal(Number.isFinite(summary.fp),false);
  assert.equal(Number.isFinite(summary.earlierETFP),false);
 }
-summary=audit({...fixture,rows:[fixture.rows[0],{...fixture.rows[0]}]},state);
+summary=audit({...fixture,rows:[fixture.rows[0],{...fixture.rows[0]}]},state,{sourceVerified:true});
 assert.equal(summary.complete,false,'Duplicate ownership row invalidates total');
 assert.equal(Number.isFinite(summary.fp),false);
-summary=audit({...fixture,rows:[fixture.rows[0],{id:'not-owned',game_id:'g1',played:true,fp:null}]},state);
+summary=audit({...fixture,rows:[fixture.rows[0],{id:'not-owned',game_id:'g1',played:true,fp:null}]},state,{sourceVerified:true});
 assert.equal(summary.complete,true,'Unowned players do not affect private total');
 assert.equal(summary.fp,0);
 assert.equal(compare({...input,service:{...service,calculatedNBAFP:NaN}}).checks.fp.kind,'LOCAL_SCORE_UNAVAILABLE');
+
+
+// Full historical FP cannot be asserted from a seed, missing ownership or a broken ledger.
+summary=audit(fixture,state);
+assert.equal(summary.complete,false,'Unverified source never produces an apparently exact FP total');
+assert.equal(summary.sourceReady,false);
+summary=audit({...fixture,mode:'schedule_sync_only'},state,{sourceVerified:true});
+assert.equal(summary.complete,false);
+summary=audit(fixture,{...state,initialRoster:[]},{sourceVerified:true});
+assert.equal(summary.complete,false,'Missing initial 10 must not appear as valid zero FP');
+assert.equal(summary.ownershipReady,false);
+summary=audit(fixture,{...state,executed:[{epoch:null,out:'owner-p',in_:'replacement'}]},{sourceVerified:true});
+assert.equal(summary.complete,false,'Unknown transfer timestamp invalidates historical attribution');
+summary=audit(fixture,{...state,executed:[{epoch:gameEpoch-1000,out:'wrong-owner',in_:'replacement'}]},{sourceVerified:true});
+assert.equal(summary.complete,false,'Impossible transfer OUT invalidates lineage');
+summary=audit(fixture,{...state,executed:[{epoch:gameEpoch+1000,out:'owner-p',in_:'replacement'}],roster:state.initialRoster},{sourceVerified:true});
+assert.equal(summary.complete,false,'Final roster must match replayed ownership');
+summary=audit(fixture,{...state,executed:[{epoch:gameEpoch+1000,out:'owner-p',in_:'replacement'}],roster:['replacement',...state.initialRoster.slice(1)]},{sourceVerified:true});
+assert.equal(summary.complete,true,'Valid completed move after match does not corrupt historical FP');
+assert.equal(summary.fp,0);
