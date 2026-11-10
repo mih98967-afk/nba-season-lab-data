@@ -12,3 +12,10 @@
 - Chain/budget panels hide cached FP scenarios when readiness is lost, show a concrete blocked reason and disable automatic search. Fresh official injury report loading invalidates previously generated scenarios, without altering forecast probabilities or claiming that absence of OUT proves health.
 - `test_today_advice_ui_vm.cjs` exercises all three automatic planner action handlers under unverified feed.
 - No change to model weights, scoring, source collection, private Firebase or Sports.ru transactions. Still a source-only candidate; the site is not deployed by this change.
+
+
+## Post-publication correction candidate — 10 November 2026
+- Read-only historical FP totals now require a verified `live_sync` NBA feed and a complete, replayable 10-player ownership lineage (initial snapshot, transfer timestamps and roster consistency). An embedded seed or incomplete ledger cannot appear as a trustworthy numeric total.
+- User-attested transfer timestamps remain unverified Sports.ru history; even successfully replayed ESPN FP is not the credited Sports.ru total.
+- Team tile displays `н/д` with a reason when ownership/source is incomplete. No numbers guessed; no roster, history, Firestore, scoring model or Sports.ru mutations.
+- Extended pure and UI-VM regression tests. Existing Hosting is untouched until a separate owner deploy.

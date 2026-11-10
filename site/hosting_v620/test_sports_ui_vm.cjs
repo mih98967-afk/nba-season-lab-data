@@ -54,4 +54,9 @@ assert.match(view.innerHTML,/Сверить со Sports.ru/);
 assert.deepEqual(window.PythosNBA.getState(),before);
 assert.equal(saved.size,1);
 assert(!JSON.stringify(window.PythosNBA.getState()).includes('sportsResult'));
+// A browser-injected unverified NBA source cannot appear as a verified historical total.
+window.PythosNBA.updateFeed({updated_at_utc:'2026-11-09T18:00:00Z',mode:'live_sync',
+ games:[{id:'g1',status:'final',epoch:Date.parse('2026-11-01T23:00:00Z'),et_date:'2026-11-01',home:'BOS',away:'NYK'}],
+ rows:[{id:roster[0],game_id:'g1',played:true,fp:10}],schedule:[]});
+assert.match(view.innerHTML,/Сумма NBA FP не подтверждена/);
 console.log('VM PASS: user-facing render, event wiring, private input, no state changes');
