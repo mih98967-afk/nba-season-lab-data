@@ -94,7 +94,7 @@ function actualByPlayer(){
  return by;
 }
 function ownedAt(ms){if(!S.initialRoster?.length||ms<(S.initialEpoch||0))return [];let ids=[...S.initialRoster];for(const t of [...S.executed].sort((a,b)=>a.epoch-b.epoch)){if(t.epoch<=ms){const k=ids.indexOf(t.out);if(k>=0)ids[k]=t.in_;}}return ids;}
-function actualTotal(){return window.NBAScoreAudit.audit(LIVE,S);}
+function actualTotal(){return window.NBAScoreAudit.audit(LIVE,S,{sourceVerified:publicFeedValidated});}
 function playerActual(id){return (actualByPlayer()[id]||[]).filter(x=>x.played).slice(-12);}
 function oldGameProjection(p,g){let old=(p.games||[]).find(x=>x.id===g.id||Math.abs(x.epoch-g.epoch)<3.1*3600e3&&x.opponent===(p.team===g.home?g.away:g.home));return old;}
 function probability(p,g){let pp=oldGameProjection(p,g)?.p_play;
@@ -176,7 +176,7 @@ function cardMetric(k,n,sub){return `<div class="metric"><span class="k">${k}</s
 function rosterRow(p){const alert=rosterNews(p.id).length;const official=officialForRoster().find(e=>e.playerId===p.id);const a=playerActual(p.id);const last=a.length?a.at(-1):null;const pred=prediction(p.id,now(),7);const next=futureGames(p.id,now(),7).slice(0,2);
  return `<div class="roster-row"><div><button class="ghost person" data-player="${p.id}">${esc(p.name)}</button>${official?`<span class="pill ${window.NBAOfficialStatus.isHighRisk(official.status)?'warn':''}" title="Официальный отчёт NBA; не изменяет FP автоматически">NBA: ${esc(official.status.toUpperCase())}</span>`:''}${alert?'<span class="pill warn" title="Неофициальный пост Telegram — требуется проверка">Новость</span>':''}<small>${p.team} · ${esc(p.pos)}</small></div><div class="v"><strong>${round(prices(p.id))}</strong><small>цена*</small></div><div class="v"><strong>${last?round(last.fp):'—'}</strong><small>посл. FP</small></div><div class="v"><strong>${pred.available?round(pred.fp):'—'}</strong><small>7 дней</small></div><div class="v last"><strong>${next.map(g=>g.home===p.team?'· '+g.away:'@'+g.home).join(' ')||'—'}</strong><small>соперники</small></div></div>`;}
 function scoreAuditPanel(a){
- if(a.complete===false)return `<div class="info warning" role="status"><b>Сумма NBA FP не подтверждена</b><p>В истории есть повторы игроко-матчей или отсутствующие FP. Сервис не подставляет нули и не выдаёт неполную сумму за реальный итог.</p><p class="small">${a.warnings.map(esc).join(' · ')}</p></div>`;
+ if(a.complete===false)return `<div class="info warning" role="status"><b>Сумма NBA FP не подтверждена</b><p>Исходный состав, история замен, публичный источник или отдельные FP не подтверждены. Сервис не подставляет нули и не выдаёт неполную сумму за реальный итог.</p><p class="small">${a.warnings.map(esc).join(' · ')}</p></div>`;
  if(!a.days.length)return '<div class="info warning">Пока нет подтверждённых сыгранных строк NBA в вашем периоде владения.</div>';
  const fmtDay=d=>d.slice(8,10)+'.'+d.slice(5,7);
  const dayRows=a.days.map(d=>`<div class="horizontal" style="margin:3px 0"><span>${fmtDay(d.day)} ET</span><span class="spacer"></span><b>${round(d.fp)} FP</b><span class="small">(${d.matches} игроко-матчей)</span></div>`).join('');
