@@ -26,10 +26,10 @@ let OFFICIAL_FEED=null,OFFICIAL_STATUS='Официальные NBA Injury Report
 let HISTORY_INDEX=null,HISTORY_STATUS='Загружается индекс…',HISTORY_INFLIGHT=new Set();
 let MODEL_V2=null,HISTORY_LOADED_SHARDS=new Set(),HISTORY_FETCHING_SHARDS=new Set(),HISTORY_SHARD_ERRORS=new Map();
 
-let UI={search:'',position:'all',club:'all',sort:'week',compare:[],window:7,calendarStart:'',calendarEnd:'',calendarDays:14,calendarOwn:false,calendarMode:'tours',calendarTour:0,calendarTourCount:3,calendarTourSort:'games',playerId:null,histSeason:'all',histOpponent:'all',histLimit:25,plannerOut:null,plannerIn:null,plannerWhen:null,plannerSell:null,plannerBuy:null,quickPreview:null,chainDays:21,chainPenalty:4,chainResult:null,multiDays:21,multiPenalty:4,multiMoves:3,multiFocus:'all',multiResult:null,budgetPosition:'all',budgetTarget:null,budgetOut:'auto',budgetBuy:null,budgetDays:14,budgetPenalty:4,budgetMoves:3,budgetResult:null,retroOpen:false,retroRows:[],retroPreview:null,plannerTask:'advice',plannerTaskListOpen:false,plannerAdvanced:false,plannerSequenceTool:'none',plannerManualOpen:false,plannerDetail:false,multiOptions:false,multiCalculatedAt:null,teamView:'court',marketView:'candidates',marketAdvanced:false,marketLimit:50,marketFocusPlayer:null,calendarQuick:'team',calendarTeamDays:7,calendarFocusPlayer:null,statusScope:'mine',sportsOpen:false,sportsResult:null,sportsInputs:{fp:'',cash:'',remaining:''}};
+let UI={search:'',position:'all',club:'all',sort:'week',compare:[],window:7,calendarStart:'',calendarEnd:'',calendarDays:14,calendarOwn:false,calendarMode:'tours',calendarTour:0,calendarTourCount:3,calendarTourSort:'games',playerId:null,histSeason:'all',histOpponent:'all',histLimit:25,plannerOut:null,plannerIn:null,plannerWhen:null,plannerSell:null,plannerBuy:null,quickPreview:null,chainDays:21,chainPenalty:4,chainResult:null,multiDays:7,multiPenalty:4,multiMoves:3,multiFocus:'all',multiResult:null,budgetPosition:'all',budgetTarget:null,budgetOut:'auto',budgetBuy:null,budgetDays:14,budgetPenalty:4,budgetMoves:3,budgetResult:null,retroOpen:false,retroRows:[],retroPreview:null,plannerTask:'advice',plannerTaskListOpen:false,plannerAdvanced:false,plannerSequenceTool:'none',plannerManualOpen:false,plannerDetail:false,multiOptions:false,multiCalculatedAt:null,todayResult:null,todayCalculatedAt:null,todayAutoAttempt:null,todayAutoError:null,teamView:'court',marketView:'candidates',marketAdvanced:false,marketLimit:50,marketFocusPlayer:null,calendarQuick:'team',calendarTeamDays:7,calendarFocusPlayer:null,statusScope:'mine',sportsOpen:false,sportsResult:null,sportsInputs:{fp:'',cash:'',remaining:''}};
 const root=document.getElementById('root');
-function save(){UI.sportsResult=null;UI.sportsInputs={fp:'',cash:'',remaining:''};UI.chainResult=null;UI.multiResult=null;UI.budgetResult=null;S.v=5;S.lastUpdate=new Date().toISOString();try{localStorage.setItem(KEY,JSON.stringify(S));}catch{notice='Браузер не разрешил локальное сохранение. Используйте экспорт резервной копии.';}window.nbaCloudSave?.(JSON.parse(JSON.stringify(S)));}
-function applyState(remote){if(!remote||!Array.isArray(remote.roster))return;UI.sportsResult=null;UI.sportsInputs={fp:'',cash:'',remaining:''};UI.chainResult=null;UI.multiResult=null;UI.budgetResult=null;S={...defaults(),...remote,v:5};saveLocalOnly();tab='today';view();}
+function save(){UI.todayResult=null;UI.todayCalculatedAt=null;UI.todayAutoAttempt=null;UI.sportsResult=null;UI.sportsInputs={fp:'',cash:'',remaining:''};UI.chainResult=null;UI.multiResult=null;UI.budgetResult=null;S.v=5;S.lastUpdate=new Date().toISOString();try{localStorage.setItem(KEY,JSON.stringify(S));}catch{notice='Браузер не разрешил локальное сохранение. Используйте экспорт резервной копии.';}window.nbaCloudSave?.(JSON.parse(JSON.stringify(S)));}
+function applyState(remote){if(!remote||!Array.isArray(remote.roster))return;UI.todayResult=null;UI.todayCalculatedAt=null;UI.todayAutoAttempt=null;UI.sportsResult=null;UI.sportsInputs={fp:'',cash:'',remaining:''};UI.chainResult=null;UI.multiResult=null;UI.budgetResult=null;S={...defaults(),...remote,v:5};saveLocalOnly();tab='today';view();}
 function saveLocalOnly(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch{}}
 window.NBA={getState:()=>JSON.parse(JSON.stringify(S)),applyState,guestReset:()=>{S=defaults();UI.sportsResult=null;UI.sportsInputs={fp:'',cash:'',remaining:''};saveLocalOnly();view();},getAuthStatus:()=>window.NBA_CLOUD_STATUS||{state:'local',label:'На этом устройстве'},setHistory:(x)=>{NBA_HISTORY=x;view();},setTelegram:(x)=>{TG_NEWS=x;view();},setModel:(x)=>{MODEL_REPORT=x;view();},setOfficial:(x)=>{setOfficialStatus(x,'тестовая инъекция');},view:()=>view()};
 
@@ -96,8 +96,19 @@ function actualByPlayer(){
 function ownedAt(ms){if(!S.initialRoster?.length||ms<(S.initialEpoch||0))return [];let ids=[...S.initialRoster];for(const t of [...S.executed].sort((a,b)=>a.epoch-b.epoch)){if(t.epoch<=ms){const k=ids.indexOf(t.out);if(k>=0)ids[k]=t.in_;}}return ids;}
 function actualTotal(){return window.NBAScoreAudit.audit(LIVE,S,{sourceVerified:publicFeedValidated});}
 function playerActual(id){return (actualByPlayer()[id]||[]).filter(x=>x.played).slice(-12);}
+const officialGameCache=new Map();let officialGameBucket=-1;
+function verifiedOfficialForGame(p,g){
+ const bucket=Math.floor(now()/60000);if(bucket!==officialGameBucket){officialGameCache.clear();officialGameBucket=bucket;}
+ if(!p||!g||!OFFICIAL_FEED||!window.NBAOfficialStatus?.forGame)return null;
+ const key=p.id+'|'+p.team+'|'+g.id+'|'+OFFICIAL_FEED.updated_at_utc;
+ if(!officialGameCache.has(key))officialGameCache.set(key,window.NBAOfficialStatus.forGame(OFFICIAL_FEED,p,g,P,now()));
+ return officialGameCache.get(key);
+}
 function oldGameProjection(p,g){let old=(p.games||[]).find(x=>x.id===g.id||Math.abs(x.epoch-g.epoch)<3.1*3600e3&&x.opponent===(p.team===g.home?g.away:g.home));return old;}
-function probability(p,g){let pp=oldGameProjection(p,g)?.p_play;
+function probability(p,g){
+ // A recent, exactly matched NBA OUT is a game-specific fact, never a season-long OUT.
+ if(verifiedOfficialForGame(p,g)?.status==='out')return 0;
+ let pp=oldGameProjection(p,g)?.p_play;
  if(!Number.isFinite(pp))pp=Number.isFinite(p.availability_p1)?clamp(p.availability_p1,0.5,.98):.86;
  const status=S.medical[p.id]||'default';
  if(status==='out')return 0;
@@ -170,11 +181,20 @@ function activeScenarioNotice(){
 function view(){updatePlayerTeams();cache={games:null,actuals:null};const games=normalizedGames(),actuals=actualByPlayer();cache={games,actuals};
  document.getElementById('source-status').textContent=currentStatus();document.querySelectorAll('[data-tab]').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});document.getElementById('more-menu')?.classList.toggle('active', ['history','news','data','account'].includes(tab));
  let html=showNotice();if((tab==='overview'||tab==='players')&&S.roster.length)html+=activeScenarioNotice();if(!S.roster?.length&&(tab==='overview'||tab==='planner'))html+=onboarding();else if(tab==='today')html+=todayPage();else if(tab==='overview')html+=overview();else if(tab==='players')html+=playersPage();else if(tab==='calendar')html+=calendarPage();else if(tab==='planner')html+=plannerPage();else if(tab==='data')html+=dataPage();else if(tab==='history')html+=historyPage();else if(tab==='news')html+=newsPage();else if(tab==='account')html+=accountPage();
- root.innerHTML=html;renderModal();if(tab==='planner'&&S.modelMode==='validated')setTimeout(prefetchPlannerHistory,0);}
+ root.innerHTML=html;renderModal();if(tab==='planner'&&S.modelMode==='validated')setTimeout(prefetchPlannerHistory,0);if(tab==='today')scheduleTodayAuto();}
 function header(k,title,desc){return `<div class="sectiontitle"><div><div class="eyebrow">${esc(k)}</div><h1>${esc(title)}</h1><p class="sub">${esc(desc)}</p></div></div>`;}
 function cardMetric(k,n,sub){return `<div class="metric"><span class="k">${k}</span><strong class="num">${n}</strong><span class="more">${sub}</span></div>`;}
-function rosterRow(p){const alert=rosterNews(p.id).length;const official=officialForRoster().find(e=>e.playerId===p.id);const a=playerActual(p.id);const last=a.length?a.at(-1):null;const pred=prediction(p.id,now(),7);const next=futureGames(p.id,now(),7).slice(0,2);
- return `<div class="roster-row"><div><button class="ghost person" data-player="${p.id}">${esc(p.name)}</button>${official?`<span class="pill ${window.NBAOfficialStatus.isHighRisk(official.status)?'warn':''}" title="Официальный отчёт NBA; не изменяет FP автоматически">NBA: ${esc(official.status.toUpperCase())}</span>`:''}${alert?'<span class="pill warn" title="Неофициальный пост Telegram — требуется проверка">Новость</span>':''}<small>${p.team} · ${esc(p.pos)}</small></div><div class="v"><strong>${round(prices(p.id))}</strong><small>цена*</small></div><div class="v"><strong>${last?round(last.fp):'—'}</strong><small>посл. FP</small></div><div class="v"><strong>${pred.available?round(pred.fp):'—'}</strong><small>7 дней</small></div><div class="v last"><strong>${next.map(g=>g.home===p.team?'· '+g.away:'@'+g.home).join(' ')||'—'}</strong><small>соперники</small></div></div>`;}
+function lastSeasonHistoryCaution(p){
+ if(!p?.forecast)return null;
+ const last=p.history?.find(h=>h.season==='2025/26');
+ if(!last)return 'Нет подтверждённого прошлого сезона: оценка FP менее устойчива.';
+ if(Number.isFinite(last.games)&&last.games<15)return last.games===0?
+  'В 2025/26 не играл: прогноз основан на более ранних данных, вероятность выхода не калибрована.':
+  'В 2025/26 сыграл только '+last.games+' матчей: роль и FP могут измениться.';
+ return null;
+}
+function rosterRow(p){const official=officialForRoster().find(e=>e.playerId===p.id);const a=playerActual(p.id);const last=a.length?a.at(-1):null;const pred=prediction(p.id,now(),7);const next=futureGames(p.id,now(),7).slice(0,2);
+ return `<div class="roster-row"><div><button class="ghost person" data-player="${p.id}">${esc(p.name)}</button>${lastSeasonHistoryCaution(p)?`<span class="pill warn" title="${esc(lastSeasonHistoryCaution(p))}">Мало истории</span>`:''}${official?`<span class="pill ${window.NBAOfficialStatus.isHighRisk(official.status)?'warn':''}" title="Официальный отчёт NBA; не изменяет FP автоматически">NBA: ${esc(official.status.toUpperCase())}</span>`:''}${alert?'<span class="pill warn" title="Неофициальный пост Telegram — требуется проверка">Новость</span>':''}<small>${p.team} · ${esc(p.pos)}</small></div><div class="v"><strong>${round(prices(p.id))}</strong><small>цена*</small></div><div class="v"><strong>${last?round(last.fp):'—'}</strong><small>посл. FP</small></div><div class="v"><strong>${pred.available?round(pred.fp):'—'}</strong><small>7 дней</small></div><div class="v last"><strong>${next.map(g=>g.home===p.team?'· '+g.away:'@'+g.home).join(' ')||'—'}</strong><small>соперники</small></div></div>`;}
 function scoreAuditPanel(a){
  if(a.complete===false)return `<div class="info warning" role="status"><b>Сумма NBA FP не подтверждена</b><p>Исходный состав, история замен, публичный источник или отдельные FP не подтверждены. Сервис не подставляет нули и не выдаёт неполную сумму за реальный итог.</p><p class="small">${a.warnings.map(esc).join(' · ')}</p></div>`;
  if(!a.days.length)return '<div class="info warning">Пока нет подтверждённых сыгранных строк NBA в вашем периоде владения.</div>';
@@ -310,8 +330,33 @@ function teamRosterPanel(){
  <p class="court-source-note">* Цены ориентировочные, если не подтверждены вручную. FP — модельный прогноз по календарю, не зачёт Sports.ru.</p></section>`;
 }
 
+function scheduleTodayAuto(){
+ // One bounded, read-only 7-day comparison. It is never a Sports.ru transfer.
+ if(tab!=='today'||!S.roster?.length||!window.NBAMultiPlanner)return;
+ const stamp=now(),start=stamp+20*60000,signature=chainSignature();
+ const key=signature+'|'+Math.floor(stamp/(30*60000));
+ if(UI.todayAutoAttempt===key||!advicePreflight(7,start).ready)return;
+ UI.todayAutoAttempt=key;UI.todayAutoError=null;
+ setTimeout(()=>{
+  if(tab!=='today'||UI.todayAutoAttempt!==key||chainSignature()!==signature)return;
+  try{
+   const result=window.NBAMultiPlanner.plan({
+    roster:S.roster,players:P,candidates:BASE.players,existingDraft:S.draft,
+    nowEpoch:now(),whenEpoch:now()+20*60000,horizonDays:7,
+    opportunityPenalty:4,maxMoves:2,maxRoutes:5,
+    priceOf:prices,validateDraft:planResult,coverage:calendarCoverage,
+    scorePlayer:scenarioScorePlayer,
+    project:(moves,a,b)=>rangeMean(S.roster,moves,a,b),
+    isCandidateAvailable:id=>S.medical[id]!=='out',focusIds:[]
+   });
+   if(result?.ready){result.signature=signature;UI.todayResult=result;UI.todayCalculatedAt=now();}
+   else{UI.todayResult=null;UI.todayAutoError=result?.reason||'Не удалось построить проверяемое сравнение.';}
+  }catch(e){UI.todayResult=null;UI.todayAutoError='Сравнение не удалось выполнить; попробуй ручной расчёт.';}
+  if(tab==='today')view();
+ },0);
+}
 function todayPage(){
- const tick=now(), valid=advicePreflight(21,tick),complete=valid.rosterReady;
+ const tick=now(), valid=advicePreflight(7,tick),complete=valid.rosterReady;
  const updated=Date.parse(LIVE?.updated_at_utc||'');
  const liveAge=Number.isFinite(updated)?(tick-updated)/3600000:NaN;
  const feedMode=publicFeedValidated?LIVE?.mode:'unverified';
@@ -320,10 +365,11 @@ function todayPage(){
  const officialRiskNames=[...new Set(official.map(e=>P[e.playerId]?.name||e.playerName))];
  const manualOutCount=complete?S.roster.filter(id=>S.medical?.[id]==='out').length:0;
  const telegramCount=complete?S.roster.filter(id=>rosterNews(id).length).length:0;
- const result=valid.ready&&UI.multiResult?.signature===chainSignature()&&UI.multiCalculatedAt&&tick-UI.multiCalculatedAt<30*60000?UI.multiResult:null;
- const best=result?.ready&&result.horizonDays===21?result.routes?.[0]:null;
+ const result=valid.ready&&UI.todayResult?.signature===chainSignature()&&UI.todayCalculatedAt&&tick-UI.todayCalculatedAt<30*60000?UI.todayResult:null;
+ const best=result?.ready&&result.horizonDays===7?result.routes?.[0]:null;
  const verifiedExplanation=best?explainMulti(best,result)?.ready===true:false;
  const ownerMarket=best?.moves?.length?ownerMarketReadiness(best):null;
+ const fragileBest=best?.moves?.map(m=>P[m.in_]).filter(Boolean).find(p=>lastSeasonHistoryCaution(p));
  const forecast7=complete&&valid.feedReady&&short.ok?projectionPeriod(S.roster,7):NaN;
  const forecast21=complete&&valid.feedReady&&long.ok?projectionPeriod(S.roster,21):NaN;
  const games7=complete&&short.ok?S.roster.reduce((n,id)=>n+futureGames(id,tick,7).length,0):null;
@@ -334,8 +380,9 @@ function todayPage(){
  const brief=window.NBATodayBrief?.build({rosterCount:S.roster?.length||0,rosterValid:valid.rosterReady,cashReady:valid.cashReady,feedVerified:publicFeedValidated,feedAgeHours:liveAge,feedMode,officialFeedReady,
   calendar7:short.ok,calendar21:long.ok,officialRiskNames,manualOutCount,telegramCount,
   fp7:forecast7,fp21:forecast21,games7,games21,
-  resultFresh:!!best,bestRoute:best,bestExplanationVerified:verifiedExplanation,
-  marketReady:ownerMarket?.ready===true,marketReason:ownerMarket?.reasons?.[0]})||{state:'blocked',title:'Не удалось загрузить модуль решений',description:'Проверь источники и повтори после обновления.',reasons:['Расчётные показатели временно недоступны.'],shortFP:null,longFP:null,games7:null,games21:null};
+  resultFresh:!!best,bestRoute:best,bestExplanationVerified:verifiedExplanation,resultDays:result?.horizonDays,
+  marketReady:ownerMarket?.ready===true,marketReason:ownerMarket?.reasons?.[0],
+  modelCaution:fragileBest?`У ${fragileBest.name} мало матчей в сезоне 2025/26: прогноз менее устойчив.`:null})||{state:'blocked',title:'Не удалось загрузить модуль решений',description:'Проверь источники и повтори после обновления.',reasons:['Расчётные показатели временно недоступны.'],shortFP:null,longFP:null,games7:null,games21:null};
  const primary=brief.state==='onboarding'||brief.state==='fix_roster'
    ?'<button type="button" class="primary today-primary" data-tabto="overview">Добавить состав</button>'
    :brief.state==='blocked'
