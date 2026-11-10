@@ -397,7 +397,17 @@ function todayPage(){
    :brief.state==='blocked'?'<button type="button" class="button" data-tabto="planner">Открыть планировщик</button>'
    :'<button type="button" class="button" data-tabto="overview">Моя команда</button>';
  const fact=(fp,games,days)=>`<section class="today-window"><div class="today-window-head"><b>${days} ${days===21?'день':'дней'}</b><span>${games===null?'Матчи: н/д':games+' игроко-матчей'}</span></div><strong>${fp===null?'н/д':round(fp,1)+' FP'}</strong><p>${fp===null?'Нет проверенного прогноза':'Ожидаемые очки текущей десятки без новых замен'}</p></section>`;
- const reasons=brief.reasons.map((r,i)=>`<li><span aria-hidden="true">${i+1}</span><p>${esc(r)}</p></li>`).join('');
+ const reasons=brief.reasons.map((r,i)=>`<li><span aria-hidden="true">${i+1}</span><p>${esc(r)}</p></li>`).join(''); 
+ const quickRoute=best&&verifiedExplanation?
+  '<div class="today-quick-route" role="group" aria-label="Предлагаемый сценарий">'+
+  '<div class="today-quick-head"><span>Быстрый анализ · 7 дней · до 2 замен</span><strong>'+
+  (best.net>=0?'+':'')+round(best.net,1)+' FP</strong></div>'+
+  (best.moves.length?best.moves.slice(0,2).map(m=>
+   '<div class="today-quick-step"><b>'+esc(P[m.out]?.name||m.out)+' → '+
+   esc(P[m.in_]?.name||m.in_)+'</b><span>'+dateText(m.epoch)+' МСК</span></div>').join(''):
+   '<b>KEEP: оставить десятку без новых замен</b>')+
+  '<div class="today-quick-foot">После условного резерва за ходы. Цены и участие требуют проверки.</div></div>':'';
+
  const topGames=complete&&short.ok?normalizedGames().filter(g=>g.epoch>tick&&g.epoch<=tick+7*86400000&&g.status!=='final'&&S.roster.some(id=>P[id]?.team===g.home||P[id]?.team===g.away)).slice(0,4):[];
  const nextLock=topGames.map(g=>g.epoch-30*60000).filter(x=>x>tick).sort((a,b)=>a-b)[0];
  const quota15=complete&&S.executed.every(x=>Number.isFinite(x.epoch))?S.executed.filter(x=>moscowWeek(x.epoch)===moscowWeek(tick)).length:null;
@@ -408,11 +418,19 @@ function todayPage(){
  return `<header class="today-heading"><div><div class="eyebrow">Твой ежедневный обзор</div><h1>Нужна ли замена сегодня?</h1><p class="sub">Сначала решение. Подробные расчёты — только если понадобятся.</p></div></header>
  <div class="today-main"><section class="card today-decision today-decision--${esc(brief.state)}"><div class="today-kicker">ЧТО ДЕЛАТЬ</div>
  <h2>${esc(brief.title)}</h2><p class="today-lead">${esc(brief.description)}</p>
+ ${quickRoute}
  <ol class="today-reasons">${reasons}</ol>
  <div class="today-actions">${primary}${secondary}</div>
  <p class="today-disclaimer">Сценарный совет не доказывает реальную выгоду. Трансферы выполняются только на Sports.ru.</p></section>
  <aside class="today-aside"><section class="card today-why"><h3>Надёжность данных</h3><div class="today-proof"><span>Статистика NBA</span><b>${valid.feedReady?'Проверена · '+Math.floor(valid.feedAgeHours)+' ч назад':'Не подтверждена'}</b></div><div class="today-proof"><span>Календарь · 7 дней</span><b>${short.ok?'Доступен':'Не подтверждён'}</b></div><div class="today-proof"><span>Календарь · 21 день</span><b>${long.ok?'Доступен':'Не подтверждён'}</b></div><div class="today-proof"><span>Модель FP</span><b>Точность решений не доказана</b></div><div class="today-proof"><span>Замены по журналу</span><b>${quotaText}</b></div><p>Счётчики по двум гипотезам сброса. Фактический остаток — на Sports.ru.</p></section></aside></div>
  <section class="today-section" aria-label="Короткий и длинный горизонт"><div class="today-section-title"><h2>Ближайшая неделя и три недели</h2><span>FP — очки в Fantasy NBA</span></div><div class="today-windows">${fact(brief.shortFP,brief.games7,7)}${fact(brief.longFP,brief.games21,21)}</div><p class="today-footnote">Это модельные ожидания по текущему составу, а не очки, начисленные Sports.ru. Сложность соперников пока не оценена достоверно: число матчей не равно их качеству.</p></section>
+ ${official.length?'<section class="card today-alerts" aria-label="Статусы перед матчем">'+
+ '<div class="titledetail"><h2>Проверить участие</h2><button class="ghost" data-tabto="news">Все статусы</button></div>'+
+ official.slice(0,3).map(e=>'<div class="today-alert"><b>'+esc(e.playerName)+' · '+esc(e.status.toUpperCase())+
+ '</b><span>'+dateText(e.tipoffEpoch)+' МСК · блокировка '+dateText(e.tipoffEpoch-30*60000)+
+ ' МСК</span><a href="'+esc(e.sourceUrl)+'" target="_blank" rel="noopener noreferrer">NBA PDF</a></div>').join('')+
+ '</section>':''}
+ ${UI.todayAutoError&&valid.ready?'<p class="info warning">Автоматическое сравнение: '+esc(UI.todayAutoError)+'. Можно запустить вручную.</p>':''}
  ${short.ok?`<section class="card today-schedule"><div class="titledetail"><div><h2>Что дальше по расписанию</h2><p>Матчи твоих игроков, ближайшие 7 дней.</p></div><button type="button" class="ghost" data-tabto="calendar">Весь календарь</button></div>
  ${rows||'<p class="muted">Нет подтверждённых ближайших матчей. Не считай это доказательством, что команда не играет.</p>'}
  ${Number.isFinite(nextLock)?`<p class="today-lock">Ближайшая потенциальная блокировка: ${dateText(nextLock)} МСК (за 30 минут до матча).</p>`:''}</section>`:''}`;
@@ -1377,6 +1395,7 @@ function plannerTaskNav(){
   <button type="button" class="button" data-action="planner-task-toggle" aria-expanded="${UI.plannerTaskListOpen}">${UI.plannerTaskListOpen?'Скрыть':'Другая задача'}</button></div>
   ${UI.plannerTaskListOpen?`<div class="planner-task-grid" role="group" aria-label="Выбор задачи">
     ${tasks.map(([id,label,hint])=>`<button type="button" class="planner-task ${UI.plannerTask===id?'active':''}" data-planner-task="${id}" aria-pressed="${UI.plannerTask===id}"><b>${label}</b><span>${hint}</span></button>`).join('')}
+    <details class="planner-more-tools"><summary>Дополнительные сценарии</summary><button type="button" class="planner-task" data-planner-task="sequence"><b>План на недели</b><span>Цепочки и подбор бюджета, если простого совета недостаточно</span></button></details>
   </div>`:''}</div>`;
 }
 function plannerStateBar(){
