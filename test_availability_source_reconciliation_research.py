@@ -37,8 +37,23 @@ class AvailabilityProof(unittest.TestCase):
         s=report["summary"]
         self.assertEqual(s["UNKNOWN_checked"],self.sources[4]["unknown_postgame_results"])
         self.assertEqual(s["OUT_branch"]+s["non_OUT_branch"],s["UNKNOWN_checked"])
-        self.assertEqual(s["game_specific_NBA_boxscore_observed"] +
-                         s["pending_OUT_independent_review"],s["UNKNOWN_checked"])
+        # Some completed-game UNKNOWN cases have NO independently observed
+        # NBA boxscore (transport/source unavailable). They stay UNKNOWN and
+        # must not block the whole public sync or be counted as ESPN DNP.
+        observed = [r for r in report["case_records"]
+                    if r["official_NBA_game_source_observed_at_utc"] is not None]
+        missing = [r for r in report["case_records"]
+                   if r["official_NBA_game_source_observed_at_utc"] is None]
+        self.assertEqual(s["game_specific_NBA_boxscore_observed"],len(observed))
+        self.assertEqual(len(observed)+len(missing),s["UNKNOWN_checked"])
+        self.assertLessEqual(s["pending_OUT_independent_review"],len(missing))
+        self.assertEqual(sum(s["source_class_counts"].values()),s["UNKNOWN_checked"])
+        self.assertTrue(all(
+            r["official_NBA_game_source_sha256"] is None and
+            r["official_NBA_game_specific_verdict"] == "UNKNOWN" and
+            r["p_play_result_still_UNKNOWN"] is True and
+            r["training_negative_created"] is False
+            for r in missing))
         self.assertEqual(len(report["case_records"]),s["UNKNOWN_checked"])
         self.assertEqual(s["new_pplay_DNP_labels"],0)
         self.assertTrue(all(r["p_play_result_still_UNKNOWN"] is True and
