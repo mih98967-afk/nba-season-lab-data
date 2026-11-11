@@ -73,7 +73,7 @@
       reasons.push('Актуальность официальных NBA Injury Reports не подтверждена: проверь статусы перед покупкой.');
     }
     if (hasResults && state === 'review') {
-      if (x.bestRoute.kind === 'now' && x.marketReady !== true) {
+      if ((x.bestRoute.kind === 'now' || (x.historicalQuotaTimesUnverified===true && x.bestRoute.moves?.length>0)) && x.marketReady !== true) {
         state = 'market'; title = 'По модели есть замена сейчас — проверь Sports.ru';
         description = 'Потенциальный прирост FP рассчитан, но реальная цена, касса и доступность хода требуют сверки.';
         reasons.unshift(x.marketReason || 'Не подтверждены обе цены и реальный остаток замен.');
