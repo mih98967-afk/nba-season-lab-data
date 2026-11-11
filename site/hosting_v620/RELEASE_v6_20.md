@@ -33,3 +33,12 @@
 - Display the best modelled route and up to two player pairs on Today; link to its detailed planner without unnecessary recomputation. Route scores still use estimated prices and a hypothetical transfer opportunity cost, not independently validated Sports.ru gains.
 - Restore a clear user surface: three primary transfer tasks, with advanced chains/budget hidden in optional tools. Show caution for players with few games in 2025/26 without modifying forecasts. Add small visual interaction and accessible reduced-motion styles.
 - No forecast weight refit, model promotion, account changes, paid services, new repo or Firebase project. Personal real-profile and deployment QA still required.
+
+## Private Sports.ru journal date-only safety (PR #155 candidate, 11.11.2026)
+- Personal Sports.ru transfer journal and Firebase backup can be reconciled privately. **No owner roster, prices, transactions, or private backup are checked into this public Hosting release**.
+- A restored operation may carry `timePrecision: "date_only"`, `epochIsPlaceholder: true` and the owner-provided game date. Its `epoch` exists solely for legacy roster/planner sequence ordering, **not** as proof of the exact transaction time, Monday quota reset or T-30 possession.
+- `NBAScoreAudit` refuses an exact NBA boxscore FP total when any completed transfer has an explicitly unverified timestamp; this does not treat an unknown FP as zero.
+- Today's and Team's quota estimates display `n/d` if date-only transactions occurred during the relevant 14-day boundary-sensitive interval. Sports.ru owner-entered quota remains read-only evidence, not a backdated derived fact.
+- KEEP/NOW/LATER with unknown historical quota stays a conditional model scenario requiring owner verification, including multi-step routes. Transfer guard exposes the uncertainty, never executes transfers.
+- On JSON restore, the confirmation dialog explicitly warns about date-only clocks. Unrelated player data, scoring formula, predictions, injury model, current public source collector, Firestore schema v5, Hosting project and Firebase Spark remain unchanged.
+- Tests added for synthetic date-only FP, conditional market scenario, quota reconciliation and draft guard. No real Sports.ru total is claimed.
