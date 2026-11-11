@@ -85,3 +85,15 @@ assert.equal(summary.complete,false,'Final roster must match replayed ownership'
 summary=audit(fixture,{...state,executed:[{epoch:gameEpoch+1000,out:'owner-p',in_:'replacement'}],roster:['replacement',...state.initialRoster.slice(1)]},{sourceVerified:true});
 assert.equal(summary.complete,true,'Valid completed move after match does not corrupt historical FP');
 assert.equal(summary.fp,0);
+
+// Date-only owner journal uses a simulation anchor, never verified NBA ownership.
+const uncertainState={...state,executed:[{out:'owner-p',in_:'replacement',epoch:gameEpoch+1000,timePrecision:'date_only',epochIsPlaceholder:true}],roster:['replacement',...state.initialRoster.slice(1)]};
+summary=audit(fixture,uncertainState,{sourceVerified:true});
+assert.equal(summary.complete,false,'Numeric placeholder must not count as verified owner FP');
+assert.equal(summary.ownershipReady,false);
+assert.equal(summary.matches,0);
+assert.match(summary.warnings.join(' '),/точный момент/i);
+const uncertainQuota=compare({...input,owner:{fp:'',cash:'',remaining:'1',confirmedNow:true},service:{...service,executed:[{epoch:now-86400000,timePrecision:'date_only',epochIsPlaceholder:true}]}});
+assert.equal(uncertainQuota.checks.quota.kind,'HISTORICAL_DATE_ONLY_CLOCK_UNVERIFIED');
+assert.equal(uncertainQuota.checks.quota.localRemaining15,null);
+assert.equal(uncertainQuota.checks.quota.localRemaining00,null);
