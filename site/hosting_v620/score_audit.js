@@ -55,6 +55,12 @@
   if(Array.isArray(state.roster)&&state.roster.length===10&&
      (new Set(state.roster).size!==10||current.some(id=>!state.roster.includes(id))))
    return {ok:false,reason:'История замен не воспроизводит текущую десятку.'};
+  // A date-only Sports.ru journal cannot establish the owner at T-30, even if
+  // a numeric epoch is required by the legacy planner. Never convert its
+  // explicitly labelled simulation anchor into an exact historical FP total.
+  const uncertain=moves.filter(t=>t.timePrecision==='date_only'||t.epochIsPlaceholder===true);
+  if(uncertain.length)return {ok:false,timePrecision:'date_only',uncertainMoves:uncertain.length,
+   reason:'В '+uncertain.length+' заменах подтверждена дата Sports.ru, но не точный момент до блокировки матча. Точная сумма NBA FP за время владения не установлена.'};
   return {ok:true,reason:null};
  }
  function audit(live,state,options={}){
