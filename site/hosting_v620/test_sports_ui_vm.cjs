@@ -76,3 +76,18 @@ assert(pp.pPlay(active,{...fixture,id:'espn_other'})>0,'A report cannot zero a d
 let alt=pp.getState();alt.riskMode='allplay';pp.setState(alt);
 assert.equal(pp.pPlay(active,fixture),0,'Even all-play may not override an official exact-game OUT');
 console.log('VM PASS: user-facing render, event wiring, private input, no state changes');
+
+// Regression: do not use browser-global alert as a player-news flag.
+ctx.alert=()=>{};
+window.NBA.setTelegram({events:[]});
+handlers['nav:click']({target:{closest:()=>({dataset:{tab:'overview'}})}});
+handlers.click[0]({target:{closest:()=>({dataset:{teamView:'list'}})}});
+const newsPill=/>Новость</g;
+const pillCount=()=> (view.innerHTML.match(newsPill)||[]).length;
+assert.equal(pillCount(),0,'No player-specific Telegram item means no News badges');
+window.NBA.setTelegram({events:[{player_ids:[roster[0]],published_at:new Date().toISOString()}]});
+assert.equal(pillCount(),1,'News about one player gives only one badge');
+window.NBA.setTelegram({events:[]});
+assert.equal(pillCount(),0,'News badge disappears when events are removed');
+assert(!view.innerHTML.includes('не изменяет FP автоматически'), 'Old official OUT tooltip is misleading');
+console.log('VM PASS: roster badges are player-specific');
