@@ -126,6 +126,10 @@
       if(!ee.length){roster=nextRoster;cash=nextCash;}
     }
     if(draft.length){
+      const uncertainRecent=executed.some(t=>t&&
+        (t.timePrecision==='date_only'||t.epochIsPlaceholder===true)&&
+        Number.isFinite(t.epoch)&&t.epoch>=now-14*86400000&&t.epoch<=now);
+      if(uncertainRecent)warnings.push('Исторические часы замен условные: модельный остаток ходов НЕ подтверждён. Сверьте реальную квоту Sports.ru.');
       warnings.push('Сверьте фактические цены и доступность карточек на Sports.ru перед реальным ходом');
       warnings.push('Точный момент сброса недельной квоты не подтверждён; используйте реальный счётчик Sports.ru');
       if(input?.scheduleVerified!==true)warnings.push('Не подтверждена полнота и свежесть UTC-календаря');
