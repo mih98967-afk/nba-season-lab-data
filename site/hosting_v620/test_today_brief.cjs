@@ -123,3 +123,12 @@ const res=planner.plan({roster,players,candidates:Object.values(players),nowEpoc
 assert.equal(res.ready,true,JSON.stringify(res));
 assert.equal(res.horizonDays,7);assert.equal(res.routes[0].kind,'keep');
 })();
+
+// An unverified Monday clock must not make a multi-step transfer actionable.
+{
+ const x={rosterCount:10,rosterValid:true,cashReady:true,feedVerified:true,feedAgeHours:2,feedMode:'live_sync',calendar7:true,calendar21:true,officialFeedReady:true,
+  resultFresh:true,bestExplanationVerified:true,bestRoute:{kind:'multi_slot',moves:[{out:'p1',in_:'p2'}]},resultDays:7,marketReady:false,historicalQuotaTimesUnverified:true,marketReason:'Сверь квоту Sports.ru',fp7:15,fp21:30,games7:4,games21:12};
+ const out=build(x);
+ assert.equal(out.state,'market');
+ assert.match(out.reasons.join(' '),/Сверь квоту/);
+}
