@@ -76,3 +76,19 @@ assert(pp.pPlay(active,{...fixture,id:'espn_other'})>0,'A report cannot zero a d
 let alt=pp.getState();alt.riskMode='allplay';pp.setState(alt);
 assert.equal(pp.pPlay(active,fixture),0,'Even all-play may not override an official exact-game OUT');
 console.log('VM PASS: user-facing render, event wiring, private input, no state changes');
+
+// P0 regression: the News pill must follow player-specific Telegram events,
+// never the browser-global alert() function. Rendering the list is required.
+ctx.alert=()=>{};
+window.NBA.setTelegram({events:[]});
+handlers['nav:click']({target:{closest:()=>({dataset:{tab:'overview'}})}});
+handlers.click[0]({target:{closest:()=>({dataset:{teamView:'list'}})}});
+const newsPill=/>\u041d\u043e\u0432\u043e\u0441\u0442\u044c</g;
+const pillCount=()=> (view.innerHTML.match(newsPill)||[]).length;
+assert.equal(pillCount(),0,'No player-specific Telegram item means no News badges');
+window.NBA.setTelegram({events:[{player_ids:[roster[0]],published_at:new Date().toISOString()}]});
+assert.equal(pillCount(),1,'An item mentioning one player gives only one badge');
+window.NBA.setTelegram({events:[]});
+assert.equal(pillCount(),0,'The badge disappears when no items remain');
+assert(!view.innerHTML.includes('\u043d\u0435 \u0438\u0437\u043c\u0435\u043d\u044f\u0435\u0442 FP \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438'), 'Official status tooltip must not deny exact-game OUT effects');
+console.log('VM PASS: roster News indicators require player-specific items');
