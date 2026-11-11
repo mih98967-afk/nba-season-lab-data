@@ -17,8 +17,33 @@ class Test(unittest.TestCase):
   self.assertEqual(s["issued"],len(v["outcome_audit"]))
   self.assertFalse(v["quality_gate"]["adopt_on_site"])
   if not s["played_verified"]:self.assertIsNone(v["conditional_played_only_metrics"]["Brier_group"])
-  self.assertIsNone(v["paired_global_minus_group_uncertainty_if_eligible"])
-  self.assertFalse(v["precommitted_exploratory_date_cluster_gates"]["interval_eligible"])
+  gates=v["precommitted_exploratory_date_cluster_gates"]
+  eligible=(s["distinct_ET_dates_scored"]>=MIN_ET_DATES and
+            s["played_verified"]>=MIN_PLAYED and
+            s["distinct_NBA_games_scored"]>=MIN_GAMES)
+  self.assertEqual(gates["interval_eligible"],eligible)
+  self.assertEqual(gates["date_gate"],s["distinct_ET_dates_scored"]>=MIN_ET_DATES)
+  self.assertEqual(gates["played_gate"],s["played_verified"]>=MIN_PLAYED)
+  self.assertEqual(gates["games_gate"],s["distinct_NBA_games_scored"]>=MIN_GAMES)
+  interval=v["paired_global_minus_group_uncertainty_if_eligible"]
+  if not eligible:
+   self.assertIsNone(interval)
+  else:
+   self.assertIsNotNone(interval)
+   self.assertEqual(interval["independent_ET_dates"],s["distinct_ET_dates_scored"])
+   self.assertEqual(interval["distinct_NBA_games"],s["distinct_NBA_games_scored"])
+   self.assertEqual(interval["scored_played_player_games"],s["played_verified"])
+   self.assertEqual(interval["resampling_unit"],"NBA_ET_date_with_all_verified_played_player_games")
+   self.assertEqual(interval["resamples"],2000)
+   for field in ("paired_global_minus_group_Brier_gain_95pct_exploratory",
+                 "paired_global_minus_group_logloss_gain_95pct_exploratory"):
+    self.assertEqual(len(interval[field]),2)
+    self.assertLessEqual(interval[field][0],interval[field][1])
+   self.assertTrue(interval["descriptive_bootstrap_not_confirmatory_inference"])
+   self.assertTrue(interval["not_population_or_transfer_value_evidence"])
+  self.assertFalse(v["quality_gate"]["full_population_calibration_proven"])
+  self.assertFalse(v["quality_gate"]["unconditional_FP_allowed"])
+  self.assertFalse(v["quality_gate"]["KEEP_TRANSFER_gain_proven"])
  def test_changed_first_issue_rejected(self):
   r=deepcopy(self.r);r["issued"][0]["risk_first_issued_at_utc"]=r["issued"][0]["individual_lock_utc"]
   with self.assertRaises(ValueError):self.make(r=r)
