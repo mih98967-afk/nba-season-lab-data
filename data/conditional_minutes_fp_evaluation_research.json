@@ -3,62 +3,62 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-11-10T12:41:50.131058Z",
+  "updated_at_utc": "2026-11-11T12:39:06.604618Z",
   "target": "minutes_and_reconstructed_Sportsru_FP_given_verified_positive_minutes",
   "population": "frozen_prelock_same_team_minutes_issues_only_NOT_full_fantasy_roster",
-  "frozen_minutes_issue_sha256": "7cdf645f28ecfbdc12a0472aec0810080314ff649c07c4e5396eb6522b9dc924",
+  "frozen_minutes_issue_sha256": "9f95d4c557900aa55e06ca7a42ed376f7ae7c8c8a7325870579f6b31cc38613c",
   "model_frozen_hash": "96fe3f30009c36de525ec089d03cad6b8bd14fb07f46137ae991031568d5e6f0",
   "first_issued_source_artifact": "data/conditional_minutes_fp_research.json",
   "cohort_sources": {
-    "minutes_issued_updated": "2026-11-10T02:45:10Z",
-    "p_play_shadow_updated": "2026-11-10T12:41:47Z",
-    "participation_cohort_updated": "2026-11-10T12:41:45Z",
-    "explicit_DNP_updated": "2026-11-10T12:41:44Z",
-    "NBA_live_updated": "2026-11-10T12:41:35Z"
+    "minutes_issued_updated": "2026-11-11T12:39:05Z",
+    "p_play_shadow_updated": "2026-11-11T12:39:04Z",
+    "participation_cohort_updated": "2026-11-11T12:39:02Z",
+    "explicit_DNP_updated": "2026-11-11T12:39:01Z",
+    "NBA_live_updated": "2026-11-11T12:38:56Z"
   },
   "summary": {
-    "finished_checked": 1042,
-    "played": 842,
-    "explicit_DNP_not_scored": 83,
-    "UNKNOWN_not_imputed": 117,
-    "unknown_fraction": 0.112284,
-    "issued_total": 1137,
-    "awaiting_or_unchecked": 95,
-    "played_distinct_games": 66,
-    "played_distinct_ET_dates": 10,
-    "finished_distinct_ET_dates": 10
+    "finished_checked": 1137,
+    "played": 923,
+    "explicit_DNP_not_scored": 85,
+    "UNKNOWN_not_imputed": 129,
+    "unknown_fraction": 0.113456,
+    "issued_total": 1353,
+    "awaiting_or_unchecked": 216,
+    "played_distinct_games": 72,
+    "played_distinct_ET_dates": 11,
+    "finished_distinct_ET_dates": 11
   },
   "positive_minutes_selected_only_metrics": {
-    "played_scored": 842,
+    "played_scored": 923,
     "predicted_minutes": {
-      "MAE": 6.0049,
-      "RMSE": 7.9968,
-      "prediction_minus_actual_bias": 1.2359
+      "MAE": 6.0892,
+      "RMSE": 8.0743,
+      "prediction_minus_actual_bias": 1.3348
     },
     "predicted_FP_per_minute": {
-      "MAE": 0.3155,
-      "RMSE": 0.4578,
-      "prediction_minus_actual_bias": 0.0676
+      "MAE": 0.3165,
+      "RMSE": 0.4606,
+      "prediction_minus_actual_bias": 0.0684
     },
     "decomposed_FP": {
-      "MAE": 7.0479,
-      "RMSE": 8.7459,
-      "prediction_minus_actual_bias": 2.1077
+      "MAE": 7.0327,
+      "RMSE": 8.7047,
+      "prediction_minus_actual_bias": 2.0594
     },
     "direct_FP": {
-      "MAE": 7.0692,
-      "RMSE": 8.7605,
-      "prediction_minus_actual_bias": 2.2459
+      "MAE": 7.0585,
+      "RMSE": 8.718,
+      "prediction_minus_actual_bias": 2.2074
     },
-    "direct_minus_decomposed_FP_MAE": 0.0213,
+    "direct_minus_decomposed_FP_MAE": 0.0259,
     "frozen_historical_error_bands": {
       "minutes_frozen_dev_q90_not_guaranteed": {
-        "empirical_coverage": 0.880048,
-        "mean_width": 22.873,
+        "empirical_coverage": 0.877573,
+        "mean_width": 22.8655,
         "nominal_dev_coverage_not_prospective_claim": 0.9
       },
       "fp_frozen_dev_q90_not_guaranteed": {
-        "empirical_coverage": 0.912114,
+        "empirical_coverage": 0.915493,
         "mean_width": 29.7006,
         "nominal_dev_coverage_not_prospective_claim": 0.9
       }
@@ -67,45 +67,45 @@
   "by_position_outcome_and_played_only": {
     "PG": {
       "outcome_coverage": {
-        "finished_checked": 185,
-        "played": 161,
+        "finished_checked": 204,
+        "played": 178,
         "explicit_DNP_not_scored": 9,
-        "UNKNOWN_not_imputed": 15,
-        "unknown_fraction": 0.081081
+        "UNKNOWN_not_imputed": 17,
+        "unknown_fraction": 0.083333
       },
-      "positive_minute_verified_ET_dates": 10,
-      "positive_minute_verified_NBA_games": 65,
+      "positive_minute_verified_ET_dates": 11,
+      "positive_minute_verified_NBA_games": 71,
       "conditional_played_only_metrics": {
-        "played_scored": 161,
+        "played_scored": 178,
         "predicted_minutes": {
-          "MAE": 4.9743,
-          "RMSE": 6.2943,
-          "prediction_minus_actual_bias": 1.5312
+          "MAE": 5.0828,
+          "RMSE": 6.3606,
+          "prediction_minus_actual_bias": 1.6104
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.2911,
-          "RMSE": 0.3573,
-          "prediction_minus_actual_bias": 0.0341
+          "MAE": 0.2883,
+          "RMSE": 0.3523,
+          "prediction_minus_actual_bias": 0.031
         },
         "decomposed_FP": {
-          "MAE": 8.0701,
-          "RMSE": 9.6514,
-          "prediction_minus_actual_bias": 0.9605
+          "MAE": 8.0227,
+          "RMSE": 9.5588,
+          "prediction_minus_actual_bias": 0.9076
         },
         "direct_FP": {
-          "MAE": 8.1839,
-          "RMSE": 9.7092,
-          "prediction_minus_actual_bias": 1.1776
+          "MAE": 8.1191,
+          "RMSE": 9.5998,
+          "prediction_minus_actual_bias": 1.1421
         },
-        "direct_minus_decomposed_FP_MAE": 0.1137,
+        "direct_minus_decomposed_FP_MAE": 0.0964,
         "frozen_historical_error_bands": {
           "minutes_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.937888,
-            "mean_width": 22.8394,
+            "empirical_coverage": 0.938202,
+            "mean_width": 22.8373,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           },
           "fp_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.881988,
+            "empirical_coverage": 0.88764,
             "mean_width": 29.7006,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           }
@@ -115,45 +115,45 @@
     },
     "SG": {
       "outcome_coverage": {
-        "finished_checked": 277,
-        "played": 225,
-        "explicit_DNP_not_scored": 12,
-        "UNKNOWN_not_imputed": 40,
-        "unknown_fraction": 0.144404
+        "finished_checked": 302,
+        "played": 246,
+        "explicit_DNP_not_scored": 13,
+        "UNKNOWN_not_imputed": 43,
+        "unknown_fraction": 0.142384
       },
-      "positive_minute_verified_ET_dates": 10,
-      "positive_minute_verified_NBA_games": 66,
+      "positive_minute_verified_ET_dates": 11,
+      "positive_minute_verified_NBA_games": 72,
       "conditional_played_only_metrics": {
-        "played_scored": 225,
+        "played_scored": 246,
         "predicted_minutes": {
-          "MAE": 6.5437,
-          "RMSE": 8.627,
-          "prediction_minus_actual_bias": 0.7937
+          "MAE": 6.7158,
+          "RMSE": 8.8577,
+          "prediction_minus_actual_bias": 0.9771
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3182,
-          "RMSE": 0.4698,
-          "prediction_minus_actual_bias": 0.1008
+          "MAE": 0.3293,
+          "RMSE": 0.4944,
+          "prediction_minus_actual_bias": 0.1069
         },
         "decomposed_FP": {
-          "MAE": 6.7836,
-          "RMSE": 8.4298,
-          "prediction_minus_actual_bias": 2.4415
+          "MAE": 6.8201,
+          "RMSE": 8.4264,
+          "prediction_minus_actual_bias": 2.365
         },
         "direct_FP": {
-          "MAE": 6.7718,
-          "RMSE": 8.4369,
-          "prediction_minus_actual_bias": 2.5291
+          "MAE": 6.803,
+          "RMSE": 8.4265,
+          "prediction_minus_actual_bias": 2.4657
         },
-        "direct_minus_decomposed_FP_MAE": -0.0118,
+        "direct_minus_decomposed_FP_MAE": -0.0171,
         "frozen_historical_error_bands": {
           "minutes_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.862222,
-            "mean_width": 22.8461,
+            "empirical_coverage": 0.857724,
+            "mean_width": 22.8483,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           },
           "fp_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.937778,
+            "empirical_coverage": 0.943089,
             "mean_width": 29.7006,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           }
@@ -163,45 +163,45 @@
     },
     "SF": {
       "outcome_coverage": {
-        "finished_checked": 209,
-        "played": 175,
+        "finished_checked": 228,
+        "played": 191,
         "explicit_DNP_not_scored": 23,
-        "UNKNOWN_not_imputed": 11,
-        "unknown_fraction": 0.052632
+        "UNKNOWN_not_imputed": 14,
+        "unknown_fraction": 0.061404
       },
-      "positive_minute_verified_ET_dates": 10,
-      "positive_minute_verified_NBA_games": 65,
+      "positive_minute_verified_ET_dates": 11,
+      "positive_minute_verified_NBA_games": 70,
       "conditional_played_only_metrics": {
-        "played_scored": 175,
+        "played_scored": 191,
         "predicted_minutes": {
-          "MAE": 6.917,
-          "RMSE": 9.1335,
-          "prediction_minus_actual_bias": 1.4827
+          "MAE": 7.0086,
+          "RMSE": 9.1905,
+          "prediction_minus_actual_bias": 1.4858
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3168,
-          "RMSE": 0.5029,
-          "prediction_minus_actual_bias": 0.0532
+          "MAE": 0.3267,
+          "RMSE": 0.5096,
+          "prediction_minus_actual_bias": 0.0434
         },
         "decomposed_FP": {
-          "MAE": 6.6184,
-          "RMSE": 8.2203,
-          "prediction_minus_actual_bias": 2.569
+          "MAE": 6.6942,
+          "RMSE": 8.2703,
+          "prediction_minus_actual_bias": 2.228
         },
         "direct_FP": {
-          "MAE": 6.6023,
-          "RMSE": 8.2059,
-          "prediction_minus_actual_bias": 2.6246
+          "MAE": 6.6911,
+          "RMSE": 8.2556,
+          "prediction_minus_actual_bias": 2.2916
         },
-        "direct_minus_decomposed_FP_MAE": -0.0162,
+        "direct_minus_decomposed_FP_MAE": -0.0031,
         "frozen_historical_error_bands": {
           "minutes_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.834286,
-            "mean_width": 22.8067,
+            "empirical_coverage": 0.827225,
+            "mean_width": 22.7692,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           },
           "fp_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.937143,
+            "empirical_coverage": 0.937173,
             "mean_width": 29.7006,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           }
@@ -211,45 +211,45 @@
     },
     "PF": {
       "outcome_coverage": {
-        "finished_checked": 186,
-        "played": 130,
-        "explicit_DNP_not_scored": 27,
-        "UNKNOWN_not_imputed": 29,
-        "unknown_fraction": 0.155914
+        "finished_checked": 201,
+        "played": 141,
+        "explicit_DNP_not_scored": 28,
+        "UNKNOWN_not_imputed": 32,
+        "unknown_fraction": 0.159204
       },
-      "positive_minute_verified_ET_dates": 10,
-      "positive_minute_verified_NBA_games": 64,
+      "positive_minute_verified_ET_dates": 11,
+      "positive_minute_verified_NBA_games": 70,
       "conditional_played_only_metrics": {
-        "played_scored": 130,
+        "played_scored": 141,
         "predicted_minutes": {
-          "MAE": 5.2985,
-          "RMSE": 7.5676,
-          "prediction_minus_actual_bias": 1.8325
+          "MAE": 5.3502,
+          "RMSE": 7.5504,
+          "prediction_minus_actual_bias": 1.9735
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3261,
-          "RMSE": 0.4934,
-          "prediction_minus_actual_bias": 0.0312
+          "MAE": 0.3161,
+          "RMSE": 0.4793,
+          "prediction_minus_actual_bias": 0.0373
         },
         "decomposed_FP": {
-          "MAE": 6.4941,
-          "RMSE": 8.3134,
-          "prediction_minus_actual_bias": 1.9624
+          "MAE": 6.3265,
+          "RMSE": 8.1573,
+          "prediction_minus_actual_bias": 2.0823
         },
         "direct_FP": {
-          "MAE": 6.6185,
-          "RMSE": 8.4611,
-          "prediction_minus_actual_bias": 2.2115
+          "MAE": 6.4823,
+          "RMSE": 8.3224,
+          "prediction_minus_actual_bias": 2.334
         },
-        "direct_minus_decomposed_FP_MAE": 0.1244,
+        "direct_minus_decomposed_FP_MAE": 0.1558,
         "frozen_historical_error_bands": {
           "minutes_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.907692,
-            "mean_width": 22.904,
+            "empirical_coverage": 0.900709,
+            "mean_width": 22.8996,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           },
           "fp_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.923077,
+            "empirical_coverage": 0.921986,
             "mean_width": 29.7006,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           }
@@ -259,45 +259,45 @@
     },
     "C": {
       "outcome_coverage": {
-        "finished_checked": 185,
-        "played": 151,
+        "finished_checked": 202,
+        "played": 167,
         "explicit_DNP_not_scored": 12,
-        "UNKNOWN_not_imputed": 22,
-        "unknown_fraction": 0.118919
+        "UNKNOWN_not_imputed": 23,
+        "unknown_fraction": 0.113861
       },
-      "positive_minute_verified_ET_dates": 10,
-      "positive_minute_verified_NBA_games": 64,
+      "positive_minute_verified_ET_dates": 11,
+      "positive_minute_verified_NBA_games": 70,
       "conditional_played_only_metrics": {
-        "played_scored": 151,
+        "played_scored": 167,
         "predicted_minutes": {
-          "MAE": 5.8518,
-          "RMSE": 7.5807,
-          "prediction_minus_actual_bias": 0.7804
+          "MAE": 5.8115,
+          "RMSE": 7.5424,
+          "prediction_minus_actual_bias": 0.8558
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3271,
-          "RMSE": 0.4485,
-          "prediction_minus_actual_bias": 0.1018
+          "MAE": 0.3164,
+          "RMSE": 0.4353,
+          "prediction_minus_actual_bias": 0.1064
         },
         "decomposed_FP": {
-          "MAE": 7.3263,
-          "RMSE": 9.1383,
-          "prediction_minus_actual_bias": 2.4242
+          "MAE": 7.2738,
+          "RMSE": 9.0772,
+          "prediction_minus_actual_bias": 2.6245
         },
         "direct_FP": {
-          "MAE": 7.253,
-          "RMSE": 9.0388,
-          "prediction_minus_actual_bias": 2.5536
+          "MAE": 7.2111,
+          "RMSE": 8.9896,
+          "prediction_minus_actual_bias": 2.759
         },
-        "direct_minus_decomposed_FP_MAE": -0.0733,
+        "direct_minus_decomposed_FP_MAE": -0.0627,
         "frozen_historical_error_bands": {
           "minutes_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.874172,
-            "mean_width": 22.9992,
+            "empirical_coverage": 0.88024,
+            "mean_width": 23.0021,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           },
           "fp_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.86755,
+            "empirical_coverage": 0.874251,
             "mean_width": 29.7006,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           }
@@ -308,108 +308,108 @@
   },
   "by_frozen_predicted_minutes_group": {
     "less_than_15_predicted_minutes": {
-      "played_scored": 97,
+      "played_scored": 110,
       "predicted_minutes": {
-        "MAE": 7.0653,
-        "RMSE": 8.7314,
-        "prediction_minus_actual_bias": -2.9785
+        "MAE": 7.0661,
+        "RMSE": 8.7045,
+        "prediction_minus_actual_bias": -3.0736
       },
       "predicted_FP_per_minute": {
-        "MAE": 0.4591,
-        "RMSE": 0.7191,
-        "prediction_minus_actual_bias": 0.0584
+        "MAE": 0.4671,
+        "RMSE": 0.7101,
+        "prediction_minus_actual_bias": 0.0489
       },
       "decomposed_FP": {
-        "MAE": 4.5042,
-        "RMSE": 5.6415,
-        "prediction_minus_actual_bias": -0.4819
+        "MAE": 4.9242,
+        "RMSE": 6.1165,
+        "prediction_minus_actual_bias": -0.7337
       },
       "direct_FP": {
-        "MAE": 4.6294,
-        "RMSE": 5.6978,
-        "prediction_minus_actual_bias": -0.2943
+        "MAE": 5.0445,
+        "RMSE": 6.1789,
+        "prediction_minus_actual_bias": -0.5036
       },
-      "direct_minus_decomposed_FP_MAE": 0.1252,
+      "direct_minus_decomposed_FP_MAE": 0.1203,
       "frozen_historical_error_bands": {
         "minutes_frozen_dev_q90_not_guaranteed": {
-          "empirical_coverage": 0.845361,
-          "mean_width": 21.673,
+          "empirical_coverage": 0.854545,
+          "mean_width": 21.6547,
           "nominal_dev_coverage_not_prospective_claim": 0.9
         },
         "fp_frozen_dev_q90_not_guaranteed": {
-          "empirical_coverage": 0.989691,
+          "empirical_coverage": 0.990909,
           "mean_width": 29.7006,
           "nominal_dev_coverage_not_prospective_claim": 0.9
         }
       }
     },
     "15_to_under_30_predicted_minutes": {
-      "played_scored": 515,
+      "played_scored": 563,
       "predicted_minutes": {
-        "MAE": 6.22,
-        "RMSE": 7.9914,
-        "prediction_minus_actual_bias": 1.5717
+        "MAE": 6.3332,
+        "RMSE": 8.128,
+        "prediction_minus_actual_bias": 1.7218
       },
       "predicted_FP_per_minute": {
-        "MAE": 0.3131,
-        "RMSE": 0.4442,
-        "prediction_minus_actual_bias": 0.0654
+        "MAE": 0.3134,
+        "RMSE": 0.4508,
+        "prediction_minus_actual_bias": 0.0681
       },
       "decomposed_FP": {
-        "MAE": 7.0312,
-        "RMSE": 8.6468,
-        "prediction_minus_actual_bias": 2.102
+        "MAE": 6.9812,
+        "RMSE": 8.5982,
+        "prediction_minus_actual_bias": 2.0648
       },
       "direct_FP": {
-        "MAE": 7.015,
-        "RMSE": 8.6215,
-        "prediction_minus_actual_bias": 2.2791
+        "MAE": 6.9692,
+        "RMSE": 8.5634,
+        "prediction_minus_actual_bias": 2.2477
       },
-      "direct_minus_decomposed_FP_MAE": -0.0162,
+      "direct_minus_decomposed_FP_MAE": -0.012,
       "frozen_historical_error_bands": {
         "minutes_frozen_dev_q90_not_guaranteed": {
-          "empirical_coverage": 0.866019,
+          "empirical_coverage": 0.85968,
           "mean_width": 23.0293,
           "nominal_dev_coverage_not_prospective_claim": 0.9
         },
         "fp_frozen_dev_q90_not_guaranteed": {
-          "empirical_coverage": 0.916505,
+          "empirical_coverage": 0.918295,
           "mean_width": 29.7006,
           "nominal_dev_coverage_not_prospective_claim": 0.9
         }
       }
     },
     "30_plus_predicted_minutes": {
-      "played_scored": 230,
+      "played_scored": 250,
       "predicted_minutes": {
-        "MAE": 5.0759,
-        "RMSE": 7.6786,
-        "prediction_minus_actual_bias": 2.2613
+        "MAE": 5.1099,
+        "RMSE": 7.6537,
+        "prediction_minus_actual_bias": 2.4029
       },
       "predicted_FP_per_minute": {
-        "MAE": 0.2605,
-        "RMSE": 0.3279,
-        "prediction_minus_actual_bias": 0.0764
+        "MAE": 0.2573,
+        "RMSE": 0.3223,
+        "prediction_minus_actual_bias": 0.0776
       },
       "decomposed_FP": {
-        "MAE": 8.158,
-        "RMSE": 9.9593,
-        "prediction_minus_actual_bias": 3.2126
+        "MAE": 8.0762,
+        "RMSE": 9.8387,
+        "prediction_minus_actual_bias": 3.2759
       },
       "direct_FP": {
-        "MAE": 8.2193,
-        "RMSE": 10.0415,
-        "prediction_minus_actual_bias": 3.2428
+        "MAE": 8.1458,
+        "RMSE": 9.9328,
+        "prediction_minus_actual_bias": 3.3094
       },
-      "direct_minus_decomposed_FP_MAE": 0.0614,
+      "direct_minus_decomposed_FP_MAE": 0.0696,
       "frozen_historical_error_bands": {
         "minutes_frozen_dev_q90_not_guaranteed": {
-          "empirical_coverage": 0.926087,
+          "empirical_coverage": 0.928,
           "mean_width": 23.0293,
           "nominal_dev_coverage_not_prospective_claim": 0.9
         },
         "fp_frozen_dev_q90_not_guaranteed": {
-          "empirical_coverage": 0.869565,
+          "empirical_coverage": 0.876,
           "mean_width": 29.7006,
           "nominal_dev_coverage_not_prospective_claim": 0.9
         }
@@ -866,15 +866,60 @@
           }
         }
       }
+    },
+    "2026-11-10": {
+      "coverage": {
+        "finished_checked": 95,
+        "played": 81,
+        "explicit_DNP_not_scored": 2,
+        "UNKNOWN_not_imputed": 12,
+        "unknown_fraction": 0.126316
+      },
+      "conditional_played": {
+        "played_scored": 81,
+        "predicted_minutes": {
+          "MAE": 6.9662,
+          "RMSE": 8.839,
+          "prediction_minus_actual_bias": 2.3624
+        },
+        "predicted_FP_per_minute": {
+          "MAE": 0.3266,
+          "RMSE": 0.4889,
+          "prediction_minus_actual_bias": 0.0769
+        },
+        "decomposed_FP": {
+          "MAE": 6.8743,
+          "RMSE": 8.2643,
+          "prediction_minus_actual_bias": 1.5564
+        },
+        "direct_FP": {
+          "MAE": 6.9475,
+          "RMSE": 8.2626,
+          "prediction_minus_actual_bias": 1.8068
+        },
+        "direct_minus_decomposed_FP_MAE": 0.0732,
+        "frozen_historical_error_bands": {
+          "minutes_frozen_dev_q90_not_guaranteed": {
+            "empirical_coverage": 0.851852,
+            "mean_width": 22.7868,
+            "nominal_dev_coverage_not_prospective_claim": 0.9
+          },
+          "fp_frozen_dev_q90_not_guaranteed": {
+            "empirical_coverage": 0.950617,
+            "mean_width": 29.7006,
+            "nominal_dev_coverage_not_prospective_claim": 0.9
+          }
+        }
+      }
     }
   },
   "missingness_by_first_issued_official_status": {
     "no_observed_official_status": {
-      "finished_checked": 1009,
-      "played": 832,
-      "explicit_DNP_not_scored": 81,
-      "UNKNOWN_not_imputed": 96,
-      "unknown_fraction": 0.095144
+      "finished_checked": 1104,
+      "played": 913,
+      "explicit_DNP_not_scored": 83,
+      "UNKNOWN_not_imputed": 108,
+      "unknown_fraction": 0.097826
     },
     "out": {
       "finished_checked": 19,
@@ -900,48 +945,48 @@
   },
   "missingness_by_club_identity": {
     "same_club_independent_ESPN_ID_observed": {
-      "finished_checked": 1042,
-      "played": 842,
-      "explicit_DNP_not_scored": 83,
-      "UNKNOWN_not_imputed": 117,
-      "unknown_fraction": 0.112284
+      "finished_checked": 1137,
+      "played": 923,
+      "explicit_DNP_not_scored": 85,
+      "UNKNOWN_not_imputed": 129,
+      "unknown_fraction": 0.113456
     }
   },
   "missingness_by_position": {
     "C": {
-      "finished_checked": 185,
-      "played": 151,
+      "finished_checked": 202,
+      "played": 167,
       "explicit_DNP_not_scored": 12,
-      "UNKNOWN_not_imputed": 22,
-      "unknown_fraction": 0.118919
+      "UNKNOWN_not_imputed": 23,
+      "unknown_fraction": 0.113861
     },
     "PF": {
-      "finished_checked": 186,
-      "played": 130,
-      "explicit_DNP_not_scored": 27,
-      "UNKNOWN_not_imputed": 29,
-      "unknown_fraction": 0.155914
+      "finished_checked": 201,
+      "played": 141,
+      "explicit_DNP_not_scored": 28,
+      "UNKNOWN_not_imputed": 32,
+      "unknown_fraction": 0.159204
     },
     "PG": {
-      "finished_checked": 185,
-      "played": 161,
+      "finished_checked": 204,
+      "played": 178,
       "explicit_DNP_not_scored": 9,
-      "UNKNOWN_not_imputed": 15,
-      "unknown_fraction": 0.081081
+      "UNKNOWN_not_imputed": 17,
+      "unknown_fraction": 0.083333
     },
     "SF": {
-      "finished_checked": 209,
-      "played": 175,
+      "finished_checked": 228,
+      "played": 191,
       "explicit_DNP_not_scored": 23,
-      "UNKNOWN_not_imputed": 11,
-      "unknown_fraction": 0.052632
+      "UNKNOWN_not_imputed": 14,
+      "unknown_fraction": 0.061404
     },
     "SG": {
-      "finished_checked": 277,
-      "played": 225,
-      "explicit_DNP_not_scored": 12,
-      "UNKNOWN_not_imputed": 40,
-      "unknown_fraction": 0.144404
+      "finished_checked": 302,
+      "played": 246,
+      "explicit_DNP_not_scored": 13,
+      "UNKNOWN_not_imputed": 43,
+      "unknown_fraction": 0.142384
     }
   },
   "scored_played": [
@@ -26204,6 +26249,2436 @@
         -10.4546,
         19.246
       ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n012",
+      "team": "NYK",
+      "position": "C",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 27.0,
+      "actual_fp_reconstructed": 26.0,
+      "actual_rate": 0.96296296,
+      "predicted_minutes": 29.3173,
+      "predicted_rate": 0.851863,
+      "predicted_decomposed_fp": 24.97431,
+      "predicted_direct_fp": 26.2,
+      "frozen_dev_minutes_band": [
+        17.8026,
+        40.8319
+      ],
+      "frozen_dev_fp_band": [
+        10.124,
+        39.8246
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n021",
+      "team": "NYK",
+      "position": "PG",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 28.0,
+      "actual_fp_reconstructed": 19.0,
+      "actual_rate": 0.67857143,
+      "predicted_minutes": 35.84375,
+      "predicted_rate": 0.598385,
+      "predicted_decomposed_fp": 21.44837,
+      "predicted_direct_fp": 21.8,
+      "frozen_dev_minutes_band": [
+        24.3291,
+        47.3584
+      ],
+      "frozen_dev_fp_band": [
+        6.5981,
+        36.2987
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n072",
+      "team": "NYK",
+      "position": "PF",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 29.0,
+      "actual_fp_reconstructed": 20.0,
+      "actual_rate": 0.68965517,
+      "predicted_minutes": 33.65925,
+      "predicted_rate": 0.543244,
+      "predicted_decomposed_fp": 18.28517,
+      "predicted_direct_fp": 18.4,
+      "frozen_dev_minutes_band": [
+        22.1446,
+        45.1739
+      ],
+      "frozen_dev_fp_band": [
+        3.4349,
+        33.1355
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n088",
+      "team": "NYK",
+      "position": "SF",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 17.0,
+      "actual_fp_reconstructed": 14.0,
+      "actual_rate": 0.82352941,
+      "predicted_minutes": 29.25905,
+      "predicted_rate": 0.410648,
+      "predicted_decomposed_fp": 12.01516,
+      "predicted_direct_fp": 11.55,
+      "frozen_dev_minutes_band": [
+        17.7444,
+        40.7737
+      ],
+      "frozen_dev_fp_band": [
+        -2.8352,
+        26.8655
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n094",
+      "team": "MIL",
+      "position": "C",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 27.0,
+      "actual_fp_reconstructed": -4.0,
+      "actual_rate": -0.14814815,
+      "predicted_minutes": 23.39525,
+      "predicted_rate": 0.419816,
+      "predicted_decomposed_fp": 9.82171,
+      "predicted_direct_fp": 9.15,
+      "frozen_dev_minutes_band": [
+        11.8806,
+        34.9099
+      ],
+      "frozen_dev_fp_band": [
+        -5.0286,
+        24.672
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n098",
+      "team": "MIL",
+      "position": "PG",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 24.0,
+      "actual_fp_reconstructed": 15.0,
+      "actual_rate": 0.625,
+      "predicted_minutes": 31.36275,
+      "predicted_rate": 0.452292,
+      "predicted_decomposed_fp": 14.18512,
+      "predicted_direct_fp": 14.35,
+      "frozen_dev_minutes_band": [
+        19.8481,
+        42.8774
+      ],
+      "frozen_dev_fp_band": [
+        -0.6652,
+        29.0354
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n215",
+      "team": "NYK",
+      "position": "PG",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 6.0,
+      "actual_fp_reconstructed": 1.0,
+      "actual_rate": 0.16666667,
+      "predicted_minutes": 16.42905,
+      "predicted_rate": 0.487371,
+      "predicted_decomposed_fp": 8.00703,
+      "predicted_direct_fp": 7.45,
+      "frozen_dev_minutes_band": [
+        4.9144,
+        27.9437
+      ],
+      "frozen_dev_fp_band": [
+        -6.8433,
+        22.8573
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n223",
+      "team": "NYK",
+      "position": "PG",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 25.0,
+      "actual_fp_reconstructed": 12.0,
+      "actual_rate": 0.48,
+      "predicted_minutes": 21.93255,
+      "predicted_rate": 0.396502,
+      "predicted_decomposed_fp": 8.6963,
+      "predicted_direct_fp": 10.0,
+      "frozen_dev_minutes_band": [
+        10.4179,
+        33.4472
+      ],
+      "frozen_dev_fp_band": [
+        -6.154,
+        23.5466
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n234",
+      "team": "MIL",
+      "position": "SG",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 8.0,
+      "actual_fp_reconstructed": -1.0,
+      "actual_rate": -0.125,
+      "predicted_minutes": 31.45895,
+      "predicted_rate": 0.305152,
+      "predicted_decomposed_fp": 9.59977,
+      "predicted_direct_fp": 8.7,
+      "frozen_dev_minutes_band": [
+        19.9443,
+        42.9736
+      ],
+      "frozen_dev_fp_band": [
+        -5.2505,
+        24.4501
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n240",
+      "team": "NYK",
+      "position": "SG",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 11.0,
+      "actual_fp_reconstructed": 7.0,
+      "actual_rate": 0.63636364,
+      "predicted_minutes": 15.6862,
+      "predicted_rate": 0.523531,
+      "predicted_decomposed_fp": 8.21221,
+      "predicted_direct_fp": 8.9,
+      "frozen_dev_minutes_band": [
+        4.1715,
+        27.2008
+      ],
+      "frozen_dev_fp_band": [
+        -6.6381,
+        23.0625
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n253",
+      "team": "NYK",
+      "position": "SG",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 28.0,
+      "actual_fp_reconstructed": 14.0,
+      "actual_rate": 0.5,
+      "predicted_minutes": 24.28815,
+      "predicted_rate": 0.352396,
+      "predicted_decomposed_fp": 8.55905,
+      "predicted_direct_fp": 8.15,
+      "frozen_dev_minutes_band": [
+        12.7735,
+        35.8028
+      ],
+      "frozen_dev_fp_band": [
+        -6.2913,
+        23.4094
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n276",
+      "team": "MIL",
+      "position": "PF",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 26.0,
+      "actual_fp_reconstructed": 7.0,
+      "actual_rate": 0.26923077,
+      "predicted_minutes": 23.5722,
+      "predicted_rate": 0.472024,
+      "predicted_decomposed_fp": 11.12665,
+      "predicted_direct_fp": 11.75,
+      "frozen_dev_minutes_band": [
+        12.0575,
+        35.0868
+      ],
+      "frozen_dev_fp_band": [
+        -3.7237,
+        25.977
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n312",
+      "team": "NYK",
+      "position": "PG",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 15.0,
+      "actual_fp_reconstructed": 19.0,
+      "actual_rate": 1.26666667,
+      "predicted_minutes": 7.90985,
+      "predicted_rate": 0.685521,
+      "predicted_decomposed_fp": 5.42237,
+      "predicted_direct_fp": 6.05,
+      "frozen_dev_minutes_band": [
+        0,
+        19.4245
+      ],
+      "frozen_dev_fp_band": [
+        -9.4279,
+        20.2727
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n358",
+      "team": "MIL",
+      "position": "SF",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 24.0,
+      "actual_fp_reconstructed": 3.0,
+      "actual_rate": 0.125,
+      "predicted_minutes": 31.632,
+      "predicted_rate": 0.299634,
+      "predicted_decomposed_fp": 9.47804,
+      "predicted_direct_fp": 8.7,
+      "frozen_dev_minutes_band": [
+        20.1174,
+        43.1467
+      ],
+      "frozen_dev_fp_band": [
+        -5.3723,
+        24.3284
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n388",
+      "team": "NYK",
+      "position": "PF",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 18.0,
+      "actual_fp_reconstructed": 5.0,
+      "actual_rate": 0.27777778,
+      "predicted_minutes": 13.1478,
+      "predicted_rate": 0.441651,
+      "predicted_decomposed_fp": 5.80674,
+      "predicted_direct_fp": 5.95,
+      "frozen_dev_minutes_band": [
+        1.6332,
+        24.6624
+      ],
+      "frozen_dev_fp_band": [
+        -9.0436,
+        20.657
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n417",
+      "team": "MIL",
+      "position": "C",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 8.0,
+      "actual_fp_reconstructed": 0.0,
+      "actual_rate": 0.0,
+      "predicted_minutes": 27.88295,
+      "predicted_rate": 0.448227,
+      "predicted_decomposed_fp": 12.4979,
+      "predicted_direct_fp": 11.25,
+      "frozen_dev_minutes_band": [
+        16.3683,
+        39.3976
+      ],
+      "frozen_dev_fp_band": [
+        -2.3524,
+        27.3482
+      ]
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n452",
+      "team": "NYK",
+      "position": "SF",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909960",
+      "actual_minutes": 6.0,
+      "actual_fp_reconstructed": 11.0,
+      "actual_rate": 1.83333333,
+      "predicted_minutes": 6.67875,
+      "predicted_rate": 0.606333,
+      "predicted_decomposed_fp": 4.04954,
+      "predicted_direct_fp": 3.3,
+      "frozen_dev_minutes_band": [
+        0,
+        18.1934
+      ],
+      "frozen_dev_fp_band": [
+        -10.8008,
+        18.8999
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n014",
+      "team": "PHI",
+      "position": "PG",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 34.0,
+      "actual_fp_reconstructed": 18.0,
+      "actual_rate": 0.52941176,
+      "predicted_minutes": 36.33585,
+      "predicted_rate": 0.601754,
+      "predicted_decomposed_fp": 21.86525,
+      "predicted_direct_fp": 21.3,
+      "frozen_dev_minutes_band": [
+        24.8212,
+        47.8505
+      ],
+      "frozen_dev_fp_band": [
+        7.0149,
+        36.7156
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n020",
+      "team": "PHI",
+      "position": "C",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 31.0,
+      "actual_fp_reconstructed": 8.0,
+      "actual_rate": 0.25806452,
+      "predicted_minutes": 33.4629,
+      "predicted_rate": 0.82012,
+      "predicted_decomposed_fp": 27.44361,
+      "predicted_direct_fp": 28.5,
+      "frozen_dev_minutes_band": [
+        21.9482,
+        44.9775
+      ],
+      "frozen_dev_fp_band": [
+        12.5933,
+        42.2939
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n056",
+      "team": "BOS",
+      "position": "SG",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 22.0,
+      "actual_fp_reconstructed": 4.0,
+      "actual_rate": 0.18181818,
+      "predicted_minutes": 33.13205,
+      "predicted_rate": 0.478881,
+      "predicted_decomposed_fp": 15.86632,
+      "predicted_direct_fp": 15.9,
+      "frozen_dev_minutes_band": [
+        21.6174,
+        44.6467
+      ],
+      "frozen_dev_fp_band": [
+        1.016,
+        30.7166
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n064",
+      "team": "BOS",
+      "position": "PG",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 30.0,
+      "actual_fp_reconstructed": 25.0,
+      "actual_rate": 0.83333333,
+      "predicted_minutes": 31.42625,
+      "predicted_rate": 0.535734,
+      "predicted_decomposed_fp": 16.83611,
+      "predicted_direct_fp": 16.8,
+      "frozen_dev_minutes_band": [
+        19.9116,
+        42.9409
+      ],
+      "frozen_dev_fp_band": [
+        1.9858,
+        31.6864
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n087",
+      "team": "PHI",
+      "position": "SG",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 32.0,
+      "actual_fp_reconstructed": 7.0,
+      "actual_rate": 0.21875,
+      "predicted_minutes": 34.4905,
+      "predicted_rate": 0.511423,
+      "predicted_decomposed_fp": 17.63924,
+      "predicted_direct_fp": 18.05,
+      "frozen_dev_minutes_band": [
+        22.9758,
+        46.0052
+      ],
+      "frozen_dev_fp_band": [
+        2.7889,
+        32.4896
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n092",
+      "team": "BOS",
+      "position": "C",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 22.0,
+      "actual_fp_reconstructed": 13.0,
+      "actual_rate": 0.59090909,
+      "predicted_minutes": 27.0067,
+      "predicted_rate": 0.74223,
+      "predicted_decomposed_fp": 20.0452,
+      "predicted_direct_fp": 20.25,
+      "frozen_dev_minutes_band": [
+        15.492,
+        38.5213
+      ],
+      "frozen_dev_fp_band": [
+        5.1949,
+        34.8955
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n194",
+      "team": "BOS",
+      "position": "SF",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 18.0,
+      "actual_fp_reconstructed": 21.0,
+      "actual_rate": 1.16666667,
+      "predicted_minutes": 26.5631,
+      "predicted_rate": 0.459031,
+      "predicted_decomposed_fp": 12.19329,
+      "predicted_direct_fp": 11.45,
+      "frozen_dev_minutes_band": [
+        15.0484,
+        38.0777
+      ],
+      "frozen_dev_fp_band": [
+        -2.657,
+        27.0436
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n282",
+      "team": "BOS",
+      "position": "PF",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 19.0,
+      "actual_fp_reconstructed": 12.0,
+      "actual_rate": 0.63157895,
+      "predicted_minutes": 19.8847,
+      "predicted_rate": 0.473784,
+      "predicted_decomposed_fp": 9.42106,
+      "predicted_direct_fp": 7.8,
+      "frozen_dev_minutes_band": [
+        8.37,
+        31.3993
+      ],
+      "frozen_dev_fp_band": [
+        -5.4292,
+        24.2714
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n330",
+      "team": "BOS",
+      "position": "SG",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 19.0,
+      "actual_fp_reconstructed": 18.0,
+      "actual_rate": 0.94736842,
+      "predicted_minutes": 11.2844,
+      "predicted_rate": 0.522248,
+      "predicted_decomposed_fp": 5.89326,
+      "predicted_direct_fp": 7.15,
+      "frozen_dev_minutes_band": [
+        0,
+        22.7991
+      ],
+      "frozen_dev_fp_band": [
+        -8.9571,
+        20.7436
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n353",
+      "team": "BOS",
+      "position": "SG",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 18.0,
+      "actual_fp_reconstructed": 13.0,
+      "actual_rate": 0.72222222,
+      "predicted_minutes": 24.56245,
+      "predicted_rate": 0.507434,
+      "predicted_decomposed_fp": 12.46381,
+      "predicted_direct_fp": 12.65,
+      "frozen_dev_minutes_band": [
+        13.0478,
+        36.0771
+      ],
+      "frozen_dev_fp_band": [
+        -2.3865,
+        27.3141
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n381",
+      "team": "PHI",
+      "position": "SF",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 6.0,
+      "actual_fp_reconstructed": -5.0,
+      "actual_rate": -0.83333333,
+      "predicted_minutes": 14.2376,
+      "predicted_rate": 0.508101,
+      "predicted_decomposed_fp": 7.23413,
+      "predicted_direct_fp": 9.6,
+      "frozen_dev_minutes_band": [
+        2.723,
+        25.7523
+      ],
+      "frozen_dev_fp_band": [
+        -7.6162,
+        22.0844
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n403",
+      "team": "PHI",
+      "position": "PF",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 15.0,
+      "actual_fp_reconstructed": 1.0,
+      "actual_rate": 0.06666667,
+      "predicted_minutes": 9.5135,
+      "predicted_rate": 0.589807,
+      "predicted_decomposed_fp": 5.61113,
+      "predicted_direct_fp": 6.85,
+      "frozen_dev_minutes_band": [
+        0,
+        21.0282
+      ],
+      "frozen_dev_fp_band": [
+        -9.2392,
+        20.4614
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n411",
+      "team": "BOS",
+      "position": "C",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 9.0,
+      "actual_fp_reconstructed": 6.0,
+      "actual_rate": 0.66666667,
+      "predicted_minutes": 18.949,
+      "predicted_rate": 0.644785,
+      "predicted_decomposed_fp": 12.21803,
+      "predicted_direct_fp": 11.6,
+      "frozen_dev_minutes_band": [
+        7.4344,
+        30.4637
+      ],
+      "frozen_dev_fp_band": [
+        -2.6323,
+        27.0683
+      ]
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n462",
+      "team": "BOS",
+      "position": "SF",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909961",
+      "actual_minutes": 4.0,
+      "actual_fp_reconstructed": 1.0,
+      "actual_rate": 0.25,
+      "predicted_minutes": 9.8286,
+      "predicted_rate": 0.609675,
+      "predicted_decomposed_fp": 5.99225,
+      "predicted_direct_fp": 7.0,
+      "frozen_dev_minutes_band": [
+        0,
+        21.3432
+      ],
+      "frozen_dev_fp_band": [
+        -8.8581,
+        20.8426
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n035",
+      "team": "PHX",
+      "position": "PG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 29.0,
+      "actual_fp_reconstructed": 12.0,
+      "actual_rate": 0.4137931,
+      "predicted_minutes": 33.76335,
+      "predicted_rate": 0.618916,
+      "predicted_decomposed_fp": 20.89668,
+      "predicted_direct_fp": 21.35,
+      "frozen_dev_minutes_band": [
+        22.2487,
+        45.278
+      ],
+      "frozen_dev_fp_band": [
+        6.0464,
+        35.747
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n101",
+      "team": "PHX",
+      "position": "SG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 21.0,
+      "actual_fp_reconstructed": 13.0,
+      "actual_rate": 0.61904762,
+      "predicted_minutes": 27.5049,
+      "predicted_rate": 0.479337,
+      "predicted_decomposed_fp": 13.18413,
+      "predicted_direct_fp": 14.35,
+      "frozen_dev_minutes_band": [
+        15.9902,
+        39.0195
+      ],
+      "frozen_dev_fp_band": [
+        -1.6662,
+        28.0344
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n156",
+      "team": "LAC",
+      "position": "PG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 19.0,
+      "actual_fp_reconstructed": -1.0,
+      "actual_rate": -0.05263158,
+      "predicted_minutes": 24.9916,
+      "predicted_rate": 0.361824,
+      "predicted_decomposed_fp": 9.04256,
+      "predicted_direct_fp": 9.05,
+      "frozen_dev_minutes_band": [
+        13.4769,
+        36.5062
+      ],
+      "frozen_dev_fp_band": [
+        -5.8078,
+        23.8929
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n205",
+      "team": "LAC",
+      "position": "C",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 19.0,
+      "actual_fp_reconstructed": 7.0,
+      "actual_rate": 0.36842105,
+      "predicted_minutes": 27.46425,
+      "predicted_rate": 0.467781,
+      "predicted_decomposed_fp": 12.84727,
+      "predicted_direct_fp": 12.65,
+      "frozen_dev_minutes_band": [
+        15.9496,
+        38.9789
+      ],
+      "frozen_dev_fp_band": [
+        -2.003,
+        27.6976
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n206",
+      "team": "PHX",
+      "position": "C",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 22.0,
+      "actual_fp_reconstructed": 19.0,
+      "actual_rate": 0.86363636,
+      "predicted_minutes": 13.54995,
+      "predicted_rate": 0.572406,
+      "predicted_decomposed_fp": 7.75607,
+      "predicted_direct_fp": 8.0,
+      "frozen_dev_minutes_band": [
+        2.0353,
+        25.0646
+      ],
+      "frozen_dev_fp_band": [
+        -7.0942,
+        22.6064
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n217",
+      "team": "PHX",
+      "position": "PG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 22.0,
+      "actual_fp_reconstructed": 18.0,
+      "actual_rate": 0.81818182,
+      "predicted_minutes": 25.89425,
+      "predicted_rate": 0.410451,
+      "predicted_decomposed_fp": 10.62833,
+      "predicted_direct_fp": 11.1,
+      "frozen_dev_minutes_band": [
+        14.3796,
+        37.4089
+      ],
+      "frozen_dev_fp_band": [
+        -4.222,
+        25.4786
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n235",
+      "team": "PHX",
+      "position": "SG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 14.0,
+      "actual_fp_reconstructed": 25.0,
+      "actual_rate": 1.78571429,
+      "predicted_minutes": 23.3687,
+      "predicted_rate": 0.483217,
+      "predicted_decomposed_fp": 11.29215,
+      "predicted_direct_fp": 11.2,
+      "frozen_dev_minutes_band": [
+        11.8541,
+        34.8834
+      ],
+      "frozen_dev_fp_band": [
+        -3.5582,
+        26.1425
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n272",
+      "team": "LAC",
+      "position": "PF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 24.0,
+      "actual_fp_reconstructed": 10.0,
+      "actual_rate": 0.41666667,
+      "predicted_minutes": 25.84705,
+      "predicted_rate": 0.415531,
+      "predicted_decomposed_fp": 10.74026,
+      "predicted_direct_fp": 11.65,
+      "frozen_dev_minutes_band": [
+        14.3324,
+        37.3617
+      ],
+      "frozen_dev_fp_band": [
+        -4.1101,
+        25.5906
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n296",
+      "team": "PHX",
+      "position": "C",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 20.0,
+      "actual_fp_reconstructed": 8.0,
+      "actual_rate": 0.4,
+      "predicted_minutes": 24.6068,
+      "predicted_rate": 0.492125,
+      "predicted_decomposed_fp": 12.10961,
+      "predicted_direct_fp": 12.8,
+      "frozen_dev_minutes_band": [
+        13.0922,
+        36.1214
+      ],
+      "frozen_dev_fp_band": [
+        -2.7407,
+        26.9599
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n348",
+      "team": "LAC",
+      "position": "SG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 26.0,
+      "actual_fp_reconstructed": 8.0,
+      "actual_rate": 0.30769231,
+      "predicted_minutes": 16.2011,
+      "predicted_rate": 0.442775,
+      "predicted_decomposed_fp": 7.17345,
+      "predicted_direct_fp": 7.8,
+      "frozen_dev_minutes_band": [
+        4.6865,
+        27.7157
+      ],
+      "frozen_dev_fp_band": [
+        -7.6769,
+        22.0238
+      ]
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n405",
+      "team": "PHX",
+      "position": "PF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909962",
+      "actual_minutes": 12.0,
+      "actual_fp_reconstructed": 3.0,
+      "actual_rate": 0.25,
+      "predicted_minutes": 19.2035,
+      "predicted_rate": 0.334825,
+      "predicted_decomposed_fp": 6.42981,
+      "predicted_direct_fp": 6.25,
+      "frozen_dev_minutes_band": [
+        7.6888,
+        30.7181
+      ],
+      "frozen_dev_fp_band": [
+        -8.4205,
+        21.2801
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n032",
+      "team": "MIA",
+      "position": "C",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 37.0,
+      "actual_fp_reconstructed": 20.0,
+      "actual_rate": 0.54054054,
+      "predicted_minutes": 34.4992,
+      "predicted_rate": 0.753579,
+      "predicted_decomposed_fp": 25.99789,
+      "predicted_direct_fp": 26.6,
+      "frozen_dev_minutes_band": [
+        22.9846,
+        46.0139
+      ],
+      "frozen_dev_fp_band": [
+        11.1476,
+        40.8482
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n120",
+      "team": "MIA",
+      "position": "PG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 38.0,
+      "actual_fp_reconstructed": 22.0,
+      "actual_rate": 0.57894737,
+      "predicted_minutes": 29.22475,
+      "predicted_rate": 0.43103,
+      "predicted_decomposed_fp": 12.59673,
+      "predicted_direct_fp": 12.45,
+      "frozen_dev_minutes_band": [
+        17.7101,
+        40.7394
+      ],
+      "frozen_dev_fp_band": [
+        -2.2536,
+        27.447
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n133",
+      "team": "UTA",
+      "position": "SF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 35.0,
+      "actual_fp_reconstructed": 18.0,
+      "actual_rate": 0.51428571,
+      "predicted_minutes": 31.3971,
+      "predicted_rate": 0.364772,
+      "predicted_decomposed_fp": 11.45278,
+      "predicted_direct_fp": 11.2,
+      "frozen_dev_minutes_band": [
+        19.8824,
+        42.9117
+      ],
+      "frozen_dev_fp_band": [
+        -3.3975,
+        26.3031
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n140",
+      "team": "MIA",
+      "position": "SF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 19.0,
+      "actual_fp_reconstructed": 14.0,
+      "actual_rate": 0.73684211,
+      "predicted_minutes": 27.8294,
+      "predicted_rate": 0.547721,
+      "predicted_decomposed_fp": 15.24274,
+      "predicted_direct_fp": 15.65,
+      "frozen_dev_minutes_band": [
+        16.3148,
+        39.344
+      ],
+      "frozen_dev_fp_band": [
+        0.3924,
+        30.093
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n173",
+      "team": "MIA",
+      "position": "SG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 31.0,
+      "actual_fp_reconstructed": 18.0,
+      "actual_rate": 0.58064516,
+      "predicted_minutes": 30.10845,
+      "predicted_rate": 0.405604,
+      "predicted_decomposed_fp": 12.21211,
+      "predicted_direct_fp": 11.8,
+      "frozen_dev_minutes_band": [
+        18.5938,
+        41.6231
+      ],
+      "frozen_dev_fp_band": [
+        -2.6382,
+        27.0624
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n220",
+      "team": "UTA",
+      "position": "PG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 24.0,
+      "actual_fp_reconstructed": 9.0,
+      "actual_rate": 0.375,
+      "predicted_minutes": 27.7183,
+      "predicted_rate": 0.464271,
+      "predicted_decomposed_fp": 12.86879,
+      "predicted_direct_fp": 14.3,
+      "frozen_dev_minutes_band": [
+        16.2036,
+        39.233
+      ],
+      "frozen_dev_fp_band": [
+        -1.9815,
+        27.7191
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n264",
+      "team": "UTA",
+      "position": "SF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 14.0,
+      "actual_fp_reconstructed": 6.0,
+      "actual_rate": 0.42857143,
+      "predicted_minutes": 29.40305,
+      "predicted_rate": 0.432232,
+      "predicted_decomposed_fp": 12.70894,
+      "predicted_direct_fp": 11.7,
+      "frozen_dev_minutes_band": [
+        17.8884,
+        40.9177
+      ],
+      "frozen_dev_fp_band": [
+        -2.1414,
+        27.5592
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n284",
+      "team": "UTA",
+      "position": "PF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 15.0,
+      "actual_fp_reconstructed": 1.0,
+      "actual_rate": 0.06666667,
+      "predicted_minutes": 26.73675,
+      "predicted_rate": 0.61457,
+      "predicted_decomposed_fp": 16.4316,
+      "predicted_direct_fp": 16.75,
+      "frozen_dev_minutes_band": [
+        15.2221,
+        38.2514
+      ],
+      "frozen_dev_fp_band": [
+        1.5813,
+        31.2819
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n339",
+      "team": "UTA",
+      "position": "SG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 21.0,
+      "actual_fp_reconstructed": 3.0,
+      "actual_rate": 0.14285714,
+      "predicted_minutes": 19.87945,
+      "predicted_rate": 0.374102,
+      "predicted_decomposed_fp": 7.43694,
+      "predicted_direct_fp": 7.65,
+      "frozen_dev_minutes_band": [
+        8.3648,
+        31.3941
+      ],
+      "frozen_dev_fp_band": [
+        -7.4134,
+        22.2873
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n378",
+      "team": "MIA",
+      "position": "SF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 7.0,
+      "actual_fp_reconstructed": 1.0,
+      "actual_rate": 0.14285714,
+      "predicted_minutes": 15.80335,
+      "predicted_rate": 0.577383,
+      "predicted_decomposed_fp": 9.12458,
+      "predicted_direct_fp": 8.9,
+      "frozen_dev_minutes_band": [
+        4.2887,
+        27.318
+      ],
+      "frozen_dev_fp_band": [
+        -5.7257,
+        23.9749
+      ]
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n451",
+      "team": "MIA",
+      "position": "SF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909963",
+      "actual_minutes": 10.0,
+      "actual_fp_reconstructed": 12.0,
+      "actual_rate": 1.2,
+      "predicted_minutes": 7.5035,
+      "predicted_rate": 0.547672,
+      "predicted_decomposed_fp": 4.10946,
+      "predicted_direct_fp": 4.8,
+      "frozen_dev_minutes_band": [
+        0,
+        19.0181
+      ],
+      "frozen_dev_fp_band": [
+        -10.7409,
+        18.9598
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n048",
+      "team": "ORL",
+      "position": "SF",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 38.0,
+      "actual_fp_reconstructed": 35.0,
+      "actual_rate": 0.92105263,
+      "predicted_minutes": 23.00975,
+      "predicted_rate": 0.652502,
+      "predicted_decomposed_fp": 15.0139,
+      "predicted_direct_fp": 17.3,
+      "frozen_dev_minutes_band": [
+        11.4951,
+        34.5244
+      ],
+      "frozen_dev_fp_band": [
+        0.1636,
+        29.8642
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n055",
+      "team": "ORL",
+      "position": "SG",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 36.0,
+      "actual_fp_reconstructed": 9.0,
+      "actual_rate": 0.25,
+      "predicted_minutes": 30.01885,
+      "predicted_rate": 0.538108,
+      "predicted_decomposed_fp": 16.15338,
+      "predicted_direct_fp": 16.75,
+      "frozen_dev_minutes_band": [
+        18.5042,
+        41.5335
+      ],
+      "frozen_dev_fp_band": [
+        1.3031,
+        31.0037
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n083",
+      "team": "SAC",
+      "position": "SG",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 33.0,
+      "actual_fp_reconstructed": 19.0,
+      "actual_rate": 0.57575758,
+      "predicted_minutes": 27.74445,
+      "predicted_rate": 0.403278,
+      "predicted_decomposed_fp": 11.18873,
+      "predicted_direct_fp": 11.9,
+      "frozen_dev_minutes_band": [
+        16.2298,
+        39.2591
+      ],
+      "frozen_dev_fp_band": [
+        -3.6616,
+        26.039
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n108",
+      "team": "SAC",
+      "position": "PF",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 24.0,
+      "actual_fp_reconstructed": 4.0,
+      "actual_rate": 0.16666667,
+      "predicted_minutes": 31.46885,
+      "predicted_rate": 0.332053,
+      "predicted_decomposed_fp": 10.44933,
+      "predicted_direct_fp": 10.9,
+      "frozen_dev_minutes_band": [
+        19.9542,
+        42.9835
+      ],
+      "frozen_dev_fp_band": [
+        -4.401,
+        25.2996
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n152",
+      "team": "ORL",
+      "position": "C",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 33.0,
+      "actual_fp_reconstructed": 20.0,
+      "actual_rate": 0.60606061,
+      "predicted_minutes": 27.93785,
+      "predicted_rate": 0.507042,
+      "predicted_decomposed_fp": 14.16566,
+      "predicted_direct_fp": 14.7,
+      "frozen_dev_minutes_band": [
+        16.4232,
+        39.4525
+      ],
+      "frozen_dev_fp_band": [
+        -0.6846,
+        29.016
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n155",
+      "team": "ORL",
+      "position": "PG",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 33.0,
+      "actual_fp_reconstructed": 29.0,
+      "actual_rate": 0.87878788,
+      "predicted_minutes": 24.4642,
+      "predicted_rate": 0.438034,
+      "predicted_decomposed_fp": 10.71615,
+      "predicted_direct_fp": 12.3,
+      "frozen_dev_minutes_band": [
+        12.9496,
+        35.9789
+      ],
+      "frozen_dev_fp_band": [
+        -4.1342,
+        25.5665
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n174",
+      "team": "SAC",
+      "position": "SG",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 3.0,
+      "actual_fp_reconstructed": -3.0,
+      "actual_rate": -1.0,
+      "predicted_minutes": 21.1864,
+      "predicted_rate": 0.437106,
+      "predicted_decomposed_fp": 9.2607,
+      "predicted_direct_fp": 9.7,
+      "frozen_dev_minutes_band": [
+        9.6717,
+        32.701
+      ],
+      "frozen_dev_fp_band": [
+        -5.5896,
+        24.111
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n196",
+      "team": "SAC",
+      "position": "PF",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 14.0,
+      "actual_fp_reconstructed": 10.0,
+      "actual_rate": 0.71428571,
+      "predicted_minutes": 29.89605,
+      "predicted_rate": 0.587138,
+      "predicted_decomposed_fp": 17.55311,
+      "predicted_direct_fp": 18.5,
+      "frozen_dev_minutes_band": [
+        18.3814,
+        41.4107
+      ],
+      "frozen_dev_fp_band": [
+        2.7028,
+        32.4034
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n291",
+      "team": "ORL",
+      "position": "C",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 15.0,
+      "actual_fp_reconstructed": 10.0,
+      "actual_rate": 0.66666667,
+      "predicted_minutes": 15.21645,
+      "predicted_rate": 0.684676,
+      "predicted_decomposed_fp": 10.41834,
+      "predicted_direct_fp": 9.35,
+      "frozen_dev_minutes_band": [
+        3.7018,
+        26.7311
+      ],
+      "frozen_dev_fp_band": [
+        -4.432,
+        25.2687
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n297",
+      "team": "SAC",
+      "position": "C",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 29.0,
+      "actual_fp_reconstructed": 3.0,
+      "actual_rate": 0.10344828,
+      "predicted_minutes": 21.05965,
+      "predicted_rate": 0.512006,
+      "predicted_decomposed_fp": 10.78267,
+      "predicted_direct_fp": 11.25,
+      "frozen_dev_minutes_band": [
+        9.545,
+        32.5743
+      ],
+      "frozen_dev_fp_band": [
+        -4.0676,
+        25.633
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n310",
+      "team": "ORL",
+      "position": "PG",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 4.0,
+      "actual_fp_reconstructed": 0.0,
+      "actual_rate": 0.0,
+      "predicted_minutes": 19.0647,
+      "predicted_rate": 0.392607,
+      "predicted_decomposed_fp": 7.48494,
+      "predicted_direct_fp": 7.8,
+      "frozen_dev_minutes_band": [
+        7.55,
+        30.5793
+      ],
+      "frozen_dev_fp_band": [
+        -7.3654,
+        22.3353
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n343",
+      "team": "SAC",
+      "position": "SG",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 2.0,
+      "actual_fp_reconstructed": -4.0,
+      "actual_rate": -2.0,
+      "predicted_minutes": 29.66265,
+      "predicted_rate": 0.288085,
+      "predicted_decomposed_fp": 8.54537,
+      "predicted_direct_fp": 8.35,
+      "frozen_dev_minutes_band": [
+        18.148,
+        41.1773
+      ],
+      "frozen_dev_fp_band": [
+        -6.3049,
+        23.3957
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n346",
+      "team": "ORL",
+      "position": "SG",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 15.0,
+      "actual_fp_reconstructed": 9.0,
+      "actual_rate": 0.6,
+      "predicted_minutes": 8.44625,
+      "predicted_rate": 0.394519,
+      "predicted_decomposed_fp": 3.33221,
+      "predicted_direct_fp": 3.85,
+      "frozen_dev_minutes_band": [
+        0,
+        19.9609
+      ],
+      "frozen_dev_fp_band": [
+        -11.5181,
+        18.1825
+      ]
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n362",
+      "team": "ORL",
+      "position": "SF",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909964",
+      "actual_minutes": 20.0,
+      "actual_fp_reconstructed": 10.0,
+      "actual_rate": 0.5,
+      "predicted_minutes": 18.8018,
+      "predicted_rate": 0.521868,
+      "predicted_decomposed_fp": 9.81206,
+      "predicted_direct_fp": 9.4,
+      "frozen_dev_minutes_band": [
+        7.2872,
+        30.3164
+      ],
+      "frozen_dev_fp_band": [
+        -5.0382,
+        24.6624
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n003",
+      "team": "OKC",
+      "position": "PG",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 29.0,
+      "actual_fp_reconstructed": 18.0,
+      "actual_rate": 0.62068966,
+      "predicted_minutes": 31.9617,
+      "predicted_rate": 0.899754,
+      "predicted_decomposed_fp": 28.75767,
+      "predicted_direct_fp": 29.5,
+      "frozen_dev_minutes_band": [
+        20.4471,
+        43.4763
+      ],
+      "frozen_dev_fp_band": [
+        13.9074,
+        43.608
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n037",
+      "team": "POR",
+      "position": "SF",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 34.0,
+      "actual_fp_reconstructed": 28.0,
+      "actual_rate": 0.82352941,
+      "predicted_minutes": 32.28605,
+      "predicted_rate": 0.621683,
+      "predicted_decomposed_fp": 20.07169,
+      "predicted_direct_fp": 19.4,
+      "frozen_dev_minutes_band": [
+        20.7714,
+        43.8007
+      ],
+      "frozen_dev_fp_band": [
+        5.2214,
+        34.922
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n062",
+      "team": "POR",
+      "position": "C",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 26.0,
+      "actual_fp_reconstructed": 21.0,
+      "actual_rate": 0.80769231,
+      "predicted_minutes": 26.1848,
+      "predicted_rate": 0.816995,
+      "predicted_decomposed_fp": 21.39285,
+      "predicted_direct_fp": 21.35,
+      "frozen_dev_minutes_band": [
+        14.6701,
+        37.6994
+      ],
+      "frozen_dev_fp_band": [
+        6.5425,
+        36.2432
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n078",
+      "team": "OKC",
+      "position": "C",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 24.0,
+      "actual_fp_reconstructed": 15.0,
+      "actual_rate": 0.625,
+      "predicted_minutes": 20.65105,
+      "predicted_rate": 0.819667,
+      "predicted_decomposed_fp": 16.92699,
+      "predicted_direct_fp": 18.05,
+      "frozen_dev_minutes_band": [
+        9.1364,
+        32.1657
+      ],
+      "frozen_dev_fp_band": [
+        2.0767,
+        31.7773
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n121",
+      "team": "OKC",
+      "position": "PG",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 28.0,
+      "actual_fp_reconstructed": 7.0,
+      "actual_rate": 0.25,
+      "predicted_minutes": 23.5919,
+      "predicted_rate": 0.579584,
+      "predicted_decomposed_fp": 13.67349,
+      "predicted_direct_fp": 14.4,
+      "frozen_dev_minutes_band": [
+        12.0772,
+        35.1065
+      ],
+      "frozen_dev_fp_band": [
+        -1.1768,
+        28.5238
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n122",
+      "team": "POR",
+      "position": "PG",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 25.0,
+      "actual_fp_reconstructed": 10.0,
+      "actual_rate": 0.4,
+      "predicted_minutes": 31.21465,
+      "predicted_rate": 0.538044,
+      "predicted_decomposed_fp": 16.79485,
+      "predicted_direct_fp": 16.7,
+      "frozen_dev_minutes_band": [
+        19.7,
+        42.7293
+      ],
+      "frozen_dev_fp_band": [
+        1.9445,
+        31.6452
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n146",
+      "team": "POR",
+      "position": "PF",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 30.0,
+      "actual_fp_reconstructed": 15.0,
+      "actual_rate": 0.5,
+      "predicted_minutes": 33.11485,
+      "predicted_rate": 0.442098,
+      "predicted_decomposed_fp": 14.64,
+      "predicted_direct_fp": 14.8,
+      "frozen_dev_minutes_band": [
+        21.6002,
+        44.6295
+      ],
+      "frozen_dev_fp_band": [
+        -0.2103,
+        29.4903
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n213",
+      "team": "POR",
+      "position": "C",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 15.0,
+      "actual_fp_reconstructed": 10.0,
+      "actual_rate": 0.66666667,
+      "predicted_minutes": 17.90165,
+      "predicted_rate": 0.829066,
+      "predicted_decomposed_fp": 14.84166,
+      "predicted_direct_fp": 15.45,
+      "frozen_dev_minutes_band": [
+        6.387,
+        29.4163
+      ],
+      "frozen_dev_fp_band": [
+        -0.0087,
+        29.692
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n239",
+      "team": "OKC",
+      "position": "SG",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 19.0,
+      "actual_fp_reconstructed": -3.0,
+      "actual_rate": -0.15789474,
+      "predicted_minutes": 16.50095,
+      "predicted_rate": 0.534156,
+      "predicted_decomposed_fp": 8.81408,
+      "predicted_direct_fp": 9.6,
+      "frozen_dev_minutes_band": [
+        4.9863,
+        28.0156
+      ],
+      "frozen_dev_fp_band": [
+        -6.0362,
+        23.6644
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n245",
+      "team": "OKC",
+      "position": "SG",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 31.0,
+      "actual_fp_reconstructed": 16.0,
+      "actual_rate": 0.51612903,
+      "predicted_minutes": 15.5434,
+      "predicted_rate": 0.539792,
+      "predicted_decomposed_fp": 8.3902,
+      "predicted_direct_fp": 9.3,
+      "frozen_dev_minutes_band": [
+        4.0288,
+        27.0581
+      ],
+      "frozen_dev_fp_band": [
+        -6.4601,
+        23.2405
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n250",
+      "team": "POR",
+      "position": "SG",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 23.0,
+      "actual_fp_reconstructed": 6.0,
+      "actual_rate": 0.26086957,
+      "predicted_minutes": 27.0803,
+      "predicted_rate": 0.40115,
+      "predicted_decomposed_fp": 10.86325,
+      "predicted_direct_fp": 10.6,
+      "frozen_dev_minutes_band": [
+        15.5657,
+        38.5949
+      ],
+      "frozen_dev_fp_band": [
+        -3.9871,
+        25.7136
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n268",
+      "team": "OKC",
+      "position": "SF",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 19.0,
+      "actual_fp_reconstructed": -1.0,
+      "actual_rate": -0.05263158,
+      "predicted_minutes": 12.77325,
+      "predicted_rate": 0.577876,
+      "predicted_decomposed_fp": 7.38136,
+      "predicted_direct_fp": 7.95,
+      "frozen_dev_minutes_band": [
+        1.2586,
+        24.2879
+      ],
+      "frozen_dev_fp_band": [
+        -7.469,
+        22.2317
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n370",
+      "team": "POR",
+      "position": "SF",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 33.0,
+      "actual_fp_reconstructed": 15.0,
+      "actual_rate": 0.45454545,
+      "predicted_minutes": 11.30805,
+      "predicted_rate": 0.272341,
+      "predicted_decomposed_fp": 3.07965,
+      "predicted_direct_fp": 3.5,
+      "frozen_dev_minutes_band": [
+        0,
+        22.8227
+      ],
+      "frozen_dev_fp_band": [
+        -11.7707,
+        17.93
+      ]
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n432",
+      "team": "OKC",
+      "position": "SG",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "played",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:02Z",
+      "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909965",
+      "actual_minutes": 5.0,
+      "actual_fp_reconstructed": 1.0,
+      "actual_rate": 0.2,
+      "predicted_minutes": 11.6326,
+      "predicted_rate": 0.461982,
+      "predicted_decomposed_fp": 5.37405,
+      "predicted_direct_fp": 4.15,
+      "frozen_dev_minutes_band": [
+        0.118,
+        23.1472
+      ],
+      "frozen_dev_fp_band": [
+        -9.4763,
+        20.2244
+      ]
     }
   ],
   "explicit_DNP_not_in_conditional_metrics": [
@@ -27532,6 +30007,38 @@
       "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
       "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
       "postgame_first_seen_at_utc": "2026-11-10T12:41:44Z",
+      "evidence": "explicit_espn_didNotPlay_true",
+      "not_scored_as_zero_FP": true
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n274",
+      "team": "MIA",
+      "position": "PF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "explicit_DNP",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:01Z",
+      "evidence": "explicit_espn_didNotPlay_true",
+      "not_scored_as_zero_FP": true
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n347",
+      "team": "MIA",
+      "position": "SG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "explicit_DNP",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed",
+      "postgame_first_seen_at_utc": "2026-11-11T12:39:01Z",
       "evidence": "explicit_espn_didNotPlay_true",
       "not_scored_as_zero_FP": true
     }
@@ -29057,30 +31564,186 @@
       "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
       "official_status_first_known_asof_p_play_issue": "out",
       "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909960",
+      "player_id": "n086",
+      "team": "NYK",
+      "position": "SG",
+      "game_utc": "2026-11-11T00:30:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909961",
+      "player_id": "n292",
+      "team": "PHI",
+      "position": "C",
+      "game_utc": "2026-11-11T01:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909962",
+      "player_id": "n338",
+      "team": "LAC",
+      "position": "SG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n050",
+      "team": "UTA",
+      "position": "SF",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909963",
+      "player_id": "n080",
+      "team": "UTA",
+      "position": "PG",
+      "game_utc": "2026-11-11T02:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n040",
+      "team": "ORL",
+      "position": "PF",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n161",
+      "team": "ORL",
+      "position": "PG",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909964",
+      "player_id": "n182",
+      "team": "ORL",
+      "position": "SF",
+      "game_utc": "2026-11-11T03:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n039",
+      "team": "OKC",
+      "position": "SF",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n042",
+      "team": "OKC",
+      "position": "PF",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n179",
+      "team": "OKC",
+      "position": "SG",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
+    },
+    {
+      "game_id": "espn_401909965",
+      "player_id": "n201",
+      "team": "OKC",
+      "position": "PF",
+      "game_utc": "2026-11-11T04:00:00Z",
+      "et_date": "2026-11-10",
+      "outcome": "UNKNOWN",
+      "p_play_first_issued_at_utc": "2026-11-09T18:48:15Z",
+      "minutes_issued_at_utc": "2026-11-09T18:48:17Z",
+      "official_status_first_known_asof_p_play_issue": "no_observed_official_status",
+      "preissue_club_link_evidence": "same_club_independent_ESPN_ID_observed"
     }
   ],
   "date_cluster_uncertainty_if_exploratory_eligible": {
     "resampling_unit": "whole_NBA_ET_date_including_correlated_player_games",
-    "played_player_games": 842,
-    "NBA_games": 66,
-    "independent_ET_dates": 10,
+    "played_player_games": 923,
+    "NBA_games": 72,
+    "independent_ET_dates": 11,
     "draws": 1000,
     "seed": 20261029,
     "mean_predicted_minus_actual_minutes_95pct_exploratory": [
-      0.5886,
-      2.0215
+      0.7072,
+      2.1082
     ],
     "mean_predicted_minus_actual_FP_95pct_exploratory": [
-      1.9286,
-      2.5337
+      1.9058,
+      2.4924
     ],
     "direct_FP_MAE_95pct_exploratory": [
-      6.9288,
-      7.2156
+      6.935,
+      7.2041
     ],
     "direct_minus_decomposed_FP_MAE_95pct_exploratory": [
-      -0.0255,
-      0.0995
+      -0.018,
+      0.0965
     ],
     "negative_direct_minus_decomposed_MAE_favors_direct": true,
     "posthoc_exploratory_not_pre_registered": true,

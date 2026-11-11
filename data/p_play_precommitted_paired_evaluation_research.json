@@ -3,7 +3,7 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-11-10T12:43:38Z",
+  "updated_at_utc": "2026-11-11T12:39:25Z",
   "protocol_frozen_before_first_historical_paired_outcome": true,
   "model_selection_frozen_season": "2024/25",
   "historical_source_holdout": "2025/26",
@@ -11,31 +11,31 @@
   "historical_model_frozen_sha256": "ccb052bb8e72f091b2a6a2efbb46d585918bccafd23ca0950386eb4a54301780",
   "target": "positive_minutes_vs_explicit_ESPN_DNP_in_selected_prospective_population",
   "population": "historical_same_club_high_ESPN_ID_overlap_NOT_full_fantasy_roster",
-  "p_play_first_issued_total": 2179,
+  "p_play_first_issued_total": 2528,
   "historical_prelock_overlapping_issued_total": 1053,
-  "overlap_fraction_of_issued": 0.483249,
+  "overlap_fraction_of_issued": 0.416535,
   "paired_cohort": {
     "issued": 1053,
-    "awaiting_finished_checked_game": 87,
+    "awaiting_finished_checked_game": 0,
     "final_game_not_independently_DNP_checked": 0,
-    "finished_checked": 966,
+    "finished_checked": 1053,
     "verified_pairs": 868,
-    "outcome_UNKNOWN": 98,
-    "waiting_historical_reconciliation": 0,
-    "label_missing_or_waiting_fraction": 0.101449,
+    "outcome_UNKNOWN": 108,
+    "waiting_historical_reconciliation": 77,
+    "label_missing_or_waiting_fraction": 0.175689,
     "known_positive": 801,
     "known_explicit_DNP": 67
   },
   "by_first_issue_injury_status": {
     "no_observed_official_status": {
       "issued": 1024,
-      "awaiting_finished_checked_game": 87,
+      "awaiting_finished_checked_game": 0,
       "final_game_not_independently_DNP_checked": 0,
-      "finished_checked": 937,
+      "finished_checked": 1024,
       "verified_pairs": 858,
-      "outcome_UNKNOWN": 79,
-      "waiting_historical_reconciliation": 0,
-      "label_missing_or_waiting_fraction": 0.084312,
+      "outcome_UNKNOWN": 89,
+      "waiting_historical_reconciliation": 77,
+      "label_missing_or_waiting_fraction": 0.162109,
       "known_positive": 792,
       "known_explicit_DNP": 66
     },
@@ -399,13 +399,13 @@
     },
     "2026-11-10": {
       "issued": 87,
-      "awaiting_finished_checked_game": 87,
+      "awaiting_finished_checked_game": 0,
       "final_game_not_independently_DNP_checked": 0,
-      "finished_checked": 0,
+      "finished_checked": 87,
       "verified_pairs": 0,
-      "outcome_UNKNOWN": 0,
-      "waiting_historical_reconciliation": 0,
-      "label_missing_or_waiting_fraction": null,
+      "outcome_UNKNOWN": 10,
+      "waiting_historical_reconciliation": 77,
+      "label_missing_or_waiting_fraction": 1.0,
       "known_positive": 0,
       "known_explicit_DNP": 0,
       "verified_only_loss": null
@@ -432,46 +432,46 @@
     "cannot_ignore_unknown_for_adoption": true
   },
   "sharp_unknown_label_sensitivity": {
-    "completed_checked_pair_denominator": 966,
+    "completed_checked_pair_denominator": 1053,
     "verified_pairs": 868,
-    "unknown_or_pending_labels": 98,
+    "unknown_or_pending_labels": 185,
     "sharp_missing_label_gain_range": {
       "Brier": {
         "current_candidate_over_current_baseline": {
-          "lower_gain": 0.004125,
-          "upper_gain": 0.012357,
+          "lower_gain": -0.003096,
+          "upper_gain": 0.014938,
           "positive_favors": "current_candidate",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
-          "lower_gain": -0.086261,
-          "upper_gain": -0.038737,
+          "lower_gain": -0.086601,
+          "upper_gain": -0.018989,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
-          "lower_gain": -0.076531,
-          "upper_gain": -0.031984,
+          "lower_gain": -0.078835,
+          "upper_gain": -0.014914,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         }
       },
       "logloss": {
         "current_candidate_over_current_baseline": {
-          "lower_gain": 0.012499,
-          "upper_gain": 0.050219,
+          "lower_gain": -0.025994,
+          "upper_gain": 0.059441,
           "positive_favors": "current_candidate",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
-          "lower_gain": -0.227379,
-          "upper_gain": -0.083541,
+          "lower_gain": -0.235417,
+          "upper_gain": -0.016244,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
-          "lower_gain": -0.188469,
-          "upper_gain": -0.059733,
+          "lower_gain": -0.207854,
+          "upper_gain": -0.010361,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         }
