@@ -33,8 +33,3 @@
 - Display the best modelled route and up to two player pairs on Today; link to its detailed planner without unnecessary recomputation. Route scores still use estimated prices and a hypothetical transfer opportunity cost, not independently validated Sports.ru gains.
 - Restore a clear user surface: three primary transfer tasks, with advanced chains/budget hidden in optional tools. Show caution for players with few games in 2025/26 without modifying forecasts. Add small visual interaction and accessible reduced-motion styles.
 - No forecast weight refit, model promotion, account changes, paid services, new repo or Firebase project. Personal real-profile and deployment QA still required.
-
-## P0 UI News pill hotfix (2026-11-11)
-- The roster **list view** mistakenly checked the browser-global `alert` function instead of player news; browsers therefore displayed ten ungrounded News badges.
-- Read the existing `rosterNews(p.id)` selector, which requires a matching player ID and the existing 12-day event filter. Unrelated Telegram events never turn into injuries or affect projections.
-- Correct the stale tooltip: exact-game official OUT now affects the corresponding forecast, while other statuses are alerts. Browser VM regression covers zero events, one player-specific event, and removal. No profile, prices, live scores, model weights, GitHub Actions, Firestore, Sports.ru or Firebase project is changed. The Hosting ZIP still requires an explicit owner deploy.
