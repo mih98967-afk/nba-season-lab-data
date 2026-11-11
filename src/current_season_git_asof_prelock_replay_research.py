@@ -340,17 +340,20 @@ def build(proof, versions, opportunities, players, identity, live):
                 item["postgame_evidence"]!="positive_minutes_verified_sportsru_fp" or
                 not item["postgame_first_seen_timestamp_verified"]):
             raise ValueError("Unverified postgame label cannot be scored")
+        # Outcome first-seen clock belongs to the independent verified
+        # opportunity ledger, not an older live.json generated seconds earlier.
         actual=targets.get(key)
         if (actual is None or actual["team"]!=predicted["club"] or
                 instant(item["postgame_first_seen_at_utc"])<tip or
                 instant(item["postgame_first_seen_at_utc"])>
-                     instant(live["updated_at_utc"])):
+                     instant(opportunities["updated_at_utc"])):
             raise ValueError("Postgame verified positive minutes unavailable: "
                              f"key={key!r}, actual_found={actual is not None}, "
                              f"actual_team={actual.get('team') if actual else None!r}, "
                              f"expected_team={predicted['club']!r}, "
                              f"first_seen={item['postgame_first_seen_at_utc']!r}, "
                              f"tip={item['game_utc']!r}, "
+                             f"opportunities_updated={opportunities['updated_at_utc']!r}, "
                              f"live_updated={live['updated_at_utc']!r}")
         outcome={
             "game_id":key[0],"player_id":key[1],
