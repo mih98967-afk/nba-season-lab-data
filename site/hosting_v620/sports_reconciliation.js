@@ -73,6 +73,16 @@
     kind:!comparable?'LOCAL_BALANCE_UNAVAILABLE':Math.abs(local-cash.value)<=0.001?'AGREES':'DIFFERS'};
   }
   if(quota.present){
+   // Owner's historical date-only imports carry hypothetical epoch anchors.
+   // A recent Monday can straddle both reset hypotheses. Never present those
+   // anchors as an independently reconstructed Sports.ru remaining quota.
+   const uncertainRecent=Array.isArray(service.executed)&&service.executed.some(m=>m&&
+    (m.timePrecision==='date_only'||m.epochIsPlaceholder===true)&&
+    Number.isFinite(m.epoch)&&m.epoch>=now-14*DAY&&m.epoch<=now);
+   if(uncertainRecent){
+    checks.quota={owner:quota.value,used15:null,used00:null,localRemaining15:null,localRemaining00:null,
+     kind:'HISTORICAL_DATE_ONLY_CLOCK_UNVERIFIED',resetRuleIndependentlyVerified:false};
+   }else{
    const fifteen=usage(service.executed,now,input?.weekKey,15);
    const midnight=usage(service.executed,now,input?.weekKey,0);
    const known=fifteen!==null&&midnight!==null;
@@ -84,6 +94,7 @@
    checks.quota={owner:quota.value,used15:fifteen,used00:midnight,
     localRemaining15:remaining15,localRemaining00:remaining00,
     kind,resetRuleIndependentlyVerified:false};
+   }
   }
   return {valid:true,readOnly:true,verifiedSportsData:false,
    capturedAtUtc:new Date(now).toISOString(),checks,
