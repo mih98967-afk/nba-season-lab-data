@@ -345,7 +345,13 @@ def build(proof, versions, opportunities, players, identity, live):
                 instant(item["postgame_first_seen_at_utc"])<tip or
                 instant(item["postgame_first_seen_at_utc"])>
                      instant(live["updated_at_utc"])):
-            raise ValueError("Postgame verified positive minutes unavailable")
+            raise ValueError("Postgame verified positive minutes unavailable: "
+                             f"key={key!r}, actual_found={actual is not None}, "
+                             f"actual_team={actual.get('team') if actual else None!r}, "
+                             f"expected_team={predicted['club']!r}, "
+                             f"first_seen={item['postgame_first_seen_at_utc']!r}, "
+                             f"tip={item['game_utc']!r}, "
+                             f"live_updated={live['updated_at_utc']!r}")
         outcome={
             "game_id":key[0],"player_id":key[1],
             "team":actual["team"],
