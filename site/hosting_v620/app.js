@@ -95,6 +95,10 @@ function actualByPlayer(){
 }
 function ownedAt(ms){if(!S.initialRoster?.length||ms<(S.initialEpoch||0))return [];let ids=[...S.initialRoster];for(const t of [...S.executed].sort((a,b)=>a.epoch-b.epoch)){if(t.epoch<=ms){const k=ids.indexOf(t.out);if(k>=0)ids[k]=t.in_;}}return ids;}
 function actualTotal(){return window.NBAScoreAudit.audit(LIVE,S,{sourceVerified:publicFeedValidated});}
+// No unverified numeric epoch may silently determine a weekly Sports.ru quota.
+function quotaHistoryTimeUnknown(tick=now()){return Array.isArray(S.executed)&&S.executed.some(t=>
+ (t?.timePrecision==='date_only'||t?.epochIsPlaceholder===true)&&
+ Number.isFinite(t.epoch)&&t.epoch>=tick-14*86400000&&t.epoch<=tick);}
 function playerActual(id){return (actualByPlayer()[id]||[]).filter(x=>x.played).slice(-12);}
 const officialGameCache=new Map();let officialGameBucket=-1;
 function verifiedOfficialForGame(p,g){
@@ -381,7 +385,9 @@ function todayPage(){
   calendar7:short.ok,calendar21:long.ok,officialRiskNames,manualOutCount,telegramCount,
   fp7:forecast7,fp21:forecast21,games7,games21,
   resultFresh:!!best,bestRoute:best,bestExplanationVerified:verifiedExplanation,resultDays:result?.horizonDays,
-  marketReady:ownerMarket?.ready===true,marketReason:ownerMarket?.reasons?.[0],
+  marketReady:ownerMarket?.ready===true&&!quotaHistoryTimeUnknown(tick),
+  historicalQuotaTimesUnverified:quotaHistoryTimeUnknown(tick),
+  marketReason:quotaHistoryTimeUnknown(tick)?'В прошлых заменах известны только даты: сверь остаток ходов на Sports.ru.':ownerMarket?.reasons?.[0],
   modelCaution:fragileBest?`У ${fragileBest.name} мало матчей в сезоне 2025/26: прогноз менее устойчив.`:null})||{state:'blocked',title:'Не удалось загрузить модуль решений',description:'Проверь источники и повтори после обновления.',reasons:['Расчётные показатели временно недоступны.'],shortFP:null,longFP:null,games7:null,games21:null};
  const primary=brief.state==='onboarding'||brief.state==='fix_roster'
    ?'<button type="button" class="primary today-primary" data-tabto="overview">Добавить состав</button>'
@@ -410,9 +416,10 @@ function todayPage(){
 
  const topGames=complete&&short.ok?normalizedGames().filter(g=>g.epoch>tick&&g.epoch<=tick+7*86400000&&g.status!=='final'&&S.roster.some(id=>P[id]?.team===g.home||P[id]?.team===g.away)).slice(0,4):[];
  const nextLock=topGames.map(g=>g.epoch-30*60000).filter(x=>x>tick).sort((a,b)=>a-b)[0];
- const quota15=complete&&S.executed.every(x=>Number.isFinite(x.epoch))?S.executed.filter(x=>moscowWeek(x.epoch)===moscowWeek(tick)).length:null;
- const quota00=complete&&S.executed.every(x=>Number.isFinite(x.epoch))?S.executed.filter(x=>calendarMoscowWeek(x.epoch)===calendarMoscowWeek(tick)).length:null;
- const quotaText=quota15===null||quota00===null?'н/д':quota15===quota00?quota15+'/3 · обе гипотезы':quota15+'/3 или '+quota00+'/3';
+ const quotaTimesReady=!quotaHistoryTimeUnknown(tick)&&S.executed.every(x=>Number.isFinite(x.epoch));
+ const quota15=complete&&quotaTimesReady?S.executed.filter(x=>moscowWeek(x.epoch)===moscowWeek(tick)).length:null;
+ const quota00=complete&&quotaTimesReady?S.executed.filter(x=>calendarMoscowWeek(x.epoch)===calendarMoscowWeek(tick)).length:null;
+ const quotaText=quota15===null||quota00===null?'н/д · сверь на Sports.ru':quota15===quota00?quota15+'/3 · обе гипотезы':quota15+'/3 или '+quota00+'/3';
  const rows=topGames.map(g=>`<div class="today-game"><span><b>${esc(g.away)} @ ${esc(g.home)}</b><small>${esc(S.roster.filter(id=>P[id]?.team===g.home||P[id]?.team===g.away).map(id=>P[id]?.name).filter(Boolean).join(', '))}</small></span><time>${dateText(g.epoch)} МСК</time></div>`).join('');
  if(brief.state==='onboarding'||brief.state==='fix_roster')return `<header class="today-heading"><div><div class="eyebrow">Твой ежедневный обзор</div><h1>Нужна ли замена сегодня?</h1><p class="sub">Для начала внеси десятку с Sports.ru.</p></div></header><section class="card today-decision today-onboarding"><div class="today-kicker">ПЕРВЫЙ ШАГ</div><h2>${esc(brief.title)}</h2><p class="today-lead">${esc(brief.description)}</p><div class="today-actions">${primary}</div><p class="today-disclaimer">После этого будут доступны календарь, риски и сравнение вариантов. Сервис не делает трансферы сам.</p></section>`;
  return `<header class="today-heading"><div><div class="eyebrow">Твой ежедневный обзор</div><h1>Нужна ли замена сегодня?</h1><p class="sub">Сначала решение. Подробные расчёты — только если понадобятся.</p></div></header>
@@ -438,7 +445,7 @@ function todayPage(){
 
 function overview(){
  const at=actualTotal();
- const historyValid=Array.isArray(S.executed)&&S.executed.every(t=>Number.isFinite(t?.epoch)&&t.epoch<=now());
+ const historyValid=Array.isArray(S.executed)&&!quotaHistoryTimeUnknown(now())&&S.executed.every(t=>Number.isFinite(t?.epoch)&&t.epoch<=now());
  const q15=historyValid?S.executed.filter(t=>moscowWeek(t.epoch)===moscowWeek(now())).length:null;
  const q00=historyValid?S.executed.filter(t=>calendarMoscowWeek(t.epoch)===calendarMoscowWeek(now())).length:null;
  const remaining15=q15!=null&&q15<=3?3-q15:null;
@@ -1572,7 +1579,11 @@ function reconstructInitialRoster(backup){
 }
 async function upload(file,kind){try{const text=await file.text(),o=JSON.parse(text);if(kind==='feed'){
  applyPublicFeed(o,'ручной импорт NBA JSON');showMsg('Проверенный файл NBA загружен.');}
- else{if(![4,5].includes(o.v)||!Array.isArray(o.roster)||!hardCheck(o.roster,null,0).valid)throw Error('Копия не содержит допустимую десятку');if(!confirm('Заменить локальную историю, кассу и состав сохранённой копией?'))return;const initial=reconstructInitialRoster(o);S={...defaults(),...o,v:5,initialRoster:initial};save();showMsg(initial.length===10?'Резервная копия восстановлена.':'Состав и касса восстановлены; начальная десятка не подтверждена, поэтому исторические FP могут быть неполными.');}}
+ else{if(![4,5].includes(o.v)||!Array.isArray(o.roster)||!hardCheck(o.roster,null,0).valid)throw Error('Копия не содержит допустимую десятку');
+ const uncertain=(o.executed||[]).filter(t=>t.timePrecision==='date_only'||t.epochIsPlaceholder===true).length;
+ const warning=uncertain?'\n\nВ копии '+uncertain+' замен без подтверждённых часов. Состав и касса восстановятся, но точный итог NBA FP и недельная квота останутся неподтверждёнными.':'';
+ if(!confirm('Заменить локальную историю, кассу и состав сохранённой копией?'+warning))return;
+ const initial=reconstructInitialRoster(o);S={...defaults(),...o,v:5,initialRoster:initial};save();showMsg(initial.length===10?'Резервная копия восстановлена.'+(uncertain?' Точные часы прошлых замен не подтверждены.':''):'Состав и касса восстановлены; начальная десятка не подтверждена, поэтому исторические FP могут быть неполными.');}}
  catch(err){showMsg('Импорт не выполнен: '+err.message);}}
 // Free public feed: GitHub Actions commits it to main every four hours.
 // It contains common NBA stats only. Personal squads stay in Firebase Firestore.
