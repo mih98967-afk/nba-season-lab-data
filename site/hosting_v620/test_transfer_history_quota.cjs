@@ -64,3 +64,14 @@ future=guard.validate({...futureInput,draft:[freshMove,...extraFresh]});
 assert.equal(future.valid,false,'Four proposed transfers within the new week must remain blocked');
 assert.equal(future.errors.some(x=>/Превышены три замены/.test(x)),true);
 console.log('transfer history two-hypothesis quota: regression passed');
+
+// A future planner must not silently treat date-only historical epochs as factual.
+{
+ const players={a:{id:'a',pos:'PG',team:'A'},b:{id:'b',pos:'PG',team:'B'},c:{id:'c',pos:'PG',team:'C'}};
+ const roster=['a','q1','q2','q3','q4','q5','q6','q7','q8','q9'];
+ for(let i=1;i<=9;i++)players['q'+i]={id:'q'+i,pos:['PG','SG','SG','SF','SF','PF','PF','C','C'][i-1],team:'T'+i};
+ const stamp=Date.parse('2026-11-11T10:00:00Z');
+ const res=guard.validate({players,roster,cash:200,executed:[{epoch:stamp-86400000,timePrecision:'date_only',epochIsPlaceholder:true}],draft:[{out:'a',in_:'c',sell:100,buy:100,epoch:stamp+60000}],games:[],nowEpoch:stamp});
+ assert(res.warnings.some(w=>w.includes('Исторические часы замен условные')));
+ assert.equal(res.verified,false);
+}
