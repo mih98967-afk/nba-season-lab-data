@@ -203,7 +203,8 @@ function observedOwnershipBounds(){
  return window.NBAOwnershipBounds?.estimate(LIVE,S,{sourceVerified:publicFeedValidated,nowEpoch:now()})||{available:false};
 }
 function scoreAuditPanel(a){
- if(a.complete===false){const bound=observedOwnershipBounds();
+ if(a.complete===false){
+  const bound=observedOwnershipBounds();
   const report=bound.available?`<div class="info"><h3>Наблюдаемые FP при неизвестных часах замен</h3>
   <p><strong>${round(bound.minimum)}–${round(bound.maximum)} FP</strong> из сыгранных матчей NBA. Возможные времена операций внутри их дат рассмотрены с учётом состава и кассы. Это <b>не официальный итог Sports.ru</b> и не статистический доверительный интервал.</p>
   <details><summary>Откуда берётся диапазон</summary><div class="small" style="margin-top:8px">${bound.windows.map(w=>`<div class="horizontal"><span>${esc(w.date.slice(8)+'.'+w.date.slice(5,7))} — ${w.gamesWithLockOnDate} матчей</span><span class="spacer"></span><strong>${round(w.minimum)}–${round(w.maximum)} FP</strong></div>`).join('')}</div>
