@@ -28,7 +28,7 @@ jobs:
           import hashlib, json, re
           root=Path('site/hosting_v620')
           entries=json.loads((root/'SOURCE_MANIFEST_v620.json').read_text())['files']
-          assert len(entries)==40, f"Expected 40 release assets, got {len(entries)}"
+          assert len(entries)==42, f"Expected 42 release assets, got {len(entries)}"
           paths={p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file()}
           assert paths==set(entries)|{'SOURCE_MANIFEST_v620.json'}, (
               sorted(paths-set(entries)), sorted(set(entries)-paths))
@@ -41,7 +41,7 @@ jobs:
           assert all((root/name).is_file() for name in bare), 'Missing linked script'
           assert bare.index('advice_readiness.js')<bare.index('today_brief.js')<bare.index('app.js')
           assert 'styles.css?v=6.20' in html
-          print('PASS 40 SHA-256 assets, dependency order and runtime references')
+          print('PASS 42 SHA-256 assets, dependency order and runtime references')
           PY
       - name: Assemble verified v6.20 Hosting ZIP (no deployment)
         run: |
