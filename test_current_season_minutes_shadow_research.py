@@ -78,6 +78,64 @@ class ShadowTests(unittest.TestCase):
   after=build(v,*a[1:],when("2026-10-30T06:00:00Z"))
   self.assertEqual(after["summary"]["played_verified"],1)
   self.assertEqual(after["played_only_paired_metrics"]["played_scored"],1)
+
+class ScoredCorrectionLineage(unittest.TestCase):
+ def played(self):
+  a=ShadowTests().fixture()
+  original=build(*a,when("2026-10-29T15:05:00Z"))
+  row={"game_id":"g4","player_id":"p","game_utc":"2026-10-30T00:00:00Z",
+       "team":"BOS","et_date":"2026-10-29","position":"PG",
+       "actual_minutes":24,"actual_fp_reconstructed":12,
+       "postgame_first_seen_at_utc":"2026-10-30T05:00:00Z"}
+  a[4]["scored_played"]=[row];a[4]["summary"]["played"]=1
+  old=build(original,*a[1:],when("2026-10-30T06:00:00Z"))
+  first={"game_id":"g4","player_id":"p","team":"BOS","minutes":24,"fp":12}
+  revised={"game_id":"g4","player_id":"p","team":"BOS","minutes":25,"fp":13}
+  def version(r,at):
+   return {"version_observed_at_utc":at,"row":r,"row_sha256":canonical_hash(r)}
+  versions={"schema_version":1,"status":"research_only_not_deployed",
+            "adopt_on_site":False,"versions":{"g4|p":[
+              version(first,"2026-10-30T05:30:00Z"),
+              version(revised,"2026-10-30T07:00:00Z")]}}
+  a[4]["scored_played"][0]=dict(row,actual_minutes=25,actual_fp_reconstructed=13)
+  return a,old,versions
+
+ def test_revisions_append_without_rewriting_first_observation(self):
+  a,old,versions=self.played()
+  result=build(old,*a[1:],when("2026-10-30T08:00:00Z"),versions)
+  self.assertEqual(result["observed"],old["observed"])
+  self.assertEqual(result["observed_corrections"][0]["previous_actual_fp_reconstructed"],12)
+  self.assertEqual(result["observed_corrections"][0]["latest_actual_fp_reconstructed"],13)
+  self.assertEqual(result["summary"]["corrected_player_games"],1)
+  self.assertEqual(result["played_only_paired_metrics"],old["played_only_paired_metrics"])
+  self.assertEqual(build(result,*a[1:],when("2026-10-30T08:15:00Z"),versions)["observed_corrections"],result["observed_corrections"])
+
+ def test_changed_outcome_requires_independent_old_and_new_versions(self):
+  a,old,versions=self.played()
+  with self.assertRaises(ValueError):
+   build(old,*a[1:],when("2026-10-30T08:00:00Z"))
+  missing=deepcopy(versions);missing["versions"]["g4|p"].pop(0)
+  with self.assertRaises(ValueError):
+   build(old,*a[1:],when("2026-10-30T08:00:00Z"),missing)
+  tampered=deepcopy(versions);tampered["versions"]["g4|p"][-1]["row_sha256"]="bad"
+  with self.assertRaises(ValueError):
+   build(old,*a[1:],when("2026-10-30T08:00:00Z"),tampered)
+  with self.assertRaises(ValueError):
+   build(old,*a[1:],when("2026-10-30T06:00:00Z"),versions)
+
+ def test_sealed_correction_and_original_outcome_are_immutable(self):
+  a,old,versions=self.played()
+  complete=build(old,*a[1:],when("2026-10-30T08:00:00Z"),versions)
+  corrupted=deepcopy(complete);corrupted["observed_corrections"][0]["latest_actual_fp_reconstructed"]=99
+  with self.assertRaises(ValueError):
+   build(corrupted,*a[1:],when("2026-10-30T09:00:00Z"),versions)
+  corrupted=deepcopy(complete);corrupted["observed"][0]["actual_minutes"]=99
+  with self.assertRaises(ValueError):
+   build(corrupted,*a[1:],when("2026-10-30T09:00:00Z"),versions)
+  altered=deepcopy(a);altered[4]["scored_played"][0]["postgame_first_seen_at_utc"]="2026-10-30T07:00:00Z"
+  with self.assertRaises(ValueError):
+   build(complete,*altered[1:],when("2026-10-30T09:00:00Z"),versions)
+
 class PipelineOwnership(unittest.TestCase):
  def test_current_minutes_challenger_has_one_publisher(self):
   root=Path(__file__).resolve().parent
