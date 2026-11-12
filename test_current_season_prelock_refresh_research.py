@@ -135,6 +135,47 @@ class Refresh(unittest.TestCase):
         self.assertEqual(next["summary"]["played_verified"],1)
         self.assertEqual(next["played_only_paired_metrics"]["scored_positive_played"],1)
 
+
+    def test_edited_postgame_row_has_separate_verified_version(self):
+        args=self.setup()
+        issued=build(*args,when("2026-10-29T18:00:00Z"))
+        first={
+            "game_id":"g4","player_id":"p","team":"BOS","position":"PG",
+            "game_utc":"2026-10-30T00:00:00Z","et_date":"2026-10-29",
+            "postgame_first_seen_at_utc":"2026-10-30T05:00:00Z",
+            "actual_minutes":26,"actual_fp_reconstructed":16,
+        }
+        args[2]["scored_played"]=[first]
+        args[2]["summary"]["played"]=1
+        previous=build(issued,*args[1:],when("2026-10-30T06:00:00Z"))
+        def version(minutes,fp,at):
+            row={"game_id":"g4","player_id":"p","team":"BOS",
+                 "minutes":minutes,"fp":fp}
+            return {"row":row,"row_sha256":canonical_hash(row),
+                    "version_observed_at_utc":at}
+        versions={"schema_version":1,"status":"research_only_not_deployed",
+                  "adopt_on_site":False,"versions":{"g4|p":[
+                   version(26,16,"2026-10-30T05:20:00Z"),
+                   version(26,17,"2026-10-30T07:00:00Z")]}}
+        args[2]["scored_played"][0]=dict(first,actual_fp_reconstructed=17)
+        with self.assertRaises(ValueError):
+            build(previous,*args[1:],when("2026-10-30T08:00:00Z"))
+        updated=build(previous,*args[1:],when("2026-10-30T08:00:00Z"),versions)
+        self.assertEqual(updated["observed"],previous["observed"])
+        self.assertEqual(updated["played_only_paired_metrics"],previous["played_only_paired_metrics"])
+        self.assertEqual(updated["summary"]["independently_versioned_correction_events"],1)
+        self.assertEqual(updated["observed_corrections"][0]["latest_actual_fp_reconstructed"],17)
+        self.assertEqual(build(updated,*args[1:],when("2026-10-30T09:00:00Z"),versions)["observed_corrections"],
+                         updated["observed_corrections"])
+        tampered=deepcopy(updated)
+        tampered["observed_corrections"][0]["latest_actual_fp_reconstructed"]=99
+        with self.assertRaises(ValueError):
+            build(tampered,*args[1:],when("2026-10-30T09:00:00Z"),versions)
+        missing=deepcopy(versions)
+        missing["versions"]["g4|p"].pop(0)
+        with self.assertRaises(ValueError):
+            build(previous,*args[1:],when("2026-10-30T08:00:00Z"),missing)
+
     def test_source_original_immutable(self):
         args=self.setup()
         before=build(*args,when("2026-10-29T18:00:00Z"))
