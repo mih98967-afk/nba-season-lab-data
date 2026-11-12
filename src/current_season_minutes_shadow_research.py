@@ -128,7 +128,86 @@ def metrics(rows):
     }
 
 
-def build(previous, frozen, rolling, live, evaluation, now):
+
+def _revision_proof(first, previous_effective, latest, history, now):
+    """Only allow changed numeric played results with genuinely archived versions.
+
+    Preserve the original observed outcome. Prove both the preceding and the
+    corrected NBA row values against immutable independent capture timestamps.
+    """
+    fields = ("game_id", "player_id", "et_date", "team", "position",
+              "postgame_first_seen_at_utc", "label_source")
+    if any(latest[k] != first[k] for k in fields):
+        raise ValueError("Revised player-game identity or postgame clock changed")
+    if not isinstance(history, list) or len(history) < 2:
+        raise ValueError("Changed played outcome has no independent value-version history")
+    def matches(version, outcome):
+        row = version.get("row", {})
+        return (row.get("game_id") == first["game_id"]
+                and row.get("player_id") == first["player_id"]
+                and row.get("team") == first["team"]
+                and number(row.get("minutes")) == number(outcome["actual_minutes"])
+                and number(row.get("fp")) == number(outcome["actual_fp_reconstructed"])
+                and canonical_hash(row) == version.get("row_sha256"))
+    newest = history[-1]
+    clock = instant(newest["version_observed_at_utc"])
+    if (clock > now or clock < instant(first["postgame_first_seen_at_utc"])
+            or not matches(newest, latest)):
+        raise ValueError("Updated played outcome does not match a verified later source row")
+    previous_versions = [v for v in history[:-1]
+                         if instant(v["version_observed_at_utc"]) < clock
+                         and matches(v, previous_effective)]
+    if not previous_versions:
+        raise ValueError("Previous independently observed played value was not archived")
+    previous_version = previous_versions[-1]
+    return {
+        "game_id": first["game_id"], "player_id": first["player_id"],
+        "original_outcome_sha256": canonical_hash(first),
+        "previous_actual_minutes": number(previous_effective["actual_minutes"]),
+        "previous_actual_fp_reconstructed": number(previous_effective["actual_fp_reconstructed"]),
+        "latest_actual_minutes": number(latest["actual_minutes"]),
+        "latest_actual_fp_reconstructed": number(latest["actual_fp_reconstructed"]),
+        "previous_row_sha256": previous_version["row_sha256"],
+        "previous_version_observed_at_utc": previous_version["version_observed_at_utc"],
+        "latest_row_sha256": newest["row_sha256"],
+        "latest_version_observed_at_utc": newest["version_observed_at_utc"],
+        "adopt_on_site": False,
+    }
+
+
+def _check_archived_revisions(rows, original_issues, original_outcomes, versions, now):
+    if not isinstance(rows, list):
+        raise ValueError("Invalid played-revision archive")
+    if rows and not isinstance(versions, dict):
+        raise ValueError("Archived revisions lost their source version archive")
+    grouped = defaultdict(list)
+    for row in rows:
+        key = (row.get("game_id"), row.get("player_id"))
+        if key not in original_issues or key not in original_outcomes:
+            raise ValueError("Orphan corrected player-game outcome")
+        first = original_outcomes[key]
+        old = grouped[key][-1] if grouped[key] else None
+        prior = dict(first,
+                     actual_minutes=old["latest_actual_minutes"] if old else first["actual_minutes"],
+                     actual_fp_reconstructed=old["latest_actual_fp_reconstructed"] if old else first["actual_fp_reconstructed"])
+        latest = dict(first, actual_minutes=row["latest_actual_minutes"],
+                      actual_fp_reconstructed=row["latest_actual_fp_reconstructed"])
+        history = versions.get(key[0]+"|"+key[1], [])
+        matching = [i for i,v in enumerate(history)
+                    if v.get("row_sha256") == row.get("latest_row_sha256")
+                    and v.get("version_observed_at_utc") == row.get("latest_version_observed_at_utc")]
+        if len(matching) != 1:
+            raise ValueError("Previously sealed boxscore correction version disappeared")
+        proof = _revision_proof(first, prior, latest, history[:matching[0]+1], now)
+        if proof != row:
+            raise ValueError("Previously sealed played correction was modified")
+        if old and instant(row["latest_version_observed_at_utc"]) <= instant(old["latest_version_observed_at_utc"]):
+            raise ValueError("Played source revisions must increase in real observed time")
+        grouped[key].append(row)
+    return grouped
+
+
+def build(previous, frozen, rolling, live, evaluation, now, source_versions=None):
     if now.utcoffset() is None:
         raise ValueError("Research challenger requires timezone-aware now")
     now = now.astimezone(timezone.utc)
@@ -242,6 +321,17 @@ def build(previous, frozen, rolling, live, evaluation, now):
         old_issued[key] = item
         new.append(item)
         qa["new_genuinely_prelock_challengers"] += 1
+    versions = None
+    if source_versions is not None:
+        if (source_versions.get("schema_version") != 1
+                or source_versions.get("status") != STATUS
+                or source_versions.get("adopt_on_site") is not False
+                or not isinstance(source_versions.get("versions"), dict)):
+            raise ValueError("No authenticated boxscore value-version source")
+        versions = source_versions["versions"]
+    revisions = list((previous or {}).get("observed_corrections", []))
+    grouped_revisions = _check_archived_revisions(
+        revisions, old_issued, old_outcomes, versions, now)
     new_outcomes = dict(old_outcomes)
     for key, row in scored.items():
         issue = old_issued.get(key)
@@ -269,10 +359,25 @@ def build(previous, frozen, rolling, live, evaluation, now):
             "model_sha256": MODEL_HASH,
             "label_source": "positive_minutes_verified_sportsru_fp",
         }
-        previous_outcome = new_outcomes.get(key)
-        if previous_outcome is not None and previous_outcome != outcome:
-            raise ValueError("Historical challenger evidence changed")
-        new_outcomes[key] = outcome
+        original_outcome = new_outcomes.get(key)
+        if original_outcome is None:
+            new_outcomes[key] = outcome
+            continue
+        past = grouped_revisions.get(key, [])
+        effective = (dict(original_outcome,
+            actual_minutes=past[-1]["latest_actual_minutes"],
+            actual_fp_reconstructed=past[-1]["latest_actual_fp_reconstructed"])
+            if past else original_outcome)
+        if effective == outcome:
+            continue
+        if versions is None:
+            raise ValueError("Changed played outcome lacks verified source versions")
+        proof = _revision_proof(
+            original_outcome, effective, outcome, versions.get(key[0]+"|"+key[1]), now)
+        if past and instant(proof["latest_version_observed_at_utc"]) <= instant(past[-1]["latest_version_observed_at_utc"]):
+            raise ValueError("Played revision is not a newly observed version")
+        revisions.append(proof)
+        grouped_revisions.setdefault(key, []).append(proof)
     for key in old_outcomes:
         if key not in scored:
             raise ValueError("Previously verified challenger outcome disappeared")
@@ -296,6 +401,8 @@ def build(previous, frozen, rolling, live, evaluation, now):
         "valid_external_future_season_model_improvement": False,
         "season_2026_27_model_selection_independent_of_prior_outcomes": False,
         "selected_played_only_not_full_fantasy_population": True,
+        "initial_played_observations_preserved": True,
+        "revised_boxscores_append_only": True,
         "calibrated_unconditional_FP_allowed": False,
         "adopt_on_site": False,
     }
@@ -305,9 +412,12 @@ def build(previous, frozen, rolling, live, evaluation, now):
         "model_sha256": MODEL_HASH, "frozen_exploratory_structure": MODEL,
         "source_frozen_minutes_issue_sha256": expected_source_hash,
         "issued": all_issued, "observed": all_observed,
+        "observed_corrections": revisions,
         "summary": {
             "issued_total": len(all_issued), "new_issued_this_run": len(new),
             "played_verified": len(all_observed),
+            "independently_versioned_correction_events": len(revisions),
+            "corrected_player_games": len(grouped_revisions),
             "literal_DNP_excluded": n_dnp,
             "UNKNOWN_not_imputed": n_unknown,
             "awaiting_or_unchecked": awaiting,
@@ -330,6 +440,7 @@ def build(previous, frozen, rolling, live, evaluation, now):
             "Only genuinely new minute issues within 20 minutes of baseline are compared.",
             "Current-season played minutes have archived first-seen times before issuance.",
             "All negative/missing/DNP outcomes are excluded from conditional FP metrics.",
+            "Historical paired metrics use FIRST observed played FP, with later corrected boxscores quarantined in an append-only separate audit.",
             "The 5-game prior shrinkage was defined after first 2026/27 results.",
             "No proof that role adjustment or unconditional FP improves future decisions.",
             "No model retraining, Firebase, Sports.ru prices, personal accounts or transfers.",
@@ -347,7 +458,7 @@ def run():
         prior, read("conditional_minutes_fp_research.json"),
         read("rolling_decision_research.json"), read("live.json"),
         read("conditional_minutes_fp_evaluation_research.json"),
-        datetime.now(timezone.utc))
+        datetime.now(timezone.utc), read("observed_boxscore_versions_research.json"))
     if (not prior or {k:v for k,v in report.items() if k!="updated_at_utc"} !=
             {k:v for k,v in prior.items() if k!="updated_at_utc"}):
         temp = target.with_suffix(".tmp")
