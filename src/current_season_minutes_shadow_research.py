@@ -136,7 +136,9 @@ def _revision_proof(first, previous_effective, latest, history, now):
     corrected NBA row values against immutable independent capture timestamps.
     """
     fields = ("game_id", "player_id", "et_date", "team", "position",
-              "postgame_first_seen_at_utc", "label_source")
+              "postgame_first_seen_at_utc")
+    if "label_source" in first:
+        fields += ("label_source",)
     if any(latest[k] != first[k] for k in fields):
         raise ValueError("Revised player-game identity or postgame clock changed")
     if not isinstance(history, list) or len(history) < 2:
