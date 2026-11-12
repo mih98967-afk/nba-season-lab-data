@@ -1,3 +1,126 @@
+/* Research-grade, read-only ownership uncertainty for date-only Sports.ru transfers.
+ * The range concerns observed positive-minute NBA boxscore FP ONLY. It cannot
+ * establish Sports.ru credited FP, complete DNP denominators, or exact transfer clocks.
+ */
+(function(root,factory){
+ 'use strict';
+ const api=factory();
+ if(typeof module==='object'&&module.exports)module.exports=api;
+ root.NBAOwnershipBounds=api;
+})(typeof globalThis!=='undefined'?globalThis:this,function(){
+ 'use strict';
+ const DAY=86400000,MSK=3*3600000,LOCK=30*60000;
+ const localDay=ms=>new Date(ms+MSK).toISOString().slice(0,10);
+ const validDate=d=>typeof d==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(d)&&
+  Number.isFinite(Date.parse(d+'T00:00:00+03:00'))&&
+  localDay(Date.parse(d+'T00:00:00+03:00'))===d;
+ const failure=reason=>({available:false,reason});
+ function estimate(live,state,opts={}){
+  const now=opts.nowEpoch;
+  if(opts.sourceVerified!==true||!Number.isFinite(now)||live?.mode!=='live_sync'||
+     !Array.isArray(live.games)||!Array.isArray(live.rows))return failure('Публичные NBA-результаты не подтверждены.');
+  const updated=Date.parse(live.updated_at_utc||'');
+  if(!Number.isFinite(updated)||updated>now+5*60000||now-updated>DAY)return failure('Срез NBA старше 24 часов или время публикации неизвестно.');
+  const moves=state?.executed;
+  const roster=state?.initialRoster;
+  if(!Array.isArray(moves)||!moves.length||!Array.isArray(roster)||roster.length!==10||
+     new Set(roster).size!==10||!Number.isFinite(state.initialEpoch)||
+     !Number.isFinite(state.cash)||state.cash<0)return failure('Недостаточно подтверждений исходной десятки и истории.');
+  if(moves.some(m=>!m||m.timePrecision!=='date_only'||m.epochIsPlaceholder!==true||
+       !validDate(m.sportsRuDateMoscow)||typeof m.out!=='string'||typeof m.in_!=='string'||
+       m.out===m.in_||!Number.isFinite(m.buy)||!Number.isFinite(m.sell)||m.buy<0||m.sell<0))
+    return failure('Смешанные или неподтверждённые типы времени пока не допускают расчёт диапазона.');
+  const sorted=moves.map((m,i)=>({...m,sourceIndex:i})).sort((a,b)=>a.sportsRuDateMoscow.localeCompare(b.sportsRuDateMoscow)||a.sourceIndex-b.sourceIndex);
+  if(sorted.some(m=>Date.parse(m.sportsRuDateMoscow+'T00:00:00+03:00')<state.initialEpoch-DAY||
+    Date.parse(m.sportsRuDateMoscow+'T00:00:00+03:00')>now))return failure('Дата замены вне подтверждённого периода.');
+  const initialCash=state.cash-sorted.reduce((sum,m)=>sum+(m.sell-m.buy),0);
+  if(!Number.isFinite(initialCash)||initialCash<0)return failure('Движение кассы не согласовано с историей Sports.ru.');
+  const games=new Map();
+  for(const game of live.games){
+   if(game?.status!=='final')continue;
+   if(!game.id||!Number.isFinite(game.epoch)||games.has(game.id))return failure('Повторы или неверные времена матчей NBA.');
+   if(game.epoch>now||game.epoch<state.initialEpoch)continue;
+   games.set(game.id,game);
+  }
+  if(!games.size)return failure('Нет подтверждённых завершённых матчей для периода владения.');
+  const scored=new Map();
+  for(const r of live.rows){
+   if(!games.has(r.game_id)||r.played!==true)continue;
+   if(typeof r.id!=='string'||typeof r.fp!=='number'||!Number.isFinite(r.fp))
+    return failure('Некорректные или отсутствующие очки сыгравшего игрока.');
+   const key=r.game_id+'|'+r.id;
+   if(scored.has(key))return failure('Повтор игроко-матча в NBA-срезе.');
+   scored.set(key,r.fp);
+  }
+  const gamesByDay=new Map();
+  for(const game of games.values()){
+   const lock=game.epoch-LOCK;
+   if(lock<state.initialEpoch)continue;
+   const day=localDay(lock);
+   if(!gamesByDay.has(day))gamesByDay.set(day,[]);
+   gamesByDay.get(day).push({game,lock});
+  }
+  const movesByDay=new Map();
+  for(const m of sorted){const day=m.sportsRuDateMoscow;
+   if(!movesByDay.has(day))movesByDay.set(day,[]);
+   movesByDay.get(day).push(m);
+  }
+  const days=[...new Set([...gamesByDay.keys(),...movesByDay.keys()])].sort();
+  let owned=roster.slice(),cash=initialCash,certain=0,min=0,max=0,playedKnown=0;
+  const windows=[];
+  const gameFP=(ids,g)=>{let total=0,n=0;for(const id of ids){const p=scored.get(g.game.id+'|'+id);
+   if(typeof p==='number'){total+=p;n++;}}
+   return {total,n};};
+  const tryMove=(ids,bank,m)=>{
+   const ix=ids.indexOf(m.out);
+   if(ix<0||ids.includes(m.in_)||bank+m.sell<m.buy)return null;
+   const next=ids.slice();next[ix]=m.in_;
+   return {owned:next,cash:bank+m.sell-m.buy};
+  };
+  for(const date of days){
+   const dayGames=(gamesByDay.get(date)||[]).sort((a,b)=>a.lock-b.lock||String(a.game.id).localeCompare(String(b.game.id)));
+   const dayMoves=movesByDay.get(date)||[];
+   if(!dayMoves.length){
+    for(const g of dayGames){const p=gameFP(owned,g);certain+=p.total;playedKnown+=p.n;}
+    continue;
+   }
+   if(dayMoves.length>4)return failure('Больше четырёх замен в один день: точный перебор не поддерживается.');
+   let low=Infinity,high=-Infinity,valid=0,final=null;
+   function walk(ids,bank,remaining,at,total){
+    if(valid>75000)return;
+    if(!remaining.length){let score=total;for(let i=at;i<dayGames.length;i++)score+=gameFP(ids,dayGames[i]).total;
+     valid++;low=Math.min(low,score);high=Math.max(high,score);
+     if(!final)final={owned:ids,cash:bank};
+     else if(final.cash!==bank||final.owned.some((id,i)=>id!==ids[i]))valid=75001;
+     return;
+    }
+    let accrued=0;
+    for(let i=at;i<=dayGames.length;i++){
+     if(i>at)accrued+=gameFP(ids,dayGames[i-1]).total;
+     for(let j=0;j<remaining.length;j++){
+      const m=remaining[j],next=tryMove(ids,bank,m);
+      if(next)walk(next.owned,next.cash,remaining.filter((_,idx)=>idx!==j),i,total+accrued);
+     }
+    }
+   }
+   walk(owned,cash,dayMoves,0,0);
+   if(!valid||valid>75000||!final)return failure('Не удалось однозначно подтвердить последовательность состава и денег.');
+   min+=low;max+=high;
+   windows.push({date,minimum:low,maximum:high,uncertainty:high-low,
+    gamesWithLockOnDate:dayGames.length,validTimingScenarios:valid});
+   owned=final.owned;cash=final.cash;
+  }
+  if(cash!==state.cash||!Array.isArray(state.roster)||
+    state.roster.length!==10||owned.slice().sort().join('|')!==state.roster.slice().sort().join('|'))
+   return failure('Восстановленные состав или касса не совпадают с текущим профилем.');
+  return {available:true,minimum:certain+min,maximum:certain+max,
+   fixedDateFP:certain,windows,sourceUpdatedAtUtc:live.updated_at_utc,
+   observedPlayedPlayerGamesOnUnambiguousDates:playedKnown,
+   disclaimer:'Диапазон только известных FP сыгравших игроков по NBA boxscore при всех допустимых внутридневных моментах замены. Не является пределами официальных FP Sports.ru: DNP/UNKNOWN, срок зачёта, исправления источника и точное время покупки не подтверждены.'};
+ }
+ return {estimate};
+});
+
 (()=>{'use strict';
 const BASE=JSON.parse(document.getElementById('bootstrap-data').textContent);
 const SEED=JSON.parse(document.getElementById('bootstrap-live').textContent);
@@ -199,8 +322,20 @@ function lastSeasonHistoryCaution(p){
 }
 function rosterRow(p){const official=officialForRoster().find(e=>e.playerId===p.id);const a=playerActual(p.id);const last=a.length?a.at(-1):null;const pred=prediction(p.id,now(),7);const next=futureGames(p.id,now(),7).slice(0,2);
  return `<div class="roster-row"><div><button class="ghost person" data-player="${p.id}">${esc(p.name)}</button>${lastSeasonHistoryCaution(p)?`<span class="pill warn" title="${esc(lastSeasonHistoryCaution(p))}">Мало истории</span>`:''}${official?`<span class="pill ${window.NBAOfficialStatus.isHighRisk(official.status)?'warn':''}" title="Только точно сопоставленный официальный OUT влияет на прогноз конкретного матча; прочие статусы — предупреждение">NBA: ${esc(official.status.toUpperCase())}</span>`:''}${rosterNews(p.id).length?'<span class="pill warn" title="Неофициальный пост Telegram — требуется проверка">Новость</span>':''}<small>${p.team} · ${esc(p.pos)}</small></div><div class="v"><strong>${round(prices(p.id))}</strong><small>цена*</small></div><div class="v"><strong>${last?round(last.fp):'—'}</strong><small>посл. FP</small></div><div class="v"><strong>${pred.available?round(pred.fp):'—'}</strong><small>7 дней</small></div><div class="v last"><strong>${next.map(g=>g.home===p.team?'· '+g.away:'@'+g.home).join(' ')||'—'}</strong><small>соперники</small></div></div>`;}
+function observedOwnershipBounds(){
+ return window.NBAOwnershipBounds?.estimate(LIVE,S,{sourceVerified:publicFeedValidated,nowEpoch:now()})||{available:false};
+}
 function scoreAuditPanel(a){
- if(a.complete===false)return `<div class="info warning" role="status"><b>Сумма NBA FP не подтверждена</b><p>Исходный состав, история замен, публичный источник или отдельные FP не подтверждены. Сервис не подставляет нули и не выдаёт неполную сумму за реальный итог.</p><p class="small">${a.warnings.map(esc).join(' · ')}</p></div>`;
+ if(a.complete===false){
+  const bound=observedOwnershipBounds();
+  const report=bound.available?`<div class="info"><h3>Наблюдаемые FP при неизвестных часах замен</h3>
+  <p><strong>${round(bound.minimum)}–${round(bound.maximum)} FP</strong> из сыгранных матчей NBA. Возможные времена операций внутри их дат рассмотрены с учётом состава и кассы. Это <b>не официальный итог Sports.ru</b> и не статистический доверительный интервал.</p>
+  <details><summary>Откуда берётся диапазон</summary><div class="small" style="margin-top:8px">${bound.windows.map(w=>`<div class="horizontal"><span>${esc(w.date.slice(8)+'.'+w.date.slice(5,7))} — ${w.gamesWithLockOnDate} матчей</span><span class="spacer"></span><strong>${round(w.minimum)}–${round(w.maximum)} FP</strong></div>`).join('')}</div>
+  <p class="small">На остальных датах: ${round(bound.fixedDateFP)} FP наблюдаемых сыгранных матчей. Срез NBA: ${esc(bound.sourceUpdatedAtUtc)}.</p></details>
+  <p class="small">${esc(bound.disclaimer)}</p></div>`:'';
+  return `<div class="info warning" role="status"><b>Сумма NBA FP не подтверждена</b><p>Восстановлены только даты замен, не точные часы. FP Sports.ru нельзя доказать по одному NBA boxscore.</p><p class="small">${a.warnings.map(esc).join(' · ')}</p></div>${report}`;
+ }
+
  if(!a.days.length)return '<div class="info warning">Пока нет подтверждённых сыгранных строк NBA в вашем периоде владения.</div>';
  const fmtDay=d=>d.slice(8,10)+'.'+d.slice(5,7);
  const dayRows=a.days.map(d=>`<div class="horizontal" style="margin:3px 0"><span>${fmtDay(d.day)} ET</span><span class="spacer"></span><b>${round(d.fp)} FP</b><span class="small">(${d.matches} игроко-матчей)</span></div>`).join('');
@@ -445,6 +580,7 @@ function todayPage(){
 
 function overview(){
  const at=actualTotal();
+ const bounds=!at.complete?observedOwnershipBounds():null;
  const historyValid=Array.isArray(S.executed)&&!quotaHistoryTimeUnknown(now())&&S.executed.every(t=>Number.isFinite(t?.epoch)&&t.epoch<=now());
  const q15=historyValid?S.executed.filter(t=>moscowWeek(t.epoch)===moscowWeek(now())).length:null;
  const q00=historyValid?S.executed.filter(t=>calendarMoscowWeek(t.epoch)===calendarMoscowWeek(now())).length:null;
@@ -456,7 +592,7 @@ function overview(){
  const ng=normalizedGames().filter(g=>g.epoch>now()&&(S.roster||[]).some(id=>P[id]?.team===g.home||P[id]?.team===g.away)).slice(0,5);
  const stale=(now()-Date.parse(LIVE.updated_at_utc||0))>24*3600e3||LIVE.mode==='schedule_sync_only';
  return header('Команда','Мой состав','Десять игроков, календарь и ближайшее решение. Состав на Sports.ru изменяется только вручную.')+rosterWarnings()+
- `<div class="grid metrics">${cardMetric('NBA boxscore · не Sports.ru',(Number.isFinite(at.fp)?round(at.fp)+' FP':'н/д'),at.complete?at.matches+' сыгранных игроко-матчей':'Данные NBA FP неполны; см. проверку ниже')}
+ `<div class="grid metrics">${cardMetric('NBA boxscore · не Sports.ru',(Number.isFinite(at.fp)?round(at.fp)+' FP':bounds?.available?round(bounds.minimum)+'–'+round(bounds.maximum)+' FP':'н/д'),at.complete?at.matches+' сыгранных игроко-матчей':bounds?.available?'Диапазон по датам замен · НЕ зачёт Sports.ru':'Данные NBA FP неполны; см. проверку ниже')}
  ${cardMetric('До конца недели · модель',Number.isFinite(remainingMean)?approx(remainingMean)+' FP':'н/д',Number.isFinite(remainingMean)?'Ожидаемые FP, не зачёт':'Календарь недостаточно полон')}
  ${cardMetric(SRU.cashTile,round(free),SRU.cashTileNote)}
  ${cardMetric(SRU.quotaTile,quotaText,SRU.quotaTileNote)}</div>

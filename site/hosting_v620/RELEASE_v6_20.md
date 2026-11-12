@@ -42,3 +42,9 @@
 - KEEP/NOW/LATER with unknown historical quota stays a conditional model scenario requiring owner verification, including multi-step routes. Transfer guard exposes the uncertainty, never executes transfers.
 - On JSON restore, the confirmation dialog explicitly warns about date-only clocks. Unrelated player data, scoring formula, predictions, injury model, current public source collector, Firestore schema v5, Hosting project and Firebase Spark remain unchanged.
 - Tests added for synthetic date-only FP, conditional market scenario, quota reconciliation and draft guard. No real Sports.ru total is claimed.
+
+## PR #158 candidate: observed played-FP range for date-only owner transfer clocks
+- Pure read-only `ownership_bounds.js` exhaustively enumerates legal within-date orders and pre-lock timing scenarios (with cash/roster conservation) for up to four owner-attested transfers on one Moscow date. It never claims to recover true clocks.
+- When date-only transfers prevent an exact personal attribution, the Team page displays the min–max of **observed played-only NBA boxscore FP**, grouped by the six relevant transaction dates. Exact Sports.ru credited FP and DNP remain explicitly unverified.
+- Fresh independently verified public live data are mandatory (age <= 24h). A missing/duplicate/nonfinite played row, mixed unsupported clock evidence, or impossible ledger fails closed.
+- No private Pythos backup, roster, market values, or transfer journal is committed in public source. No scoring model, player availability, Firebase state, or Sports.ru action changed.
