@@ -22,7 +22,8 @@ import json
 from src.sync import DATA
 from src.rolling_decision_research import canonical_hash, instant, stamp
 from src.current_season_minutes_shadow_research import (
-    source_rows, unique, STATUS,
+    source_rows, unique, STATUS, _revision_proof,
+    _check_archived_revisions,
 )
 
 LOCK = timedelta(minutes=30)
@@ -211,7 +212,7 @@ def metrics(rows):
     return out
 
 
-def build(previous, frozen, evaluation, rolling, live, now):
+def build(previous, frozen, evaluation, rolling, live, now, source_versions=None):
     if now.utcoffset() is None:
         raise ValueError("Aware UTC live capture time required")
     now=now.astimezone(timezone.utc)
@@ -244,6 +245,17 @@ def build(previous, frozen, evaluation, rolling, live, now):
     old_observed=unique((previous or {}).get("observed",[]),"previous refresh outcomes")
     if not set(old_observed).issubset(old_issues):
         raise ValueError("Orphan historical refresh outcome")
+    versions = None
+    if source_versions is not None:
+        if (source_versions.get("schema_version") != 1
+                or source_versions.get("status") != STATUS
+                or source_versions.get("adopt_on_site") is not False
+                or not isinstance(source_versions.get("versions"), dict)):
+            raise ValueError("Untrusted played boxscore value-version archive")
+        versions = source_versions["versions"]
+    corrections = list((previous or {}).get("observed_corrections", []))
+    corrected = _check_archived_revisions(
+        corrections, old_issues, old_observed, versions, now)
     for key,item in old_issues.items():
         base=original.get(key)
         if (base is None or item.get("original_frozen_issue_sha256") != canonical_hash(base)
@@ -313,9 +325,26 @@ def build(previous, frozen, evaluation, rolling, live, now):
             "FP_variants_frozen":item["FP_variants_frozen"],
             "source_original_issue_sha256":item["original_frozen_issue_sha256"],
         }
-        if key in old_observed and old_observed[key]!=outcome:
-            raise ValueError("Previously paired refresh result changed")
-        old_observed[key]=outcome
+        first=old_observed.get(key)
+        if first is None:
+            old_observed[key]=outcome
+            continue
+        previous_corrections=corrected.get(key, [])
+        effective=(dict(first,
+          actual_minutes=previous_corrections[-1]["latest_actual_minutes"],
+          actual_fp_reconstructed=previous_corrections[-1]["latest_actual_fp_reconstructed"])
+          if previous_corrections else first)
+        if effective==outcome:
+            continue
+        if versions is None:
+            raise ValueError("Changed played refresh outcome without observed row versions")
+        evidence=_revision_proof(
+            first,effective,outcome,versions.get(key[0]+"|"+key[1]),now)
+        if previous_corrections and instant(evidence["latest_version_observed_at_utc"])<=instant(
+                previous_corrections[-1]["latest_version_observed_at_utc"]):
+            raise ValueError("Refresh correction was backdated or repeated")
+        corrections.append(evidence)
+        corrected.setdefault(key,[]).append(evidence)
     if not set(old_observed).issubset(scored):
         raise ValueError("Previously verified refresh result disappeared from source")
     keys=set(old_issues)
@@ -334,10 +363,13 @@ def build(previous, frozen, evaluation, rolling, live, now):
         "adopt_on_site":False,"model_sha256":MODEL_HASH,
         "frozen_design":MODEL,"updated_at_utc":stamp(now),
         "issued":issues,"observed":results,
+        "observed_corrections":corrections,
         "summary":{
             "issued_total":len(issues),
             "new_issued_this_run":qa["new_true_asof_nearlock_refreshes"],
             "played_verified":played,
+            "independently_versioned_correction_events":len(corrections),
+            "corrected_player_games":len(corrected),
             "explicit_DNP_excluded":verified_dnp,
             "UNKNOWN_not_imputed":genuinely_unknown,
             "awaiting_or_unchecked":remaining,
@@ -352,6 +384,8 @@ def build(previous, frozen, evaluation, rolling, live, now):
         "quality_gate":{
             "true_new_refresh_first_issued_prelock":True,
             "original_issue_not_rewritten":True,
+            "original_observed_played_results_immutable":True,
+            "late_boxscore_corrections_separate":True,
             "different_info_clock_original_vs_refresh_not_same_asof_AB_test":True,
             "at_least_8_independent_ET_dates":len(by_date)>=8,
             "at_least_24_NBA_games":len({r["game_id"] for r in results})>=24,
@@ -367,6 +401,7 @@ def build(previous, frozen, evaluation, rolling, live, now):
             "Therefore benefits measure the value of updating later, not a same-time fair algorithm comparison.",
             "ESPN and Sports.ru public club proxies do not establish game-day player eligibility.",
             "Only independently verified positive-minute boxscores can be scored for conditional FP.",
+            "Paired performance is still based on the FIRST independently observed played outcome; later checked revisions are quarantined.",
             "Official DNP and unknown are counted separately; neither is scored with FP=0.",
             "First-seen current source timestamps are conservative observations, not guaranteed original provider publication.",
             "Multiple player-games share dates and correlated match shocks.",
@@ -384,7 +419,8 @@ def run():
     obj=build(prior,read("conditional_minutes_fp_research.json"),
               read("conditional_minutes_fp_evaluation_research.json"),
               read("rolling_decision_research.json"),read("live.json"),
-              datetime.now(timezone.utc))
+              datetime.now(timezone.utc),
+              read("observed_boxscore_versions_research.json"))
     if (not prior or {k:v for k,v in obj.items() if k!="updated_at_utc"} !=
             {k:v for k,v in prior.items() if k!="updated_at_utc"}):
         tmp=target.with_suffix(".tmp")
