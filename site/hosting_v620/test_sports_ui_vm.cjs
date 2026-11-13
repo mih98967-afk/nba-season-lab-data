@@ -54,6 +54,18 @@ assert.match(view.innerHTML,/Сверить со Sports.ru/);
 assert.deepEqual(window.PythosNBA.getState(),before);
 assert.equal(saved.size,1);
 assert(!JSON.stringify(window.PythosNBA.getState()).includes('sportsResult'));
+// Owner-attested historical scores are browser-local and explicitly date-labelled.
+assert.match(view.innerHTML,/Официальные FP · контрольные даты/);
+for(const [id,value] of [['checkpoint-day','2026-11-11'],['checkpoint-fp','2362'],
+ ['checkpoint-roster','22330'],['checkpoint-cash','31']])nodes[id]={value};
+nodes['checkpoint-confirm']={checked:true};
+click('owner-checkpoint-save');
+assert.match(view.innerHTML,/Sports.ru · ваша запись/);
+assert.match(view.innerHTML,/2.{0,2}362 FP/);
+assert.match(view.innerHTML,/На 2026-11-11 МСК/);
+assert.match(view.innerHTML,/Sports.ru минус расчёт: 1 FP/);
+assert.equal(saved.has(window.NBASportsReconciliation.CHECKPOINT_KEY),true);
+assert.deepEqual(window.PythosNBA.getState(),before);
 // A browser-injected unverified NBA source cannot appear as a verified historical total.
 window.PythosNBA.updateFeed({updated_at_utc:'2026-11-09T18:00:00Z',mode:'live_sync',
  games:[{id:'g1',status:'final',epoch:Date.parse('2026-11-01T23:00:00Z'),et_date:'2026-11-01',home:'BOS',away:'NYK'}],

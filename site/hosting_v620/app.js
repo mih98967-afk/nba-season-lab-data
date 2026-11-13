@@ -410,6 +410,47 @@ function sportsCheckPanel(){
  <div class="toolbar"><button class="primary" data-action="sports-check-run" type="button">${SRU.run}</button></div>
  <p class="small">${SRU.privacy}</p>${sportsResultMarkup()}</div>`:''}</section>`;
 }
+function ownerCheckpointRows(){
+ try{return window.NBASportsReconciliation?.checkpointRead(localStorage,S)||[];}
+ catch(e){return {error:e.message||'Не удалось открыть локальные контрольные даты.'};}
+}
+function ownerCheckpointPanel(){
+ const rows=ownerCheckpointRows();
+ const error=Array.isArray(rows)?'':rows.error;
+ const latest=Array.isArray(rows)?window.NBASportsReconciliation.checkpointSummary(rows):null;
+ const dates=Array.isArray(rows)?rows.slice().reverse().map(row=>{
+  const cap=row.rosterValue===null?'':` · состав ${sportsAmt(row.rosterValue)} + касса ${sportsAmt(row.cash)}`;
+  return `<div class="horizontal" style="margin:6px 0"><span><b>${esc(row.asOfDateMoscow)}</b> · ${sportsAmt(row.fp)} FP${cap}</span><span class="spacer"></span><button class="ghost" type="button" data-action="owner-checkpoint-delete" data-day="${esc(row.asOfDateMoscow)}">Удалить</button></div>`;
+ }).join(''):'';
+ const last=latest?.latest;
+ const delta=latest?.delta;
+ return `<section class="card sports-check-card" id="owner-checkpoints"><div class="titledetail"><div><h2>Официальные FP · контрольные даты</h2><p class="small">Записывайте видимые вам результаты Sports.ru. Это ваша запись, а не независимое подтверждение сайтом.</p></div></div>
+ ${error?`<div class="info warning" role="status">${esc(error)}</div>`:''}
+ ${last?`<p><b>${sportsAmt(last.fp)} FP</b> · на ${esc(last.asOfDateMoscow)} МСК${delta===null?'':` · изменение с предыдущей даты: ${delta>=0?'+':''}${sportsAmt(delta)} FP`}</p>`:''}
+ ${latest?.capital?`<p class="small">Расчёт по стоимости и кассе: ${sportsAmt(latest.capital.impliedFP)} FP; Sports.ru минус расчёт: ${sportsAmt(latest.capital.officialMinusImplied)} FP. Возможны разные моменты обновления.</p>`:''}
+ <details><summary>Добавить дату или посмотреть историю</summary><div class="formgrid" style="margin-top:12px">
+ <label>Дата по МСК<input id="checkpoint-day" type="date" min="2026-10-20" max="2027-06-30"></label>
+ <label>FP Sports.ru<input id="checkpoint-fp" type="text" inputmode="numeric" placeholder="Например, 2504" autocomplete="off"></label>
+ <label>Стоимость состава (необязательно)<input id="checkpoint-roster" type="text" inputmode="numeric" autocomplete="off"></label>
+ <label>Касса (необязательно)<input id="checkpoint-cash" type="text" inputmode="numeric" autocomplete="off"></label>
+ </div><label class="sports-attest"><input id="checkpoint-confirm" type="checkbox"> Я сверил дату и FP с Sports.ru</label>
+ <div class="toolbar"><button class="primary" data-action="owner-checkpoint-save" type="button">Сохранить локально</button></div>
+ <p class="small">Только в памяти этого браузера, без Firebase и GitHub. Не переносится автоматически на другое устройство. Для стоимости и кассы используйте значения с того же момента, что и FP.</p>
+ ${dates||'<p class="small">Контрольных дат пока нет.</p>'}</details></section>`;
+}
+function ownerCheckpointSave(){
+ const mod=window.NBASportsReconciliation;
+ try{
+  const val=id=>document.getElementById(id)?.value??'';
+  mod.checkpointSave(localStorage,S,{confirmed:document.getElementById('checkpoint-confirm')?.checked===true,asOfDateMoscow:val('checkpoint-day'),fp:val('checkpoint-fp'),rosterValue:val('checkpoint-roster'),cash:val('checkpoint-cash')},now());
+  showMsg('Контрольная дата сохранена только в этом браузере.');view();
+ }catch(e){showMsg('Контрольная дата не сохранена: '+(e.message||'ошибка'));}
+}
+function ownerCheckpointDelete(day){
+ if(!window.confirm('Удалить локальную контрольную дату '+day+'?'))return;
+ try{window.NBASportsReconciliation.checkpointDelete(localStorage,S,day,true);showMsg('Контрольная дата удалена.');view();}
+ catch(e){showMsg('Не удалось удалить: '+(e.message||'ошибка'));}
+}
 function sportsCheckRun(){
  const mod=window.NBASportsReconciliation;
  if(!mod)return showMsg(SRU.unavailable);
@@ -580,6 +621,8 @@ function todayPage(){
 
 function overview(){
  const at=actualTotal();
+ const snapshot=ownerCheckpointRows();
+ const ownerLast=Array.isArray(snapshot)?window.NBASportsReconciliation?.checkpointSummary(snapshot)?.latest:null;
  const bounds=!at.complete?observedOwnershipBounds():null;
  const historyValid=Array.isArray(S.executed)&&!quotaHistoryTimeUnknown(now())&&S.executed.every(t=>Number.isFinite(t?.epoch)&&t.epoch<=now());
  const q15=historyValid?S.executed.filter(t=>moscowWeek(t.epoch)===moscowWeek(now())).length:null;
@@ -592,7 +635,7 @@ function overview(){
  const ng=normalizedGames().filter(g=>g.epoch>now()&&(S.roster||[]).some(id=>P[id]?.team===g.home||P[id]?.team===g.away)).slice(0,5);
  const stale=(now()-Date.parse(LIVE.updated_at_utc||0))>24*3600e3||LIVE.mode==='schedule_sync_only';
  return header('Команда','Мой состав','Десять игроков, календарь и ближайшее решение. Состав на Sports.ru изменяется только вручную.')+rosterWarnings()+
- `<div class="grid metrics">${cardMetric('NBA boxscore · не Sports.ru',(Number.isFinite(at.fp)?round(at.fp)+' FP':bounds?.available?round(bounds.minimum)+'–'+round(bounds.maximum)+' FP':'н/д'),at.complete?at.matches+' сыгранных игроко-матчей':bounds?.available?'Диапазон по датам замен · НЕ зачёт Sports.ru':'Данные NBA FP неполны; см. проверку ниже')}
+ `<div class="grid metrics">${cardMetric(ownerLast?'Sports.ru · ваша запись':'NBA boxscore · не Sports.ru',ownerLast?sportsAmt(ownerLast.fp)+' FP':(Number.isFinite(at.fp)?round(at.fp)+' FP':bounds?.available?round(bounds.minimum)+'–'+round(bounds.maximum)+' FP':'н/д'),ownerLast?'На '+ownerLast.asOfDateMoscow+' МСК · не текущий онлайн-счётчик':at.complete?at.matches+' сыгранных игроко-матчей':bounds?.available?'Диапазон по датам замен · НЕ зачёт Sports.ru':'Данные NBA FP неполны; см. проверку ниже')}
  ${cardMetric('До конца недели · модель',Number.isFinite(remainingMean)?approx(remainingMean)+' FP':'н/д',Number.isFinite(remainingMean)?'Ожидаемые FP, не зачёт':'Календарь недостаточно полон')}
  ${cardMetric(SRU.cashTile,round(free),SRU.cashTileNote)}
  ${cardMetric(SRU.quotaTile,quotaText,SRU.quotaTileNote)}</div>
@@ -600,6 +643,7 @@ function overview(){
  <section class="card team-next-action"><div class="eyebrow">Следующее решение</div><h2>Стоит ли менять состав?</h2><p>Сравним оставить десятку, заменить сейчас или позже, учитывая календарь и кассу.</p><button class="primary" data-tabto="planner">Сравнить варианты</button></section>
  <section class="card"><div class="titledetail"><h2>Ближайшие матчи состава</h2><button class="ghost" data-tabto="calendar">Весь календарь</button></div>${ng.length?ng.map(g=>{const own=S.roster.filter(id=>P[id]?.team===g.home||P[id]?.team===g.away).map(id=>P[id].name).join(', ');return `<div class="lined"><div class="horizontal"><b>${esc(g.away)} @ ${esc(g.home)}</b><span class="spacer"></span><span class="small">${dateText(g.epoch)}</span></div><div class="small">${esc(own)}</div></div>`;}).join(''):'<div class="empty">Нет подтверждённых ближайших игр в имеющемся календаре.</div>'}</section>
  </aside></div>
+ ${ownerCheckpointPanel()}
  ${sportsCheckPanel()}
  <details class="card deep-details"><summary>Как посчитаны очки и насколько свежие данные?</summary>${scoreAuditPanel(at)}
  <div class="horizontal" style="margin-top:12px"><span class="pill ${stale?'warn':'good'}">${esc(currentStatus())}</span><button class="button" data-tabto="data">Источники и цены</button></div>
@@ -1820,7 +1864,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-action],[
   const cached=UI.todayResult?.ready&&UI.todayResult.signature===chainSignature()&&
     UI.todayCalculatedAt&&now()-UI.todayCalculatedAt<=30*60000&&UI.todayResult.start>=now()-60000;
   if(cached){UI.multiResult=UI.todayResult;UI.multiCalculatedAt=UI.todayCalculatedAt;UI.plannerWhen=UI.todayResult.start;tab='planner';view();}
-  else{UI.plannerWhen=null;tab='planner';view();calculateMulti();}break;}case 'sports-check-toggle':UI.sportsOpen=!UI.sportsOpen;view();break;case 'sports-check-run':sportsCheckRun();break;case 'dismiss':notice='';view();break;case 'create-roster':createRoster();break;case 'reset-roster':resetRoster();break;case 'close-modal':MODAL=null;renderModal();break;case 'compare':if(UI.compare.length>=2){MODAL='compare';renderModal();}else showMsg('Выберите хотя бы двух игроков.');break;case 'cal-prev-tours':UI.calendarTour=Math.max(1,(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))-UI.calendarTourCount);view();break;case 'cal-next-tours':UI.calendarTour=Math.min(Math.max(1,window.NBACalendarTours.seasonTourCount()-UI.calendarTourCount+1),(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))+UI.calendarTourCount);view();break;case 'cal-current-tours':UI.calendarTour=window.NBACalendarTours.tourNumber(now());view();break;case 'cal-prev-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(T.FIRST_DATE,UI.calendarStart));UI.calendarStart=T.addDays(UI.calendarStart,-n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'cal-next-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(UI.calendarEnd,T.LAST_DATE));UI.calendarStart=T.addDays(UI.calendarStart,n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'market-advanced':UI.marketAdvanced=!UI.marketAdvanced;view();break;case 'market-more':UI.marketLimit=Math.min(BASE.players.length,UI.marketLimit+50);view();break;case 'planner-advanced-toggle':UI.plannerAdvanced=!UI.plannerAdvanced;view();break;case 'planner-detail-toggle':UI.plannerDetail=!UI.plannerDetail;view();break;case 'planner-manual-toggle':UI.plannerManualOpen=!UI.plannerManualOpen;view();break;case 'multi-options-toggle':UI.multiOptions=!UI.multiOptions;view();break;case 'calculate-chains':calculateChains();break;case 'calculate-multi':calculateMulti();break;case 'calculate-budget':calculateBudget();break;case 'retro-toggle':UI.retroOpen=!UI.retroOpen;UI.retroPreview=null;view();break;case 'retro-add':UI.retroRows.push(retroBlank());UI.retroPreview=null;view();break;case 'retro-remove':if(UI.retroRows.length>1){UI.retroRows.splice(Number(el.dataset.idx),1);UI.retroPreview=null;view();}break;case 'retro-preview':retroPreviewHistory();break;case 'retro-save':retroCommitHistory();break;case 'add-draft':addDraft();break;case 'preview-transfer':previewTransfer();break;case 'clear-draft':S.draft=[];save();view();break;case 'confirm-draft':confirmDraft();break;case 'refresh':remoteRefresh();break;case 'history-more':UI.histLimit=Math.min(10000,UI.histLimit+100);view();break;case 'retry-history':{const pid=UI.playerId||S.roster[0];if(HISTORY_INDEX){const file=HISTORY_INDEX.player_shards?.[pid];if(file)HISTORY_SHARD_ERRORS.delete(file);scheduleHistory(pid);}else loadAux();break;}case 'journal-export':decisionJournalExport();break;case 'journal-clear':decisionJournalClear();break;case 'price-proof-save':privatePriceCapture();break;case 'price-proof-export':privatePriceExport();break;case 'price-proof-delete':privatePriceDelete();break;case 'export-state':download('nba-season-lab-backup.json',S);break;case 'set-cash':{const val=num(document.getElementById('cash')?.value);if(!Number.isFinite(val)||val<0)return showMsg('Некорректная касса');S.cash=val;save();view();break;}}});
+  else{UI.plannerWhen=null;tab='planner';view();calculateMulti();}break;}case 'sports-check-toggle':UI.sportsOpen=!UI.sportsOpen;view();break;case 'sports-check-run':sportsCheckRun();break;case 'owner-checkpoint-save':ownerCheckpointSave();break;case 'owner-checkpoint-delete':ownerCheckpointDelete(el.dataset.day||'');break;case 'dismiss':notice='';view();break;case 'create-roster':createRoster();break;case 'reset-roster':resetRoster();break;case 'close-modal':MODAL=null;renderModal();break;case 'compare':if(UI.compare.length>=2){MODAL='compare';renderModal();}else showMsg('Выберите хотя бы двух игроков.');break;case 'cal-prev-tours':UI.calendarTour=Math.max(1,(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))-UI.calendarTourCount);view();break;case 'cal-next-tours':UI.calendarTour=Math.min(Math.max(1,window.NBACalendarTours.seasonTourCount()-UI.calendarTourCount+1),(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))+UI.calendarTourCount);view();break;case 'cal-current-tours':UI.calendarTour=window.NBACalendarTours.tourNumber(now());view();break;case 'cal-prev-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(T.FIRST_DATE,UI.calendarStart));UI.calendarStart=T.addDays(UI.calendarStart,-n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'cal-next-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(UI.calendarEnd,T.LAST_DATE));UI.calendarStart=T.addDays(UI.calendarStart,n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'market-advanced':UI.marketAdvanced=!UI.marketAdvanced;view();break;case 'market-more':UI.marketLimit=Math.min(BASE.players.length,UI.marketLimit+50);view();break;case 'planner-advanced-toggle':UI.plannerAdvanced=!UI.plannerAdvanced;view();break;case 'planner-detail-toggle':UI.plannerDetail=!UI.plannerDetail;view();break;case 'planner-manual-toggle':UI.plannerManualOpen=!UI.plannerManualOpen;view();break;case 'multi-options-toggle':UI.multiOptions=!UI.multiOptions;view();break;case 'calculate-chains':calculateChains();break;case 'calculate-multi':calculateMulti();break;case 'calculate-budget':calculateBudget();break;case 'retro-toggle':UI.retroOpen=!UI.retroOpen;UI.retroPreview=null;view();break;case 'retro-add':UI.retroRows.push(retroBlank());UI.retroPreview=null;view();break;case 'retro-remove':if(UI.retroRows.length>1){UI.retroRows.splice(Number(el.dataset.idx),1);UI.retroPreview=null;view();}break;case 'retro-preview':retroPreviewHistory();break;case 'retro-save':retroCommitHistory();break;case 'add-draft':addDraft();break;case 'preview-transfer':previewTransfer();break;case 'clear-draft':S.draft=[];save();view();break;case 'confirm-draft':confirmDraft();break;case 'refresh':remoteRefresh();break;case 'history-more':UI.histLimit=Math.min(10000,UI.histLimit+100);view();break;case 'retry-history':{const pid=UI.playerId||S.roster[0];if(HISTORY_INDEX){const file=HISTORY_INDEX.player_shards?.[pid];if(file)HISTORY_SHARD_ERRORS.delete(file);scheduleHistory(pid);}else loadAux();break;}case 'journal-export':decisionJournalExport();break;case 'journal-clear':decisionJournalClear();break;case 'price-proof-save':privatePriceCapture();break;case 'price-proof-export':privatePriceExport();break;case 'price-proof-delete':privatePriceDelete();break;case 'export-state':download('nba-season-lab-backup.json',S);break;case 'set-cash':{const val=num(document.getElementById('cash')?.value);if(!Number.isFinite(val)||val<0)return showMsg('Некорректная касса');S.cash=val;save();view();break;}}});
 document.getElementById('navigation').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab);});
 document.addEventListener('change',e=>{const el=e.target;if(!el)return;
  if(el.dataset.historyField!==undefined){const i=Number(el.dataset.historyIndex),field=el.dataset.historyField;
