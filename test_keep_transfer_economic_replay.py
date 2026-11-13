@@ -28,7 +28,7 @@ def outcomes():
  return proof("sportsru_final_credits_batch","2026-11-02T08:00:00Z",
      evaluated_at_utc="2026-11-02T08:00:00Z",complete_final_fixture_set=True,
      final_games=[{"id":"g1","utc":"2026-10-27T00:00:00Z","home":"BOS","away":"DEN","status":"final","final_verified_at_utc":"2026-10-27T03:00:00Z"}],
-     game_day_club_tenure={pid:proof("official_complete_game_day_club_tenure","2026-11-02T08:00:00Z",player_id=pid,complete_entire_window_from_official_transactions=True,independent_game_day_club_check=True,evidence_is_not_current_catalog_proxy=True,intervals=[{"from_utc":D,"until_utc":"2026-11-02T05:00:00Z","club":club}]) for pid,club in (("p0","BOS"),("incoming","DEN"))},
+     game_day_club_tenure={pid:proof("official_complete_game_day_club_tenure","2026-11-02T08:00:00Z",player_id=pid,complete_entire_window_from_official_transactions=True,independent_game_day_club_check=True,evidence_is_not_current_catalog_proxy=True,intervals=[{"from_utc":D,"until_utc":"2026-11-01T21:00:00Z","club":club}]) for pid,club in (("p0","BOS"),("incoming","DEN"))},
      credited_player_games=[
          proof("sportsru_credited_fp","2026-10-27T04:00:00Z",player_id="p0",game_id="g1",club_at_game="BOS",credited_fp=15),
          proof("sportsru_credited_fp","2026-10-27T04:00:00Z",player_id="incoming",game_id="g1",club_at_game="DEN",credited_fp=35)])
@@ -85,7 +85,7 @@ class Tests(unittest.TestCase):
   o["final_games"].append({"id":"g2","utc":"2026-10-28T00:00:00Z","home":"NYK","away":"MIA","status":"final","final_verified_at_utc":"2026-10-28T03:00:00Z"})
   o["game_day_club_tenure"]["incoming"]["intervals"]=[
    {"from_utc":D,"until_utc":"2026-10-27T12:00:00Z","club":"DEN"},
-   {"from_utc":"2026-10-27T12:00:00Z","until_utc":"2026-11-02T05:00:00Z","club":"NYK"}]
+   {"from_utc":"2026-10-27T12:00:00Z","until_utc":"2026-11-01T21:00:00Z","club":"NYK"}]
   o["credited_player_games"].append(proof("sportsru_credited_fp","2026-10-28T04:00:00Z",player_id="incoming",game_id="g2",club_at_game="NYK",credited_fp=10))
   self.assertEqual(evaluate(s,m,o)["actual_delta_fp"],30)
  def test_missing_final_or_before_final_credit_refused(self):
