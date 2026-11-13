@@ -1,6 +1,6 @@
 import copy
 import unittest
-from src.keep_transfer_economic_replay import evaluate
+from src.keep_transfer_economic_replay import evaluate, week_window, InsufficientEvidence
 
 D="2026-10-26T12:00:00Z"
 SHA="a"*64
@@ -12,7 +12,7 @@ def case():
  cards={f"p{i}":proof("sportsru_player_card",position=pos[i],club=clubs[i]) for i in range(10)}
  cards["incoming"]=proof("sportsru_player_card",position="PG",club="DEN")
  snap={"schema_version":1,"status":"research_only_not_deployed","adopt_on_site":False,
-       "decision_at_utc":D,"week_et_monday":"2026-10-26",
+       "decision_at_utc":D,"week_msk_monday":"2026-10-26",
        "account":proof("sportsru_account",roster=list(cards)[:10],cash=100,quota_remaining=3,quota_reset_verified=True),
        "player_cards":cards,
        "schedule":proof("verified_public_schedule_PIT",complete_for_declared_week=True,games=[
@@ -28,7 +28,7 @@ def outcomes():
  return proof("sportsru_final_credits_batch","2026-11-02T08:00:00Z",
      evaluated_at_utc="2026-11-02T08:00:00Z",complete_final_fixture_set=True,
      final_games=[{"id":"g1","utc":"2026-10-27T00:00:00Z","home":"BOS","away":"DEN","status":"final","final_verified_at_utc":"2026-10-27T03:00:00Z"}],
-     game_day_club_tenure={pid:proof("official_complete_game_day_club_tenure","2026-11-02T08:00:00Z",player_id=pid,complete_entire_window_from_official_transactions=True,independent_game_day_club_check=True,evidence_is_not_current_catalog_proxy=True,intervals=[{"from_utc":D,"until_utc":"2026-11-02T05:00:00Z","club":club}]) for pid,club in (("p0","BOS"),("incoming","DEN"))},
+     game_day_club_tenure={pid:proof("official_complete_game_day_club_tenure","2026-11-02T08:00:00Z",player_id=pid,complete_entire_window_from_official_transactions=True,independent_game_day_club_check=True,evidence_is_not_current_catalog_proxy=True,intervals=[{"from_utc":D,"until_utc":"2026-11-01T21:00:00Z","club":club}]) for pid,club in (("p0","BOS"),("incoming","DEN"))},
      credited_player_games=[
          proof("sportsru_credited_fp","2026-10-27T04:00:00Z",player_id="p0",game_id="g1",club_at_game="BOS",credited_fp=15),
          proof("sportsru_credited_fp","2026-10-27T04:00:00Z",player_id="incoming",game_id="g1",club_at_game="DEN",credited_fp=35)])
@@ -85,7 +85,7 @@ class Tests(unittest.TestCase):
   o["final_games"].append({"id":"g2","utc":"2026-10-28T00:00:00Z","home":"NYK","away":"MIA","status":"final","final_verified_at_utc":"2026-10-28T03:00:00Z"})
   o["game_day_club_tenure"]["incoming"]["intervals"]=[
    {"from_utc":D,"until_utc":"2026-10-27T12:00:00Z","club":"DEN"},
-   {"from_utc":"2026-10-27T12:00:00Z","until_utc":"2026-11-02T05:00:00Z","club":"NYK"}]
+   {"from_utc":"2026-10-27T12:00:00Z","until_utc":"2026-11-01T21:00:00Z","club":"NYK"}]
   o["credited_player_games"].append(proof("sportsru_credited_fp","2026-10-28T04:00:00Z",player_id="incoming",game_id="g2",club_at_game="NYK",credited_fp=10))
   self.assertEqual(evaluate(s,m,o)["actual_delta_fp"],30)
  def test_missing_final_or_before_final_credit_refused(self):
@@ -97,5 +97,24 @@ class Tests(unittest.TestCase):
   s,m=case();y=outcomes()
   y["credited_player_games"][0]["source_kind"]="reconstructed_fp"
   self.assertEqual(evaluate(s,m,y)["phase"],"UNSCORABLE_POSTGAME")
+
+ def test_moscow_week_boundary_and_sunday_us_tipoff(self):
+  s,m=case()
+  d,end=week_window(s)
+  self.assertEqual(end.isoformat(),"2026-11-01T21:00:00+00:00")
+  # 2026-11-01 22:15 UTC is Sunday afternoon in New York,
+  # but already Monday 01:15 in Moscow: a new fantasy calendar week.
+  s["decision_at_utc"]="2026-11-01T22:15:00Z"
+  s["week_msk_monday"]="2026-11-02"
+  _,end=week_window(s)
+  self.assertEqual(end.isoformat(),"2026-11-08T21:00:00+00:00")
+  s["week_msk_monday"]="2026-10-26"
+  with self.assertRaisesRegex(InsufficientEvidence,"DECISION_NOT_IN_DECLARED_MSK_WEEK"):
+   week_window(s)
+ def test_legacy_et_week_cannot_silently_pass(self):
+  s,m=case()
+  s["week_et_monday"]=s.pop("week_msk_monday")
+  with self.assertRaises(InsufficientEvidence):
+   week_window(s)
 if __name__=="__main__":
  unittest.main()
