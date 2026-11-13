@@ -411,7 +411,7 @@ function sportsCheckPanel(){
  <p class="small">${SRU.privacy}</p>${sportsResultMarkup()}</div>`:''}</section>`;
 }
 function ownerCheckpointRows(){
- try{return window.NBASportsReconciliation?.checkpointRead(window.localStorage,S)||[];}
+ try{return window.NBASportsReconciliation?.checkpointRead(localStorage,S)||[];}
  catch(e){return {error:e.message||'Не удалось открыть локальные контрольные даты.'};}
 }
 function ownerCheckpointPanel(){
@@ -442,13 +442,13 @@ function ownerCheckpointSave(){
  const mod=window.NBASportsReconciliation;
  try{
   const val=id=>document.getElementById(id)?.value??'';
-  mod.checkpointSave(window.localStorage,S,{confirmed:document.getElementById('checkpoint-confirm')?.checked===true,asOfDateMoscow:val('checkpoint-day'),fp:val('checkpoint-fp'),rosterValue:val('checkpoint-roster'),cash:val('checkpoint-cash')},now());
+  mod.checkpointSave(localStorage,S,{confirmed:document.getElementById('checkpoint-confirm')?.checked===true,asOfDateMoscow:val('checkpoint-day'),fp:val('checkpoint-fp'),rosterValue:val('checkpoint-roster'),cash:val('checkpoint-cash')},now());
   showMsg('Контрольная дата сохранена только в этом браузере.');view();
  }catch(e){showMsg('Контрольная дата не сохранена: '+(e.message||'ошибка'));}
 }
 function ownerCheckpointDelete(day){
  if(!window.confirm('Удалить локальную контрольную дату '+day+'?'))return;
- try{window.NBASportsReconciliation.checkpointDelete(window.localStorage,S,day,true);showMsg('Контрольная дата удалена.');view();}
+ try{window.NBASportsReconciliation.checkpointDelete(localStorage,S,day,true);showMsg('Контрольная дата удалена.');view();}
  catch(e){showMsg('Не удалось удалить: '+(e.message||'ошибка'));}
 }
 function sportsCheckRun(){
