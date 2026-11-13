@@ -100,5 +100,104 @@
    capturedAtUtc:new Date(now).toISOString(),checks,
    disclaimer:'Owner-attested browser snapshot only. Nothing was submitted or saved. Live NBA FP and Sports.ru credited FP may have different clocks or scoring revisions.'};
  }
- return {compare,parseNumber};
+ // Private, dated Sports.ru totals. A past as-of date is owner testimony,
+ // not an independently audited site snapshot or a reconstructed trade clock.
+ const CHECKPOINT_KEY='nba-season-lab-private-fp-checkpoints-v1';
+ const CHECKPOINT_SOURCE='owner_entered_sportsru_score_not_independently_verified';
+ const DAY_MSK=3*3600000;
+ const moscowDate=ms=>new Date(ms+DAY_MSK).toISOString().slice(0,10);
+ function ownerKey(state){
+  const ids=state?.initialRoster;
+  if(!Array.isArray(ids)||ids.length!==10||new Set(ids).size!==10||
+     !Number.isFinite(state.initialEpoch)||ids.some(id=>typeof id!=='string'||!id))return null;
+  return String(state.initialEpoch)+'|'+ids.slice().sort().join('|');
+ }
+ function validDate(s){
+  return typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&
+   Number.isFinite(Date.parse(s+'T00:00:00+03:00'))&&
+   moscowDate(Date.parse(s+'T00:00:00+03:00'))===s&&
+   s>='2026-10-20'&&s<='2027-06-30';
+ }
+ function checkpointNumber(v,min,max,optional=false){
+  if(optional&&(v===undefined||v===null||String(v).trim()===''))return null;
+  const n=parseNumber(v,min,max,true);
+  if(n===null)throw Error('Неверные числовые данные контрольной даты.');
+  return n;
+ }
+ function validateCheckpoints(payload){
+  if(!payload||payload.schema_version!==1||payload.private_local_only!==true||
+     !Array.isArray(payload.rows)||payload.rows.length>40)throw Error('Локальные контрольные даты повреждены.');
+  const keys=new Set();
+  for(const row of payload.rows){
+   if(!row||typeof row.ownerKey!=='string'||!row.ownerKey||!validDate(row.asOfDateMoscow)||
+      !Number.isSafeInteger(row.fp)||row.fp < -100000||row.fp > 1000000||
+      row.source!==CHECKPOINT_SOURCE||row.independent_verification!==false||
+      typeof row.capturedAtUtc!=='string'||!Number.isFinite(Date.parse(row.capturedAtUtc))||
+      !((row.rosterValue===null&&row.cash===null)||
+       (Number.isSafeInteger(row.rosterValue)&&row.rosterValue>=0&&row.rosterValue<=1000000&&
+        Number.isSafeInteger(row.cash)&&row.cash>=0&&row.cash<=20000)))throw Error('Некорректная запись контрольной даты.');
+   const key=row.ownerKey+'|'+row.asOfDateMoscow;
+   if(keys.has(key))throw Error('Повтор контрольной даты.');
+   keys.add(key);
+  }
+  return payload;
+ }
+ function checkpointRead(storage,state){
+  if(!storage||typeof storage.getItem!=='function')throw Error('Локальное хранилище недоступно.');
+  const key=ownerKey(state);
+  if(!key)return [];
+  const raw=storage.getItem(CHECKPOINT_KEY);
+  if(raw==null)return [];
+  let parsed;try{parsed=JSON.parse(raw);}catch{throw Error('Локальные контрольные даты повреждены.');}
+  return validateCheckpoints(parsed).rows.filter(row=>row.ownerKey===key)
+   .sort((a,b)=>a.asOfDateMoscow.localeCompare(b.asOfDateMoscow));
+ }
+ function checkpointSave(storage,state,input,nowEpoch){
+  const key=ownerKey(state);
+  if(!key)throw Error('Сначала нужна подтверждённая исходная десятка.');
+  if(!Number.isFinite(nowEpoch)||nowEpoch<=0||input?.confirmed!==true)
+   throw Error('Подтвердите значение со Sports.ru.');
+  const day=input.asOfDateMoscow;
+  if(!validDate(day)||day>moscowDate(nowEpoch))throw Error('Некорректная или будущая дата по МСК.');
+  const fp=checkpointNumber(input.fp,-100000,1000000);
+  const rosterValue=checkpointNumber(input.rosterValue,0,1000000,true);
+  const cash=checkpointNumber(input.cash,0,20000,true);
+  if((rosterValue===null)!==(cash===null))throw Error('Стоимость десятки и кассу укажите вместе либо не указывайте.');
+  // The existing records are checked before any write. Never overwrite history silently.
+  const raw=storage.getItem(CHECKPOINT_KEY);
+  let archive;
+  if(raw===null)archive={schema_version:1,private_local_only:true,rows:[]};
+  else {try{archive=validateCheckpoints(JSON.parse(raw));}catch(e){throw Error('Локальная история повреждена — сохранение остановлено: '+e.message);}}
+  if(archive.rows.some(r=>r.ownerKey===key&&r.asOfDateMoscow===day))
+   throw Error('Контрольная дата уже сохранена. Для исправления удалите её вручную.');
+  if(archive.rows.length>=40)throw Error('Достигнут лимит локальных контрольных дат.');
+  const row={ownerKey:key,asOfDateMoscow:day,fp,rosterValue,cash,
+   capturedAtUtc:new Date(nowEpoch).toISOString(),source:CHECKPOINT_SOURCE,independent_verification:false};
+  const next=validateCheckpoints({...archive,rows:[...archive.rows,row]});
+  storage.setItem(CHECKPOINT_KEY,JSON.stringify(next));
+  return row;
+ }
+ function checkpointDelete(storage,state,day,confirmed){
+  if(confirmed!==true)throw Error('Подтвердите удаление контрольной даты.');
+  const key=ownerKey(state);
+  if(!key||!validDate(day))throw Error('Некорректная контрольная дата.');
+  const raw=storage.getItem(CHECKPOINT_KEY);
+  if(raw===null)return false;
+  const parsed=validateCheckpoints(JSON.parse(raw));
+  const remaining=parsed.rows.filter(r=>!(r.ownerKey===key&&r.asOfDateMoscow===day));
+  if(remaining.length===parsed.rows.length)return false;
+  storage.setItem(CHECKPOINT_KEY,JSON.stringify({...parsed,rows:remaining}));
+  return true;
+ }
+ function checkpointSummary(rows,initialBudget=20000){
+  if(!Array.isArray(rows)||!Number.isSafeInteger(initialBudget)||initialBudget<0)return null;
+  const list=rows.slice().sort((a,b)=>a.asOfDateMoscow.localeCompare(b.asOfDateMoscow));
+  if(!list.length)return {latest:null,previous:null,delta:null,capital:null};
+  const latest=list.at(-1),previous=list.at(-2)||null;
+  const capital=latest.rosterValue===null||latest.cash===null?null:
+   {impliedFP:latest.rosterValue+latest.cash-initialBudget,
+    officialMinusImplied:latest.fp-(latest.rosterValue+latest.cash-initialBudget)};
+  return {latest,previous,delta:previous?latest.fp-previous.fp:null,capital};
+ }
+ return {compare,parseNumber,ownerKey,checkpointRead,checkpointSave,checkpointDelete,checkpointSummary,CHECKPOINT_KEY};
 });
