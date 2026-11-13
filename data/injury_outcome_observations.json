@@ -2,53 +2,46 @@
   "schema_version": 2,
   "status": "prospective_observation_only_no_model_adoption",
   "model_status": "research_only_not_deployed",
-  "updated_at_utc": "2026-11-13T01:31:30Z",
+  "updated_at_utc": "2026-11-13T12:40:31Z",
   "unit_of_analysis": "unique_sports_ru_player_id_x_verified_scheduled_game_id",
   "archive_report_events": 1670,
   "eligible_unique_player_games": 738,
-  "verified_played": 136,
+  "verified_played": 141,
   "verified_dnp": 0,
-  "unlisted_unknown": 582,
+  "unlisted_unknown": 594,
   "qa": {
     "not_known_before_lock": 13,
     "superseded_pdf_observations": 882,
     "player_games_with_multiple_reports": 469,
     "not_known_at_monday_15_msk": 687,
     "telegram_context_unverified": 641,
-    "missing_row_unknown": 582,
+    "missing_row_unknown": 594,
     "player_games_with_status_revision": 47,
     "conflicting_player_team_or_fixture": 12,
     "known_at_monday_15_msk": 51,
-    "insufficient_team_boxscore": 3,
-    "not_verified_final": 11,
-    "future_game": 6
+    "insufficient_team_boxscore": 3
   },
   "by_status": {
     "available": {
-      "played_verified": 41,
-      "missing_row_unknown": 4,
-      "not_verified_final": 2
+      "played_verified": 43,
+      "missing_row_unknown": 4
     },
     "doubtful": {
       "missing_row_unknown": 18
     },
     "out": {
-      "missing_row_unknown": 498,
+      "missing_row_unknown": 509,
       "incomplete_active_boxscore": 2,
-      "played_verified": 1,
-      "not_verified_final": 7,
-      "future_game": 4
+      "played_verified": 1
     },
     "probable": {
-      "played_verified": 34,
-      "missing_row_unknown": 4,
-      "future_game": 2
+      "played_verified": 36,
+      "missing_row_unknown": 4
     },
     "questionable": {
-      "played_verified": 60,
-      "missing_row_unknown": 58,
-      "incomplete_active_boxscore": 1,
-      "not_verified_final": 2
+      "played_verified": 61,
+      "missing_row_unknown": 59,
+      "incomplete_active_boxscore": 1
     }
   },
   "records": [
@@ -19785,8 +19778,10 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "not_verified_final",
-      "membership_evidence": "unknown"
+      "outcome": "played_verified",
+      "membership_evidence": "same_team_game_matched_active_boxscore",
+      "minutes": 28.0,
+      "sports_ru_fp": 15.0
     },
     {
       "game_id": "espn_401909976",
@@ -19813,7 +19808,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "not_verified_final",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -19841,7 +19836,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "not_verified_final",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -19869,7 +19864,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "not_verified_final",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -19897,7 +19892,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "not_verified_final",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -19925,7 +19920,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "not_verified_final",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -19953,7 +19948,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "not_verified_final",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -19973,7 +19968,7 @@
       "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-12_12_00PM.pdf",
       "official_versions_observed_before_lock": 3,
       "telegram_context": null,
-      "outcome": "not_verified_final",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -20001,7 +19996,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "not_verified_final",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -20021,8 +20016,10 @@
       "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-12_12_00PM.pdf",
       "official_versions_observed_before_lock": 2,
       "telegram_context": null,
-      "outcome": "not_verified_final",
-      "membership_evidence": "unknown"
+      "outcome": "played_verified",
+      "membership_evidence": "same_team_game_matched_active_boxscore",
+      "minutes": 22.0,
+      "sports_ru_fp": 21.0
     },
     {
       "game_id": "espn_401909978",
@@ -20041,8 +20038,10 @@
       "official_source_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-12_12_00PM.pdf",
       "official_versions_observed_before_lock": 3,
       "telegram_context": null,
-      "outcome": "not_verified_final",
-      "membership_evidence": "unknown"
+      "outcome": "played_verified",
+      "membership_evidence": "same_team_game_matched_active_boxscore",
+      "minutes": 21.0,
+      "sports_ru_fp": 10.0
     },
     {
       "game_id": "espn_401909979",
@@ -20069,7 +20068,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -20097,7 +20096,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -20125,7 +20124,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -20153,8 +20152,10 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
-      "membership_evidence": "unknown"
+      "outcome": "played_verified",
+      "membership_evidence": "same_team_game_matched_active_boxscore",
+      "minutes": 32.0,
+      "sports_ru_fp": 9.0
     },
     {
       "game_id": "espn_401909979",
@@ -20181,7 +20182,7 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
+      "outcome": "missing_row_unknown",
       "membership_evidence": "unknown"
     },
     {
@@ -20209,8 +20210,10 @@
         "fixture_verified": false,
         "verification": "unconfirmed_player_context_only"
       },
-      "outcome": "future_game",
-      "membership_evidence": "unknown"
+      "outcome": "played_verified",
+      "membership_evidence": "same_team_game_matched_active_boxscore",
+      "minutes": 16.0,
+      "sports_ru_fp": 12.0
     }
   ],
   "outcome_policy": "Only exact played+positive minutes+same team+Sports.ru FP is positive; no independently verified negative labels yet.",
