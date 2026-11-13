@@ -19,7 +19,7 @@ from zoneinfo import ZoneInfo
 
 from src.live_calendar_fallback import TEAMS
 
-ET = ZoneInfo("America/New_York")
+MSK = ZoneInfo("Europe/Moscow")
 UTC = timezone.utc
 STATUS = "research_only_not_deployed"
 POS = ("PG", "SG", "SF", "PF", "C")
@@ -82,17 +82,23 @@ def observed(row, *, kind, cutoff, age=None, after=None):
 
 
 def week_window(snapshot):
+    """Monday 00:00 Europe/Moscow, independent of any unverified quota reset.
+
+    An ET week silently includes the first Moscow-Monday overnight games in
+    the *preceding* week (6-8-hour timezone leakage), biasing transfer value.
+    The declared calendar week is not proof of a Sports.ru transfer quota reset.
+    """
     decision = moment(snapshot.get("decision_at_utc"))
     try:
-        monday = date.fromisoformat(snapshot.get("week_et_monday", ""))
+        monday = date.fromisoformat(snapshot.get("week_msk_monday", ""))
     except ValueError as error:
-        raise InsufficientEvidence("BAD_ET_WEEK") from error
-    ensure(monday.weekday() == 0, "ET_WEEK_NOT_MONDAY")
-    monday_start = datetime.combine(monday, time(), ET).astimezone(UTC)
+        raise InsufficientEvidence("BAD_MSK_WEEK") from error
+    ensure(monday.weekday() == 0, "MSK_WEEK_NOT_MONDAY")
+    monday_start = datetime.combine(monday, time(), MSK).astimezone(UTC)
     next_monday = datetime.combine(monday + timedelta(days=7),
-                                   time(), ET).astimezone(UTC)
+                                   time(), MSK).astimezone(UTC)
     ensure(monday_start <= decision < next_monday,
-           "DECISION_NOT_IN_DECLARED_ET_WEEK")
+           "DECISION_NOT_IN_DECLARED_MSK_WEEK")
     return decision, next_monday
 
 
@@ -229,7 +235,7 @@ def validate_decision(snapshot, moves):
 def verified_club_tenure(checked, outcomes, player_id):
     """Post-week independent club timeline; NEVER a pre-decision roster claim.
 
-    A dated owner-attested receipt has to cover the whole remaining ET window.
+    A dated owner-attested receipt has to cover the whole remaining Moscow calendar week.
     Changes of club must be explicit, contiguous, and connected to official
     transaction/game-day evidence. One current catalogue club cannot stand
     in for every subsequent game.
@@ -294,7 +300,7 @@ def score_replay(checked, outcomes):
            "MISSING_FINAL_GAMES_OR_CREDITS")
     fixture_index = checked["fixtures"]
     involved = {p for m in checked["moves"] for p in (m["out"], m["in"])}
-    # The entire declared ET-week calendar must have finished: selecting only
+    # The entire declared Moscow-week calendar must have finished: selecting only
     # games of the decision-day clubs misses the games of a player traded later.
     expected_fixtures = {gid for gid, g in fixture_index.items()
                          if checked["decision"] <= g["tip"] < after}
