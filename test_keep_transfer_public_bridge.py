@@ -1,6 +1,6 @@
 import unittest
 from copy import deepcopy
-from src.keep_transfer_public_bridge import build
+from src.keep_transfer_public_bridge import build, msk_end
 NOW="2026-10-28T22:00:00Z"
 def fixture():
  live={"schema_version":4,"updated_at_utc":"2026-10-28T21:00:00Z",
@@ -37,4 +37,24 @@ class BridgeTests(unittest.TestCase):
  def test_stale_calendar(self):
   a=fixture();a[0]["updated_at_utc"]="2026-10-27T00:00:00Z"
   with self.assertRaises(ValueError):build(*a,NOW)
+ def test_msk_boundary_excludes_next_monday_morning(self):
+  a=fixture()
+  now="2026-11-01T20:00:00Z"
+  a[0]["updated_at_utc"]="2026-11-01T19:00:00Z"
+  a[0]["schedule_quality"]["validated_at_utc"]="2026-11-01T19:00:00Z"
+  a[0]["schedule"]=[{"id":"g1","utc":"2026-11-01T22:00:00Z",
+                     "status":"scheduled","home":"BOS","away":"NYK"}]
+  a[1]["issued"][0]["tipoff_utc"]="2026-11-01T22:00:00Z"
+  a[1]["issued"][0]["individual_lock_utc"]="2026-11-01T21:30:00Z"
+  a[1]["issued"][0]["issued_at_utc"]="2026-11-01T19:00:00Z"
+  a[2]["issued"][0]["game_utc"]="2026-11-01T22:00:00Z"
+  a[2]["issued"][0]["issued_at_utc"]="2026-11-01T19:15:00Z"
+  r=build(*a,now)
+  self.assertEqual(msk_end(__import__("datetime").datetime.fromisoformat(now.replace("Z","+00:00"))).isoformat(),"2026-11-01T21:00:00+00:00")
+  self.assertEqual(r["scheduled_future_games_in_MSK_week"],0)
+  self.assertEqual(r["observed_player_games"],[])
+ def test_msk_monday_initial_hours_are_new_week(self):
+  from datetime import datetime,timezone
+  self.assertEqual(msk_end(datetime(2026,11,1,22,0,tzinfo=timezone.utc)).isoformat(),
+                   "2026-11-08T21:00:00+00:00")
 if __name__=="__main__":unittest.main()
