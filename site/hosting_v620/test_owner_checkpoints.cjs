@@ -38,4 +38,39 @@ store.set(mod.CHECKPOINT_KEY,'{broken');
 assert.throws(()=>mod.checkpointRead(storage,state));
 assert.throws(()=>capture('2026-11-10',100,null,null)); // no overwrite if corrupt
 assert.equal(store.get(mod.CHECKPOINT_KEY),'{broken');
+
+// An opt-in private diagnostic export must preserve provenance and cut off
+// player-game rows after the latest explicitly entered Moscow checkpoint.
+const evidenceStore=new Map();
+const evidenceStorage={getItem:k=>evidenceStore.has(k)?evidenceStore.get(k):null,
+ setItem:(k,v)=>evidenceStore.set(k,v)};
+mod.checkpointSave(evidenceStorage,state,{confirmed:true,asOfDateMoscow:'2026-11-11',fp:2362,rosterValue:22330,cash:31},now);
+mod.checkpointSave(evidenceStorage,state,{confirmed:true,asOfDateMoscow:'2026-11-12',fp:2504},now);
+const owner={...state,roster:[...state.initialRoster.slice(0,9),'n121'],cash:31,
+ executed:[{out:state.initialRoster[9],in_:'n121',sportsRuDateMoscow:'2026-11-09',
+  timePrecision:'date_only',epochIsPlaceholder:true,epoch:Date.parse('2026-11-09T12:00:00Z'),sell:1200,buy:1300}]};
+const gameA={id:'g1',epoch:Date.parse('2026-11-11T01:00:00Z'),status:'final',home:'NYK',away:'BOS',et_date:'2026-11-10'};
+const gameB={id:'g2',epoch:Date.parse('2026-11-13T12:00:00Z'),status:'final',home:'NYK',away:'BOS',et_date:'2026-11-13'};
+const source={mode:'live_sync',updated_at_utc:'2026-11-13T07:00:00Z',
+ games:[gameA,gameB],rows:[
+  {id:'n121',game_id:'g1',fp:35,played:true,minutes:31},
+  {id:state.initialRoster[0],game_id:'g1',fp:-2,played:true,minutes:10},
+  {id:'n999',game_id:'g1',fp:100,played:true},
+  {id:'n121',game_id:'g2',fp:50,played:true}]};
+const beforeJson=JSON.stringify(owner);
+const evidence=mod.exportReconciliation(evidenceStorage,owner,source,true,now);
+assert.equal(evidence.kind,'NBA_SEASON_LAB_PRIVATE_RECONCILIATION_EXPORT');
+assert.equal(evidence.sportsru_owner_checkpoints.length,2);
+assert.equal(evidence.team_history.transfers[0].timePrecision,'date_only');
+assert.equal(evidence.nba_source.rows.length,2);
+assert.equal(evidence.nba_source.games.length,1);
+assert.equal(evidence.nba_source.rows[1].fp,-2);
+assert.equal(evidence.nba_source.rows.some(x=>x.id==='n999'),false);
+assert.equal(evidence.nba_source.rows.some(x=>x.game_id==='g2'),false);
+assert.equal(evidence.sportsru_owner_checkpoints.some(x=>x.ownerKey),false);
+assert.equal(JSON.stringify(owner),beforeJson);
+assert.throws(()=>mod.exportReconciliation(evidenceStorage,owner,source,false,now),/синхронизации/);
+assert.throws(()=>mod.exportReconciliation(evidenceStorage,owner,{...source,mode:'seed'},true,now),/синхронизации/);
+assert.throws(()=>mod.exportReconciliation(storage,owner,source,true,now),/повреждены/);
+
 console.log('PASS owner-only dated Sports.ru FP checkpoint snapshots and fail-closed corruption');
