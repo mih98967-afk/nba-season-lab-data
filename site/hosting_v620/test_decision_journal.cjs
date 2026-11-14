@@ -10,6 +10,29 @@ const fixture=()=>({userConfirmedNow:true,roster,cash:850,liveUpdatedAtUtc:'2026
   {kind:'later',gain:14.2,net:10.2,moves:[{out:'n101',in_:'n222',epoch:NOW+2*DAY,sell:1345,buy:1200}]}
  ]}});
 const engine=(ms=NOW)=>j._makeForTests(()=>ms);
+test('seven-day KEEP/NOW/LATER comparison can be frozen before games',()=>{
+ const store=local(),a=engine(),x=fixture();
+ x.plan.horizonDays=7;x.plan.end=x.plan.start+7*DAY;
+ const frozen=a.take(store,x);
+ assert.equal(frozen.scenario.horizon_days,7);
+ assert.equal(frozen.scenario.routes.length,3);
+ assert.equal(frozen.outcome.actual_gain_fp,null);
+ assert.equal(a.read(store).entries[0].scenario.horizon_days,7);
+ assert.equal(store.store.size,1);
+});
+test('wrong seven-day end must fail, never freeze a mismatched horizon',()=>{
+ const store=local(),a=engine(),x=fixture();
+ x.plan.horizonDays=7;
+ assert.throws(()=>a.take(store,x),/NO_CURRENT_PROSPECTIVE_PLAN/);
+ assert.equal(store.store.size,0);
+});
+test('retrospectively edited horizon is rejected as untrusted',()=>{
+ const store=local(),a=engine(),x=fixture();a.take(store,x);
+ const raw=JSON.parse(store.store.get(j.KEY));
+ raw.entries[0].scenario.horizon_days=7;
+ store.store.set(j.KEY,JSON.stringify(raw));
+ assert.throws(()=>a.read(store),/MODIFIED_DECISION_CLOCK/);
+});
 test('nothing is stored until the owner explicitly clicks',()=>{
  const s=local(),a=engine();assert.equal(a.read(s).entries.length,0);
  const x=fixture();delete x.userConfirmedNow;

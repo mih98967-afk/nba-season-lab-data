@@ -11,7 +11,7 @@
 })(typeof globalThis!=='undefined'?globalThis:this,function(nowMs){
  'use strict';
  const KEY='nba-season-lab-local-decision-journal-v1';
- const MAX=100,MAX_ROUTES=8,MAX_MOVES=4;
+ const MAX=100,MAX_ROUTES=8,MAX_MOVES=4,DAY=86400000;
  const ID=/^n[0-9]{3,5}$/;
  const STATUS='owner_clicked_predecision_snapshot_unverified';
  const isNum=n=>typeof n==='number'&&Number.isFinite(n);
@@ -49,7 +49,7 @@
      ensure(Number.isFinite(t)&&t>last,'CAPTURE_CLOCKS_NOT_STRICT');
      last=t;
      const s=e?.scenario;
-     ensure(s&&[14,21,28].includes(s.horizon_days)&&
+     ensure(s&&[7,14,21,28].includes(s.horizon_days)&&
        isNum(s.baseline_fp)&&Array.isArray(s.routes)&&
        s.routes.length>=1&&s.routes.length<=MAX_ROUTES&&
        Number.isInteger(s.chosen_index)&&s.chosen_index>=0&&
@@ -62,7 +62,8 @@
      ensure(Number.isFinite(instant(e.decision_start_utc))&&
        Number.isFinite(instant(e.decision_end_utc))&&
        instant(e.decision_start_utc)>=t-60000&&
-       instant(e.decision_end_utc)>instant(e.decision_start_utc),
+       instant(e.decision_end_utc)>instant(e.decision_start_utc)&&
+       instant(e.decision_end_utc)-instant(e.decision_start_utc)===s.horizon_days*DAY,
        'MODIFIED_DECISION_CLOCK');
      for(const route of s.routes){
        ensure(['keep','now','later','multi_slot','same_slot_chain'].includes(route.kind)&&
@@ -96,9 +97,9 @@
    ensure(input?.userConfirmedNow===true,'CLICK_REQUIRED');
    const ms=nowMs(),capturedAt=stamp(ms);
    const p=input.plan;
-   ensure(p?.ready===true&&[14,21,28].includes(p.horizonDays)&&
+   ensure(p?.ready===true&&[7,14,21,28].includes(p.horizonDays)&&
      isNum(p.start)&&isNum(p.end)&&p.end>p.start&&
-     p.start>=ms-60000&&isNum(p.baseline),
+     p.start>=ms-60000&&p.end-p.start===p.horizonDays*DAY&&isNum(p.baseline),
      'NO_CURRENT_PROSPECTIVE_PLAN');
    const roster=input.roster;
    ensure(Array.isArray(roster)&&roster.length===10&&
