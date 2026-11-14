@@ -17,7 +17,7 @@ from src.keep_transfer_economic_replay import moment, ensure, STATUS
 from src.live_calendar_fallback import TEAMS
 
 UTC = timezone.utc
-ET = ZoneInfo("America/New_York")
+MSK = ZoneInfo("Europe/Moscow")
 MAX_SOURCE_AGE = timedelta(hours=8)
 MAX_CALENDAR_AGE = timedelta(hours=36)
 LOCK = timedelta(minutes=30)
@@ -26,10 +26,11 @@ EVIDENCE = {"same_club_independent_ESPN_ID_observed",
             "same_club_unique_name_only_observed"}
 
 
-def et_end(now):
-    local = now.astimezone(ET)
+def msk_end(now):
+    """Next Monday 00:00 MSK, not the NBA Eastern-time week boundary."""
+    local = now.astimezone(MSK)
     monday = local.date() - timedelta(days=local.weekday())
-    return datetime.combine(monday + timedelta(days=7), time(), ET).astimezone(UTC)
+    return datetime.combine(monday + timedelta(days=7), time(), MSK).astimezone(UTC)
 
 
 def source_guard(source, kind):
@@ -70,7 +71,7 @@ def build(live, pplay, conditional, cutoff):
            now - validated <= MAX_CALENDAR_AGE and
            quality.get("freshness") == "fresh",
            "STALE_OR_FUTURE_PUBLIC_CALENDAR")
-    period_end = et_end(now)
+    period_end = msk_end(now)
     raw = live.get("schedule")
     ensure(isinstance(raw, list), "MISSING_PUBLIC_SCHEDULE")
     fixtures = {}
@@ -156,7 +157,7 @@ def build(live, pplay, conditional, cutoff):
         "research_target": "prospective frozen coverage, not forecast ranking",
         "source_live_updated_at_utc": live["updated_at_utc"],
         "source_schedule_validated_at_utc": quality["validated_at_utc"],
-        "scheduled_future_games_in_ET_week": len(relevant),
+        "scheduled_future_games_in_MSK_week": len(relevant),
         "frozen_coverage": dict(qa),
         "observed_player_games": rows,
         "source_schedule_complete": quality.get("complete") is True,

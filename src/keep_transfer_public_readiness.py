@@ -52,11 +52,11 @@ def public_report(source, source_hashes, cutoff):
                 "blocking_reason": str(error),
                 "selected_player_games": None,
                 "conditional_if_play_player_games": None,
-                "scheduled_upcoming_ET_week_games": None,
+                "scheduled_upcoming_MSK_week_games": None,
                 "valid_KEEP_TRANSFER_backtest_possible": False}
     counts = Counter()
     game_rows = {}
-    upcoming = bridge["scheduled_future_games_in_ET_week"]
+    upcoming = bridge["scheduled_future_games_in_MSK_week"]
     for row in bridge["observed_player_games"]:
         counts["p_play_selected_first_issued"] += 1
         gid = row["game_id"]
@@ -84,7 +84,7 @@ def public_report(source, source_hashes, cutoff):
     return {
         **result,
         "phase": "PUBLIC_FROZEN_COVERAGE_ONLY",
-        "scheduled_upcoming_ET_week_games": upcoming,
+        "scheduled_upcoming_MSK_week_games": upcoming,
         "selected_player_games": selected,
         "conditional_if_play_player_games": conditional,
         "strong_ESPN_ID_issued": counts["strong_ESPN_ID"],
@@ -154,7 +154,7 @@ def run(base=DATA, *, persist=False, asof=None):
             tmp.replace(path)
     return {key: report.get(key) for key in
             ("status", "phase", "decision_asof_utc",
-             "scheduled_upcoming_ET_week_games", "selected_player_games",
+             "scheduled_upcoming_MSK_week_games", "selected_player_games",
              "conditional_if_play_player_games", "valid_KEEP_TRANSFER_backtest_possible",
              "blocking_reason")}
 
