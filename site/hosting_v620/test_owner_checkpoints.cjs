@@ -14,6 +14,10 @@ assert.equal(mod.checkpointSummary(rows).delta,142);
 assert.equal(mod.checkpointSummary([rows[0]]).capital.impliedFP,2361);
 assert.equal(mod.checkpointSummary([rows[0]]).capital.officialMinusImplied,1);
 assert.equal(mod.checkpointSummary(rows).capital,null);
+assert.equal(mod.checkpointSummary(rows).latestCapital.asOfDateMoscow,'2026-11-11');
+assert.equal(mod.checkpointSummary(rows).latestCapital.officialMinusImplied,1);
+assert.equal(mod.checkpointSummary(rows).latestCapital.sameAsLatest,false);
+assert.equal(mod.checkpointSummary([rows[0]]).latestCapital.sameAsLatest,true);
 assert.equal(rows[0].independent_verification,false);
 assert.equal(rows[0].source,'owner_entered_sportsru_score_not_independently_verified');
 for(const bad of [
