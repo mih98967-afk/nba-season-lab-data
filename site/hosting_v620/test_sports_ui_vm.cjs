@@ -63,7 +63,7 @@ click('owner-checkpoint-save');
 assert.match(view.innerHTML,/Sports.ru · ваша запись/);
 assert.match(view.innerHTML,/2.{0,2}362 FP/);
 assert.match(view.innerHTML,/На 2026-11-11 МСК/);
-assert.match(view.innerHTML,/Sports.ru минус расчёт: 1 FP/);
+assert.match(view.innerHTML,/Sports.ru минус расчёт на эту дату: 1 FP/);
 assert.equal(saved.has(window.NBASportsReconciliation.CHECKPOINT_KEY),true);
 assert.deepEqual(window.PythosNBA.getState(),before);
 // A browser-injected unverified NBA source cannot appear as a verified historical total.
