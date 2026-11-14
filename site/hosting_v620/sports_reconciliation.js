@@ -206,5 +206,64 @@
   const capital=latestCapital?.sameAsLatest?latestCapital:null;
   return {latest,previous,delta:previous?latest.fp-previous.fp:null,capital,latestCapital};
  }
- return {compare,parseNumber,ownerKey,checkpointRead,checkpointSave,checkpointDelete,checkpointSummary,CHECKPOINT_KEY};
+ // Local-only evidence bundle to examine discrepancies, never a Sports.ru proof.
+ // Requires the owner to click export and upload the JSON manually.
+ function exportReconciliation(storage,state,live,verified,nowEpoch){
+  const checkpoints=checkpointRead(storage,state);
+  if(!checkpoints.length)throw Error('Сначала добавьте контрольные FP Sports.ru.');
+  if(!ownerKey(state)||!Array.isArray(state.executed)||state.executed.length>100||
+     !Array.isArray(state.roster)||state.roster.length!==10||
+     !state.roster.every(id=>typeof id==='string'&&/^n[0-9]{3,5}$/.test(id)))
+   throw Error('История состава неполна или повреждена.');
+  if(verified!==true||live?.mode!=='live_sync'||
+     !Array.isArray(live.games)||!Array.isArray(live.rows))
+   throw Error('Дождитесь подтверждённой синхронизации NBA перед экспортом.');
+  if(!Number.isFinite(nowEpoch))throw Error('Неизвестно время подготовки выгрузки.');
+  const updated=Date.parse(live.updated_at_utc||'');
+  if(!Number.isFinite(updated)||updated>nowEpoch+300000)
+   throw Error('Время NBA-источника не подтверждено.');
+  const latest=checkpoints.at(-1).asOfDateMoscow;
+  const end=Date.parse(latest+'T23:59:59.999+03:00');
+  if(!Number.isFinite(end)||end>nowEpoch+86400000)
+   throw Error('Некорректная контрольная дата.');
+  const ids=new Set(state.initialRoster);
+  const moves=state.executed.map(m=>{
+    if(!m||typeof m.out!=='string'||typeof m.in_!=='string'||
+       !/^n[0-9]{3,5}$/.test(m.out)||!/^n[0-9]{3,5}$/.test(m.in_))
+       throw Error('Неверные идентификаторы в истории замен.');
+    ids.add(m.out);ids.add(m.in_);
+    return {out:m.out,in_:m.in_,epoch:m.epoch??null,
+      sportsRuDateMoscow:m.sportsRuDateMoscow??null,
+      timePrecision:m.timePrecision??null,epochIsPlaceholder:m.epochIsPlaceholder===true,
+      sell:m.sell??null,buy:m.buy??null};
+  });
+  const games=live.games.filter(g=>g?.status==='final'&&
+    Number.isFinite(g.epoch)&&g.epoch>=state.initialEpoch&&g.epoch<=end);
+  if(games.length>2000)throw Error('Слишком много матчей в публичном срезе.');
+  const gameIds=new Set(games.map(g=>g.id));
+  const rows=live.rows.filter(r=>ids.has(r?.id)&&gameIds.has(r?.game_id));
+  if(rows.length>20000)throw Error('Слишком много строк NBA для выгрузки.');
+  // Include only final games that actually have an included player's row.
+  const used=new Set(rows.map(r=>r.game_id));
+  return {
+   schema_version:1,kind:'NBA_SEASON_LAB_PRIVATE_RECONCILIATION_EXPORT',
+   exported_at_utc:new Date(nowEpoch).toISOString(),
+   privacy:'Contains personal roster and score checkpoints. Local download only; no automatic upload.',
+   proof:'Owner-entered Sports.ru FP not independently audited; NBA rows are not Sports.ru credited FP.',
+   checkpoint_timezone:'Europe/Moscow',last_checkpoint_date:latest,
+   sportsru_owner_checkpoints:checkpoints.map(({ownerKey:ignored,...row})=>row),
+   team_history:{initialRoster:state.initialRoster.slice(),
+    initialEpoch:state.initialEpoch,currentRoster:state.roster.slice(),cash:state.cash,
+    transfers:moves},
+   nba_source:{mode:live.mode,updated_at_utc:live.updated_at_utc,
+    feedAgeHours:Math.round((nowEpoch-updated)/360000)/10,
+    sourceVerifiedByApp:true,
+    games:games.filter(g=>used.has(g.id)).map(g=>({
+       id:g.id,epoch:g.epoch,et_date:g.et_date??null,home:g.home,away:g.away,status:g.status
+    })),
+    rows:rows.map(r=>({id:r.id,game_id:r.game_id,fp:r.fp??null,
+      played:r.played??null,minutes:r.minutes??null,team:r.team??null}))}
+  };
+ }
+ return {compare,parseNumber,ownerKey,checkpointRead,checkpointSave,checkpointDelete,checkpointSummary,exportReconciliation,CHECKPOINT_KEY};
 });
