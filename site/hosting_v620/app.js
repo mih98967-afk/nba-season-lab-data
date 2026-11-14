@@ -427,7 +427,7 @@ function ownerCheckpointPanel(){
  return `<section class="card sports-check-card" id="owner-checkpoints"><div class="titledetail"><div><h2>Официальные FP · контрольные даты</h2><p class="small">Записывайте видимые вам результаты Sports.ru. Это ваша запись, а не независимое подтверждение сайтом.</p></div></div>
  ${error?`<div class="info warning" role="status">${esc(error)}</div>`:''}
  ${last?`<p><b>${sportsAmt(last.fp)} FP</b> · на ${esc(last.asOfDateMoscow)} МСК${delta===null?'':` · изменение с предыдущей даты: ${delta>=0?'+':''}${sportsAmt(delta)} FP`}</p>`:''}
- ${latest?.capital?`<p class="small">Расчёт по стоимости и кассе: ${sportsAmt(latest.capital.impliedFP)} FP; Sports.ru минус расчёт: ${sportsAmt(latest.capital.officialMinusImplied)} FP. Возможны разные моменты обновления.</p>`:''}
+ ${latest?.latestCapital?`<p class="small">Расчёт по стоимости и кассе на ${esc(latest.latestCapital.asOfDateMoscow)} МСК: ${sportsAmt(latest.latestCapital.impliedFP)} FP; Sports.ru минус расчёт на эту дату: ${sportsAmt(latest.latestCapital.officialMinusImplied)} FP. ${latest.latestCapital.sameAsLatest?"":"Это предыдущая контрольная дата, не текущий капитал."} Возможны разные моменты обновления.</p>`:''}
  <details><summary>Добавить дату или посмотреть историю</summary><div class="formgrid" style="margin-top:12px">
  <label>Дата по МСК<input id="checkpoint-day" type="date" min="2026-10-20" max="2027-06-30"></label>
  <label>FP Sports.ru<input id="checkpoint-fp" type="text" inputmode="numeric" placeholder="Например, 2504" autocomplete="off"></label>

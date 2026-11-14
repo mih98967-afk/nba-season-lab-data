@@ -194,10 +194,17 @@
   const list=rows.slice().sort((a,b)=>a.asOfDateMoscow.localeCompare(b.asOfDateMoscow));
   if(!list.length)return {latest:null,previous:null,delta:null,capital:null};
   const latest=list.at(-1),previous=list.at(-2)||null;
-  const capital=latest.rosterValue===null||latest.cash===null?null:
-   {impliedFP:latest.rosterValue+latest.cash-initialBudget,
-    officialMinusImplied:latest.fp-(latest.rosterValue+latest.cash-initialBudget)};
-  return {latest,previous,delta:previous?latest.fp-previous.fp:null,capital};
+  const withCapital=list.filter(row=>row.rosterValue!==null&&row.cash!==null);
+  const capitalRow=withCapital.length?withCapital.at(-1):null;
+  const latestCapital=capitalRow?{
+    asOfDateMoscow:capitalRow.asOfDateMoscow,
+    impliedFP:capitalRow.rosterValue+capitalRow.cash-initialBudget,
+    officialMinusImplied:capitalRow.fp-(capitalRow.rosterValue+capitalRow.cash-initialBudget),
+    sameAsLatest:capitalRow.asOfDateMoscow===latest.asOfDateMoscow
+  }:null;
+  // Never combine a new Sports.ru score with capital from a different date.
+  const capital=latestCapital?.sameAsLatest?latestCapital:null;
+  return {latest,previous,delta:previous?latest.fp-previous.fp:null,capital,latestCapital};
  }
  return {compare,parseNumber,ownerKey,checkpointRead,checkpointSave,checkpointDelete,checkpointSummary,CHECKPOINT_KEY};
 });
