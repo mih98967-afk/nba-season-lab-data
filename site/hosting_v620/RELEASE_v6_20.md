@@ -49,7 +49,6 @@
 - Fresh independently verified public live data are mandatory (age <= 24h). A missing/duplicate/nonfinite played row, mixed unsupported clock evidence, or impossible ledger fails closed.
 - No private Pythos backup, roster, market values, or transfer journal is committed in public source. No scoring model, player availability, Firebase state, or Sports.ru action changed.
 
-
 ## Private prospective evidence export — PR #165 candidate (15 November 2026)
 - On **Team → Sports.ru FP checkpoints**, an optional **full private economic-evidence packet** now exports the local FP reconciliation together with the independently stored frozen KEEP/NOW/LATER decision journal and manual Sports.ru quote receipts. The old FP-only button is unchanged.
 - Consent names all included private local stores and warns that the quotes/journal could include entries for more than one team in that browser. No automatic upload or Firebase/Firestore write.
