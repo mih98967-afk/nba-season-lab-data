@@ -132,3 +132,27 @@ assert.equal(res.horizonDays,7);assert.equal(res.routes[0].kind,'keep');
  assert.equal(out.state,'market');
  assert.match(out.reasons.join(' '),/Сверь квоту/);
 }
+
+// PR166 — pure regressions for full-calendar lock, placeholder quota, and stale reuse.
+(()=>{
+ const G=require('./today_brief.js');
+ const t=Date.parse('2026-11-15T17:00:00Z');
+ const w15=x=>x<Date.parse('2026-11-16T12:00:00Z')?'old':'new';
+ const w00=x=>x<Date.parse('2026-11-15T21:00:00Z')?'old':'new';
+ const u=G.quotaSnapshot([{epoch:t-60000,timePrecision:'date_only',epochIsPlaceholder:true}],t,w15,w00);
+ assert.equal(u.known,false);assert.equal(u.used15,null);
+ assert.equal(G.quotaSnapshot([{epoch:t-60000}],t,w15,w00).used15,1);
+ const roster={a:{team:'A'},b:{team:'B'}};
+ const games=[...Array.from({length:4},(_,i)=>({id:String(i),epoch:t+(i+2)*60000,home:'A',away:'Z',status:'scheduled'})),
+ {id:'later',epoch:t+3600000,home:'B',away:'Z',status:'scheduled'}];
+ const next=G.nextRosterLock(games,['a','b'],roster,t);
+ assert.equal(next.gameId,'later');assert.deepEqual(next.playerIds,['b']);
+ const result={ready:true,signature:'team-v1',start:t+20*60000,horizonDays:7,routes:[{kind:'now',moves:[{epoch:t+20*60000}]}]};
+ const opts={result,calculatedAt:t,nowMs:t,signature:'team-v1',horizonDays:7,preflightReady:true};
+ assert(G.freshScenario(opts));
+ assert.equal(G.freshScenario({...opts,signature:'modified'}),null);
+ assert.equal(G.freshScenario({...opts,nowMs:t+31*60000}),null);
+ assert.equal(G.freshScenario({...opts,preflightReady:false}),null);
+ assert.equal(G.freshScenario({...opts,result:{...result,start:t-3600000}}),null);
+ console.log('PASS PR166: precise quota, full-calendar next lock, frozen-asof guard');
+})();
