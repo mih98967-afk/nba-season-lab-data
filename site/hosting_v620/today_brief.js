@@ -117,30 +117,59 @@
     return result;
   }
 
-  // Explicitly distinguish "counts inferred from my private history" from
-  // the actual Sports.ru weekly remaining transfer quota. Never count a
-  // placeholder epoch as if it established which side of Monday it fell on.
+  // The date alone can sometimes prove which fantasy week a transfer belongs
+  // to. Its numeric placeholder epoch NEVER does. A Moscow calendar date
+  // represents the closed-open interval [00:00 MSK, next 00:00 MSK).
+  // If the interval straddles EITHER reset hypothesis, fail closed.
+  function moscowDateInterval(value) {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+    const start = Date.parse(value+'T00:00:00+03:00');
+    if (!finite(start) || new Date(start+3*3600000).toISOString().slice(0,10)!==value) return null;
+    return {start,end:start+day};
+  }
   function quotaSnapshot(executed, nowMs, weekAt15, weekAt00) {
-    const unknown = {known:false, used15:null, used00:null,
-      independentSportsruVerification:false, source:'private_history_only'};
-    if (!Array.isArray(executed) || !finite(nowMs) ||
-        typeof weekAt15 !== 'function' || typeof weekAt00 !== 'function')
-      return {...unknown, reason:'История и границы недели не подтверждены.'};
-    const uncertain = executed.some(t => {
-      if (!finite(t?.epoch)) return true;
-      if (t.epoch > nowMs + minute) return true;
-      if (!(t.timePrecision === 'date_only' || t.epochIsPlaceholder === true)) return false;
-      // A date-only event on the current or previous Moscow week can change
-      // assignment at the reset boundary. Older events cannot change quota.
-      return t.epoch >= nowMs - 14*day && t.epoch <= nowMs + day;
-    });
-    if (uncertain) return {...unknown, reason:'В недавней истории есть замены без точных часов.'};
-    const current15 = weekAt15(nowMs), current00 = weekAt00(nowMs);
-    const used15 = executed.filter(t => weekAt15(t.epoch) === current15).length;
-    const used00 = executed.filter(t => weekAt00(t.epoch) === current00).length;
-    return {known:true, used15, used00,
-      independentSportsruVerification:false, source:'private_history_only',
-      reason:'Расчёт по журналу; остаток и сброс проверь на Sports.ru.'};
+    const unknown = {known:false,used15:null,used00:null,
+      independentSportsruVerification:false,source:'private_history_only'};
+    if (!Array.isArray(executed)||!finite(nowMs)||
+        typeof weekAt15!=='function'||typeof weekAt00!=='function')
+      return {...unknown,reason:'История и границы недели не подтверждены.'};
+    const current15=weekAt15(nowMs),current00=weekAt00(nowMs);
+    if (!current15||!current00) return {...unknown,reason:'Граница недели неизвестна.'};
+    let used15=0,used00=0,dated=0;
+    for (const t of executed) {
+      if (!t || typeof t!=='object') return {...unknown,reason:'Некорректная операция в истории.'};
+      let earliest,latest;
+      if (t.timePrecision==='date_only'||t.epochIsPlaceholder===true) {
+        // Trust only the explicitly owner-entered Sports.ru Moscow DATE,
+        // never a reconstructed timestamp. No date => no safe inference.
+        const interval=moscowDateInterval(t.sportsRuDateMoscow);
+        if (!interval||interval.start>nowMs)
+          return {...unknown,reason:'Неизвестна подтверждённая дата прежней замены.'};
+        earliest=interval.start;
+        latest=Math.min(interval.end-1,nowMs);
+        dated++;
+      } else {
+        if (!finite(t.epoch)||t.epoch>nowMs+minute)
+          return {...unknown,reason:'Есть операция без допустимого фактического времени.'};
+        earliest=latest=t.epoch;
+      }
+      const a15=weekAt15(earliest),b15=weekAt15(latest);
+      const a00=weekAt00(earliest),b00=weekAt00(latest);
+      if (!a15||!b15||!a00||!b00)
+        return {...unknown,reason:'Граница недели для операции не определена.'};
+      // A historical date may straddle a *past* reset without changing the
+      // answer for the CURRENT week. Unknown only when membership in the
+      // current week differs between the two possible execution times.
+      const in15a=a15===current15,in15b=b15===current15;
+      const in00a=a00===current00,in00b=b00===current00;
+      if (in15a!==in15b||in00a!==in00b)
+        return {...unknown,reason:'Дата замены пересекает одну из границ текущей недели: часы неизвестны.'};
+      if (in15a) used15++;
+      if (in00a) used00++;
+    }
+    return {known:true,used15,used00,date_only_assigned_without_hour:dated,
+      independentSportsruVerification:false,source:'private_history_only',
+      reason:'Только распределение записей по неделям; реальный остаток сверяй на Sports.ru.'};
   }
 
   // Show at most four games elsewhere, but compute the lock from the entire

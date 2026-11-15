@@ -137,6 +137,21 @@ const num=x=>x==null||x===''?NaN:Number(x);
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const TZ='Europe/Moscow';
 const dateText=x=>new Date(x).toLocaleString('ru-RU',{timeZone:TZ,day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+
+// Old date-only Sports.ru actions have NO proved clock. Never render their
+// placeholder epoch as HH:mm on screen, even if present in the profile.
+function recordedTransferWhen(t){
+ if(t?.timePrecision==='date_only'||t?.epochIsPlaceholder===true){
+  const day=t?.sportsRuDateMoscow;
+  if(typeof day==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(day)&&
+    Number.isFinite(Date.parse(day+'T00:00:00+03:00'))&&
+    new Date(Date.parse(day+'T00:00:00+03:00')+3*3600000).toISOString().slice(0,10)===day)
+   return day.slice(8,10)+'.'+day.slice(5,7)+'.'+day.slice(0,4)+' · часы неизвестны';
+  return 'Дата и часы замены не подтверждены';
+ }
+ return Number.isFinite(t?.epoch)?dateText(t.epoch)+' МСК':'Время замены не подтверждено';
+}
+
 const justDay=x=>new Date(x).toLocaleDateString('ru-RU',{timeZone:TZ,day:'2-digit',month:'2-digit',weekday:'short'});
 const clock=x=>new Date(x).toLocaleTimeString('ru-RU',{timeZone:TZ,hour:'2-digit',minute:'2-digit'});
 const now=()=>Date.now();
@@ -1122,7 +1137,7 @@ function shortlistPanel(out,when,available){
  };
  const ranked=window.NBAShortlist.rank(base);
  if(!ranked.ready)return `<div class="info warning" style="margin-top:12px"><b>Альтернативы пока не рассчитаны.</b> ${esc(ranked.reason)}</div>`;
- const quota=window.NBATodayBrief?.quotaSnapshot(S.executed,now(),moscowWeek,calendarMoscowWeek);
+ const quota=window.NBATodayBrief?.quotaSnapshot(S.executed,Math.max(now(),when),moscowWeek,calendarMoscowWeek);
  const remaining=quota?.known?Math.max(0,3-(current.used[moscowWeek(when)]||0)):null;
  const rows=ranked.rows.map(x=>{
   const p=P[x.id];const gain=v=>`<span class="${v>=0?'delta-plus':'delta-minus'}">${v>=0?'+':''}${round(v,1)} FP</span>`;
@@ -1183,7 +1198,8 @@ function budgetPanel(){
  if(!window.NBABudgetPackage||S.roster.length!==10)return '';
  const checked=planResult(S.draft),owned=checked.valid?checked.roster:S.roster;
  const t=Number.isFinite(UI.plannerWhen)?UI.plannerWhen:now()+20*60000;
- const week=moscowWeek(t),remaining=Math.max(0,3-(checked.used?.[week]||0));
+ const week=moscowWeek(t),quotaAtPlan=window.NBATodayBrief?.quotaSnapshot(S.executed,t,moscowWeek,calendarMoscowWeek);
+ const remaining=quotaAtPlan?.known?Math.max(0,3-(checked.used?.[week]||0)):null;
  const options=BASE.players.filter(p=>p?.forecast&&!owned.includes(p.id)&&
   (UI.budgetPosition==='all'||p.pos===UI.budgetPosition))
   .sort((a,b)=>prices(b.id)-prices(a.id)||a.name.localeCompare(b.name));
@@ -1200,7 +1216,7 @@ function budgetPanel(){
  const signed=n=>`<strong class="${n>=0?'delta-plus':'delta-minus'}">${n>=0?'+':''}${round(n,1)} FP</strong>`;
  const detail=!result?'':!result.ready?
   `<div class="info warning" role="status">${esc(result.reason)}${result.requiredByOut?.length?`<div class="small">Нужно дополнительно: ${result.requiredByOut.map(v=>esc(P[v.out]?.name||v.out)+': '+round(v.deficit)).join(' · ')}</div>`:''}</div>`:
-  `<div class="budget-results" role="status">${routes.length&&routes[0].net<=0?'<div class="info warning"><b>KEEP выглядит выгоднее.</b> Цель можно профинансировать, но найденные пакеты теряют ожидаемые FP или не оправдывают расход ходов.</div>':''}<p class="small">KEEP: ${round(result.baseline,1)} FP за ${result.horizonDays} дней. Оценочно доступно ходов по журналу (граница Пн 15:00): ${result.remaining}; фактическую квоту проверьте на Sports.ru. Найдено допустимых пакетов при полной проверке: ${result.eligible}. Ограниченный поиск — не гарантия глобального оптимума.</p>
+  `<div class="budget-results" role="status">${routes.length&&routes[0].net<=0?'<div class="info warning"><b>KEEP выглядит выгоднее.</b> Цель можно профинансировать, но найденные пакеты теряют ожидаемые FP или не оправдывают расход ходов.</div>':''}<p class="small">KEEP: ${round(result.baseline,1)} FP за ${result.horizonDays} дней. Оценочно доступно ходов по журналу (граница Пн 15:00): ${remaining===null?'н/д · часы прежних замен неизвестны':result.remaining}; фактическую квоту проверьте на Sports.ru. Найдено допустимых пакетов при полной проверке: ${result.eligible}. Ограниченный поиск — не гарантия глобального оптимума.</p>
     ${routes.map((r,i)=>`<div class="budget-route"><div class="horizontal" style="justify-content:space-between;gap:10px"><b>${r.moves.length===1?'Прямая покупка':r.moves.length===2?'Покупка + 1 замена для бюджета':'Покупка + 2 замены для бюджета'}</b>${signed(r.gain)}</div>
       <div class="small">С резервом ${UI.budgetPenalty} FP за ход: ${signed(r.net)} · ходов ${r.moves.length} · касса после ${round(r.cash)}</div>
       ${r.moves.map((m,j)=>`<div class="budget-step"><span class="budget-step-index">${j+1}</span><div><b>${j===r.moves.length-1?'Целевая покупка':'Сначала освободить бюджет'}</b><div>${esc(P[m.out]?.name||m.out)} → <b>${esc(P[m.in_]?.name||m.in_)}</b></div><div class="small">${round(m.sell)} → ${round(m.buy)} · касса после ${round(r.stepCash?.[j])} · ${dateText(m.epoch)} МСК</div></div></div>`).join('')}
@@ -1222,7 +1238,7 @@ function budgetPanel(){
   </div>
   ${target?`<div class="info budget-need"><b>Касса по текущему черновику: ${round(checked.cash)}.</b> Цель стоит ${round(buy)}.${deficits.length?`<div>Не хватает при продаже выбранного игрока: ${deficits.map(d=>`${esc(P[d.id]?.name||d.id)} — ${round(d.short)}`).join(' · ')}.</div>`:''}<div class="small">Цены остальных игроков берутся из раздела «Данные» (или расчётно). Проверьте их на Sports.ru.</div></div>`:''}
   ${!readiness.ready?`<div class="info warning" role="status">Рекомендации заблокированы: ${esc(readiness.reasons.slice(0,2).join(' '))}</div>`:''}
-  <div class="toolbar"><button class="primary" data-action="calculate-budget" ${!readiness.ready||!target||!remaining?'disabled':''}>Найти пакеты под покупку</button><span class="small">По журналу: до ${remaining}/3 ходов (гипотеза Пн 15:00) · реальный остаток — Sports.ru · ${dateText(t)} МСК</span></div>
+  <div class="toolbar"><button class="primary" data-action="calculate-budget" ${!readiness.ready||!target||remaining===0?'disabled':''}>Найти пакеты под покупку</button><span class="small">По журналу: ${remaining===null?'н/д': 'до '+remaining+'/3'} (гипотеза Пн 15:00) · реальный остаток — Sports.ru · ${dateText(t)} МСК</span></div>
   ${detail}<p class="small">Черновик не совершает трансферы. Если цены на Sports.ru отличаются, обновите их и пересчитайте. Цена цели в этом поле используется только для сценария, не меняя профиль.</p></div>`;
 }
 function calculateBudget(){
@@ -1845,7 +1861,7 @@ function plannerPage(){
  }else if(UI.plannerTask==='record'){
   content=`<p class="planner-task-instruction">Вносите только операции, которые уже совершили на Sports.ru. Понадобятся дата и время, проданный и купленный игрок и две цены.</p>`+
    (S.draft.length?plannerDraftCard(checked,steps,seven,fourteen,base7,base14):'')+
-   retroPanel()+`<div class="card"><h2>Последние записанные замены</h2>${S.executed.length?S.executed.slice(-5).reverse().map(t=>`<div class="donut"><span>${dateText(t.epoch)} · ${esc(P[t.out]?.name||t.out)} → ${esc(P[t.in_]?.name||t.in_)}</span><b>${round(t.sell)} → ${round(t.buy)}</b></div>`).join(''):'<p>Пока нет выполненных операций в журнале.</p>'}</div>`;
+   retroPanel()+`<div class="card"><h2>Последние записанные замены</h2>${S.executed.length?S.executed.slice(-5).reverse().map(t=>`<div class="donut"><span>${esc(recordedTransferWhen(t))} · ${esc(P[t.out]?.name||t.out)} → ${esc(P[t.in_]?.name||t.in_)}</span><b>${round(t.sell)} → ${round(t.buy)}</b></div>`).join(''):'<p>Пока нет выполненных операций в журнале.</p>'}</div>`;
  }else{UI.plannerTask='advice';content=multiPanel();}
  return header('Моя команда','Замены','Выберите задачу — сервис покажет только нужные действия. Ни один сценарий сам не совершает трансферы.')+
   plannerStateBar()+plannerTaskNav()+content+
