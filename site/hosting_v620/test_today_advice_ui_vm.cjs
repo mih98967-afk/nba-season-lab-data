@@ -51,7 +51,6 @@ assert.match(view.innerHTML,/Пока нет сохранённых прогно
 assert.doesNotMatch(view.innerHTML,/data-action="today-freeze-best"/);
 assert.doesNotMatch(view.innerHTML,/data-action="today-freeze-keep"/);
 
-
 // Unchecked injection with a forged new timestamp must never qualify as a live source.
 window.PythosNBA.updateFeed({mode:'live_sync',updated_at_utc:new Date().toISOString(),rows:[],games:[],schedule:[]});
 assert.match(view.innerHTML,/Сначала обнови статистику NBA/);
