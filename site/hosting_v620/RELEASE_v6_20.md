@@ -48,3 +48,11 @@
 - When date-only transfers prevent an exact personal attribution, the Team page displays the min–max of **observed played-only NBA boxscore FP**, grouped by the six relevant transaction dates. Exact Sports.ru credited FP and DNP remain explicitly unverified.
 - Fresh independently verified public live data are mandatory (age <= 24h). A missing/duplicate/nonfinite played row, mixed unsupported clock evidence, or impossible ledger fails closed.
 - No private Pythos backup, roster, market values, or transfer journal is committed in public source. No scoring model, player availability, Firebase state, or Sports.ru action changed.
+
+
+## Private prospective evidence export — PR #165 candidate (15 November 2026)
+- On **Team → Sports.ru FP checkpoints**, an optional **full private economic-evidence packet** now exports the local FP reconciliation together with the independently stored frozen KEEP/NOW/LATER decision journal and manual Sports.ru quote receipts. The old FP-only button is unchanged.
+- Consent names all included private local stores and warns that the quotes/journal could include entries for more than one team in that browser. No automatic upload or Firebase/Firestore write.
+- For each previously frozen selected route, an **as-of descriptive owner-quote match** may be provided only when a same-pair, same-price receipt predates the capture by at most one hour and the receipt archive was never restored. A match does **not** authenticate Sports.ru price publication, future prices, locks, quota, ownership or realized FP. All routes remain `executable_transfer_plan_proven=false`, `realized_keep_now_later_gain_proven=false`.
+- A corrupted local journal or failed source verification aborts the **full** export instead of silently producing a misleading incomplete research packet. The prior FP-only download remains available.
+- Synthetic offline tests: no Firestore/network changes, price/evidence provenance, and corrupt-archive rejection. Real owner profile and official credited player-game outcomes remain unverified. Hosting publish requires the owner action.
