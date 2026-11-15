@@ -162,7 +162,6 @@ assert.equal(window.NBADecisionJournal.read(localStorage).entries.length,1);
 console.log('PASS PR167: Today KEEP choice, all frozen alternatives, no Firestore/profile write, stale advice blocked');
 
 
-
 // PR170: historical entries MUST NOT leak their placeholder epoch as an actual
 // transfer hour in the user-facing executed-history view.
 state=window.PythosNBA.getState();
