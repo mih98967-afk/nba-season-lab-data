@@ -574,3 +574,14 @@ button.primary:not(:disabled):active,.button:not(:disabled):active{transform:tra
 .today-quick-step b{font-size:13px;line-height:1.35}.today-quick-step span{font-size:11px;color:#846e60;white-space:nowrap}
 .today-quick-foot{margin-top:8px;line-height:1.4}
 @media(max-width:650px){.today-quick-step{flex-direction:column;gap:3px;align-items:flex-start}.today-quick-head strong{font-size:19px}}
+
+/* PR167: compact optional research capture below the daily decision. */
+.today-evidence{padding:17px 21px;margin:0 0 22px;border-color:var(--line);box-shadow:none}
+.today-evidence h3{margin:0;font-size:15px}
+.today-evidence .titledetail{margin-bottom:4px}
+.today-evidence .titledetail p{margin:2px 0 0}
+.today-evidence>.small,.today-evidence>p.small{margin:6px 0;color:var(--muted);font-size:12px;line-height:1.48}
+.today-evidence .toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:7px;margin:9px 0 5px}
+.today-evidence .toolbar button{font-size:12px}
+.today-evidence .today-evidence-note{font-size:11px;opacity:.9;margin-top:9px}
+@media(max-width:500px){.today-evidence{padding:15px 17px}.today-evidence .toolbar button{flex:1 1 100%}}
