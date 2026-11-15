@@ -1678,7 +1678,7 @@ function plannerStateBar(){
   <span>Касса по журналу: <b>${round(S.cash)}</b> <small>· сверь на Sports.ru</small></span>
   ${S.draft.length?`<span>Черновик: <b>${S.draft.length}</b></span>`:''}
   <span class="planner-quota" title="${esc(quotaHint)}">Замены по истории: <b>${quotaText}</b> <small>— ${esc(quotaHint)}</small></span>
-  ${checked.errors.length?`<span class="planner-state-error">${esc(checked.errors[0])}</span>`:''}
+  ${checked.errors.length?`<span class="planner-state-error">В черновике ошибка: ${esc(checked.errors[0])}</span>`:''}
  </div>`;
 }
 function plannerDraftCard(checked,steps,seven,fourteen,base7,base14){
