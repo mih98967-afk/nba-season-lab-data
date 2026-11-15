@@ -160,3 +160,19 @@ window.NBATodayBrief.freshScenario=()=>null;
 click('today-freeze-best');
 assert.equal(window.NBADecisionJournal.read(localStorage).entries.length,1);
 console.log('PASS PR167: Today KEEP choice, all frozen alternatives, no Firestore/profile write, stale advice blocked');
+
+
+
+// PR170: historical entries MUST NOT leak their placeholder epoch as an actual
+// transfer hour in the user-facing executed-history view.
+state=window.PythosNBA.getState();
+state.executed=[{out:roster[0],in_:'n222',
+ timePrecision:'date_only',epochIsPlaceholder:true,
+ sportsRuDateMoscow:'2026-11-09',epoch:Date.parse('2026-11-09T12:34:00Z'),
+ sell:1234,buy:1000}];
+window.PythosNBA.setState(state);
+listeners['nav:click']({target:{closest:()=>({dataset:{tab:'planner'}})}});
+listeners.click[0]({target:{closest:()=>({dataset:{plannerTask:'record'}})}});
+assert.match(view.innerHTML,/09\.11\.2026 · часы неизвестны/);
+assert.doesNotMatch(view.innerHTML,/09\.11, 15:34/);
+console.log('PASS PR170: date-only historical transfer never exposed as an actual clock');
