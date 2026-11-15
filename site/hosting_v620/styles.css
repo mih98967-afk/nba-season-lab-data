@@ -585,3 +585,16 @@ button.primary:not(:disabled):active,.button:not(:disabled):active{transform:tra
 .today-evidence .toolbar button{font-size:12px}
 .today-evidence .today-evidence-note{font-size:11px;opacity:.9;margin-top:9px}
 @media(max-width:500px){.today-evidence{padding:15px 17px}.today-evidence .toolbar button{flex:1 1 100%}}
+
+/* PR172: private read-only decision evidence ledger; short by default. */
+.journal-audit{margin:12px 0 4px;padding:12px 0 0;border-top:1px solid var(--line)}
+.journal-audit-stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:9px;color:var(--muted);font-size:12px}
+.journal-audit-stats span{display:inline-flex;align-items:baseline;gap:5px}
+.journal-audit-stats b{color:var(--fg);font-size:16px;font-variant-numeric:tabular-nums}
+.journal-audit details{font-size:12px;color:var(--muted)}
+.journal-audit details>summary{cursor:pointer;font-weight:600}
+.journal-audit ul{list-style:none;padding:0;margin:10px 0}
+.journal-audit li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}
+.journal-audit li span:last-child{text-align:right;color:var(--muted)}
+.journal-audit>.small{margin:8px 0 0;font-size:11px}
+@media(max-width:580px){.journal-audit li{flex-direction:column;gap:3px}.journal-audit li span:last-child{text-align:left}}
