@@ -514,6 +514,28 @@ function ownerEconomicsExport(){
     executable_transfer_plan_proven:false,
     realized_keep_now_later_gain_proven:false};
   });
+  const frozenIds=new Set(),frozenGames=new Set();
+  for(const e of decisions.entries){
+   for(const id of Object.keys(e.frozen_slate?.player_teams_at_capture||{}))frozenIds.add(id);
+   for(const g of e.frozen_slate?.games||[])frozenGames.add(g.id);
+  }
+  const postDecisionSource={
+    status:'public_NBA_only_unverified_Sportsru_credits',
+    exported_at_utc:new Date(now()).toISOString(),
+    public_source_verified_by_app:publicFeedValidated===true,
+    public_source_updated_at_utc:LIVE?.updated_at_utc||null,
+    frozen_game_ids:frozenGames.size,frozen_player_ids:frozenIds.size,
+    games:(LIVE?.games||[]).filter(g=>frozenGames.has(g.id)).map(g=>({
+      id:g.id,epoch:g.epoch,home:g.home,away:g.away,status:g.status})),
+    rows:(LIVE?.rows||[]).filter(r=>frozenGames.has(r.game_id)&&frozenIds.has(r.id))
+      .map(r=>({id:r.id,game_id:r.game_id,fp:r.fp,played:r.played,minutes:r.minutes,team:r.team})),
+    missing_is_unknown_not_zero:true,
+    actual_sportsru_credited_fp_available:false
+  };
+  const frozenOutcomeCoverage=decisions.entries.map(e=>({
+    captured_at_utc:e.captured_at_utc,
+    ...journal.inspectCoverage(e,LIVE,{nowMs:now(),sourceVerified:publicFeedValidated})
+  }));
   const packageData={schema_version:1,
    kind:'NBA_SEASON_LAB_PRIVATE_ECONOMIC_EVALUATION_PACKET',
    exported_at_utc:new Date(now()).toISOString(),
@@ -526,6 +548,8 @@ function ownerEconomicsExport(){
    personal_fp_reconciliation:reconciliation,
    frozen_decision_journal:decisions,
    manual_price_evidence:quotes,
+   postdecision_public_nba_observations_only:postDecisionSource,
+   frozen_outcome_coverage_descriptive_only:frozenOutcomeCoverage,
    prospective_price_coverage_descriptive_only:checks};
   download('nba-season-lab-private-economic-evidence.json',packageData);
   showMsg('Приватный пакет скачан: решений '+decisions.entries.length+
@@ -673,6 +697,7 @@ function todayPage(){
   '<div class="today-quick-foot">После условного резерва за ходы. Цены и участие требуют проверки.</div></div>':'';
 
  const savedDecisions=decisionJournalCount();
+ const newestDecisionProgress=savedDecisions>0?lastDecisionCoverageText():'';
  const canCapture=!!(result&&verifiedExplanation&&savedDecisions!==null&&window.NBADecisionJournal);
  const keepIndex=canCapture?result.routes.findIndex(r=>r.kind==='keep'):-1;
  const canCaptureKeep=keepIndex>=0&&explainMulti(result.routes[keepIndex],result)?.ready===true;
@@ -687,6 +712,7 @@ function todayPage(){
       <button type="button" class="ghost" data-action="today-evidence-export">Скачать приватный пакет</button></div>`:
      `<p class="small">${savedDecisions===null?'Локальный журнал не читается; не перезаписывай его до резервной копии.':'Новый снимок станет доступен, когда появится актуальное и полностью проверенное сравнение на 7 дней.'}</p>
       <div class="toolbar"><button type="button" class="ghost" data-action="today-evidence-export">Скачать приватный пакет</button></div>`}
+   ${newestDecisionProgress?`<p class="small">${esc(newestDecisionProgress)}</p>`:''}
    <p class="small today-evidence-note">Данные сохраняются только в этом браузере, без синхронизации между устройствами. Повторные снимки одного решения не считаются независимыми результатами.</p></section>`;
  const weekGames=complete&&short.ok?normalizedGames().filter(g=>g.epoch>tick&&g.epoch<=tick+7*86400000&&g.status!=='final'&&S.roster.some(id=>P[id]?.team===g.home||P[id]?.team===g.away)):[];
  const topGames=weekGames.slice(0,4);
@@ -1290,9 +1316,47 @@ function multiEvidenceHtml(route){
   <p class="small">Отметки цен локальные, будущие котировки и участие не гарантированы. Ни одна проверка не совершает замен.</p>
  </details>`;
 }
+function lastDecisionCoverageText(){
+ try{
+  const api=window.NBADecisionJournal;
+  if(!api?.inspectCoverage)return '';
+  const last=api.read(localStorage).entries.at(-1);
+  if(!last)return '';
+  const x=api.inspectCoverage(last,LIVE,{nowMs:now(),sourceVerified:publicFeedValidated});
+  if(x.status==='PENDING_HORIZON')return '\u041f\u043e\u0441\u043b\u0435\u0434\u043d\u0438\u0439 \u0441\u043d\u0438\u043c\u043e\u043a: \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u044b \u043e\u0436\u0438\u0434\u0430\u044e\u0442\u0441\u044f \u0434\u043e '+dateText(Date.parse(x.end_utc))+' \u041c\u0421\u041a.';
+  if(x.status==='LEGACY_NO_FROZEN_SLATE')return '\u041f\u0440\u0435\u0434\u044b\u0434\u0443\u0449\u0438\u0439 \u0441\u043d\u0438\u043c\u043e\u043a \u043d\u0435 \u0441\u043e\u0434\u0435\u0440\u0436\u0438\u0442 \u0441\u043e\u0445\u0440\u0430\u043d\u0451\u043d\u043d\u043e\u0433\u043e \u043a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044f; \u043f\u043e\u043b\u043d\u044b\u0439 \u0430\u043d\u0430\u043b\u0438\u0437 \u043d\u0435\u0434\u043e\u0441\u0442\u0443\u043f\u0435\u043d.';
+  if(x.status==='SOURCE_UNVERIFIED')return '\u041d\u0435\u0442 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0451\u043d\u043d\u043e\u0433\u043e NBA-\u0441\u0440\u0435\u0437\u0430 \u0434\u043b\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0438 \u0437\u0430\u0432\u0435\u0440\u0448\u0451\u043d\u043d\u043e\u0433\u043e \u043f\u0435\u0440\u0438\u043e\u0434\u0430.';
+  if(x.status==='SCHEDULE_CHANGED_AFTER_CAPTURE')return '\u0420\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435 \u0438\u0437\u043c\u0435\u043d\u0438\u043b\u043e\u0441\u044c \u043f\u043e\u0441\u043b\u0435 \u0437\u0430\u043f\u0438\u0441\u0438: \u0430\u0432\u0442\u043e\u043c\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u043e\u0435 \u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0437\u0430\u0431\u043b\u043e\u043a\u0438\u0440\u043e\u0432\u0430\u043d\u043e.';
+  if(x.status==='INCOMPLETE_PUBLIC_OUTCOMES'){
+   const r=x.routes?.[x.selected_index];
+   if(r)return 'NBA-\u043f\u043e\u043a\u0440\u044b\u0442\u0438\u0435: '+r.observed_played_rows+' \u0441\u044b\u0433\u0440\u0430\u043d\u043d\u044b\u0445 \u0437\u0430\u043f\u0438\u0441\u0435\u0439 \u0438\u0437 '+r.expected_player_games_on_final_games+' \u0442\u0440\u0435\u0431\u0443\u0435\u043c\u044b\u0445; \u043f\u0440\u043e\u043f\u0443\u0441\u043a\u0438 \u043e\u0441\u0442\u0430\u044e\u0442\u0441\u044f \u043d\u0435\u0438\u0437\u0432\u0435\u0441\u0442\u043d\u044b\u043c\u0438, \u043d\u0435 \u043d\u0443\u043b\u0435\u0432\u044b\u043c\u0438.';
+  }
+  if(x.status==='NBA_PLAYED_ROWS_ONLY_NOT_OFFICIAL')return '\u0421\u044b\u0433\u0440\u0430\u043d\u043d\u044b\u0435 NBA-\u0441\u0442\u0440\u043e\u043a\u0438 \u0441\u043e\u0431\u0440\u0430\u043d\u044b, \u043d\u043e \u043e\u0444\u0438\u0446\u0438\u0430\u043b\u044c\u043d\u0430\u044f \u0432\u044b\u0433\u043e\u0434\u0430 \u043d\u0430 Sports.ru \u043d\u0435 \u0434\u043e\u043a\u0430\u0437\u0430\u043d\u0430.';
+  return '\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u043f\u043e\u043a\u0430 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d\u0430 \u0434\u0430\u043d\u043d\u044b\u043c\u0438 NBA; \u0444\u0430\u043a\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u043a\u043e\u0442\u0438\u0440\u043e\u0432\u043a\u0438 \u0438 \u0437\u0430\u0447\u0451\u0442 Sports.ru \u043d\u0435 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u044b.';
+ }catch{return '';}
+}
 function decisionJournalCount(){
  try{return window.NBADecisionJournal?.read(localStorage)?.entries.length??0;}
  catch{return null;}
+}
+
+function frozenDecisionSlate(result){
+ // Freeze the exact future games seen by the read-only optimizer. The real
+ // Sports.ru credited outcomes/quotes/locks remain independently unverified.
+ if(!CALENDAR||!calendarCoverage(result.start,result.horizonDays).ok)return null;
+ const ids=new Set([...S.roster]);
+ for(const m of S.draft||[]){ids.add(m.out);ids.add(m.in_);}
+ for(const r of result.routes||[])for(const m of r.moves||[]){ids.add(m.out);ids.add(m.in_);}
+ const playerTeams={};
+ for(const id of ids){if(!P[id]?.team)return null;playerTeams[id]=P[id].team;}
+ const clubs=new Set(Object.values(playerTeams));
+ const games=normalizedGames().filter(g=>g.epoch>=result.start&&g.epoch<result.end&&
+   g.status!=='final'&&(clubs.has(g.home)||clubs.has(g.away)))
+   .map(g=>({id:g.id,epoch:g.epoch,home:g.home,away:g.away}));
+ if(!games.length||games.length>330)return null;
+ return {ownerClickedVerifiedCalendar:true,calendarUpdatedAtUtc:CALENDAR.updated_at_utc,
+  playerTeams,existingDraft:(S.draft||[]).map(t=>({out:t.out,in_:t.in_,epoch:t.epoch,sell:t.sell,buy:t.buy})),
+  games};
 }
 // One explicit opt-in capture path for Today and Transfers. No autosave, no
 // Firestore write, and no retrospective reissue of already-started forecasts.
@@ -1310,14 +1374,17 @@ function freezeDecisionSnapshot(source,index){
    return showMsg('Выберите действительный вариант KEEP / NOW / LATER.');
  if(!explainMulti(result.routes[index],result).ready)
    return showMsg('Подробные FP не прошли сверку с планом. Запись заблокирована; пересчитайте.');
+ const slate=frozenDecisionSlate(result);
+ if(!slate)return showMsg('Не удалось сохранить точный календарь расчёта. Обновите расписание перед фиксацией.');
  if(!confirm('Сохранить выбранное решение и все сравниваемые варианты ТОЛЬКО В ЭТОМ БРАУЗЕРЕ?\n\n'
-   +'Запишутся текущий состав, сценарные цены, прогноз FP и время вашего нажатия. '
+   +'\u0417\u0430\u043f\u0438\u0448\u0443\u0442\u0441\u044f \u0442\u0435\u043a\u0443\u0449\u0438\u0439 \u0441\u043e\u0441\u0442\u0430\u0432, \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u044b\u0439 \u0447\u0435\u0440\u043d\u043e\u0432\u0438\u043a, \u043a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u0438 \u043a\u043b\u0443\u0431\u044b \u0438\u0433\u0440\u043e\u043a\u043e\u0432 \u043d\u0430 \u043c\u043e\u043c\u0435\u043d\u0442 \u0432\u044b\u0431\u043e\u0440\u0430, '
+   +'\u0441\u0446\u0435\u043d\u0430\u0440\u043d\u044b\u0435 \u0446\u0435\u043d\u044b, \u043f\u0440\u043e\u0433\u043d\u043e\u0437 FP \u0438 \u0432\u0440\u0435\u043c\u044f \u0432\u0430\u0448\u0435\u0433\u043e \u043d\u0430\u0436\u0430\u0442\u0438\u044f. '
    +'Это запись намерения, не доказательство покупки, не официальный FP Sports.ru. '
    +'Ничего не отправляется в Firebase/GitHub.'))return;
  try{
    const receipt=window.NBADecisionJournal.take(localStorage,{
      userConfirmedNow:true,plan:result,chosenIndex:index,
-     roster:S.roster,cash:S.cash,liveUpdatedAtUtc:LIVE?.updated_at_utc||null
+     roster:S.roster,cash:S.cash,liveUpdatedAtUtc:LIVE?.updated_at_utc||null,slate
    });
    showMsg('Решение зафиксировано только в этом браузере: '+dateText(Date.parse(receipt.captured_at_utc))+
     ' МСК. Позже скачайте приватный пакет для проверки после матчей.');
