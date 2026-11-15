@@ -62,3 +62,14 @@
 - Today, Team and Transfers explicitly show `н/д` for unprovable current quota when recent historical transfers have `date_only`/placeholder epochs. Shortlist does not invent available moves.
 - Reusing a 7-day recommendation or opening a modelled market pair now requires an unchanged roster/source signature, successful public-data preflight, <=30 minute calculation age and a route whose planned start/moves have not elapsed. Expired scenarios must be recalculated; previous estimates cannot become current purchase prices.
 - Existing privacy/provenance restrictions, forecast model and scoring retained. Changes are read-only, no automatic Sports.ru transfer, Firebase/Firestore/profile write or new resource. Local VM and pure regression tests cover unknown quotas, late-listed next locks and stale plans.
+
+
+## PR #167 — explicit prospective decision capture from Today (2026-11-15)
+
+- Owner-private report received at 2026-11-15T13:54:43Z: **0 frozen decision entries** and **0 manual price receipts**. The 10 transfer-history rows have only Sports.ru Moscow dates and placeholder epochs. It is invalid to label these historical moves as prospective KEEP/NOW/LATER validations.
+- A new small, optional **Проверить полезность советов** section on **Сегодня** makes prospective research visible without displacing the primary daily decision. Two explicit choices: **Зафиксировать совет модели** and, when relevant, **Мой выбор — KEEP**. Both freeze all current KEEP/NOW/LATER alternatives plus the selected index, never invent Sports.ru execution.
+- Only enabled when 7-day public preflight, current unchanged roster/signature, fresh plan (<30m), valid future start, consistent FP explanations and readable private local journal all pass. If not, shows why no snapshot can be recorded. No automatic storage just by opening Today; explicit consent remains mandatory.
+- A private packet download is available from Today, reusing the existing opt-in economic export including owner-confirmed checkpoints. No personal records are added to GitHub, Firestore, or telemetry, and no live transfers are made.
+- Preserves the same local v1 journal schema, the historical score discrepancy's bounded status, and the frozen 7/14/21/28-day plan evidence; user choice does not imply Sports.ru verification or a causal model effect. Repeated captures are not independent matches.
+- Tests: full existing offline suite and a synthetic UI-VM asserting disabled capture without preflight, positive KEEP choice with all alternatives, lack of profile/Firestore mutation, and stale-route rejection.
+- **Research interpretation:** still no proven real KEEP/NOW/LATER gain. DNP/credits, execution-time prices/locks and actual counterpart are missing. No new forecast model, retrospective forecast, score overwrite, or automatic trade.
