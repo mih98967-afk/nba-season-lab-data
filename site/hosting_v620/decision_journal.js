@@ -170,6 +170,50 @@
    comparable_actual_net_fp_proven:false,
    caution:'NBA played rows cannot substitute for full Sports.ru credited FP or independently verified executed transfers.'});
  }
+ // Read-only, decision-level coverage audit; no economic score or inferred DNP.
+ // Time-overlapping horizons are clustered, never sold as independent wins.
+ function auditCoverage(journal,live,options={}){
+  ensure(isNum(options.nowMs),'AUDIT_CLOCK_REQUIRED');
+  validate(journal); // Do not repair or drop invalid personal records.
+  const classes=['pending','nba_rows_only','partial_nba','source_unverified','legacy','blocked'];
+  const counts=Object.fromEntries(classes.map(k=>[k,0]));
+  const entries=journal.entries.map((e,index)=>{
+   const coverage=inspectCoverage(e,live,options);
+   const status=coverage.status;
+   const category=status==='PENDING_HORIZON'?'pending':
+      status==='NBA_PLAYED_ROWS_ONLY_NOT_OFFICIAL'?'nba_rows_only':
+      status==='INCOMPLETE_PUBLIC_OUTCOMES'?'partial_nba':
+      status==='SOURCE_UNVERIFIED'?'source_unverified':
+      status==='LEGACY_NO_FROZEN_SLATE'?'legacy':'blocked';
+   counts[category]++;
+   const chosen=e.scenario.routes[e.scenario.chosen_index];
+   const route=coverage.routes?.[e.scenario.chosen_index];
+   return {index,captured_at_utc:e.captured_at_utc,
+    decision_start_utc:e.decision_start_utc,decision_end_utc:e.decision_end_utc,
+    horizon_days:e.scenario.horizon_days,chosen_kind:chosen.kind,
+    predicted_gain_model_fp:chosen.gain_fp,category,status,
+    final_games_matched:coverage.final_games_matched??null,
+    frozen_games:coverage.frozen_games??e.frozen_slate?.games.length??null,
+    selected_expected_on_final_games:route?.expected_player_games_on_final_games??null,
+    selected_nba_played_rows:route?.observed_played_rows??null,
+    unknown_or_dnp_rows:route?.unknown_or_dnp_rows??null,
+    real_sportsru_gain_proven:false,actual_gain_fp:null};
+  });
+  let nonoverlapGroups=0,overlappingEntries=0,lastEnd=-Infinity;
+  for(const e of [...entries].sort((a,b)=>instant(a.decision_start_utc)-instant(b.decision_start_utc))){
+   const start=instant(e.decision_start_utc),end=instant(e.decision_end_utc);
+   if(start>=lastEnd)nonoverlapGroups++;
+   else overlappingEntries++;
+   lastEnd=Math.max(lastEnd,end);
+  }
+  return {schema_version:1,status:'private_observational_coverage_only',
+   total:entries.length,counts,nonoverlap_time_groups:nonoverlapGroups,
+   overlapping_decisions:overlappingEntries,
+   groups_not_statistical_independence:true,
+   sportsru_credited_player_game_results_available:false,
+   proven_economic_wins:0,proven_economic_losses:0,
+   winning_strategy_proven:false,entries};
+ }
  const isNum=n=>typeof n==='number'&&Number.isFinite(n);
  const fail=code=>{throw new Error('DECISION_JOURNAL_'+code);};
  const ensure=(okay,code)=>{if(!okay)fail(code);};
@@ -323,5 +367,5 @@
    ensure(storage&&typeof storage.removeItem==='function','NO_STORAGE');
    storage.removeItem(KEY);
  }
- return {KEY,read,take,exportData,clear,inspectCoverage,_status:STATUS};
+ return {KEY,read,take,exportData,clear,inspectCoverage,auditCoverage,_status:STATUS};
 });
