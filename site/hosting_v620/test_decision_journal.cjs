@@ -235,3 +235,58 @@ test('T-30 exactly is locked, not an executable buy timestamp',()=>{
  assert.equal(status.routes[1].observed_played_rows,10);
  assert.equal(status.actual_gain_fp,null);
 });
+
+
+// PR172: one read-only readiness ledger for all frozen horizons.
+test('coverage ledger distinguishes pending, incomplete NBA rows and never produces Sports.ru gain',()=>{
+ const api=engine(),s=local();api.take(s,frozenFixture());
+ const snapshot=api.read(s),before=JSON.stringify(snapshot);
+ const pending=api.auditCoverage(snapshot,{mode:'live_sync',games:[],rows:[]},
+  {nowMs:NOW+DAY,sourceVerified:true});
+ assert.equal(pending.total,1);
+ assert.equal(pending.counts.pending,1);
+ assert.equal(pending.proven_economic_wins,0);
+ assert.equal(pending.winning_strategy_proven,false);
+ assert.equal(pending.entries[0].predicted_gain_model_fp,25.5);
+ const live={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',
+   epoch:NOW+3*3600000,status:'final'}],rows:[{id:'n101',game_id:'espn_444',played:true,fp:15,team:'AAA'}]};
+ const incomplete=api.auditCoverage(snapshot,live,{nowMs:NOW+15*DAY,sourceVerified:true});
+ assert.equal(incomplete.counts.partial_nba,1);
+ assert.equal(incomplete.entries[0].selected_nba_played_rows,0);
+ assert.equal(incomplete.entries[0].unknown_or_dnp_rows,10);
+ assert.equal(incomplete.entries[0].actual_gain_fp,null);
+ assert.equal(incomplete.sportsru_credited_player_game_results_available,false);
+ const full={...live,rows:roster.map((id,i)=>({id,game_id:'espn_444',played:true,
+   fp:i+1,team:'AAA'})).concat([{id:'n222',game_id:'espn_444',played:true,fp:23,team:'BBB'}])};
+ const complete=api.auditCoverage(snapshot,full,{nowMs:NOW+15*DAY,sourceVerified:true});
+ assert.equal(complete.counts.nba_rows_only,1);
+ assert.equal(complete.entries[0].real_sportsru_gain_proven,false);
+ assert.equal(complete.proven_economic_losses,0);
+ assert.equal(complete.winning_strategy_proven,false);
+ assert.equal(JSON.stringify(snapshot),before,'audit must not edit the private journal');
+});
+test('overlapping retrospective horizons are counted as dependent observations, not independent winners',()=>{
+ const api=engine(),s=local();api.take(s,fixture());
+ const shifted=engine(NOW+2*60000),x=frozenFixture();x.plan.start=NOW+3*60000;
+ x.plan.end=x.plan.start+14*DAY;x.plan.routes[1].moves[0].epoch=x.plan.start;
+ x.slate.games[0].epoch=NOW+3*3600000;
+ shifted.take(s,x);
+ const audit=shifted.auditCoverage(shifted.read(s),{mode:'live_sync',games:[],rows:[]},
+  {nowMs:NOW+DAY,sourceVerified:false});
+ assert.equal(audit.total,2);
+ assert.equal(audit.counts.pending,2);
+ assert.equal(audit.nonoverlap_time_groups,1);
+ assert.equal(audit.overlapping_decisions,1);
+ assert.equal(audit.groups_not_statistical_independence,true);
+ const later=shifted.auditCoverage(shifted.read(s),{mode:'live_sync',games:[],rows:[]},
+  {nowMs:NOW+15*DAY,sourceVerified:true});
+ assert.equal(later.counts.legacy,1);
+ assert.equal(later.counts.partial_nba,1);
+});
+test('ledger refuses a corrupt local archive and an unvalidated observation clock',()=>{
+ const api=engine(),s=local();api.take(s,fixture());
+ assert.throws(()=>api.auditCoverage(api.read(s),{},{}),/AUDIT_CLOCK_REQUIRED/);
+ const bad=api.read(s);bad.entries[0].outcome.real_transfer_benefit_proven=true;
+ assert.throws(()=>api.auditCoverage(bad,{},
+  {nowMs:NOW+16*DAY,sourceVerified:false}),/MODIFIED_OR_UNTRUSTED_ENTRY/);
+});
