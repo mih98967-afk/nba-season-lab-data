@@ -55,3 +55,10 @@
 - For each previously frozen selected route, an **as-of descriptive owner-quote match** may be provided only when a same-pair, same-price receipt predates the capture by at most one hour and the receipt archive was never restored. A match does **not** authenticate Sports.ru price publication, future prices, locks, quota, ownership or realized FP. All routes remain `executable_transfer_plan_proven=false`, `realized_keep_now_later_gain_proven=false`.
 - A corrupted local journal or failed source verification aborts the **full** export instead of silently producing a misleading incomplete research packet. The prior FP-only download remains available.
 - Synthetic offline tests: no Firestore/network changes, price/evidence provenance, and corrupt-archive rejection. Real owner profile and official credited player-game outcomes remain unverified. Hosting publish requires the owner action.
+
+
+## Daily decision integrity — PR #166 candidate (15 November 2026)
+- Today computes the next actionable T-30m lock across all eligible games in the 7-day window, not just the four visible fixtures. The involved roster players and Moscow time are shown; Sports.ru remains the authority.
+- Today, Team and Transfers explicitly show `н/д` for unprovable current quota when recent historical transfers have `date_only`/placeholder epochs. Shortlist does not invent available moves.
+- Reusing a 7-day recommendation or opening a modelled market pair now requires an unchanged roster/source signature, successful public-data preflight, <=30 minute calculation age and a route whose planned start/moves have not elapsed. Expired scenarios must be recalculated; previous estimates cannot become current purchase prices.
+- Existing privacy/provenance restrictions, forecast model and scoring retained. Changes are read-only, no automatic Sports.ru transfer, Firebase/Firestore/profile write or new resource. Local VM and pure regression tests cover unknown quotas, late-listed next locks and stale plans.
