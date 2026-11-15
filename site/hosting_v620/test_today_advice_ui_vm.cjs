@@ -72,4 +72,17 @@ window.PythosNBA.setState(state);
 listeners['nav:click']({target:{closest:()=>({dataset:{tab:'today'}})}});
 assert.match(view.innerHTML,/Сначала проверь свой состав/);
 assert.equal(plannerCalls,0);
-console.log('PASS Today / Transfers VM: unvalidated feed and malformed roster fail closed without mutations');
+// The planner must not display a fabricated exact weekly quota when the owner
+// only knows the day of a historical move (not its real timestamp).
+state=window.PythosNBA.getState();
+state.roster=roster.slice();
+state.executed=[{out:roster[0],in_:'n999',epoch:Date.now()-3600000,
+ timePrecision:'date_only',epochIsPlaceholder:true,sell:1200,buy:1300}];
+window.PythosNBA.setState(state);
+listeners['nav:click']({target:{closest:()=>({dataset:{tab:'planner'}})}});
+assert.match(view.innerHTML,/Замены по истории: <b>н\/д<\/b>/);
+assert.match(view.innerHTML,/Недавние замены записаны только по датам/);
+assert.doesNotMatch(view.innerHTML,/Замены по истории: <b>1\/3<\/b>/);
+click('market-review-best');
+assert.match(view.innerHTML,/Сценарий устарел или его данные изменились/);
+console.log('PASS Today / Transfers VM: unvalidated feed, invalid roster, unknown quota and no stale market shortcut');
