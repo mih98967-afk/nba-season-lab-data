@@ -1370,7 +1370,7 @@ function decisionJournalAuditHtml(){
   const codes={pending:'Период ещё идёт',nba_rows_only:'NBA-строки собраны, Sports.ru не проверен',
     partial_nba:'Не все NBA-строки подтверждены',source_unverified:'Нет проверенного NBA-среза',
     legacy:'Старый снимок без календаря',blocked:'Автосверка заблокирована'};
-  // Sparse official FP checklist is a provenance request, not a score.
+  // The sparse official FP checklist is a provenance request, not a score.
   const latestFrozen=api.read(localStorage).entries.at(-1);
   const sparse=latestFrozen?api.differentialEvidence?.(latestFrozen):null;
   const sparseText=sparse?.status==='FROZEN_MODEL_REQUEST_NOT_OFFICIAL'?
@@ -1393,7 +1393,7 @@ function decisionJournalAuditHtml(){
   </div>`;
  }catch{return '<p class="small warntext">Локальный журнал не удалось проверить. Сохрани резервную копию до изменения записей.</p>';}
 }
-// Owner-triggered only: exports sparse differential requests for all
+// Owner-triggered only: exports the sparse differential requests for all
 // frozen decisions, not their full roster or any purported realized score.
 function decisionJournalEvidenceExport(){
  try{
@@ -1401,7 +1401,7 @@ function decisionJournalEvidenceExport(){
   if(!api?.differentialEvidence)return showMsg('Модуль списка начислений недоступен.');
   const journal=api.read(localStorage);
   if(!journal.entries.length)return showMsg('Журнал решений пуст. Сначала зафиксируйте сравнение до матчей.');
-  if(!confirm('Скачать приватный список пар «игрок — матч», отличающих сценарии от KEEP?\\n'
+  if(!confirm('Скачать приватный список пар «игрок — матч», отличающих сценарии от KEEP?\n'
     +'Там будут даты ваших решений, выбранные сценарии и ID игроков. '
     +'Это не настоящие FP Sports.ru и не доказательство выполнения замен. '
     +'Файл остаётся только на вашем устройстве.'))return;
