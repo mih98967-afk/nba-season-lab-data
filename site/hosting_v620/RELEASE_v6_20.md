@@ -113,3 +113,10 @@
 - One private, on-device overview of **all** opt-in KEEP/NOW/LATER decision snapshots, shared by Today and Transfers. Shows pending horizons, partial or complete **NBA-only** played-row coverage, source uncertainty, legacy records and blocked replay; latest five decisions are collapsed by default.
 - Time-overlapping prediction horizons form descriptive groups and cannot be treated as independent winning tests. Even non-overlapping windows do not prove statistical independence. The ledger cannot certify Sports.ru credited player-game FP, exact execution, real net transfer gains or forecast advantage.
 - Added three pure regressions and one synthetic UI regression; zero changes to owner profile, Firestore, scoring, quotas, forecast model or transfer execution. Full hosting bundle and exact SHA manifest must pass CI. User publishes only after CI success.
+
+## PR173 — minimal Sports.ru credit evidence checklist, private and conditional
+- Keep and alternative routes are replayed on their frozen game IDs using the same T−30 ownership cutoff. Only player-game exposures where ownership differs from KEEP require a Sports.ru credited result; unchanged exposures cancel. Avoid asking for the entire ten-player match history.
+- For every stored prospective snapshot, a read-only checklist exports missing official FP, validated DNP/participation, match club tenure and real execution/quotes/quota requirements. All credit slots are null and explicitly unverified; neither ESPN played rows nor reconstructed prices are accepted as official Sports.ru outcomes.
+- On Today/Transfers the latest private snapshot shows differential credit count and a deliberate, consented local JSON download; the list is not posted to GitHub, Firebase or Firestore.
+- Missing/legacy frozen schedule or impossible ownership path yields an explicit blocked state rather than a fabricated FP difference. Captured dates/scenarios are not independent evaluations and do not prove value, irrespective of number of rows.
+- Maintains 44 release assets, stable journal schema, full manifest, test-suite and verified offline ZIP. No model change, no automatic transfer, no account mutation.
