@@ -117,6 +117,20 @@
   }
   if(changedGames)return no('SCHEDULE_CHANGED_AFTER_CAPTURE',
     {changed_games:changedGames,scheduled_games:relevant.size});
+  // A player may have changed clubs after this prediction. A played row on
+  // another team (or without a verifiable team label) must NOT be credited
+  // to the frozen roster in a hypothetical ex-post comparison.
+  const frozenTeams=entry.frozen_slate.player_teams_at_capture;
+  for(const r of live.rows){
+   if(!relevant.has(r?.game_id)||!Object.prototype.hasOwnProperty.call(frozenTeams,r?.id)||
+      r.played!==true||byGame.get(r.game_id)?.status!=='final')continue;
+   const match=byGame.get(r.game_id),expectedTeam=frozenTeams[r.id];
+   if(r.team!==expectedTeam || (r.team!==match.home&&r.team!==match.away)){
+    return no('PLAYER_CLUB_TENURE_CONFLICT',{
+     unmatched_player_game_club:true,
+     caution:'Observed NBA team disagrees with the at-click club mapping; do not score this hypothetical roster.'});
+   }
+  }
   const allRoutes=[];
   for(const route of entry.scenario.routes){
    const moves=[...entry.frozen_slate.existing_draft_unexecuted,...route.moves]
@@ -126,10 +140,15 @@
     if(byGame.get(g.id)?.status!=='final')continue;
     let owned=entry.owner_state.roster_ids.slice();
     for(const m of moves){
-     if(instant(m.execution_utc)>instant(g.tipoff_utc)-LOCK)break;
-     const i=owned.indexOf(m.out);if(i>=0)owned[i]=m.in_;
+     // At T-30m the player is already locked. Do not invent an
+     // execution exactly on the lock boundary as valid ownership.
+     if(instant(m.execution_utc)>=instant(g.tipoff_utc)-LOCK)break;
+     const i=owned.indexOf(m.out);
+     if(i<0||owned.includes(m.in_))return no('UNVERIFIED_OWNERSHIP_PATH',{
+      caution:'A scenario move cannot be applied to the frozen roster in its modelled order.'});
+     owned[i]=m.in_;
     }
-    if(new Set(owned).size!==owned.length)return no('UNSUPPORTED_DUPLICATE_OWNER_STATE');
+    if(new Set(owned).size!==owned.length)return no('UNVERIFIED_OWNERSHIP_PATH');
     for(const id of owned){
      const team=entry.frozen_slate.player_teams_at_capture[id];
      if(team!==g.home&&team!==g.away)continue;
