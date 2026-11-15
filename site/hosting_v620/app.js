@@ -436,8 +436,8 @@ function ownerCheckpointPanel(){
  </div><label class="sports-attest"><input id="checkpoint-confirm" type="checkbox"> Я сверил дату и FP с Sports.ru</label>
  <div class="toolbar"><button class="primary" data-action="owner-checkpoint-save" type="button">Сохранить локально</button></div>
  <p class="small">Только в памяти этого браузера, без Firebase и GitHub. Не переносится автоматически на другое устройство. Для стоимости и кассы используйте значения с того же момента, что и FP.</p>
- <div class="toolbar"><button class="button" type="button" data-action="owner-reconcile-export">Скачать пакет сверки FP (JSON)</button></div>
- <p class="small">Файл содержит личную историю замен, контрольные FP и NBA-результаты до последней контрольной даты. Он сохраняется только на вашем устройстве и предназначен для ручной передачи на анализ.</p>
+ <div class="toolbar"><button class="button" type="button" data-action="owner-reconcile-export">Скачать пакет сверки FP (JSON)</button><button class="button" type="button" data-action="owner-economics-export">Полный пакет для проверки замен (JSON)</button></div>
+ <p class="small">Обычный пакет содержит личную историю замен, контрольные FP и NBA-результаты. Полный дополнительно включает отдельные локальные журналы прогнозных решений и вручную записанных цен (если они есть). Данные остаются на устройстве до вашего скачивания; ничего не отправляется автоматически. Реальная выгода замены этим не доказывается.</p>
  ${dates||'<p class="small">Контрольных дат пока нет.</p>'}</details></section>`;
 }
 function ownerCheckpointSave(){
@@ -462,6 +462,69 @@ function ownerReconciliationExport(){
   download('nba-season-lab-private-fp-reconciliation.json',pack);
   showMsg('Диагностический JSON сохранён на вашем устройстве. Для анализа прикрепите его в чат.');
  }catch(e){showMsg('Экспорт FP: '+String(e.message||e));}
+}
+/* Explicit one-click PRIVATE evidence bundle for future as-of evaluation.
+ * Includes three independent local stores but NEVER writes them to the cloud.
+ * A matching manually entered quote is not a verified exchange price / lock.
+ */
+function ownerEconomicsExport(){
+ const fp=window.NBASportsReconciliation;
+ const journal=window.NBADecisionJournal;
+ const prices=window.NBAPriceEvidence;
+ if(!fp?.exportReconciliation||!journal?.exportData||!prices?.exportData)
+   return showMsg('Не загружены локальные модули для полного исследования.');
+ if(!confirm('Скачать ПОЛНЫЙ ПРИВАТНЫЙ пакет?\n\nОн содержит состав, историю замен, FP, все сохранённые решения и ручные цены из этого браузера (возможно, для разных составов).\n\nФайл не отправляется в Firebase или GitHub. Не публикуйте его в открытом репозитории.'))return;
+ try{
+  // All three stores validate independently. Do not silently omit a corrupt one.
+  const reconciliation=fp.exportReconciliation(localStorage,S,LIVE,publicFeedValidated,now());
+  const decisions=journal.exportData(localStorage);
+  const quotes=prices.exportData(localStorage);
+  const observations=quotes.restored_from_file_unverified?[]:quotes.receipts;
+  const checks=decisions.entries.map(entry=>{
+   const cut=Date.parse(entry.captured_at_utc);
+   const chosen=entry.scenario.routes[entry.scenario.chosen_index];
+   const moves=chosen.moves;
+   const pairs=moves.map(m=>{
+    const recent=observations.filter(q=>{
+     const at=Date.parse(q.observed_at_utc);
+     return Number.isFinite(at)&&at<=cut&&cut-at<=3600000&&
+       q.quotes[0].player_id===m.out&&q.quotes[1].player_id===m.in_&&
+       q.quotes[0].price===m.assumed_sell&&q.quotes[1].price===m.assumed_buy;
+    });
+    const matched=recent.at(-1)||null;
+    return {out:m.out,in_:m.in_,owner_quote_matches_modelled_prices:!!matched,
+     quote_observed_at_utc:matched?.observed_at_utc||null,
+     owner_attested_cash:matched?.cash_from_sportsru_screen??null,
+     owner_attested_quota:matched?.quota_remaining_from_sportsru_screen??null,
+     quote_is_independently_verified:false,
+     price_at_future_execution_verified:false,
+     prelock_eligibility_verified:false};
+   });
+   return {captured_at_utc:entry.captured_at_utc,
+    horizon_days:entry.scenario.horizon_days,
+    chosen_kind:chosen.kind,
+    owner_price_match_count:pairs.filter(p=>p.owner_quote_matches_modelled_prices).length,
+    planned_move_count:moves.length,price_pairs:pairs,
+    executable_transfer_plan_proven:false,
+    realized_keep_now_later_gain_proven:false};
+  });
+  const packageData={schema_version:1,
+   kind:'NBA_SEASON_LAB_PRIVATE_ECONOMIC_EVALUATION_PACKET',
+   exported_at_utc:new Date(now()).toISOString(),
+   contains_private_user_data:true,local_user_requested_download_only:true,
+   no_cloud_upload:true,no_sportsru_transfer_executed:true,
+   proofs_not_available:['Sports.ru credited player-game outcomes',
+    'independent point-in-time buy and sell quotes',
+    'independent locks and remaining-transfer quota',
+    'full-population participation probabilities'],
+   personal_fp_reconciliation:reconciliation,
+   frozen_decision_journal:decisions,
+   manual_price_evidence:quotes,
+   prospective_price_coverage_descriptive_only:checks};
+  download('nba-season-lab-private-economic-evidence.json',packageData);
+  showMsg('Приватный пакет скачан: решений '+decisions.entries.length+
+    ', ручных отметок цен '+quotes.receipts.length+'. Это не проверенный результат замен.');
+ }catch(e){showMsg('Полный экспорт не состоялся: '+String(e.message||e).slice(0,180));}
 }
 function sportsCheckRun(){
  const mod=window.NBASportsReconciliation;
@@ -1876,7 +1939,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-action],[
   const cached=UI.todayResult?.ready&&UI.todayResult.signature===chainSignature()&&
     UI.todayCalculatedAt&&now()-UI.todayCalculatedAt<=30*60000&&UI.todayResult.start>=now()-60000;
   if(cached){UI.multiResult=UI.todayResult;UI.multiCalculatedAt=UI.todayCalculatedAt;UI.plannerWhen=UI.todayResult.start;tab='planner';view();}
-  else{UI.plannerWhen=null;tab='planner';view();calculateMulti();}break;}case 'sports-check-toggle':UI.sportsOpen=!UI.sportsOpen;view();break;case 'sports-check-run':sportsCheckRun();break;case 'owner-checkpoint-save':ownerCheckpointSave();break;case 'owner-checkpoint-delete':ownerCheckpointDelete(el.dataset.day||'');break;case 'owner-reconcile-export':ownerReconciliationExport();break;case 'dismiss':notice='';view();break;case 'create-roster':createRoster();break;case 'reset-roster':resetRoster();break;case 'close-modal':MODAL=null;renderModal();break;case 'compare':if(UI.compare.length>=2){MODAL='compare';renderModal();}else showMsg('Выберите хотя бы двух игроков.');break;case 'cal-prev-tours':UI.calendarTour=Math.max(1,(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))-UI.calendarTourCount);view();break;case 'cal-next-tours':UI.calendarTour=Math.min(Math.max(1,window.NBACalendarTours.seasonTourCount()-UI.calendarTourCount+1),(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))+UI.calendarTourCount);view();break;case 'cal-current-tours':UI.calendarTour=window.NBACalendarTours.tourNumber(now());view();break;case 'cal-prev-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(T.FIRST_DATE,UI.calendarStart));UI.calendarStart=T.addDays(UI.calendarStart,-n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'cal-next-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(UI.calendarEnd,T.LAST_DATE));UI.calendarStart=T.addDays(UI.calendarStart,n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'market-advanced':UI.marketAdvanced=!UI.marketAdvanced;view();break;case 'market-more':UI.marketLimit=Math.min(BASE.players.length,UI.marketLimit+50);view();break;case 'planner-advanced-toggle':UI.plannerAdvanced=!UI.plannerAdvanced;view();break;case 'planner-detail-toggle':UI.plannerDetail=!UI.plannerDetail;view();break;case 'planner-manual-toggle':UI.plannerManualOpen=!UI.plannerManualOpen;view();break;case 'multi-options-toggle':UI.multiOptions=!UI.multiOptions;view();break;case 'calculate-chains':calculateChains();break;case 'calculate-multi':calculateMulti();break;case 'calculate-budget':calculateBudget();break;case 'retro-toggle':UI.retroOpen=!UI.retroOpen;UI.retroPreview=null;view();break;case 'retro-add':UI.retroRows.push(retroBlank());UI.retroPreview=null;view();break;case 'retro-remove':if(UI.retroRows.length>1){UI.retroRows.splice(Number(el.dataset.idx),1);UI.retroPreview=null;view();}break;case 'retro-preview':retroPreviewHistory();break;case 'retro-save':retroCommitHistory();break;case 'add-draft':addDraft();break;case 'preview-transfer':previewTransfer();break;case 'clear-draft':S.draft=[];save();view();break;case 'confirm-draft':confirmDraft();break;case 'refresh':remoteRefresh();break;case 'history-more':UI.histLimit=Math.min(10000,UI.histLimit+100);view();break;case 'retry-history':{const pid=UI.playerId||S.roster[0];if(HISTORY_INDEX){const file=HISTORY_INDEX.player_shards?.[pid];if(file)HISTORY_SHARD_ERRORS.delete(file);scheduleHistory(pid);}else loadAux();break;}case 'journal-export':decisionJournalExport();break;case 'journal-clear':decisionJournalClear();break;case 'price-proof-save':privatePriceCapture();break;case 'price-proof-export':privatePriceExport();break;case 'price-proof-delete':privatePriceDelete();break;case 'export-state':download('nba-season-lab-backup.json',S);break;case 'set-cash':{const val=num(document.getElementById('cash')?.value);if(!Number.isFinite(val)||val<0)return showMsg('Некорректная касса');S.cash=val;save();view();break;}}});
+  else{UI.plannerWhen=null;tab='planner';view();calculateMulti();}break;}case 'sports-check-toggle':UI.sportsOpen=!UI.sportsOpen;view();break;case 'sports-check-run':sportsCheckRun();break;case 'owner-checkpoint-save':ownerCheckpointSave();break;case 'owner-checkpoint-delete':ownerCheckpointDelete(el.dataset.day||'');break;case 'owner-reconcile-export':ownerReconciliationExport();break;case 'owner-economics-export':ownerEconomicsExport();break;case 'dismiss':notice='';view();break;case 'create-roster':createRoster();break;case 'reset-roster':resetRoster();break;case 'close-modal':MODAL=null;renderModal();break;case 'compare':if(UI.compare.length>=2){MODAL='compare';renderModal();}else showMsg('Выберите хотя бы двух игроков.');break;case 'cal-prev-tours':UI.calendarTour=Math.max(1,(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))-UI.calendarTourCount);view();break;case 'cal-next-tours':UI.calendarTour=Math.min(Math.max(1,window.NBACalendarTours.seasonTourCount()-UI.calendarTourCount+1),(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))+UI.calendarTourCount);view();break;case 'cal-current-tours':UI.calendarTour=window.NBACalendarTours.tourNumber(now());view();break;case 'cal-prev-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(T.FIRST_DATE,UI.calendarStart));UI.calendarStart=T.addDays(UI.calendarStart,-n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'cal-next-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(UI.calendarEnd,T.LAST_DATE));UI.calendarStart=T.addDays(UI.calendarStart,n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'market-advanced':UI.marketAdvanced=!UI.marketAdvanced;view();break;case 'market-more':UI.marketLimit=Math.min(BASE.players.length,UI.marketLimit+50);view();break;case 'planner-advanced-toggle':UI.plannerAdvanced=!UI.plannerAdvanced;view();break;case 'planner-detail-toggle':UI.plannerDetail=!UI.plannerDetail;view();break;case 'planner-manual-toggle':UI.plannerManualOpen=!UI.plannerManualOpen;view();break;case 'multi-options-toggle':UI.multiOptions=!UI.multiOptions;view();break;case 'calculate-chains':calculateChains();break;case 'calculate-multi':calculateMulti();break;case 'calculate-budget':calculateBudget();break;case 'retro-toggle':UI.retroOpen=!UI.retroOpen;UI.retroPreview=null;view();break;case 'retro-add':UI.retroRows.push(retroBlank());UI.retroPreview=null;view();break;case 'retro-remove':if(UI.retroRows.length>1){UI.retroRows.splice(Number(el.dataset.idx),1);UI.retroPreview=null;view();}break;case 'retro-preview':retroPreviewHistory();break;case 'retro-save':retroCommitHistory();break;case 'add-draft':addDraft();break;case 'preview-transfer':previewTransfer();break;case 'clear-draft':S.draft=[];save();view();break;case 'confirm-draft':confirmDraft();break;case 'refresh':remoteRefresh();break;case 'history-more':UI.histLimit=Math.min(10000,UI.histLimit+100);view();break;case 'retry-history':{const pid=UI.playerId||S.roster[0];if(HISTORY_INDEX){const file=HISTORY_INDEX.player_shards?.[pid];if(file)HISTORY_SHARD_ERRORS.delete(file);scheduleHistory(pid);}else loadAux();break;}case 'journal-export':decisionJournalExport();break;case 'journal-clear':decisionJournalClear();break;case 'price-proof-save':privatePriceCapture();break;case 'price-proof-export':privatePriceExport();break;case 'price-proof-delete':privatePriceDelete();break;case 'export-state':download('nba-season-lab-backup.json',S);break;case 'set-cash':{const val=num(document.getElementById('cash')?.value);if(!Number.isFinite(val)||val<0)return showMsg('Некорректная касса');S.cash=val;save();view();break;}}});
 document.getElementById('navigation').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab);});
 document.addEventListener('change',e=>{const el=e.target;if(!el)return;
  if(el.dataset.historyField!==undefined){const i=Number(el.dataset.historyIndex),field=el.dataset.historyField;

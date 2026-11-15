@@ -103,3 +103,47 @@ window.NBA.setTelegram({events:[]});
 assert.equal(pillCount(),0,'News badge disappears when events are removed');
 assert(!view.innerHTML.includes('не изменяет FP автоматически'), 'Old official OUT tooltip is misleading');
 console.log('VM PASS: roster badges are player-specific');
+
+// PR165: one-click economic packet joins independent PRIVATE local journals.
+// The ordinary FP export stays unchanged, no cloud write, and no hypothetical
+// quote may be presented as a verified executable transfer.
+const capturedPackets=[];
+ctx.Blob=class { constructor(parts){this.text=parts.join('');} };
+ctx.URL={createObjectURL(blob){capturedPackets.push({data:JSON.parse(blob.text)});return 'blob:local-test';},revokeObjectURL(){}};
+document.createElement=()=>({href:'',download:'',click(){capturedPackets.at(-1).name=this.download;},remove(){}});
+document.body={appendChild(){}};
+ctx.confirm=()=>true;
+const priceApi=require('./price_evidence.js')._makeForTests(()=>Date.parse('2026-11-14T10:00:00Z'));
+const journalApi=require('./decision_journal.js')._makeForTests(()=>Date.parse('2026-11-14T10:05:00Z'));
+window.NBAPriceEvidence=priceApi;
+window.NBADecisionJournal=journalApi;
+const mockRecon=window.NBASportsReconciliation;
+window.NBASportsReconciliation={...mockRecon,exportReconciliation(){return {kind:'PRIVATE_FP_TEST',notAnOfficialScore:true};}};
+const priorState=window.PythosNBA.getState();
+const beforeStore=Array.from(saved.entries());
+priceApi.capture(localStorage,{outId:roster[0],inId:'n222',confirmedSellPrice:'1345',confirmedBuyPrice:'1200',confirmedCash:'100',confirmedQuota:'2',userConfirmedNow:true});
+const decTs=Date.parse('2026-11-14T10:05:00Z');
+journalApi.take(localStorage,{userConfirmedNow:true,roster,cash:100,liveUpdatedAtUtc:'2026-11-14T09:30:00Z',chosenIndex:1,
+ plan:{ready:true,horizonDays:7,start:decTs+60000,end:decTs+7*86400000+60000,baseline:520,routes:[
+  {kind:'keep',gain:0,net:0,moves:[]},
+  {kind:'now',gain:12,net:8,moves:[{out:roster[0],in_:'n222',epoch:decTs+60000,sell:1345,buy:1200}]}
+ ]}});
+click('owner-economics-export');
+assert.equal(capturedPackets.length,1);
+assert.equal(capturedPackets[0].name,'nba-season-lab-private-economic-evidence.json');
+const pack=capturedPackets[0].data;
+assert.equal(pack.kind,'NBA_SEASON_LAB_PRIVATE_ECONOMIC_EVALUATION_PACKET');
+assert.equal(pack.personal_fp_reconciliation.kind,'PRIVATE_FP_TEST');
+assert.equal(pack.frozen_decision_journal.entries.length,1);
+assert.equal(pack.manual_price_evidence.receipts.length,1);
+assert.equal(pack.prospective_price_coverage_descriptive_only[0].owner_price_match_count,1);
+assert.equal(pack.prospective_price_coverage_descriptive_only[0].price_pairs[0].quote_is_independently_verified,false);
+assert.equal(pack.prospective_price_coverage_descriptive_only[0].executable_transfer_plan_proven,false);
+assert.equal(pack.no_cloud_upload,true);
+assert.deepEqual(window.PythosNBA.getState(),priorState,'Export must not mutate team or Firestore-backed state');
+assert.equal(saved.size,beforeStore.length+2,'Only explicit journal and price writes occurred');
+// Corrupt local evidence must fail closed instead of silently exporting an incomplete packet.
+saved.set(journalApi.KEY,'{invalid json');
+click('owner-economics-export');
+assert.equal(capturedPackets.length,1);
+console.log('VM PASS: private economic packet, pricing-as-of, no execution, fail-closed corrupt input');
