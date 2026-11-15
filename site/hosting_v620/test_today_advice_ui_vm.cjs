@@ -46,10 +46,21 @@ let state=window.PythosNBA.getState();state.roster=roster;state.initialRoster=ro
 window.PythosNBA.setState(state);
 assert.match(view.innerHTML,/Сначала обнови статистику NBA/);
 assert.match(view.innerHTML,/Не подтверждена/);
+assert.match(view.innerHTML,/Проверить полезность советов/);
+assert.match(view.innerHTML,/Пока нет сохранённых прогнозов/);
+assert.doesNotMatch(view.innerHTML,/data-action="today-freeze-best"/);
+assert.doesNotMatch(view.innerHTML,/data-action="today-freeze-keep"/);
+
+
 // Unchecked injection with a forged new timestamp must never qualify as a live source.
 window.PythosNBA.updateFeed({mode:'live_sync',updated_at_utc:new Date().toISOString(),rows:[],games:[],schedule:[]});
 assert.match(view.innerHTML,/Сначала обнови статистику NBA/);
 const click=action=>listeners.click[0]({target:{closest:()=>({dataset:{action}})}});
+// A forged click cannot cause a capture while public source is unverified.
+click('today-freeze-best');
+assert.equal(keys.has('nba-season-lab-local-decision-journal-v1'),false);
+click('today-freeze-keep');
+assert.equal(keys.has('nba-season-lab-local-decision-journal-v1'),false);
 click('today-review');
 assert.equal(plannerCalls,0,'No optimizer run using unvalidated or embedded source');
 assert.match(view.innerHTML,/Рекомендации пока недоступны/);
@@ -86,3 +97,48 @@ assert.doesNotMatch(view.innerHTML,/Замены по истории: <b>1\/3<\/
 click('market-review-best');
 assert.match(view.innerHTML,/Сценарий устарел или его данные изменились/);
 console.log('PASS Today / Transfers VM: unvalidated feed, invalid roster, unknown quota and no stale market shortcut');
+
+// PR167: positive owner-click flow, explicitly synthetic verified inputs.
+// No live NBA feed is forged in production; the test stubs readiness only.
+window.NBADecisionJournal=require('./decision_journal.js');
+window.NBADecisionBreakdown={build:()=>({ready:true})};
+window.NBAAdviceReadiness.inspect=()=>({ready:true,rosterReady:true,cashReady:true,
+ feedReady:true,calendarReady:true,feedAgeHours:0,reasons:[]});
+window.NBATodayBrief.build=()=>({state:'scenario',title:'Тест сравнения',
+ description:'Локальный сценарий',hasResults:true,reasons:[],
+ shortFP:null,longFP:null,games7:null,games21:null});
+window.NBAMultiPlanner.plan=()=>{
+ const start=Date.now()+20*60000;
+ return {ready:true,start,end:start+7*86400000,horizonDays:7,baseline:200,
+ routes:[
+  {kind:'now',gain:15,net:11,moves:[{out:roster[0],in_:'n222',epoch:start,sell:1200,buy:1000}]},
+  {kind:'keep',gain:0,net:0,moves:[]}
+ ]};
+};
+ctx.confirm=()=>true;
+// Controlled synthetic freshness, distinct from production's full signature guard.
+window.NBATodayBrief.freshScenario=x=>x.result?.ready?x.result:null;
+const scheduled=[];ctx.setTimeout=fn=>{scheduled.push(fn);return scheduled.length;};
+state=window.PythosNBA.getState();state.roster=roster.slice();state.executed=[];
+window.PythosNBA.setState(state);
+listeners['nav:click']({target:{closest:()=>({dataset:{tab:'today'}})}});
+assert(scheduled.length>0, 'today forecast was scheduled');
+scheduled.shift()();
+assert.match(view.innerHTML,/data-action="today-freeze-best"/);
+assert.match(view.innerHTML,/data-action="today-freeze-keep"/);
+assert.match(view.innerHTML,/Пока нет сохранённых прогнозов/);
+const beforeCapture=window.PythosNBA.getState();
+click('today-freeze-keep');
+const savedJournal=window.NBADecisionJournal.read(localStorage);
+assert.equal(savedJournal.entries.length,1);
+assert.equal(savedJournal.entries[0].scenario.chosen_index,1);
+assert.equal(savedJournal.entries[0].scenario.routes[1].kind,'keep');
+assert.equal(savedJournal.entries[0].scenario.routes.length,2);
+assert.equal(savedJournal.entries[0].no_sportsru_transfer_executed,true);
+assert.equal(savedJournal.entries[0].outcome.real_transfer_benefit_proven,false);
+assert.deepEqual(window.PythosNBA.getState(),beforeCapture);
+assert.match(view.innerHTML,/Локально сохранено снимков: 1/);
+window.NBATodayBrief.freshScenario=()=>null;
+click('today-freeze-best');
+assert.equal(window.NBADecisionJournal.read(localStorage).entries.length,1);
+console.log('PASS PR167: Today KEEP choice, all frozen alternatives, no Firestore/profile write, stale advice blocked');
