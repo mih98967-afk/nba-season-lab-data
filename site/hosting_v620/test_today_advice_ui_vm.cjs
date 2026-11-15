@@ -28,6 +28,21 @@ const window={
  NBABudgetPackage:{solve(){budgetCalls++;return {ready:false,reason:'unexpected budget run'};}},
  scrollTo(){}
 };
+// A synthetic, independently controlled 1100-game calendar fixture lets
+// the positive journal test freeze its *as-of* slate; no real site data used.
+const baseFixture=JSON.parse(embedded('bootstrap-data'));
+const clubsFixture=baseFixture.teams.map(x=>x.team);
+const epochFixture=Date.parse('2026-10-20T19:00:00Z');
+const gamesFixture=Array.from({length:1100},(_,i)=>{
+ const epoch=epochFixture+i*4*3600000;
+ return {id:'espn_'+(410000000+i),utc:new Date(epoch).toISOString().slice(0,19)+'Z',
+  epoch,home:clubsFixture[i%clubsFixture.length],
+  away:clubsFixture[(i+1)%clubsFixture.length],status:'scheduled'};
+});
+keys.set('nba-season-lab-verified-calendar-v1',JSON.stringify({schema_version:1,
+ status:'verified_public_calendar_with_known_gaps',fantasy_timezone:'Europe/Moscow',
+ updated_at_utc:new Date().toISOString(),games:gamesFixture,
+ completeness:{teams:30,team_games_min:70,unassigned_or_unavailable_games:0}}));
 const localStorage={getItem:k=>keys.get(k)||null,setItem:(k,v)=>keys.set(k,v),removeItem:k=>keys.delete(k)};
 const ctx={window,document,localStorage,location:{protocol:'file:'},Date,Intl,Math,Number,String,Array,Map,Set,JSON,console,
  setTimeout:()=>{},setInterval:()=>{},clearTimeout:()=>{},fetch:()=>Promise.reject(Error('unexpected network'))};
@@ -135,8 +150,12 @@ assert.equal(savedJournal.entries[0].scenario.routes[1].kind,'keep');
 assert.equal(savedJournal.entries[0].scenario.routes.length,2);
 assert.equal(savedJournal.entries[0].no_sportsru_transfer_executed,true);
 assert.equal(savedJournal.entries[0].outcome.real_transfer_benefit_proven,false);
+assert.equal(savedJournal.entries[0].frozen_slate.status,'owner_clicked_model_schedule_unverified');
+assert(savedJournal.entries[0].frozen_slate.games.length>0);
+assert.equal(savedJournal.entries[0].frozen_slate.source_independently_verified,false);
 assert.deepEqual(window.PythosNBA.getState(),beforeCapture);
 assert.match(view.innerHTML,/Локально сохранено снимков: 1/);
+assert.match(view.innerHTML,/Последний снимок: результаты ожидаются/);
 window.NBATodayBrief.freshScenario=()=>null;
 click('today-freeze-best');
 assert.equal(window.NBADecisionJournal.read(localStorage).entries.length,1);
