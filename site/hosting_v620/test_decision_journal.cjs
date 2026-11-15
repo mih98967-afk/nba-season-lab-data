@@ -137,7 +137,7 @@ test('future games wait rather than becoming phantom outcomes',()=>{
 test('NBA matched played rows are coverage only; an absent bought player is UNKNOWN not zero',()=>{
  const api=engine(),s=local(),entry=api.take(s,frozenFixture());
  const live={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',epoch:NOW+3*3600000,status:'final'}],
-  rows:[{id:'n101',game_id:'espn_444',played:true,fp:21}]};
+  rows:[{id:'n101',game_id:'espn_444',played:true,fp:21,team:'AAA'}]};
  const status=api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true});
  assert.equal(status.status,'INCOMPLETE_PUBLIC_OUTCOMES');
  assert.equal(status.routes[0].expected_player_games_on_final_games,10);
@@ -147,7 +147,7 @@ test('NBA matched played rows are coverage only; an absent bought player is UNKN
  assert.equal(status.actual_gain_fp,null);
  assert.equal(status.real_sportsru_gain_proven,false);
  assert.equal(status.official_credited_fp_available,false);
- live.rows.push({id:'n222',game_id:'espn_444',played:true,fp:55});
+ live.rows.push({id:'n222',game_id:'espn_444',played:true,fp:55,team:'BBB'});
  const rerun=api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true});
  assert.equal(rerun.routes[1].unknown_or_dnp_rows,9);
  assert.equal(rerun.routes[1].nba_played_fp_partial_not_official,55);
@@ -156,7 +156,7 @@ test('NBA matched played rows are coverage only; an absent bought player is UNKN
 test('a fully played NBA slate is still NOT Sports.ru credited gain',()=>{
  const api=engine(),s=local(),entry=api.take(s,frozenFixture());
  const feed={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',epoch:NOW+3*3600000,status:'final'}],
-  rows:roster.map((id,i)=>({id,game_id:'espn_444',played:true,fp:i+1})).concat([{id:'n222',game_id:'espn_444',played:true,fp:50}])};
+  rows:roster.map((id,i)=>({id,game_id:'espn_444',played:true,fp:i+1,team:'AAA'})).concat([{id:'n222',game_id:'espn_444',played:true,fp:50,team:'BBB'}])};
  const done=api.inspectCoverage(entry,feed,{nowMs:NOW+15*DAY,sourceVerified:true});
  assert.equal(done.status,'NBA_PLAYED_ROWS_ONLY_NOT_OFFICIAL');
  assert.equal(done.routes[0].unknown_or_dnp_rows,0);
@@ -189,4 +189,49 @@ test('tampering with the frozen slate is caught on read, not repaired',()=>{
  const raw=JSON.parse(s.store.get(j.KEY));raw.entries[0].frozen_slate.games[0].tipoff_utc='2026-10-01T12:00:00Z';
  s.store.set(j.KEY,JSON.stringify(raw));
  assert.throws(()=>api.read(s),/BAD_FROZEN_SLATE_GAME/);
+});
+
+// PR169 — the stored scenario is a conditional what-if, not an official ledger.
+test('a traded player club mismatch blocks NBA replay instead of silently crediting FP',()=>{
+ const api=engine(),s=local(),entry=api.take(s,frozenFixture());
+ const live={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',epoch:NOW+3*3600000,status:'final'}],
+  rows:[{id:'n101',game_id:'espn_444',played:true,fp:72,team:'CCC'}]};
+ const result=api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true});
+ assert.equal(result.status,'PLAYER_CLUB_TENURE_CONFLICT');
+ assert.equal(result.actual_gain_fp,null);
+ assert.equal(result.real_sportsru_gain_proven,false);
+ live.rows[0].team=undefined;
+ assert.equal(api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true}).status,'PLAYER_CLUB_TENURE_CONFLICT');
+});
+test('modelled move that sells an already sold player fails ownership replay closed',()=>{
+ const api=engine(),s=local(),x=frozenFixture();
+ x.slate.playerTeams.n223='BBB';
+ x.plan.routes[1].moves.push({out:'n101',in_:'n223',epoch:NOW+2*60000,sell:1200,buy:900});
+ const entry=api.take(s,x);
+ const live={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',epoch:NOW+3*3600000,status:'final'}],rows:[]};
+ const status=api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true});
+ assert.equal(status.status,'UNVERIFIED_OWNERSHIP_PATH');
+ assert.equal(status.actual_gain_fp,null);
+});
+test('buying an already owned player is not silently applied as a second roster slot',()=>{
+ const api=engine(),s=local(),x=frozenFixture();
+ x.plan.routes[1].moves[0].in_='n102';
+ // The LATER alternative still references n222, so its club stays in the snapshot.
+ const entry=api.take(s,x);
+ const live={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',epoch:NOW+3*3600000,status:'final'}],rows:[]};
+ assert.equal(api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true}).status,'UNVERIFIED_OWNERSHIP_PATH');
+});
+test('T-30 exactly is locked, not an executable buy timestamp',()=>{
+ const api=engine(),s=local(),x=frozenFixture();
+ x.slate.games[0].epoch=NOW+31*60000;
+ const entry=api.take(s,x);
+ const rows=roster.map((id,i)=>({id,game_id:'espn_444',played:true,fp:i+1,team:'AAA'}));
+ rows.push({id:'n222',game_id:'espn_444',played:true,fp:88,team:'BBB'});
+ const live={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',epoch:NOW+31*60000,status:'final'}],rows};
+ const status=api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true});
+ assert.equal(status.status,'NBA_PLAYED_ROWS_ONLY_NOT_OFFICIAL');
+ assert.equal(status.routes[0].nba_played_fp_partial_not_official,55);
+ assert.equal(status.routes[1].nba_played_fp_partial_not_official,55);
+ assert.equal(status.routes[1].observed_played_rows,10);
+ assert.equal(status.actual_gain_fp,null);
 });
