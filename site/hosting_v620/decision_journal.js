@@ -170,6 +170,89 @@
    comparable_actual_net_fp_proven:false,
    caution:'NBA played rows cannot substitute for full Sports.ru credited FP or independently verified executed transfers.'});
  }
+ // Sparse prospective evidence request: roster exposures identical to KEEP
+ // cancel. This is NOT an outcome, price verification, or official FP replay.
+ // The frozen model schedule and hypothetical transfer times still require
+ // source verification before any credited Sports.ru comparison is accepted.
+ function differentialEvidence(entry){
+  const no=(status,extra={})=>({schema_version:1,status,
+   credit_evidence_verified:false,actual_gain_fp:null,
+   economic_benefit_proven:false,verified_transfer_execution:false,...extra});
+  if(!entry||!entry.frozen_slate)return no('LEGACY_NO_FROZEN_SLATE');
+  validateSlate(entry);
+  const routes=entry?.scenario?.routes;
+  if(!Array.isArray(routes)||!Array.isArray(entry.owner_state?.roster_ids))
+   return no('INVALID_ENTRY');
+  const ki=routes.findIndex(r=>r.kind==='keep'&&r.moves.length===0);
+  if(ki<0)return no('KEEP_NOT_FOUND');
+  const draft=entry.frozen_slate.existing_draft_unexecuted;
+  const teamMap=entry.frozen_slate.player_teams_at_capture;
+  const games=entry.frozen_slate.games;
+  const ownAt=(moves,g)=>{
+   const cutoff=instant(g.tipoff_utc)-LOCK;
+   const owned=entry.owner_state.roster_ids.slice();
+   for(const m of moves){
+    if(instant(m.execution_utc)>=cutoff)break;
+    const index=owned.indexOf(m.out);
+    if(index<0||owned.includes(m.in_))return null;
+    owned[index]=m.in_;
+   }
+   return new Set(owned).size===owned.length?owned:null;
+  };
+  const sortedMoves=route=>[...draft,...route.moves].sort((a,b)=>
+   instant(a.execution_utc)-instant(b.execution_utc));
+  const keepMoves=sortedMoves(routes[ki]);
+  const out=[],unique=new Map();
+  for(let i=0;i<routes.length;i++){
+   const route=routes[i];
+   const needed=[];
+   if(i!==ki){
+    const moves=sortedMoves(route);
+    for(const g of games){
+     const k=ownAt(keepMoves,g),v=ownAt(moves,g);
+     if(!k||!v)return no('UNVERIFIED_OWNERSHIP_PATH',
+      {blocked_route_index:i,blocked_game_id:g.id});
+     const ks=new Set(k),vs=new Set(v);
+     // Only player-game rows that differ in hypothetical ownership survive.
+     for(const id of new Set([...k,...v])){
+      if(ks.has(id)===vs.has(id))continue;
+      const frozenTeam=teamMap[id];
+      if(!frozenTeam)return no('UNKNOWN_FROZEN_PLAYER_CLUB');
+      if(frozenTeam!==g.home&&frozenTeam!==g.away)continue;
+      const record={game_id:g.id,tipoff_utc:g.tipoff_utc,
+       home:g.home,away:g.away,player_id:id,frozen_team:frozenTeam,
+       in_keep:ks.has(id),in_variant:vs.has(id),
+       sportsru_credited_fp:null,verified_played_or_dnp:false,
+       official_source_receipt:null};
+      needed.push(record);
+      const key=g.id+'|'+id;
+      if(!unique.has(key))unique.set(key,{game_id:g.id,tipoff_utc:g.tipoff_utc,
+       home:g.home,away:g.away,player_id:id,frozen_team:frozenTeam,
+       sportsru_credited_fp:null,verified_played_or_dnp:false,
+       official_source_receipt:null});
+     }
+    }
+   }
+   out.push({route_index:i,kind:route.kind,
+    selected:i===entry.scenario.chosen_index,
+    vs_keep_differential_player_games:needed.length,
+    requirements:needed});
+  }
+  const selected=out[entry.scenario.chosen_index];
+  return no('FROZEN_MODEL_REQUEST_NOT_OFFICIAL',{
+   captured_at_utc:entry.captured_at_utc,
+   decision_start_utc:entry.decision_start_utc,
+   decision_end_utc:entry.decision_end_utc,
+   horizon_days:entry.scenario.horizon_days,keep_route_index:ki,
+   selected_route_index:entry.scenario.chosen_index,
+   selected_vs_keep_rows:selected?.vs_keep_differential_player_games??null,
+   all_routes_unique_player_games:unique.size,
+   all_routes_requests:out,
+   unique_sportsru_credit_requests:[...unique.values()],
+   frozen_calendar_verified:false,frozen_club_tenure_verified:false,
+   prices_and_actual_execution_verified:false,
+   caution:'These are minimal model-schedule player-game credit requests relative to KEEP, not actual Sports.ru scores, DNP proof, transactions, or verified gains. Confirm match schedules, club tenure, T-30 locks, transfers, quotes, and weekly quota independently.'});
+ }
  // Read-only, decision-level coverage audit; no economic score or inferred DNP.
  // Time-overlapping horizons are clustered, never sold as independent wins.
  function auditCoverage(journal,live,options={}){
@@ -367,5 +450,5 @@
    ensure(storage&&typeof storage.removeItem==='function','NO_STORAGE');
    storage.removeItem(KEY);
  }
- return {KEY,read,take,exportData,clear,inspectCoverage,auditCoverage,_status:STATUS};
+ return {KEY,read,take,exportData,clear,inspectCoverage,auditCoverage,differentialEvidence,_status:STATUS};
 });
