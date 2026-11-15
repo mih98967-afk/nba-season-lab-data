@@ -86,3 +86,14 @@
 - Tests added: immutable slate capture, validation, old-schema compatibility, partial DNP unknown, pending horizon, complete NBA-only still not Sports.ru, changed schedule, private export, Today synthetic browser VM. SHA manifest must retain its 43-file contract. Owner publication remains a separate Hosting deploy.
 
 **Research gate remains BLOCKED for actual economic value.** Missing official per-player credited FP, game-day DNP/outcomes, independently observed execution quotes and actual performed Sports.ru transfers. Observed source is not an authoritative fantasy ledger.
+
+
+## PR #169 - audit replay correctness under transfers, club changes and exact locks (15 Nov 2026)
+
+- The frozen prospective journal remains opt-in, local-only and backwards compatible; capture behavior, projection model, prices, Firebase, profile, and actual Sports.ru transfers are not altered.
+- During **post-horizon NBA-only coverage**, a played row for a player whose NBA team no longer matches the as-of frozen club (or has no verifiable team) now stops the hypothetical comparison with `PLAYER_CLUB_TENURE_CONFLICT`. This is preferable to falsely crediting points for an unaudited player tenure.
+- Modelled multi-step transfers must form an internally coherent possession path. Selling someone already sold or buying someone already owned now reports `UNVERIFIED_OWNERSHIP_PATH`; no silently skipped transfer can produce a misleading complete outcome.
+- The T-minus-30-minute fantasy lock is **exclusive** for any hypothetical purchase exactly on that boundary. This does not prove actual Sports.ru execution time; planned prices and prior drafts remain unverified.
+- `Today` displays short explanations for these blocked comparisons and does not imply proven gain. If a finished horizon contains zero observed completed games, the message says results are not available rather than presenting an unhelpful `0/0` coverage ratio.
+- Regression tests include club mismatch, missing NBA club, duplicate ownership, invalid sequential transfers, exact T-30 boundary, unchanged legacy journal, partial/DNP-unknown and NBA-only-not-official results. Full existing suite passes offline; SHA manifest and PR CI must also pass.
+- **No adoption decision:** observed NBA rows are not official per-player Sports.ru credited FP, no independent execution-time quotes/locks/quota, and no validated real KEEP/NOW/LATER gain. Research models remain unpromoted.
