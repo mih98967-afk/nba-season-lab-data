@@ -158,7 +158,6 @@ assert.equal(res.horizonDays,7);assert.equal(res.routes[0].kind,'keep');
 })();
 
 
-
 // PR170: Date-only owner history is an INTERVAL in Moscow local time,
 // never a real clock pulled from the backfilled placeholder epoch.
 (()=>{
