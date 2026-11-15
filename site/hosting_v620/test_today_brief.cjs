@@ -156,3 +156,54 @@ assert.equal(res.horizonDays,7);assert.equal(res.routes[0].kind,'keep');
  assert.equal(G.freshScenario({...opts,result:{...result,start:t-3600000}}),null);
  console.log('PASS PR166: precise quota, full-calendar next lock, frozen-asof guard');
 })();
+
+
+
+// PR170: Date-only owner history is an INTERVAL in Moscow local time,
+// never a real clock pulled from the backfilled placeholder epoch.
+(()=>{
+ const {quotaSnapshot}=require('./today_brief.js');
+ const week=require('./transfer_guard.js').weekKey;
+ const w15=t=>week(t,15),w00=t=>week(t,0);
+ const at=d=>Date.parse(d);
+ const dated=(day,placeholder=0)=>({timePrecision:'date_only',epochIsPlaceholder:true,
+   sportsRuDateMoscow:day,epoch:placeholder});
+ const nov9=dated('2026-11-09',at('2026-11-09T00:01:00Z'));
+ let q=quotaSnapshot([nov9],at('2026-11-15T15:00:00Z'),w15,w00);
+ assert.equal(q.known,false,'Monday owner transfer straddled a reset while still in the current Monday-15 week');
+ assert.match(q.reason,/границ/);
+ q=quotaSnapshot([nov9],at('2026-11-16T11:00:00Z'),w15,w00);
+ assert.equal(q.known,false,'Until Monday 15 MSK, Nov 9 still overlaps the current week');
+ q=quotaSnapshot([nov9],at('2026-11-16T13:00:00Z'),w15,w00);
+ assert.equal(q.known,true,'After Monday 15 MSK the whole old date is clearly outside both current weeks');
+ assert.equal(q.used15,0);assert.equal(q.used00,0);
+ const exactSun=dated('2026-11-15',at('2026-09-02T01:00:00Z'));
+ q=quotaSnapshot([exactSun],at('2026-11-15T18:00:00Z'),w15,w00);
+ assert.equal(q.known,true);
+ assert.equal(q.used15,1);assert.equal(q.used00,1);
+ assert.equal(q.date_only_assigned_without_hour,1);
+ const recentTue=dated('2026-11-17',at('2026-11-01T01:01:00Z'));
+ q=quotaSnapshot([nov9,recentTue],at('2026-11-17T10:00:00Z'),w15,w00);
+ assert.equal(q.known,true);assert.equal(q.used15,1);assert.equal(q.used00,1);
+ q=quotaSnapshot([dated('2026-11-16')],at('2026-11-16T14:00:00Z'),w15,w00);
+ assert.equal(q.known,false,'Monday date spans the 15:00 reset by the current clock');
+ q=quotaSnapshot([dated('2026-11-16')],at('2026-11-16T10:00:00Z'),w15,w00);
+ assert.equal(q.known,true,'Before Monday 15:00, same-day history is bounded by now');
+ assert.equal(q.used15,1);assert.equal(q.used00,1);
+ q=quotaSnapshot([dated('2026-11-09')],at('2026-11-17T12:00:00Z'),w15,w00);
+ assert.equal(q.known,true);
+ q=quotaSnapshot([{epoch:at('2026-11-09T10:00:00Z'),timePrecision:'date_only',epochIsPlaceholder:true}],at('2026-11-17T12:00:00Z'),w15,w00);
+ assert.equal(q.known,false,'Without a known date the backfilled epoch is NEVER enough to infer quota');
+ q=quotaSnapshot([dated('2026-02-30')],at('2026-11-17T12:00:00Z'),w15,w00);
+ assert.equal(q.known,false,'Impossible calendar date rejected');
+ q=quotaSnapshot([dated('2026-11-19')],at('2026-11-17T12:00:00Z'),w15,w00);
+ assert.equal(q.known,false,'Owner history in future rejected');
+ // Full synthetic copy of the historical day-only owner dates: by November 17
+ // all entries must be outside the new week, regardless of placeholder epoch.
+ const ownerDates=['2026-10-26','2026-10-26','2026-10-27','2026-10-28','2026-10-29',
+                   '2026-11-03','2026-11-03','2026-11-09','2026-11-09','2026-11-09'];
+ q=quotaSnapshot(ownerDates.map(d=>dated(d)),at('2026-11-17T14:00:00Z'),w15,w00);
+ assert.equal(q.known,true);assert.equal(q.used15,0);assert.equal(q.used00,0);
+ assert.equal(q.independentSportsruVerification,false);
+ console.log('PASS PR170: date-only week intervals, two reset clocks, never trusted placeholder timestamps');
+})();
