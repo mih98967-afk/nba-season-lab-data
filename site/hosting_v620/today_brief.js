@@ -99,5 +99,72 @@
       games21: longOK && Number.isInteger(x.games21) && x.games21 >= 0 ? x.games21 : null
     };
   }
-  return { build };
+  const minute = 60000;
+  const day = 86400000;
+
+  // A route is an as-of scenario. A model route must never silently survive its
+  // calculation age, planned start, changed roster or failed public preflight.
+  function freshScenario({result, calculatedAt, nowMs, signature, horizonDays, preflightReady} = {}) {
+    if (preflightReady !== true || !finite(nowMs) || !finite(calculatedAt) ||
+        calculatedAt > nowMs || nowMs-calculatedAt > 30*minute ||
+        !result || result.ready !== true || result.signature !== signature ||
+        result.horizonDays !== horizonDays || !finite(result.start) ||
+        result.start < nowMs-minute || !Array.isArray(result.routes) || !result.routes.length)
+      return null;
+    const best = result.routes[0];
+    if (!best || !Array.isArray(best.moves) || best.moves.some(m =>
+      !m || !finite(m.epoch) || m.epoch < nowMs-minute)) return null;
+    return result;
+  }
+
+  // Explicitly distinguish "counts inferred from my private history" from
+  // the actual Sports.ru weekly remaining transfer quota. Never count a
+  // placeholder epoch as if it established which side of Monday it fell on.
+  function quotaSnapshot(executed, nowMs, weekAt15, weekAt00) {
+    const unknown = {known:false, used15:null, used00:null,
+      independentSportsruVerification:false, source:'private_history_only'};
+    if (!Array.isArray(executed) || !finite(nowMs) ||
+        typeof weekAt15 !== 'function' || typeof weekAt00 !== 'function')
+      return {...unknown, reason:'История и границы недели не подтверждены.'};
+    const uncertain = executed.some(t => {
+      if (!finite(t?.epoch)) return true;
+      if (t.epoch > nowMs + minute) return true;
+      if (!(t.timePrecision === 'date_only' || t.epochIsPlaceholder === true)) return false;
+      // A date-only event on the current or previous Moscow week can change
+      // assignment at the reset boundary. Older events cannot change quota.
+      return t.epoch >= nowMs - 14*day && t.epoch <= nowMs + day;
+    });
+    if (uncertain) return {...unknown, reason:'В недавней истории есть замены без точных часов.'};
+    const current15 = weekAt15(nowMs), current00 = weekAt00(nowMs);
+    const used15 = executed.filter(t => weekAt15(t.epoch) === current15).length;
+    const used00 = executed.filter(t => weekAt00(t.epoch) === current00).length;
+    return {known:true, used15, used00,
+      independentSportsruVerification:false, source:'private_history_only',
+      reason:'Расчёт по журналу; остаток и сброс проверь на Sports.ru.'};
+  }
+
+  // Show at most four games elsewhere, but compute the lock from the entire
+  // eligible seven-day schedule, skipping games already locked or finished.
+  function nextRosterLock(games, roster, players, nowMs, horizonDays=7) {
+    if (!Array.isArray(games) || !Array.isArray(roster) || !players ||
+        !finite(nowMs) || !finite(horizonDays) || horizonDays <= 0) return null;
+    let earliest = null;
+    for (const game of games) {
+      if (!game || !finite(game.epoch) || game.status === 'final' ||
+          game.epoch > nowMs + horizonDays*day) continue;
+      const lockAt = game.epoch - 30*minute;
+      if (lockAt <= nowMs) continue;
+      const playerIds = roster.filter(id => {
+        const team = players[id]?.team;
+        return team && (team === game.home || team === game.away);
+      });
+      if (!playerIds.length) continue;
+      if (!earliest || lockAt < earliest.lockAt) {
+        earliest = {lockAt, tipoffAt:game.epoch, gameId:game.id||null,
+          home:game.home,away:game.away,playerIds};
+      }
+    }
+    return earliest;
+  }
+  return {build,freshScenario,quotaSnapshot,nextRosterLock};
 });
