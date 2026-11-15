@@ -1670,14 +1670,15 @@ function plannerTaskNav(){
 }
 function plannerStateBar(){
  const checked=planResult(S.draft);
- const p15=moscowWeek(now()),p00=calendarMoscowWeek(now());
- const c15=S.executed.filter(t=>moscowWeek(t.epoch)===p15).length;
- const c00=S.executed.filter(t=>calendarMoscowWeek(t.epoch)===p00).length;
+ const quota=window.NBATodayBrief?.quotaSnapshot(S.executed,now(),moscowWeek,calendarMoscowWeek);
+ const quotaText=quota?.known?`${quota.used15}/3 или ${quota.used00}/3`:'н/д';
+ const quotaHint=quota?.known?'Число замен только по журналу; остаток и границу сброса проверь на Sports.ru.':
+  'Недавние замены записаны только по датам: точный недельный расход неизвестен. Проверь на Sports.ru.';
  return `<div class="planner-statebar" role="status">
-  <span>Касса по журналу: <b>${round(S.cash)}</b></span>
+  <span>Касса по журналу: <b>${round(S.cash)}</b> <small>· сверь на Sports.ru</small></span>
   ${S.draft.length?`<span>Черновик: <b>${S.draft.length}</b></span>`:''}
-  <span class="planner-quota" title="Время сброса Sports.ru не подтверждено. Это не количество доступных ходов, а подсчёт по двум временным гипотезам.">Замены по истории: <b>${c15}/3</b> или <b>${c00}/3</b> <small>— границу проверьте на Sports.ru</small></span>
-  ${checked.errors.length?`<span class="planner-state-error">В черновике ошибка: ${esc(checked.errors[0])}</span>`:''}
+  <span class="planner-quota" title="${esc(quotaHint)}">Замены по истории: <b>${quotaText}</b> <small>— ${esc(quotaHint)}</small></span>
+  ${checked.errors.length?`<span class="planner-state-error">${esc(checked.errors[0])}</span>`:''}
  </div>`;
 }
 function plannerDraftCard(checked,steps,seven,fourteen,base7,base14){
@@ -1936,17 +1937,17 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-action],[
  if(el.dataset.removeDraft!==undefined){S.draft.splice(Number(el.dataset.removeDraft),1);save();view();return;}
  if(el.dataset.priceReset){delete S.prices[el.dataset.priceReset];save();view();return;}
  switch(el.dataset.action){case 'market-review-best':{
-  const candidate=(UI.todayResult?.signature===chainSignature()?UI.todayResult?.routes?.[0]?.moves?.[0]:null)||
-    (UI.multiResult?.signature===chainSignature()?UI.multiResult?.routes?.[0]?.moves?.[0]:null);
-  if(!candidate)return showMsg('Сначала рассчитайте вариант замены.');
+  const r=tab==='today'?freshDecision(UI.todayResult,UI.todayCalculatedAt,7):
+    tab==='planner'?freshDecision(UI.multiResult,UI.multiCalculatedAt,UI.multiDays):null;
+  const candidate=r?.routes?.[0]?.moves?.[0]||null;
+  if(!candidate)return showMsg('Сценарий устарел или его данные изменились. Сначала обновите сравнение, не переносите старые цены.');
   UI.plannerTask='specific';UI.plannerOut=candidate.out;UI.plannerIn=candidate.in_;
   UI.plannerWhen=candidate.epoch;UI.plannerSell=candidate.sell;UI.plannerBuy=candidate.buy;
   UI.plannerManualOpen=true;tab='planner';view();
   document.getElementById('price-evidence-card')?.scrollIntoView?.({block:'start'});break;
  }case 'planner-task-toggle':UI.plannerTaskListOpen=!UI.plannerTaskListOpen;view();break;case 'today-review':{UI.plannerTask='advice';UI.multiDays=7;UI.multiFocus='all';
-  const cached=UI.todayResult?.ready&&UI.todayResult.signature===chainSignature()&&
-    UI.todayCalculatedAt&&now()-UI.todayCalculatedAt<=30*60000&&UI.todayResult.start>=now()-60000;
-  if(cached){UI.multiResult=UI.todayResult;UI.multiCalculatedAt=UI.todayCalculatedAt;UI.plannerWhen=UI.todayResult.start;tab='planner';view();}
+  const cached=freshDecision(UI.todayResult,UI.todayCalculatedAt,7);
+  if(cached){UI.multiResult=cached;UI.multiCalculatedAt=UI.todayCalculatedAt;UI.plannerWhen=cached.start;tab='planner';view();}
   else{UI.plannerWhen=null;tab='planner';view();calculateMulti();}break;}case 'sports-check-toggle':UI.sportsOpen=!UI.sportsOpen;view();break;case 'sports-check-run':sportsCheckRun();break;case 'owner-checkpoint-save':ownerCheckpointSave();break;case 'owner-checkpoint-delete':ownerCheckpointDelete(el.dataset.day||'');break;case 'owner-reconcile-export':ownerReconciliationExport();break;case 'owner-economics-export':ownerEconomicsExport();break;case 'dismiss':notice='';view();break;case 'create-roster':createRoster();break;case 'reset-roster':resetRoster();break;case 'close-modal':MODAL=null;renderModal();break;case 'compare':if(UI.compare.length>=2){MODAL='compare';renderModal();}else showMsg('Выберите хотя бы двух игроков.');break;case 'cal-prev-tours':UI.calendarTour=Math.max(1,(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))-UI.calendarTourCount);view();break;case 'cal-next-tours':UI.calendarTour=Math.min(Math.max(1,window.NBACalendarTours.seasonTourCount()-UI.calendarTourCount+1),(UI.calendarTour||window.NBACalendarTours.tourNumber(now()))+UI.calendarTourCount);view();break;case 'cal-current-tours':UI.calendarTour=window.NBACalendarTours.tourNumber(now());view();break;case 'cal-prev-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(T.FIRST_DATE,UI.calendarStart));UI.calendarStart=T.addDays(UI.calendarStart,-n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'cal-next-window':{const T=window.NBACalendarTours,n=Math.min(UI.calendarDays,T.daysBetween(UI.calendarEnd,T.LAST_DATE));UI.calendarStart=T.addDays(UI.calendarStart,n);UI.calendarEnd=T.addDays(UI.calendarStart,UI.calendarDays-1);view();break;}case 'market-advanced':UI.marketAdvanced=!UI.marketAdvanced;view();break;case 'market-more':UI.marketLimit=Math.min(BASE.players.length,UI.marketLimit+50);view();break;case 'planner-advanced-toggle':UI.plannerAdvanced=!UI.plannerAdvanced;view();break;case 'planner-detail-toggle':UI.plannerDetail=!UI.plannerDetail;view();break;case 'planner-manual-toggle':UI.plannerManualOpen=!UI.plannerManualOpen;view();break;case 'multi-options-toggle':UI.multiOptions=!UI.multiOptions;view();break;case 'calculate-chains':calculateChains();break;case 'calculate-multi':calculateMulti();break;case 'calculate-budget':calculateBudget();break;case 'retro-toggle':UI.retroOpen=!UI.retroOpen;UI.retroPreview=null;view();break;case 'retro-add':UI.retroRows.push(retroBlank());UI.retroPreview=null;view();break;case 'retro-remove':if(UI.retroRows.length>1){UI.retroRows.splice(Number(el.dataset.idx),1);UI.retroPreview=null;view();}break;case 'retro-preview':retroPreviewHistory();break;case 'retro-save':retroCommitHistory();break;case 'add-draft':addDraft();break;case 'preview-transfer':previewTransfer();break;case 'clear-draft':S.draft=[];save();view();break;case 'confirm-draft':confirmDraft();break;case 'refresh':remoteRefresh();break;case 'history-more':UI.histLimit=Math.min(10000,UI.histLimit+100);view();break;case 'retry-history':{const pid=UI.playerId||S.roster[0];if(HISTORY_INDEX){const file=HISTORY_INDEX.player_shards?.[pid];if(file)HISTORY_SHARD_ERRORS.delete(file);scheduleHistory(pid);}else loadAux();break;}case 'journal-export':decisionJournalExport();break;case 'journal-clear':decisionJournalClear();break;case 'price-proof-save':privatePriceCapture();break;case 'price-proof-export':privatePriceExport();break;case 'price-proof-delete':privatePriceDelete();break;case 'export-state':download('nba-season-lab-backup.json',S);break;case 'set-cash':{const val=num(document.getElementById('cash')?.value);if(!Number.isFinite(val)||val<0)return showMsg('Некорректная касса');S.cash=val;save();view();break;}}});
 document.getElementById('navigation').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab);});
 document.addEventListener('change',e=>{const el=e.target;if(!el)return;
