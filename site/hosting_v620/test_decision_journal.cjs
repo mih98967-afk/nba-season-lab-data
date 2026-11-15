@@ -290,3 +290,61 @@ test('ledger refuses a corrupt local archive and an unvalidated observation cloc
  assert.throws(()=>api.auditCoverage(bad,{},
   {nowMs:NOW+16*DAY,sourceVerified:false}),/MODIFIED_OR_UNTRUSTED_ENTRY/);
 });
+
+
+// PR173: minimal Sports.ru evidence request for changed ownership only.
+test('sparse credit request uses only changed player-games, never NBA fantasy FP',()=>{
+ const api=engine(),s=local(),entry=api.take(s,frozenFixture());
+ const before=JSON.stringify(entry);
+ const e=api.differentialEvidence(entry);
+ assert.equal(e.status,'FROZEN_MODEL_REQUEST_NOT_OFFICIAL');
+ assert.equal(e.keep_route_index,0);
+ assert.equal(e.selected_route_index,1);
+ assert.equal(e.all_routes_requests.length,3);
+ assert.equal(e.all_routes_requests[0].vs_keep_differential_player_games,0);
+ assert.equal(e.all_routes_requests[1].vs_keep_differential_player_games,2);
+ assert.equal(e.all_routes_requests[2].vs_keep_differential_player_games,0);
+ assert.equal(e.all_routes_unique_player_games,2);
+ assert.deepEqual(e.all_routes_requests[1].requirements.map(r=>[r.player_id,r.in_keep,r.in_variant]),
+  [['n101',true,false],['n222',false,true]]);
+ for(const row of e.unique_sportsru_credit_requests){
+  assert.equal(row.sportsru_credited_fp,null);
+  assert.equal(row.verified_played_or_dnp,false);
+  assert.equal(row.official_source_receipt,null);
+ }
+ assert.equal(e.actual_gain_fp,null);
+ assert.equal(e.economic_benefit_proven,false);
+ assert.equal(e.frozen_calendar_verified,false);
+ assert.equal(e.prices_and_actual_execution_verified,false);
+ assert.equal(JSON.stringify(entry),before,'building request is read-only');
+});
+test('later route needs credits only after its presumed transfer and T-30 boundary',()=>{
+ const api=engine(),s=local(),x=frozenFixture();
+ x.slate.games.push({id:'espn_445',epoch:NOW+3*DAY,home:'AAA',away:'BBB'});
+ const entry=api.take(s,x),e=api.differentialEvidence(entry);
+ assert.equal(e.all_routes_requests[1].vs_keep_differential_player_games,4);
+ assert.equal(e.all_routes_requests[2].vs_keep_differential_player_games,2);
+ assert.equal(e.all_routes_unique_player_games,4);
+ const cutoff=engine(),y=frozenFixture();
+ y.plan.routes[1].moves[0].epoch=NOW+3*3600000-30*60000;
+ const ce=cutoff.take(local(),y);
+ assert.equal(cutoff.differentialEvidence(ce).all_routes_requests[1].vs_keep_differential_player_games,0,
+  'exact T-30 boundary must not be credited to the incoming player');
+});
+test('only the player with a game is requested, not ten unchanged teammates',()=>{
+ const api=engine(),s=local(),x=frozenFixture();
+ x.slate.games[0].away='CCC';
+ const entry=api.take(s,x),e=api.differentialEvidence(entry);
+ assert.equal(e.all_routes_requests[1].vs_keep_differential_player_games,1);
+ assert.equal(e.all_routes_requests[1].requirements[0].player_id,'n101');
+});
+test('unknown owned player path and legacy snapshots stay blocked without fabricated credits',()=>{
+ const api=engine(),s=local();
+ assert.equal(api.differentialEvidence(api.take(s,fixture())).status,'LEGACY_NO_FROZEN_SLATE');
+ const x=frozenFixture();x.plan.routes[1].moves[0].out='n555';
+ x.slate.playerTeams.n555='BBB';
+ const entry=api.take(local(),x),e=api.differentialEvidence(entry);
+ assert.equal(e.status,'UNVERIFIED_OWNERSHIP_PATH');
+ assert.equal(e.actual_gain_fp,null);
+ assert.equal(e.blocked_route_index,1);
+});
