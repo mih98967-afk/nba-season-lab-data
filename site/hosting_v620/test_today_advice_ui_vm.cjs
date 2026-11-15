@@ -156,6 +156,9 @@ assert.equal(savedJournal.entries[0].frozen_slate.source_independently_verified,
 assert.deepEqual(window.PythosNBA.getState(),beforeCapture);
 assert.match(view.innerHTML,/Локально сохранено снимков: 1/);
 assert.match(view.innerHTML,/Последний снимок: результаты ожидаются/);
+assert.match(view.innerHTML,/Все решения · 1/);
+assert.match(view.innerHTML,/Доказанных побед и поражений по очкам Sports.ru/);
+assert.match(view.innerHTML,/нет данных/);
 window.NBATodayBrief.freshScenario=()=>null;
 click('today-freeze-best');
 assert.equal(window.NBADecisionJournal.read(localStorage).entries.length,1);

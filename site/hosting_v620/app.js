@@ -728,6 +728,7 @@ function todayPage(){
      `<p class="small">${savedDecisions===null?'Локальный журнал не читается; не перезаписывай его до резервной копии.':'Новый снимок станет доступен, когда появится актуальное и полностью проверенное сравнение на 7 дней.'}</p>
       <div class="toolbar"><button type="button" class="ghost" data-action="today-evidence-export">Скачать приватный пакет</button></div>`}
    ${newestDecisionProgress?`<p class="small">${esc(newestDecisionProgress)}</p>`:''}
+   ${decisionJournalAuditHtml()}
    <p class="small today-evidence-note">Данные сохраняются только в этом браузере, без синхронизации между устройствами. Повторные снимки одного решения не считаются независимыми результатами.</p></section>`;
  const weekGames=complete&&short.ok?normalizedGames().filter(g=>g.epoch>tick&&g.epoch<=tick+7*86400000&&g.status!=='final'&&S.roster.some(id=>P[id]?.team===g.home||P[id]?.team===g.away)):[];
  const topGames=weekGames.slice(0,4);
@@ -1354,6 +1355,36 @@ function lastDecisionCoverageText(){
   return '\u041f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u043f\u043e\u043a\u0430 \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d\u0430 \u0434\u0430\u043d\u043d\u044b\u043c\u0438 NBA; \u0444\u0430\u043a\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u043a\u043e\u0442\u0438\u0440\u043e\u0432\u043a\u0438 \u0438 \u0437\u0430\u0447\u0451\u0442 Sports.ru \u043d\u0435 \u043f\u043e\u0434\u0442\u0432\u0435\u0440\u0436\u0434\u0435\u043d\u044b.';
  }catch{return '';}
 }
+// Every saved horizon is audited without reissuing its forecast or scoring
+// Sports.ru from NBA rows. A decision-level count is NOT an independent test N.
+function decisionJournalAuditHtml(){
+ try{
+  const api=window.NBADecisionJournal;
+  if(!api?.auditCoverage)return '';
+  const audit=api.auditCoverage(api.read(localStorage),LIVE,
+    {nowMs:now(),sourceVerified:publicFeedValidated});
+  if(!audit.total)return '';
+  const c=audit.counts;
+  const names={keep:'KEEP',now:'NOW',later:'LATER',multi_slot:'Несколько замен',
+    same_slot_chain:'Цепочка'};
+  const codes={pending:'Период ещё идёт',nba_rows_only:'NBA-строки собраны, Sports.ru не проверен',
+    partial_nba:'Не все NBA-строки подтверждены',source_unverified:'Нет проверенного NBA-среза',
+    legacy:'Старый снимок без календаря',blocked:'Автосверка заблокирована'};
+  const recent=audit.entries.slice(-5).reverse().map(e=>
+    `<li><span>${esc(dateText(Date.parse(e.captured_at_utc)))} · ${e.horizon_days} дн. · ${esc(names[e.chosen_kind]||e.chosen_kind)}</span>`+
+    `<span>${esc(codes[e.category]||'Проверить вручную')}</span></li>`).join('');
+  return `<div class="journal-audit" role="group" aria-label="Статус сохранённых решений">
+   <div class="journal-audit-stats"><span><b>${c.pending}</b> ещё идут</span>
+   <span><b>${c.nba_rows_only+c.partial_nba}</b> NBA-покрытие</span>
+   <span><b>${c.source_unverified+c.legacy+c.blocked}</b> без полной автосверки</span></div>
+   <details><summary>Все решения · ${audit.total} · последние пять записей</summary>
+    <ul>${recent}</ul>
+    <p class="small">Пересекающихся по времени решений: ${audit.overlapping_decisions}; временных групп: ${audit.nonoverlap_time_groups}. Даже отдельные группы не доказывают статистическую независимость.</p>
+   </details>
+   <p class="small">Доказанных побед и поражений по очкам Sports.ru: <b>нет данных</b>. NBA-покрытие — только предварительная диагностика, не выигрыш FP.</p>
+  </div>`;
+ }catch{return '<p class="small warntext">Локальный журнал не удалось проверить. Сохрани резервную копию до изменения записей.</p>';}
+}
 function decisionJournalCount(){
  try{return window.NBADecisionJournal?.read(localStorage)?.entries.length??0;}
  catch{return null;}
@@ -1524,7 +1555,7 @@ function multiPanel(){
    <label>Максимум новых замен<select id="multi-moves">${[1,2,3,4].map(v=>`<option value="${v}" ${UI.multiMoves===v?'selected':''}>${v}</option>`).join('')}</select></label>
    <label>Условный резерв за каждый ход<select id="multi-penalty">${[0,4,8].map(v=>`<option value="${v}" ${UI.multiPenalty===v?'selected':''}>${v} FP</option>`).join('')}</select></label>
    <label>Начать анализ (МСК)<input id="multi-when" type="datetime-local" value="${moscowInput(Number.isFinite(UI.plannerWhen)?UI.plannerWhen:now()+20*60000)}"></label></div>`:''}
-  ${decisionSummary}${detail?`<details class="planner-explain"><summary>Все варианты и подробные проверки (${result?.routes?.length||0})</summary>${detail}</details>`:''}<details class="planner-journal"><summary>Мой журнал решений · ${decisionJournalCount()==null?'н/д':decisionJournalCount()}</summary><div class="toolbar"><button class="button" data-action="journal-export">Скачать журнал</button><button class="button" data-action="journal-clear">Очистить журнал</button></div><p class="small">Локальные наблюдения не синхронизируются с облаком. Для проверки пользы нужны результаты на Sports.ru. Условный резерв FP не является штрафом площадки.</p></details></div>`;
+  ${decisionSummary}${detail?`<details class="planner-explain"><summary>Все варианты и подробные проверки (${result?.routes?.length||0})</summary>${detail}</details>`:''}<details class="planner-journal"><summary>Мой журнал решений · ${decisionJournalCount()==null?'н/д':decisionJournalCount()}</summary><div class="toolbar"><button class="button" data-action="journal-export">Скачать журнал</button><button class="button" data-action="journal-clear">Очистить журнал</button></div><p class="small">Локальные наблюдения не синхронизируются с облаком. Для проверки пользы нужны результаты на Sports.ru. Условный резерв FP не является штрафом площадки.</p>${decisionJournalAuditHtml()}</details></div>`;
 }
 function calculateMulti(){
  if(!window.NBAMultiPlanner)return showMsg('Модуль общего планировщика не загрузился.');
