@@ -104,7 +104,6 @@ assert.equal(pillCount(),0,'News badge disappears when events are removed');
 assert(!view.innerHTML.includes('не изменяет FP автоматически'), 'Old official OUT tooltip is misleading');
 console.log('VM PASS: roster badges are player-specific');
 
-
 // PR165: one-click economic packet joins independent PRIVATE local journals.
 // The ordinary FP export stays unchanged, no cloud write, and no hypothetical
 // quote may be presented as a verified executable transfer.
