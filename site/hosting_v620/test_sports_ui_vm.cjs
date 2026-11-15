@@ -140,6 +140,10 @@ assert.equal(pack.prospective_price_coverage_descriptive_only[0].owner_price_mat
 assert.equal(pack.prospective_price_coverage_descriptive_only[0].price_pairs[0].quote_is_independently_verified,false);
 assert.equal(pack.prospective_price_coverage_descriptive_only[0].executable_transfer_plan_proven,false);
 assert.equal(pack.no_cloud_upload,true);
+assert.equal(pack.postdecision_public_nba_observations_only.status,'public_NBA_only_unverified_Sportsru_credits');
+assert.equal(pack.postdecision_public_nba_observations_only.actual_sportsru_credited_fp_available,false);
+assert.equal(pack.frozen_outcome_coverage_descriptive_only.length,1);
+assert.equal(pack.frozen_outcome_coverage_descriptive_only[0].actual_gain_fp,null);
 assert.deepEqual(window.PythosNBA.getState(),priorState,'Export must not mutate team or Firestore-backed state');
 assert.equal(saved.size,beforeStore.length+2,'Only explicit journal and price writes occurred');
 // Corrupt local evidence must fail closed instead of silently exporting an incomplete packet.

@@ -14,6 +14,143 @@
  const MAX=100,MAX_ROUTES=8,MAX_MOVES=4,DAY=86400000;
  const ID=/^n[0-9]{3,5}$/;
  const STATUS='owner_clicked_predecision_snapshot_unverified';
+
+ // Optional as-of schedule envelope. Existing v1 journals remain readable.
+ // This is owner-clicked, not independently witnessed or Sports.ru-attested.
+ const SLATE_STATUS='owner_clicked_model_schedule_unverified';
+ const TEAM=/^[A-Z]{3}$/;
+ const MAX_GAMES=330,MAX_DRAFT=12,LOCK=30*60000;
+ function involvedIds(e){
+  const ids=new Set(e.owner_state.roster_ids);
+  for(const r of e.scenario.routes)for(const m of r.moves){ids.add(m.out);ids.add(m.in_);}
+  for(const m of e.frozen_slate?.existing_draft_unexecuted||[]){ids.add(m.out);ids.add(m.in_);}
+  return ids;
+ }
+ function validateSlate(e){
+  const s=e.frozen_slate;
+  if(s===undefined)return;
+  ensure(s&&s.schema_version===1&&s.status===SLATE_STATUS&&
+    s.source_independently_verified===false&&s.sportsru_credited_fp_verified===false&&
+    Array.isArray(s.games)&&s.games.length>=1&&s.games.length<=MAX_GAMES&&
+    Array.isArray(s.existing_draft_unexecuted)&&s.existing_draft_unexecuted.length<=MAX_DRAFT&&
+    s.player_teams_at_capture&&typeof s.player_teams_at_capture==='object'&&
+    !Array.isArray(s.player_teams_at_capture),'BAD_FROZEN_SLATE');
+  const observed=instant(s.observed_calendar_updated_at_utc);
+  const captured=instant(e.captured_at_utc);
+  ensure(Number.isFinite(observed)&&observed<=captured&&captured-observed<=72*3600000,
+    'BAD_FROZEN_SLATE_CALENDAR_AGE');
+  const ids=involvedIds(e),teamMap=s.player_teams_at_capture;
+  ensure(Object.keys(teamMap).length===ids.size&&
+    [...ids].every(id=>ID.test(id)&&TEAM.test(teamMap[id])),'BAD_FROZEN_SLATE_PLAYERS');
+  const start=instant(e.decision_start_utc),end=instant(e.decision_end_utc);
+  for(const m of s.existing_draft_unexecuted){
+   const at=instant(m.execution_utc);
+   ensure(ID.test(m.out)&&ID.test(m.in_)&&m.out!==m.in_&&
+      Number.isFinite(at)&&at>=Date.parse('2026-10-19T00:00:00Z')&&at<end&&
+      isNum(m.assumed_sell)&&m.assumed_sell>=0&&
+      isNum(m.assumed_buy)&&m.assumed_buy>=0,'BAD_FROZEN_SLATE_DRAFT');
+  }
+  let previous=-Infinity;const seen=new Set(),clubs=new Set(Object.values(teamMap));
+  for(const g of s.games){
+   const at=instant(g.tipoff_utc);
+   ensure(/^espn_[0-9]+$/.test(g.id||'')&&TEAM.test(g.home)&&TEAM.test(g.away)&&
+      g.home!==g.away&&Number.isFinite(at)&&at>=start&&at<end&&
+      at>=previous&&!seen.has(g.id)&&
+      (clubs.has(g.home)||clubs.has(g.away)), 'BAD_FROZEN_SLATE_GAME');
+   seen.add(g.id);previous=at;
+  }
+ }
+ function buildSlate(src,e){
+  if(src===null||src===undefined)return undefined; // Backward-compatible pure API.
+  ensure(src&&src.ownerClickedVerifiedCalendar===true&&
+     Array.isArray(src.games)&&Array.isArray(src.existingDraft)&&
+     src.playerTeams&&typeof src.playerTeams==='object','BAD_SLATE_INPUT');
+  const draft=src.existingDraft.map(m=>({out:m.out,in_:m.in_,
+    execution_utc:stamp(m.epoch),assumed_sell:m.sell,assumed_buy:m.buy}));
+  const games=src.games.map(g=>({id:g.id,tipoff_utc:stamp(g.epoch),home:g.home,away:g.away}))
+    .sort((a,b)=>instant(a.tipoff_utc)-instant(b.tipoff_utc)||a.id.localeCompare(b.id));
+  const slate={schema_version:1,status:SLATE_STATUS,
+   observed_calendar_updated_at_utc:src.calendarUpdatedAtUtc,
+   player_teams_at_capture:clone(src.playerTeams),
+   existing_draft_unexecuted:draft,games,
+   source_independently_verified:false,sportsru_credited_fp_verified:false};
+  e.frozen_slate=slate;
+  validateSlate(e);
+  return slate;
+ }
+ // Coverage, not a realized gain. Missing rows remain UNKNOWN, never DNP/zero.
+ // Any future Sports.ru credited player-game evaluation is independent work.
+ function inspectCoverage(entry,live,options={}){
+  const no=(status,extra={})=>({status,real_sportsru_gain_proven:false,
+    official_credited_fp_available:false,actual_gain_fp:null,...extra});
+  if(!entry||!Number.isFinite(instant(entry.decision_end_utc)))return no('INVALID_ENTRY');
+  const t=options.nowMs;
+  if(!isNum(t))return no('INVALID_CLOCK');
+  if(t<instant(entry.decision_end_utc))return no('PENDING_HORIZON',
+    {end_utc:entry.decision_end_utc});
+  if(!entry.frozen_slate)return no('LEGACY_NO_FROZEN_SLATE');
+  validateSlate(entry);
+  if(options.sourceVerified!==true||live?.mode!=='live_sync'||
+      !Array.isArray(live.games)||!Array.isArray(live.rows))return no('SOURCE_UNVERIFIED');
+  const byGame=new Map(),byRow=new Map();
+  for(const g of live.games){
+   if(!g?.id)continue;
+   if(byGame.has(g.id))return no('DUPLICATE_PUBLIC_GAME');
+   byGame.set(g.id,g);
+  }
+  for(const r of live.rows){
+   if(!r?.game_id||!r?.id)continue;
+   const key=r.game_id+'|'+r.id;
+   if(byRow.has(key))return no('DUPLICATE_PUBLIC_PLAYER_GAME');
+   byRow.set(key,r);
+  }
+  let finals=0,missingGames=0,changedGames=0;
+  const relevant=new Set(entry.frozen_slate.games.map(g=>g.id));
+  for(const g of entry.frozen_slate.games){
+   const actual=byGame.get(g.id);
+   if(!actual){missingGames++;continue;}
+   if(actual.home!==g.home||actual.away!==g.away||
+     !isNum(actual.epoch)||Math.abs(actual.epoch-instant(g.tipoff_utc))>60000){
+     changedGames++;continue;
+   }
+   if(actual.status==='final')finals++;
+  }
+  if(changedGames)return no('SCHEDULE_CHANGED_AFTER_CAPTURE',
+    {changed_games:changedGames,scheduled_games:relevant.size});
+  const allRoutes=[];
+  for(const route of entry.scenario.routes){
+   const moves=[...entry.frozen_slate.existing_draft_unexecuted,...route.moves]
+     .sort((a,b)=>instant(a.execution_utc)-instant(b.execution_utc));
+   let expected=0,played=0,unknown=0,observed=0;
+   for(const g of entry.frozen_slate.games){
+    if(byGame.get(g.id)?.status!=='final')continue;
+    let owned=entry.owner_state.roster_ids.slice();
+    for(const m of moves){
+     if(instant(m.execution_utc)>instant(g.tipoff_utc)-LOCK)break;
+     const i=owned.indexOf(m.out);if(i>=0)owned[i]=m.in_;
+    }
+    if(new Set(owned).size!==owned.length)return no('UNSUPPORTED_DUPLICATE_OWNER_STATE');
+    for(const id of owned){
+     const team=entry.frozen_slate.player_teams_at_capture[id];
+     if(team!==g.home&&team!==g.away)continue;
+     expected++;
+     const r=byRow.get(g.id+'|'+id);
+     if(r?.played===true&&isNum(r.fp)){played++;observed+=r.fp;}
+     else unknown++; // No row != zero and != verified DNP.
+    }
+   }
+   allRoutes.push({kind:route.kind,expected_player_games_on_final_games:expected,
+      observed_played_rows:played,unknown_or_dnp_rows:unknown,
+      nba_played_fp_partial_not_official:observed,
+      comparable_full_fantasy_outcome_proven:false});
+  }
+  const incomplete=missingGames>0||finals!==relevant.size||allRoutes.some(r=>r.unknown_or_dnp_rows>0);
+  return no(incomplete?'INCOMPLETE_PUBLIC_OUTCOMES':'NBA_PLAYED_ROWS_ONLY_NOT_OFFICIAL',{
+   frozen_games:relevant.size,final_games_matched:finals,missing_games:missingGames,
+   routes:allRoutes,selected_index:entry.scenario.chosen_index,
+   comparable_actual_net_fp_proven:false,
+   caution:'NBA played rows cannot substitute for full Sports.ru credited FP or independently verified executed transfers.'});
+ }
  const isNum=n=>typeof n==='number'&&Number.isFinite(n);
  const fail=code=>{throw new Error('DECISION_JOURNAL_'+code);};
  const ensure=(okay,code)=>{if(!okay)fail(code);};
@@ -82,6 +219,7 @@
        }
      }
      ensure(s.routes.some(r=>r.kind==='keep'),'NO_KEEP_COMPARISON');
+     validateSlate(e);
    }
    return journal;
  }
@@ -152,6 +290,7 @@
        real_transfer_benefit_proven:false,needs_sportsru_credited_player_games:true},
      no_sportsru_transfer_executed:true,model_was_not_retrained:true,
      caution:'Owner-clicked local observation, not independent source publication time or proof of real transfer advantage.'};
+   buildSlate(input.slate,entry);
    const next={...journal,entries:[...journal.entries,entry]};
    validate(next);
    ensure(typeof storage.setItem==='function','NO_STORAGE_WRITE');
@@ -165,5 +304,5 @@
    ensure(storage&&typeof storage.removeItem==='function','NO_STORAGE');
    storage.removeItem(KEY);
  }
- return {KEY,read,take,exportData,clear,_status:STATUS};
+ return {KEY,read,take,exportData,clear,inspectCoverage,_status:STATUS};
 });

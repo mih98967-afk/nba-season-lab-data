@@ -3,7 +3,7 @@ const j=require('./decision_journal.js');
 const NOW=Date.parse('2026-11-01T09:00:00Z'),DAY=86400000;
 const roster=Array.from({length:10},(_,i)=>'n'+String(i+101));
 const local=()=>{const m=new Map();return {getItem:k=>m.has(k)?m.get(k):null,setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k),store:m};};
-const fixture=()=>({userConfirmedNow:true,roster,cash:850,liveUpdatedAtUtc:'2026-11-01T06:09:10Z',chosenIndex:1,
+const fixture=()=>({userConfirmedNow:true,roster:[...roster],cash:850,liveUpdatedAtUtc:'2026-11-01T06:09:10Z',chosenIndex:1,
  plan:{ready:true,horizonDays:14,start:NOW+60000,end:NOW+14*DAY+60000,baseline:650,routes:[
   {kind:'keep',gain:0,net:0,moves:[]},
   {kind:'now',gain:25.5,net:21.5,moves:[{out:'n101',in_:'n222',epoch:NOW+60000,sell:1345,buy:1200}]},
@@ -104,4 +104,89 @@ test('clear requires explicit owner action and touches only its own key',()=>{
  a.clear(s,true);
  assert.equal(s.store.get('sportsru_local_state'),'private data');
  assert.equal(a.read(s).entries.length,0);
+});
+
+// PR168: prospective player/game schedule and actual NBA boxscore coverage.
+const frozenFixture=()=>{
+ const input=fixture();
+ const teams=Object.fromEntries(roster.map(id=>[id,'AAA']));
+ teams.n222='BBB';
+ input.slate={ownerClickedVerifiedCalendar:true,
+  calendarUpdatedAtUtc:'2026-11-01T08:00:00Z',playerTeams:teams,existingDraft:[],
+  games:[{id:'espn_444',epoch:NOW+3*3600000,home:'AAA',away:'BBB'}]};
+ return input;
+};
+test('freezes exact as-of player/team/fixture slate without certifying source',()=>{
+ const s=local(),api=engine(),x=frozenFixture();
+ const entry=api.take(s,x);
+ assert.equal(entry.frozen_slate.status,'owner_clicked_model_schedule_unverified');
+ assert.deepEqual(entry.frozen_slate.player_teams_at_capture,Object.fromEntries(roster.map(id=>[id,'AAA']).concat([['n222','BBB']])));
+ assert.equal(entry.frozen_slate.games[0].id,'espn_444');
+ assert.equal(entry.frozen_slate.source_independently_verified,false);
+ assert.equal(entry.frozen_slate.sportsru_credited_fp_verified,false);
+ x.slate.games[0].home='DUP';x.slate.playerTeams.n101='CCC';
+ assert.equal(api.read(s).entries[0].frozen_slate.games[0].home,'AAA');
+});
+test('future games wait rather than becoming phantom outcomes',()=>{
+ const api=engine(),s=local(),entry=api.take(s,frozenFixture());
+ const data={mode:'live_sync',games:[],rows:[]};
+ const result=api.inspectCoverage(entry,data,{nowMs:NOW+24*3600000,sourceVerified:true});
+ assert.equal(result.status,'PENDING_HORIZON');
+ assert.equal(result.actual_gain_fp,null);
+});
+test('NBA matched played rows are coverage only; an absent bought player is UNKNOWN not zero',()=>{
+ const api=engine(),s=local(),entry=api.take(s,frozenFixture());
+ const live={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',epoch:NOW+3*3600000,status:'final'}],
+  rows:[{id:'n101',game_id:'espn_444',played:true,fp:21}]};
+ const status=api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true});
+ assert.equal(status.status,'INCOMPLETE_PUBLIC_OUTCOMES');
+ assert.equal(status.routes[0].expected_player_games_on_final_games,10);
+ assert.equal(status.routes[0].observed_played_rows,1);
+ assert.equal(status.routes[0].unknown_or_dnp_rows,9);
+ assert.equal(status.routes[1].unknown_or_dnp_rows,10);
+ assert.equal(status.actual_gain_fp,null);
+ assert.equal(status.real_sportsru_gain_proven,false);
+ assert.equal(status.official_credited_fp_available,false);
+ live.rows.push({id:'n222',game_id:'espn_444',played:true,fp:55});
+ const rerun=api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true});
+ assert.equal(rerun.routes[1].unknown_or_dnp_rows,9);
+ assert.equal(rerun.routes[1].nba_played_fp_partial_not_official,55);
+ assert.equal(rerun.actual_gain_fp,null);
+});
+test('a fully played NBA slate is still NOT Sports.ru credited gain',()=>{
+ const api=engine(),s=local(),entry=api.take(s,frozenFixture());
+ const feed={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',epoch:NOW+3*3600000,status:'final'}],
+  rows:roster.map((id,i)=>({id,game_id:'espn_444',played:true,fp:i+1})).concat([{id:'n222',game_id:'espn_444',played:true,fp:50}])};
+ const done=api.inspectCoverage(entry,feed,{nowMs:NOW+15*DAY,sourceVerified:true});
+ assert.equal(done.status,'NBA_PLAYED_ROWS_ONLY_NOT_OFFICIAL');
+ assert.equal(done.routes[0].unknown_or_dnp_rows,0);
+ assert.equal(done.routes[1].unknown_or_dnp_rows,0);
+ assert.equal(done.actual_gain_fp,null);
+ assert.equal(done.comparable_actual_net_fp_proven,false);
+});
+test('moved schedule and unverified public feed fail closed',()=>{
+ const api=engine(),s=local(),entry=api.take(s,frozenFixture());
+ const live={mode:'live_sync',games:[{id:'espn_444',home:'AAA',away:'BBB',epoch:NOW+5*3600000,status:'final'}],rows:[]};
+ assert.equal(api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:false}).status,'SOURCE_UNVERIFIED');
+ assert.equal(api.inspectCoverage(entry,live,{nowMs:NOW+15*DAY,sourceVerified:true}).status,'SCHEDULE_CHANGED_AFTER_CAPTURE');
+});
+test('frozen slate rejects a substituted fixture and unrelated club',()=>{
+ const api=engine(),s=local(),x=frozenFixture();
+ x.slate.games[0].id='not_espn';
+ assert.throws(()=>api.take(s,x),/BAD_FROZEN_SLATE_GAME/);
+ assert.equal(s.store.size,0);
+ const y=frozenFixture();y.slate.games[0].id='espn_444';y.slate.games[0].home='CCC';y.slate.games[0].away='DDD';
+ assert.throws(()=>api.take(s,y),/BAD_FROZEN_SLATE_GAME/);
+});
+test('preexisting private journals remain readable, but cannot claim a frozen slate',()=>{
+ const api=engine(),s=local(),e=api.take(s,fixture());
+ assert.equal(e.frozen_slate,undefined);
+ assert.equal(api.inspectCoverage(e,{mode:'live_sync',games:[],rows:[]},{nowMs:NOW+15*DAY,sourceVerified:true}).status,'LEGACY_NO_FROZEN_SLATE');
+ assert.equal(api.read(s).entries.length,1);
+});
+test('tampering with the frozen slate is caught on read, not repaired',()=>{
+ const api=engine(),s=local();api.take(s,frozenFixture());
+ const raw=JSON.parse(s.store.get(j.KEY));raw.entries[0].frozen_slate.games[0].tipoff_utc='2026-10-01T12:00:00Z';
+ s.store.set(j.KEY,JSON.stringify(raw));
+ assert.throws(()=>api.read(s),/BAD_FROZEN_SLATE_GAME/);
 });
