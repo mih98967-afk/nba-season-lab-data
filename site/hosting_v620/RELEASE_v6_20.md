@@ -74,6 +74,7 @@
 - Tests: full existing offline suite and a synthetic UI-VM asserting disabled capture without preflight, positive KEEP choice with all alternatives, lack of profile/Firestore mutation, and stale-route rejection.
 - **Research interpretation:** still no proven real KEEP/NOW/LATER gain. DNP/credits, execution-time prices/locks and actual counterpart are missing. No new forecast model, retrospective forecast, score overwrite, or automatic trade.
 
+
 ## PR #168 candidate - frozen as-of game ledger and conservative outcome coverage
 
 - Evidence received on 15 Nov: 10 date-only historical transfers, 0 prospective decisions, 0 manual price receipts. No retrospective backfilled predictions.
