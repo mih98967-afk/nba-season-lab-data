@@ -13,7 +13,7 @@ permissions:
 
 concurrency:
   group: context-distribution-research-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   research:
@@ -37,45 +37,36 @@ jobs:
           git rev-parse HEAD > research_artifacts/SOURCE_COMMIT.txt
           git archive --format=tar HEAD data src | gzip -n > research_artifacts/public_model_sources.tar.gz
           sha256sum research_artifacts/public_model_sources.tar.gz > research_artifacts/SOURCE_SHA256.txt
-      - name: Capture complete public historical boxscores
-        run: python research/context_distribution_v1/fetch_public.py --output research_artifacts/raw
-      - name: Capture current-season sources for locked-model transport test
-        run: |
-          python - <<'PY'
-          import pathlib,urllib.request,hashlib,json
-          out=pathlib.Path('research_artifacts/current_raw');out.mkdir()
-          records=[]
-          for part in ['nba_stats_player_boxscores/player_boxscores_2027.csv','nba_stats_schedules/nba_schedule_2027.csv.gz']:
-              url='https://github.com/sportsdataverse/sportsdataverse-data/releases/download/'+part
-              row={'url':url}
-              try:
-                  req=urllib.request.Request(url,headers={'User-Agent':'NBA-Season-Lab/research'})
-                  with urllib.request.urlopen(req,timeout=60) as r: data=r.read(20000001)
-                  if not 1000<len(data)<20000000:raise ValueError('INVALID_SOURCE_SIZE')
-                  path=out/part.rsplit('/',1)[-1];path.write_bytes(data)
-                  row.update(file=path.name,sha256=hashlib.sha256(data).hexdigest(),bytes=len(data),status='FETCHED')
-              except Exception as e:row.update(status='UNAVAILABLE',error=str(e))
-              records.append(row)
-          (out/'manifest.json').write_text(json.dumps(records,indent=2))
-          print(records)
-          PY
-      - name: Reuse already collected public gamebook evidence
-        id: evidence_cache
+      - name: Reuse already collected public evidence
         continue-on-error: true
         uses: actions/download-artifact@v4
         with:
-          name: context-distribution-research-43880618650
-          run-id: 43880618650
+          name: context-distribution-research-43882708322
+          run-id: 43882708322
           github-token: ${{ github.token }}
           path: public_evidence_cache
-      - name: Prepare official gamebook outcomes without negative imputation
+      - name: Prepare historical and current public sources
         run: |
+          if test -f public_evidence_cache/raw/manifest.json; then
+            cp -r public_evidence_cache/raw research_artifacts/raw
+          else
+            python research/context_distribution_v1/fetch_public.py --output research_artifacts/raw
+          fi
+          if test -d public_evidence_cache/current_raw; then
+            cp -r public_evidence_cache/current_raw research_artifacts/current_raw
+          else
+            mkdir -p research_artifacts/current_raw
+          fi
           if test -f public_evidence_cache/gamebooks/official_gamebooks.jsonl.gz; then
             cp -r public_evidence_cache/gamebooks research_artifacts/gamebooks
           else
             python -m pip install PyMuPDF==1.26.6
             python research/context_distribution_v1/collect_gamebooks.py --root . --raw research_artifacts/raw --output research_artifacts/gamebooks
           fi
+      - name: Collect bounded dated official injury reports
+        run: |
+          python -m pip install PyMuPDF==1.26.6 pandas==2.2.3
+          python research/context_distribution_v1/collect_injury_history.py --root . --raw research_artifacts/raw --current-raw research_artifacts/current_raw --output research_artifacts/injury_history
       - name: Run isolated model research when implementation is present
         run: |
           if test -f research/context_distribution_v1/run.py; then
