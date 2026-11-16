@@ -128,3 +128,12 @@
 - No automatic transfer execution, no verified transaction path, no verified cash/quota/locked market; there is no established actual gain, economic superiority, or independence of overlapping observations.
 - Owner actions explicitly save, delete, and export the local credit review with confirmation. The core decision journal and owner profile are immutable.
 - Add regression tests for conditional comparisons, incomplete and pending outcomes, DNP/negative FP, record tampering, deletion gates, and browser UI. SHA-256 manifest and Hosting ZIP must pass CI prior to user deploy.
+
+## PR176 — paginated manual Sports.ru credit review, no model changes (16 November 2026)
+
+- The owner-local player-game differential evidence review now renders 32 rows per page instead of disabling save above 80 rows. A full validated sidecar still contains **all** expected player-game identities and can preserve data across pages and frozen snapshots.
+- Only the visible page is edited on an explicit Save. The pure `creditMergePage()` validates page number, exact game/player positions and final full-archive identity; previously saved rows on other pages remain untouched. UNKNOWN stays null, explicit DNP requires zero and source, legitimate negative FP is accepted. Unsaved page switching has a confirmation guard.
+- A descriptive count shows owner-entered rows with FP, participation status and source receipt. This count is **not** official source verification, a proven execution or a transfer gain.
+- Private full-export retains all manual credit records; the immutable frozen journal, user profile, transfer execution, production model, scoring and quota/lock gates are unchanged.
+- Regression: large synthetic frozen schedules (>80 rows), page 1+2 independent saves, incorrect page/identity rejection, unknown/DNP/negative, unsaved navigation guard and full private economic export. Local tests must pass, as must full-source SHA manifest and zip CRC. Firebase deployment remains a separate owner action.
+- Read-only feasibility: no independently verified official public Sports.ru credited player-game API endpoint was established. Continue minimal manual requests; do not infer Sports.ru credits or DNP from NBA box scores or cumulative fantasy-h2h prices.

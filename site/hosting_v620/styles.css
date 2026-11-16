@@ -614,3 +614,9 @@ button.primary:not(:disabled):active,.button:not(:disabled):active{transform:tra
 .credit-review-picker{display:flex;align-items:center;gap:12px;margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);font-size:12px;font-weight:600}
 .credit-review-picker select{flex:1;min-width:0;max-width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;color:var(--fg);background:var(--paper);font-size:12px}
 @media(max-width:620px){.credit-review-picker{flex-direction:column;align-items:stretch}}
+
+/* PR176: bounded, accessible manual credit pages. */
+.credit-pagination{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin:9px 0}
+.credit-pagination span{font-size:12px;color:var(--muted);margin-right:auto}
+.credit-pagination button{min-height:32px}
+@media(max-width:620px){.credit-pagination{justify-content:space-between}.credit-pagination span{width:100%}}

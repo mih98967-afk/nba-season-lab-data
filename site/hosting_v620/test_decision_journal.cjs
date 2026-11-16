@@ -422,3 +422,51 @@ test('PR174: reject switched player-game and deletion requires consent',()=>{
  assert.equal(api.creditFind(s,e),null);
  assert.equal(api.read(s).entries.length,1);
 });
+
+test('PR176: paginated credits preserve earlier pages, UNKNOWN and identity checks',()=>{
+ const s=local(),a=engine(),x=frozenFixture();
+ x.plan.horizonDays=28;x.plan.end=x.plan.start+28*DAY;
+ x.slate.games=Array.from({length:120},(_,i)=>({
+  id:'espn_'+(910000+i),epoch:x.plan.start+(i+1)*4*3600000,
+  home:'AAA',away:'BBB'
+ }));
+ const frozen=a.take(s,x),need=a.differentialEvidence(frozen);
+ const expected=need.unique_sportsru_credit_requests;
+ assert(expected.length>80&&expected.length<=5000);
+ assert.equal(a.CREDIT_PAGE_SIZE,32);
+ const mk=(rows,status='unknown',fp=null,source='')=>rows.map(r=>({
+  game_id:r.game_id,player_id:r.player_id,participation_status:status,
+  sportsru_credited_fp:fp,source_ref:source
+ }));
+ const page0=mk(expected.slice(0,32));
+ page0[0]={...page0[0],participation_status:'played',
+  sportsru_credited_fp:-4.5,source_ref:'Sports.ru owner check'};
+ const merged0=a.creditMergePage(frozen,null,0,page0);
+ assert.equal(merged0.length,expected.length);
+ assert.equal(merged0[33].sportsru_credited_fp,null);
+ a.creditSave(s,frozen,merged0,true);
+ const page1=mk(expected.slice(32,64));
+ page1[0]={...page1[0],participation_status:'official_dnp',
+  sportsru_credited_fp:0,source_ref:'Sports.ru official DNP check'};
+ const merged1=a.creditMergePage(frozen,a.creditFind(s,frozen),1,page1);
+ a.creditSave(s,frozen,merged1,true);
+ const saved=a.creditFind(s,frozen);
+ assert.equal(saved.rows[0].sportsru_credited_fp,-4.5);
+ assert.equal(saved.rows[32].participation_status,'official_dnp');
+ assert.equal(saved.rows[32].sportsru_credited_fp,0);
+ assert.equal(saved.rows[64].sportsru_credited_fp,null);
+ assert.equal(saved.rows[64].participation_status,'unknown');
+ assert.equal(a.creditReview(frozen,saved,{nowMs:NOW+29*DAY}).status,'CREDITS_INCOMPLETE');
+ assert.equal(a.read(s).entries[0].outcome.actual_gain_fp,null);
+ assert.throws(()=>a.creditMergePage(frozen,saved,1,[...page1].reverse()),
+  /CREDIT_PAGE_IDENTITY_MISMATCH/);
+ assert.throws(()=>a.creditMergePage(frozen,saved,1,page1.slice(1)),
+  /CREDIT_PAGE_ROW_COUNT/);
+ assert.throws(()=>a.creditMergePage(frozen,saved,999,page1),/CREDIT_PAGE_RANGE/);
+ assert.throws(()=>a.creditMergePage(frozen,saved,1,page1.map((r,i)=>i===0?
+  {...r,participation_status:'unknown',sportsru_credited_fp:0}:r)),
+  /CREDIT_UNKNOWN_CANNOT_HAVE_FP/);
+ const ret=a.creditRead(s);
+ assert.equal(ret.reviews.length,1);
+ assert.equal(ret.reviews[0].rows.length,expected.length);
+});

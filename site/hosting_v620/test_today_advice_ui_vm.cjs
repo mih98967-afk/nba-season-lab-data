@@ -242,3 +242,79 @@ listeners.click[0]({target:{closest:()=>({dataset:{plannerTask:'record'}})}});
 assert.match(view.innerHTML,/09\.11\.2026 · часы неизвестны/);
 assert.doesNotMatch(view.innerHTML,/09\.11, 15:34/);
 console.log('PASS PR170: date-only historical transfer never exposed as an actual clock');
+
+// PR176: >80 independent player-games must be editable page by page without
+// silently erasing already saved evidence on earlier or later pages.
+const bigMs=Date.parse(secondFrozen.captured_at_utc)+120000;
+const bigStart=bigMs+120000;
+const bigTeams=Object.fromEntries(firstFrozen.owner_state.roster_ids.map(id=>[id,'AAA']));
+bigTeams.n222='BBB';
+const bigFrozen=apiCredit._makeForTests(()=>bigMs).take(localStorage,{
+ userConfirmedNow:true,roster:firstFrozen.owner_state.roster_ids,
+ cash:firstFrozen.owner_state.cash_scenario,chosenIndex:0,
+ liveUpdatedAtUtc:new Date(bigMs-360000).toISOString(),
+ plan:{ready:true,horizonDays:28,start:bigStart,end:bigStart+28*86400000,
+  baseline:300,routes:[
+   {kind:'now',gain:35,net:26,moves:[{out:roster[0],in_:'n222',epoch:bigStart,
+    sell:1200,buy:1000}]},
+   {kind:'keep',gain:0,net:0,moves:[]}
+  ]},
+ slate:{ownerClickedVerifiedCalendar:true,
+  calendarUpdatedAtUtc:new Date(bigMs-360000).toISOString(),
+  playerTeams:bigTeams,existingDraft:[],games:Array.from({length:120},(_,i)=>({
+   id:'espn_'+(920000+i),epoch:bigStart+(i+1)*4*3600000,
+   home:'AAA',away:'BBB'
+  }))}
+});
+const bigNeeded=apiCredit.differentialEvidence(bigFrozen).unique_sportsru_credit_requests;
+assert(bigNeeded.length>80);
+listeners['nav:click']({target:{closest:()=>({dataset:{tab:'today'}})}});
+listeners.change[0]({target:{id:'credit-review-snapshot',dataset:{},
+ value:bigFrozen.captured_at_utc}});
+assert.match(view.innerHTML,/journal-credit-page-next/);
+assert.match(view.innerHTML,/32.*\u0438\u0437/);
+assert.doesNotMatch(view.innerHTML,/data-action="journal-credit-save" disabled/);
+const originalQuery=document.querySelector;
+const mockCreditFields=new Map();
+const setRow=(i,status,fp,source)=>{
+ mockCreditFields.set(i,{status,fp,source});
+};
+setRow(0,'played','-2.5','Sports.ru source A');
+document.querySelector=selector=>{
+ const match=/^\[data-credit-(status|fp|source)="(\d+)"\]$/.exec(selector);
+ if(match){const row=mockCreditFields.get(Number(match[2]));
+  return {value:row?.[match[1]]??(match[1]==='status'?'unknown':'')};}
+ return originalQuery(selector);
+};
+click('journal-credit-save');
+let bigRecord=apiCredit.creditFind(localStorage,bigFrozen);
+assert.equal(bigRecord.rows.length,bigNeeded.length);
+assert.equal(bigRecord.rows[0].sportsru_credited_fp,-2.5);
+assert.equal(bigRecord.rows[32].sportsru_credited_fp,null);
+click('journal-credit-page-next');
+assert.match(view.innerHTML,/\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 2/);
+setRow(32,'official_dnp','0','Sports.ru source DNP');
+click('journal-credit-save');
+bigRecord=apiCredit.creditFind(localStorage,bigFrozen);
+assert.equal(bigRecord.rows[0].sportsru_credited_fp,-2.5);
+assert.equal(bigRecord.rows[32].sportsru_credited_fp,0);
+assert.equal(bigRecord.rows[32].participation_status,'official_dnp');
+// Reject a page change with unsaved values; do not erase or save them.
+listeners.input[0]({target:{dataset:{creditFp:'32'}}});
+ctx.confirm=()=>false;
+click('journal-credit-page-next');
+assert.match(view.innerHTML,/\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 2/);
+ctx.confirm=()=>true;
+click('journal-credit-page-prev');
+assert.match(view.innerHTML,/\u0421\u0442\u0440\u0430\u043d\u0438\u0446\u0430 1/);
+assert.match(view.innerHTML,/value="-2.5"/);
+assert.equal(apiCredit.creditFind(localStorage,bigFrozen).rows[32].sportsru_credited_fp,0);
+assert.equal(apiCredit.creditReview(bigFrozen,bigRecord,
+ {nowMs:bigStart+29*86400000}).status,'CREDITS_INCOMPLETE');
+click('today-evidence-export');
+assert.equal(privateExport.manual_sportsru_credit_reviews_unverified.reviews.length,2);
+assert.equal(privateExport.manual_sportsru_credit_reviews_unverified.reviews
+ .find(x=>x.captured_at_utc===bigFrozen.captured_at_utc).rows.length,bigNeeded.length);
+assert.equal(privateExport.frozen_decision_journal.entries.length,3);
+assert.equal(privateExport.no_sportsru_transfer_executed,true);
+console.log('PASS PR176: >80 credits paged safely, source+negative+DNP, unsaved guard, private export');

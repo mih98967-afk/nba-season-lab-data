@@ -301,6 +301,7 @@
  // PR174: local-only owner-claimed Sports.ru credits in a separate sidecar.
  // Not source-certified or real transfer execution. Frozen journal is immutable.
  const CREDIT_KEY='nba-season-lab-local-sportsru-credit-review-v1';
+ const CREDIT_PAGE_SIZE=32; // UI limit, not an archive evidence limit.
  const creditEmpty=()=>({schema_version:1,private_local_only:true,never_autosync:true,reviews:[]});
  const creditId=r=>r.game_id+'|'+r.player_id;
  function normalizedCreditRows(entry,rows){
@@ -329,6 +330,28 @@
     tipoff_utc:base.tipoff_utc,home:base.home,away:base.away,frozen_team:base.frozen_team,
     participation_status:status,sportsru_credited_fp:fp,source_ref:source};
   });
+ }
+ // Explicit, positional page merge. Never drop evidence entered on other pages.
+ // Keep UNKNOWN as null; the later source-claimed FP must still be manually entered.
+ function creditMergePage(entry,record,page,updates){
+  const needed=differentialEvidence(entry);
+  ensure(needed.status==='FROZEN_MODEL_REQUEST_NOT_OFFICIAL','CREDIT_FROZEN_SLATE_REQUIRED');
+  const requests=needed.unique_sportsru_credit_requests;
+  const total=requests.length,first=page*CREDIT_PAGE_SIZE;
+  ensure(Number.isInteger(page)&&page>=0&&first<total,'CREDIT_PAGE_RANGE');
+  const last=Math.min(total,first+CREDIT_PAGE_SIZE);
+  ensure(Array.isArray(updates)&&updates.length===last-first,'CREDIT_PAGE_ROW_COUNT');
+  const blank=requests.map(r=>({game_id:r.game_id,player_id:r.player_id,
+   participation_status:'unknown',sportsru_credited_fp:null,source_ref:''}));
+  const prior=normalizedCreditRows(entry,record?.rows||blank);
+  const next=prior.slice();
+  for(let i=0;i<updates.length;i++){
+   const input=updates[i],required=requests[first+i];
+   ensure(input?.game_id===required.game_id&&input?.player_id===required.player_id,
+    'CREDIT_PAGE_IDENTITY_MISMATCH');
+   next[first+i]=input;
+  }
+  return normalizedCreditRows(entry,next);
  }
  function creditRead(storage){
   ensure(storage&&typeof storage.getItem==='function','CREDIT_STORAGE_UNAVAILABLE');
@@ -561,5 +584,5 @@
    ensure(storage&&typeof storage.removeItem==='function','NO_STORAGE');
    storage.removeItem(KEY);
  }
- return {KEY,CREDIT_KEY,read,take,exportData,clear,inspectCoverage,auditCoverage,differentialEvidence,creditRead,creditFind,creditSave,creditDelete,creditReview,_status:STATUS};
+ return {KEY,CREDIT_KEY,read,take,exportData,clear,inspectCoverage,auditCoverage,differentialEvidence,CREDIT_PAGE_SIZE,creditMergePage,creditRead,creditFind,creditSave,creditDelete,creditReview,_status:STATUS};
 });
