@@ -34,7 +34,9 @@ jobs:
           manifest=[]
           templates=[
               'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_{}.csv',
-              'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_{}.csv.gz'
+              'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_{}.csv.gz',
+              'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_rosters/game_rosters_{}.csv',
+              'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_injury_report/injury_report_{}.parquet'
           ]
           for year in (2024,2025,2026):
               for template in templates:
@@ -42,8 +44,8 @@ jobs:
                   try:
                       req=urllib.request.Request(url,headers={'User-Agent':'NBA-Season-Lab/noncommercial-research'})
                       with urllib.request.urlopen(req,timeout=50) as resp:
-                          content=resp.read(25000001)
-                      if len(content)>25000000:raise ValueError('Source size limit')
+                          content=resp.read(80000001)
+                      if len(content)>80000000:raise ValueError('Source size limit')
                       name=url.rsplit('/',1)[1];(raw/name).write_bytes(content)
                       item.update(file=name,bytes=len(content),sha256=hashlib.sha256(content).hexdigest(),status='retrieved')
                   except Exception as exc:
@@ -55,7 +57,7 @@ jobs:
       - name: Run isolated research when implementation is present
         if: ${{ hashFiles('research/match_context/run.py') != '' }}
         run: |
-          python -m pip install 'numpy==2.2.6' 'pandas==2.2.3' 'scipy==1.15.3' 'scikit-learn==1.6.1' 'lightgbm==4.6.0'
+          python -m pip install 'numpy==2.2.6' 'pandas==2.2.3' 'scipy==1.15.3' 'scikit-learn==1.6.1' 'lightgbm==4.6.0' 'pyarrow==20.0.0'
           python research/match_context/run.py --source match-context-artifact --output match-context-artifact/results
       - uses: actions/upload-artifact@v4
         if: always()
