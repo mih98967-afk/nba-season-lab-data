@@ -609,3 +609,8 @@ button.primary:not(:disabled):active,.button:not(:disabled):active{transform:tra
 .journal-credit-table th{position:sticky;top:0;background:var(--card,#fff);z-index:1}
 .journal-credit-table input,.journal-credit-table select{min-width:0;width:100%;max-width:220px;box-sizing:border-box;font-size:12px}
 .journal-credit-table input[type=number]{max-width:90px}
+
+/* PR175: choose an immutable frozen snapshot before editing private credit rows. */
+.credit-review-picker{display:flex;align-items:center;gap:12px;margin:10px 0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--paper);font-size:12px;font-weight:600}
+.credit-review-picker select{flex:1;min-width:0;max-width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;color:var(--fg);background:var(--paper);font-size:12px}
+@media(max-width:620px){.credit-review-picker{flex-direction:column;align-items:stretch}}

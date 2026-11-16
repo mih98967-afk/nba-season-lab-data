@@ -162,11 +162,70 @@ assert.match(view.innerHTML,/data-action="journal-credit-save"/);
 assert.match(view.innerHTML,/data-action="journal-credit-export"/);
 assert.match(view.innerHTML,/Период ещё не завершился/);
 
+// PR175: previously saved game credits stay accessible after later captures;
+// the selected frozen decision (not always the latest) owns the action.
+const apiCredit=window.NBADecisionJournal;
+const firstFrozen=savedJournal.entries[0];
+const unknownCredits=e=>apiCredit.differentialEvidence(e).unique_sportsru_credit_requests
+ .map(r=>({game_id:r.game_id,player_id:r.player_id,participation_status:'unknown',
+  sportsru_credited_fp:null,source_ref:''}));
+apiCredit.creditSave(localStorage,firstFrozen,unknownCredits(firstFrozen),true);
+const secondMs=Date.parse(firstFrozen.captured_at_utc)+2*60000;
+const secondStart=secondMs+2*60000,secondEnd=secondStart+7*86400000;
+const firstStart=Date.parse(firstFrozen.decision_start_utc);
+const secondInput={userConfirmedNow:true,roster:firstFrozen.owner_state.roster_ids,
+ cash:firstFrozen.owner_state.cash_scenario,chosenIndex:0,
+ liveUpdatedAtUtc:firstFrozen.observed_public_feed_updated_at_utc,
+ plan:{ready:true,horizonDays:7,start:secondStart,end:secondEnd,
+  baseline:firstFrozen.scenario.baseline_fp,
+  routes:firstFrozen.scenario.routes.map(r=>({kind:r.kind,gain:r.gain_fp,net:r.net_fp,
+   moves:r.moves.map(m=>({out:m.out,in_:m.in_,epoch:secondStart+
+     (Date.parse(m.execution_utc)-firstStart),sell:m.assumed_sell,buy:m.assumed_buy}))}))},
+ slate:{ownerClickedVerifiedCalendar:true,
+  calendarUpdatedAtUtc:firstFrozen.frozen_slate.observed_calendar_updated_at_utc,
+  playerTeams:firstFrozen.frozen_slate.player_teams_at_capture,existingDraft:[],
+  games:firstFrozen.frozen_slate.games.map(g=>({id:g.id,epoch:Date.parse(g.tipoff_utc),
+   home:g.home,away:g.away})).filter(g=>g.epoch>=secondStart&&g.epoch<secondEnd)}};
+const secondFrozen=apiCredit._makeForTests(()=>secondMs).take(localStorage,secondInput);
+apiCredit.creditSave(localStorage,secondFrozen,unknownCredits(secondFrozen),true);
+window.NBA.view();
+assert.match(view.innerHTML,/Выбрать сохранённое решение/);
+assert.match(view.innerHTML,/Доступно 2 решений/);
+assert.match(view.innerHTML,/Ручные FP относятся только к выбранному снимку/);
+listeners.change[0]({target:{id:'credit-review-snapshot',dataset:{},
+ value:firstFrozen.captured_at_utc}});
+assert.match(view.innerHTML,/class="journal-credit-review" open/,
+ 'selected old decision remains expanded');
+const preClear=JSON.stringify(apiCredit.read(localStorage));
+click('journal-credit-clear');
+assert.equal(apiCredit.creditFind(localStorage,firstFrozen),null,
+ 'clear applies to selected old decision');
+assert(apiCredit.creditFind(localStorage,secondFrozen),
+ 'newer record must survive clearing older review');
+assert.equal(JSON.stringify(apiCredit.read(localStorage)),preClear,
+ 'frozen journal is never rewritten by credit actions');
+// The existing one-click economic export must now include the credit sidecar.
+let privateExport=null;
+ctx.Blob=class {constructor(parts){this.parts=parts;}};
+ctx.URL={createObjectURL(blob){privateExport=JSON.parse(blob.parts[0]);return 'blob:test';},
+ revokeObjectURL(){}};
+document.body={appendChild(){}};
+document.createElement=()=>({click(){},remove(){}});
+window.NBASportsReconciliation={exportReconciliation:()=>({kind:'synthetic-owner-only'})};
+window.NBAPriceEvidence={exportData:()=>({receipts:[]})};
+click('today-evidence-export');
+assert.equal(privateExport?.manual_sportsru_credit_reviews_unverified?.reviews.length,1);
+assert.equal(privateExport.manual_sportsru_credit_reviews_unverified.reviews[0].captured_at_utc,
+ secondFrozen.captured_at_utc);
+assert.equal(privateExport.frozen_decision_journal.entries.length,2);
+assert.equal(privateExport.no_sportsru_transfer_executed,true);
+console.log('PASS PR175: older snapshot selectable, targeted delete, full private export includes manual FP');
+
 assert.match(view.innerHTML,/Доказанных побед и поражений по очкам Sports.ru/);
 assert.match(view.innerHTML,/нет данных/);
 window.NBATodayBrief.freshScenario=()=>null;
 click('today-freeze-best');
-assert.equal(window.NBADecisionJournal.read(localStorage).entries.length,1);
+assert.equal(window.NBADecisionJournal.read(localStorage).entries.length,2);
 console.log('PASS PR167: Today KEEP choice, all frozen alternatives, no Firestore/profile write, stale advice blocked');
 
 
