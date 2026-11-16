@@ -120,3 +120,11 @@
 - On Today/Transfers the latest private snapshot shows differential credit count and a deliberate, consented local JSON download; the list is not posted to GitHub, Firebase or Firestore.
 - Missing/legacy frozen schedule or impossible ownership path yields an explicit blocked state rather than a fabricated FP difference. Captured dates/scenarios are not independent evaluations and do not prove value, irrespective of number of rows.
 - Maintains 44 release assets, stable journal schema, full manifest, test-suite and verified offline ZIP. No model change, no automatic transfer, no account mutation.
+
+## PR174 — local-only owner-reported Sports.ru player-game credit review
+- Adds a collapsed review table on Today and Transfers for the latest frozen prospective decision. It uses the PR173 minimal player-game differential relative to KEEP and never edits frozen predictions or owner Firestore.
+- A separate on-device localStorage sidecar holds user-typed FP (including legitimate negative scores), explicit Played/DNP/Unknown, and a source reference. Unknown cannot be zero-imputed; DNP must be explicitly marked and cannot carry nonzero FP.
+- Missing rows, source references, unfinished horizon, wrong game/player IDs, malformed archives, or legacy unsupported snapshots produce no gross comparison. Completed owner-filled rows may produce **MANUAL_CONDITIONAL_ONLY** arithmetic versus KEEP, never independent Sports.ru attestation.
+- No automatic transfer execution, no verified transaction path, no verified cash/quota/locked market; there is no established actual gain, economic superiority, or independence of overlapping observations.
+- Owner actions explicitly save, delete, and export the local credit review with confirmation. The core decision journal and owner profile are immutable.
+- Add regression tests for conditional comparisons, incomplete and pending outcomes, DNP/negative FP, record tampering, deletion gates, and browser UI. SHA-256 manifest and Hosting ZIP must pass CI prior to user deploy.
