@@ -1,0 +1,66 @@
+name: NBA match-context distribution research
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/match-context-distribution.yml'
+      - 'research/match_context/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: match-context-research-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Collect existing public source and upstream raw evidence
+        run: |
+          python - <<'PY'
+          import pathlib, urllib.request, hashlib, json, datetime, shutil, subprocess
+          root=pathlib.Path('match-context-artifact'); root.mkdir()
+          for folder in ('src','data'):
+              shutil.copytree(folder,root/folder)
+          (root/'source_commit.txt').write_text(subprocess.check_output(['git','rev-parse','HEAD'],text=True))
+          raw=root/'upstream';raw.mkdir()
+          manifest=[]
+          templates=[
+              'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_{}.csv',
+              'https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_{}.csv.gz'
+          ]
+          for year in (2024,2025,2026):
+              for template in templates:
+                  url=template.format(year);item={'url':url,'fetched_at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
+                  try:
+                      req=urllib.request.Request(url,headers={'User-Agent':'NBA-Season-Lab/noncommercial-research'})
+                      with urllib.request.urlopen(req,timeout=50) as resp:
+                          content=resp.read(25000001)
+                      if len(content)>25000000:raise ValueError('Source size limit')
+                      name=url.rsplit('/',1)[1];(raw/name).write_bytes(content)
+                      item.update(file=name,bytes=len(content),sha256=hashlib.sha256(content).hexdigest(),status='retrieved')
+                  except Exception as exc:
+                      item.update(status='unavailable',error=str(exc)[:300])
+                  manifest.append(item)
+          (root/'upstream_manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          print(json.dumps(manifest,indent=2))
+          PY
+      - name: Run isolated research when implementation is present
+        if: ${{ hashFiles('research/match_context/run.py') != '' }}
+        run: |
+          python -m pip install 'numpy==2.2.6' 'pandas==2.2.3' 'scipy==1.15.3' 'scikit-learn==1.6.1' 'lightgbm==4.6.0'
+          python research/match_context/run.py --source match-context-artifact --output match-context-artifact/results
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: match-context-research-evidence
+          path: match-context-artifact/
+          retention-days: 3
+          if-no-files-found: error
