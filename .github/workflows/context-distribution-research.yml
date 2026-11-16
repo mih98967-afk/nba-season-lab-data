@@ -39,10 +39,12 @@ jobs:
           sha256sum research_artifacts/public_model_sources.tar.gz > research_artifacts/SOURCE_SHA256.txt
       - name: Capture complete public historical boxscores
         run: python research/context_distribution_v1/fetch_public.py --output research_artifacts/raw
+      - name: Probe official gamebook inactive outcomes without inferring labels
+        run: python research/context_distribution_v1/probe_gamebooks.py --raw research_artifacts/raw --output research_artifacts/gamebook_probe
       - name: Run research when implementation is present
         run: |
           if test -f research/context_distribution_v1/run.py; then
-            python -m pip install numpy==2.2.6 pandas==2.2.3 scipy==1.15.3 scikit-learn==1.7.2
+            python -m pip install numpy==2.3.5 pandas==2.2.3 scipy==1.17.0 scikit-learn==1.8.0
             python -m unittest discover -s research/context_distribution_v1 -p 'test_*.py' -v
             python research/context_distribution_v1/run.py --root . --raw research_artifacts/raw --output research_artifacts/results
           fi
