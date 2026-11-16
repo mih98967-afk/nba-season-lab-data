@@ -297,6 +297,117 @@
    proven_economic_wins:0,proven_economic_losses:0,
    winning_strategy_proven:false,entries};
  }
+
+ // PR174: local-only owner-claimed Sports.ru credits in a separate sidecar.
+ // Not source-certified or real transfer execution. Frozen journal is immutable.
+ const CREDIT_KEY='nba-season-lab-local-sportsru-credit-review-v1';
+ const creditEmpty=()=>({schema_version:1,private_local_only:true,never_autosync:true,reviews:[]});
+ const creditId=r=>r.game_id+'|'+r.player_id;
+ function normalizedCreditRows(entry,rows){
+  const needed=differentialEvidence(entry);
+  ensure(needed.status==='FROZEN_MODEL_REQUEST_NOT_OFFICIAL','CREDIT_FROZEN_SLATE_REQUIRED');
+  ensure(Array.isArray(rows)&&rows.length===needed.unique_sportsru_credit_requests.length
+   &&rows.length<=5000,'CREDIT_ROW_COUNT');
+  const expected=new Map(needed.unique_sportsru_credit_requests.map(r=>[creditId(r),r]));
+  const seen=new Set();
+  return rows.map(r=>{
+   ensure(r&&typeof r==='object','CREDIT_ROW_MALFORMED');
+   const key=creditId(r),base=expected.get(key);
+   ensure(base&&!seen.has(key),'CREDIT_IDENTITY_MISMATCH');seen.add(key);
+   const status=r.participation_status||'unknown';
+   ensure(['unknown','played','official_dnp'].includes(status),'CREDIT_STATUS_INVALID');
+   const raw=r.sportsru_credited_fp;
+   const fp=raw===null||raw===undefined||raw===''?null:Number(raw);
+   ensure(fp===null||Number.isFinite(fp)&&fp>=-1000&&fp<=1000
+    &&Math.abs(fp*100-Math.round(fp*100))<0.000001,'CREDIT_FP_INVALID');
+   const source=(r.source_ref||'').trim();
+   ensure(typeof r.source_ref==='string'||r.source_ref==null,'CREDIT_SOURCE_INVALID');
+   ensure(source.length<=300,'CREDIT_SOURCE_TOO_LONG');
+   ensure(status!=='unknown'||fp===null,'CREDIT_UNKNOWN_CANNOT_HAVE_FP');
+   ensure(status!=='official_dnp'||fp===null||fp===0,'CREDIT_DNP_NONZERO');
+   return {game_id:base.game_id,player_id:base.player_id,
+    tipoff_utc:base.tipoff_utc,home:base.home,away:base.away,frozen_team:base.frozen_team,
+    participation_status:status,sportsru_credited_fp:fp,source_ref:source};
+  });
+ }
+ function creditRead(storage){
+  ensure(storage&&typeof storage.getItem==='function','CREDIT_STORAGE_UNAVAILABLE');
+  const raw=storage.getItem(CREDIT_KEY);
+  if(raw===null)return creditEmpty();
+  let obj;try{obj=JSON.parse(raw);}catch{fail('CREDIT_JSON_INVALID');}
+  ensure(obj?.schema_version===1&&obj.private_local_only===true&&
+   obj.never_autosync===true&&Array.isArray(obj.reviews)&&obj.reviews.length<=100,
+   'CREDIT_ARCHIVE_INVALID');
+  const ids=new Set();
+  for(const r of obj.reviews){
+   ensure(r?.schema_version===1&&r.manual_unverified===true&&
+    Number.isFinite(instant(r.captured_at_utc))&&
+    !ids.has(r.captured_at_utc)&&Array.isArray(r.rows)&&r.rows.length<=5000,
+    'CREDIT_ARCHIVE_ENTRY_INVALID');
+   ids.add(r.captured_at_utc);
+  }
+  return clone(obj);
+ }
+ function creditFind(storage,entry){
+  const r=creditRead(storage).reviews.find(x=>x.captured_at_utc===entry.captured_at_utc);
+  if(r)normalizedCreditRows(entry,r.rows);
+  return r||null;
+ }
+ function creditSave(storage,entry,rows,explicit){
+  ensure(explicit===true,'CREDIT_OWNER_CONFIRMATION_REQUIRED');
+  validate({...empty(),entries:[entry]});
+  const clean=normalizedCreditRows(entry,rows),archive=creditRead(storage);
+  const record={schema_version:1,manual_unverified:true,
+   captured_at_utc:entry.captured_at_utc,entered_at_utc:stamp(nowMs()),rows:clean};
+  const next={...archive,reviews:archive.reviews.filter(r=>
+   r.captured_at_utc!==entry.captured_at_utc).concat([record])};
+  ensure(next.reviews.length<=100,'CREDIT_ARCHIVE_FULL');
+  ensure(storage&&typeof storage.setItem==='function','CREDIT_WRITE_UNAVAILABLE');
+  storage.setItem(CREDIT_KEY,JSON.stringify(next));
+  return clone(record);
+ }
+ function creditDelete(storage,entry,explicit){
+  ensure(explicit===true,'CREDIT_DELETE_CONFIRMATION_REQUIRED');
+  const archive=creditRead(storage);
+  storage.setItem(CREDIT_KEY,JSON.stringify({...archive,reviews:archive.reviews.filter(r=>
+   r.captured_at_utc!==entry.captured_at_utc)}));
+ }
+ function creditReview(entry,record,options={}){
+  const no=(status,extra={})=>({status,selected_conditional_delta_fp:null,
+   actual_gain_fp:null,official_result_verified:false,
+   economic_benefit_proven:false,execution_verified:false,...extra});
+  if(!isNum(options.nowMs))return no('UNKNOWN_CURRENT_TIME');
+  const request=differentialEvidence(entry);
+  if(request.status!=='FROZEN_MODEL_REQUEST_NOT_OFFICIAL')return no(request.status);
+  let rows;
+  try{
+   rows=normalizedCreditRows(entry,record?.rows||
+    request.unique_sportsru_credit_requests.map(r=>({game_id:r.game_id,
+     player_id:r.player_id,participation_status:'unknown',sportsru_credited_fp:null,source_ref:''})));
+  }catch{return no('CREDIT_RECORD_CONFLICT');}
+  const lookup=new Map(rows.map(r=>[creditId(r),r]));
+  const filled=r=>r&&Number.isFinite(r.sportsru_credited_fp)&&
+   ['played','official_dnp'].includes(r.participation_status)&&r.source_ref.length>3;
+  const routeScores=request.all_routes_requests.map(route=>{
+   const missing=route.requirements.filter(r=>!filled(lookup.get(creditId(r)))).length;
+   const delta=missing===0?Math.round(route.requirements.reduce((n,r)=>
+    n+(r.in_variant?1:-1)*lookup.get(creditId(r)).sportsru_credited_fp,0)*100)/100:null;
+   return {route_index:route.route_index,kind:route.kind,
+    needed:route.requirements.length,missing,
+    manual_conditional_gross_vs_keep_fp:delta};
+  });
+  const chosen=routeScores[entry.scenario.chosen_index];
+  const complete=options.nowMs>=instant(entry.decision_end_utc)&&
+   chosen?.kind!=='keep'&&chosen?.missing===0;
+  const status=options.nowMs<instant(entry.decision_end_utc)?'HORIZON_PENDING':
+   chosen?.kind==='keep'?'KEEP_REFERENCE_ONLY':
+   complete?'MANUAL_CONDITIONAL_ONLY':'CREDITS_INCOMPLETE';
+  return no(status,{requested_rows:rows.length,
+   supplied_rows:rows.filter(filled).length,selected_missing:chosen?.missing??null,
+   selected_conditional_delta_fp:complete?chosen.manual_conditional_gross_vs_keep_fp:null,
+   routes:routeScores,manual_claims_only:true,
+   caution:'Arithmetic on owner-entered credit claims and hypothetical ownership; neither official FP nor real net benefit is independently verified.'});
+ }
  const isNum=n=>typeof n==='number'&&Number.isFinite(n);
  const fail=code=>{throw new Error('DECISION_JOURNAL_'+code);};
  const ensure=(okay,code)=>{if(!okay)fail(code);};
@@ -450,5 +561,5 @@
    ensure(storage&&typeof storage.removeItem==='function','NO_STORAGE');
    storage.removeItem(KEY);
  }
- return {KEY,read,take,exportData,clear,inspectCoverage,auditCoverage,differentialEvidence,_status:STATUS};
+ return {KEY,CREDIT_KEY,read,take,exportData,clear,inspectCoverage,auditCoverage,differentialEvidence,creditRead,creditFind,creditSave,creditDelete,creditReview,_status:STATUS};
 });

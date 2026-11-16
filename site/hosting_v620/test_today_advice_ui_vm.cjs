@@ -157,6 +157,11 @@ assert.deepEqual(window.PythosNBA.getState(),beforeCapture);
 assert.match(view.innerHTML,/Локально сохранено снимков: 1/);
 assert.match(view.innerHTML,/Последний снимок: результаты ожидаются/);
 assert.match(view.innerHTML,/Все решения · 1/);
+assert.match(view.innerHTML,/Проверить начисления Sports.ru вручную/);
+assert.match(view.innerHTML,/data-action="journal-credit-save"/);
+assert.match(view.innerHTML,/data-action="journal-credit-export"/);
+assert.match(view.innerHTML,/Период ещё не завершился/);
+
 assert.match(view.innerHTML,/Доказанных побед и поражений по очкам Sports.ru/);
 assert.match(view.innerHTML,/нет данных/);
 window.NBATodayBrief.freshScenario=()=>null;
