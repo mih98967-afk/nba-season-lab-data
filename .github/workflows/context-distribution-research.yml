@@ -1,0 +1,54 @@
+name: Context and distribution model research
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/context-distribution-research.yml'
+      - 'research/context_distribution_v1/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: context-distribution-research-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  research:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Snapshot existing public sources (no credentials or private files)
+        run: |
+          mkdir -p research_artifacts
+          git rev-parse HEAD > research_artifacts/SOURCE_COMMIT.txt
+          git ls-tree -rl HEAD data src > research_artifacts/SOURCE_INVENTORY.txt
+          git archive --format=tar HEAD data src | gzip -n > research_artifacts/public_model_sources.tar.gz
+          sha256sum research_artifacts/public_model_sources.tar.gz > research_artifacts/SOURCE_SHA256.txt
+      - name: Run research when implementation is present
+        run: |
+          if test -f research/context_distribution_v1/run.py; then
+            python -m pip install numpy==2.2.6 pandas==2.2.3 scipy==1.15.3 scikit-learn==1.7.2
+            python -m unittest discover -s research/context_distribution_v1 -p 'test_*.py' -v
+            python research/context_distribution_v1/run.py --root . --output research_artifacts/results
+          fi
+      - name: Upload read-only audit and model artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: context-distribution-research-${{ github.run_id }}
+          path: research_artifacts/
+          retention-days: 3
+          if-no-files-found: error
