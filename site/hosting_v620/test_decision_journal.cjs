@@ -348,3 +348,77 @@ test('unknown owned player path and legacy snapshots stay blocked without fabric
  assert.equal(e.actual_gain_fp,null);
  assert.equal(e.blocked_route_index,1);
 });
+
+test('PR174: manual credits are a separate opt-in sidecar, not official gain',()=>{
+ const api=engine(),s=local(),entry=api.take(s,frozenFixture());
+ const before=JSON.stringify(api.read(s));
+ const req=api.differentialEvidence(entry).unique_sportsru_credit_requests;
+ assert.equal(req.length,2);
+ assert.equal(api.creditFind(s,entry),null);
+ const blank=api.creditReview(entry,null,{nowMs:NOW+15*DAY});
+ assert.equal(blank.status,'CREDITS_INCOMPLETE');
+ assert.equal(blank.selected_conditional_delta_fp,null);
+ const rows=req.map((r,i)=>({game_id:r.game_id,player_id:r.player_id,
+  participation_status:'played',sportsru_credited_fp:i===0?10:15,
+  source_ref:'owner Sports.ru match history'}));
+ assert.throws(()=>api.creditSave(s,entry,rows,false),/CREDIT_OWNER_CONFIRMATION_REQUIRED/);
+ const receipt=api.creditSave(s,entry,rows,true);
+ assert.equal(receipt.rows.length,2);
+ assert.equal(api.creditRead(s).reviews.length,1);
+ const evaluation=api.creditReview(entry,api.creditFind(s,entry),{nowMs:NOW+15*DAY});
+ assert.equal(evaluation.status,'MANUAL_CONDITIONAL_ONLY');
+ assert.equal(evaluation.selected_conditional_delta_fp,5);
+ assert.equal(evaluation.actual_gain_fp,null);
+ assert.equal(evaluation.official_result_verified,false);
+ assert.equal(evaluation.execution_verified,false);
+ assert.equal(evaluation.economic_benefit_proven,false);
+ assert.equal(JSON.stringify(api.read(s)),before,'prospective journal immutable');
+});
+test('PR174: incomplete, missing source, pending horizon never invent results',()=>{
+ const api=engine(),s=local(),e=api.take(s,frozenFixture());
+ const rows=api.differentialEvidence(e).unique_sportsru_credit_requests.map((r,i)=>({
+  game_id:r.game_id,player_id:r.player_id,
+  participation_status:i?'unknown':'played',
+  sportsru_credited_fp:i?null:-3,source_ref:i?'':'owner screenshot'}));
+ const saved=api.creditSave(s,e,rows,true);
+ const pending=api.creditReview(e,saved,{nowMs:NOW+DAY});
+ assert.equal(pending.status,'HORIZON_PENDING');
+ assert.equal(pending.selected_conditional_delta_fp,null);
+ const partial=api.creditReview(e,saved,{nowMs:NOW+15*DAY});
+ assert.equal(partial.status,'CREDITS_INCOMPLETE');
+ assert.equal(partial.selected_missing,1);
+ const noProof=rows.map(r=>({...r,participation_status:'played',
+   sportsru_credited_fp:0,source_ref:''}));
+ const np=api.creditSave(s,e,noProof,true);
+ assert.equal(api.creditReview(e,np,{nowMs:NOW+15*DAY}).selected_conditional_delta_fp,null);
+});
+test('PR174: manual DNP requires explicit zero and a source; negative FP valid',()=>{
+ const api=engine(),s=local(),e=api.take(s,frozenFixture());
+ const rows=api.differentialEvidence(e).unique_sportsru_credit_requests.map((r,i)=>({
+  game_id:r.game_id,player_id:r.player_id,
+  participation_status:i?'official_dnp':'played',
+  sportsru_credited_fp:i?0:-5,source_ref:'Sports.ru game archive'}));
+ const rec=api.creditSave(s,e,rows,true);
+ const cmp=api.creditReview(e,rec,{nowMs:NOW+15*DAY});
+ assert.equal(cmp.selected_conditional_delta_fp,5);
+ assert.equal(cmp.official_result_verified,false);
+ rows[1].sportsru_credited_fp=20;
+ assert.throws(()=>api.creditSave(s,e,rows,true),/CREDIT_DNP_NONZERO/);
+ rows[1].participation_status='unknown';
+ assert.throws(()=>api.creditSave(s,e,rows,true),/CREDIT_UNKNOWN_CANNOT_HAVE_FP/);
+});
+test('PR174: reject switched player-game and deletion requires consent',()=>{
+ const api=engine(),s=local(),e=api.take(s,frozenFixture());
+ const rows=api.differentialEvidence(e).unique_sportsru_credit_requests.map(r=>({
+  game_id:r.game_id,player_id:r.player_id,participation_status:'unknown',
+  sportsru_credited_fp:null,source_ref:''}));
+ rows[0].player_id='n999';
+ assert.throws(()=>api.creditSave(s,e,rows,true),/CREDIT_IDENTITY_MISMATCH/);
+ rows[0].player_id='n101';
+ api.creditSave(s,e,rows,true);
+ assert.throws(()=>api.creditDelete(s,e,false),/CREDIT_DELETE_CONFIRMATION_REQUIRED/);
+ assert.equal(api.creditFind(s,e).rows.length,2);
+ api.creditDelete(s,e,true);
+ assert.equal(api.creditFind(s,e),null);
+ assert.equal(api.read(s).entries.length,1);
+});
