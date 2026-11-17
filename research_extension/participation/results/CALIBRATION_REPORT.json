@@ -1,0 +1,1745 @@
+{
+  "status": "exploratory_historical_calibration_only",
+  "adopt_on_site": false,
+  "real_KEEP_TRANSFER_gain_proven": false,
+  "no_2026_27_outcomes_used": true,
+  "model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+  "feature_frame_sha256": "d406041de5890933a0f420b91ae51d5388df49c53315182baec7f041e83c0b6b",
+  "protocol_sha256": "463b9d2580bea1d9c1260ce478508bab4a61fa9dcf705171f477c5ddf25fa28a",
+  "cohort": {
+    "probability": {
+      "opportunities": 6043,
+      "known": 5889,
+      "played": 3718,
+      "unknown": 154
+    },
+    "interval": {
+      "opportunities": 5141,
+      "known": 4890,
+      "played": 3158,
+      "unknown": 251
+    },
+    "confirmation": {
+      "opportunities": 14620,
+      "known": 13997,
+      "played": 8711,
+      "unknown": 623
+    }
+  },
+  "probability_offsets": {
+    "Available": 0.05984795088329432,
+    "Doubtful": -0.05786909428598566,
+    "Out": -0.011891075600772185,
+    "Probable": -0.003819298314071203,
+    "Questionable": 0.2245580559006845,
+    "not_listed": -0.10264875067360191,
+    "not_submitted": 0.10983632543579662,
+    "unresolved_identity": -0.01291664898998131
+  },
+  "probability_confirmation": {
+    "retained": {
+      "n": 13997,
+      "brier": 0.09682914053062895,
+      "logloss": 0.3063187230612362,
+      "mean_prediction": 0.61601625047199,
+      "play_rate": 0.6223476459241266,
+      "ece": 0.01737671532725964,
+      "reliability": [
+        {
+          "n": 2811,
+          "mean_prediction": 0.01640791817465402,
+          "observed": 0.01351832088224831
+        },
+        {
+          "n": 405,
+          "mean_prediction": 0.14935961564954386,
+          "observed": 0.19012345679012346
+        },
+        {
+          "n": 487,
+          "mean_prediction": 0.2531498611884803,
+          "observed": 0.31006160164271046
+        },
+        {
+          "n": 700,
+          "mean_prediction": 0.3550957780371171,
+          "observed": 0.4471428571428571
+        },
+        {
+          "n": 820,
+          "mean_prediction": 0.4508032904015888,
+          "observed": 0.48048780487804876
+        },
+        {
+          "n": 760,
+          "mean_prediction": 0.5487560670482864,
+          "observed": 0.5697368421052632
+        },
+        {
+          "n": 436,
+          "mean_prediction": 0.6491371703246737,
+          "observed": 0.6880733944954128
+        },
+        {
+          "n": 518,
+          "mean_prediction": 0.7528661545303145,
+          "observed": 0.7374517374517374
+        },
+        {
+          "n": 1252,
+          "mean_prediction": 0.8607802718109341,
+          "observed": 0.8274760383386581
+        },
+        {
+          "n": 5808,
+          "mean_prediction": 0.9653058617085234,
+          "observed": 0.9619490358126722
+        }
+      ]
+    },
+    "status_intercept": {
+      "n": 13997,
+      "brier": 0.09713555111996883,
+      "logloss": 0.3069593137294901,
+      "mean_prediction": 0.6165811777919751,
+      "play_rate": 0.6223476459241266,
+      "ece": 0.016620738357190808,
+      "reliability": [
+        {
+          "n": 2773,
+          "mean_prediction": 0.015704817681311774,
+          "observed": 0.011900468806346917
+        },
+        {
+          "n": 425,
+          "mean_prediction": 0.14978666945037342,
+          "observed": 0.19058823529411764
+        },
+        {
+          "n": 530,
+          "mean_prediction": 0.25249770038602143,
+          "observed": 0.30943396226415093
+        },
+        {
+          "n": 686,
+          "mean_prediction": 0.3512440629110504,
+          "observed": 0.4446064139941691
+        },
+        {
+          "n": 709,
+          "mean_prediction": 0.44871163446160145,
+          "observed": 0.5063469675599436
+        },
+        {
+          "n": 743,
+          "mean_prediction": 0.5493356485974354,
+          "observed": 0.5410497981157469
+        },
+        {
+          "n": 547,
+          "mean_prediction": 0.6448812498593819,
+          "observed": 0.6526508226691042
+        },
+        {
+          "n": 527,
+          "mean_prediction": 0.7494964595520123,
+          "observed": 0.7343453510436433
+        },
+        {
+          "n": 1201,
+          "mean_prediction": 0.8596100456952476,
+          "observed": 0.8318068276436303
+        },
+        {
+          "n": 5856,
+          "mean_prediction": 0.9634360424808509,
+          "observed": 0.9603825136612022
+        }
+      ]
+    }
+  },
+  "probability_gain": {
+    "date": {
+      "gain": -0.0003064105893398721,
+      "low95": -0.000726239365965815,
+      "high95": 0.0001211746258417678,
+      "clusters": 52
+    },
+    "pid": {
+      "gain": -0.0003064105893398721,
+      "low95": -0.000598696552705495,
+      "high95": -1.973922593911656e-05,
+      "clusters": 544
+    }
+  },
+  "probability_by_status": {
+    "Available": {
+      "opportunities": 106,
+      "known": 106,
+      "unknown": 0,
+      "retained": {
+        "n": 106,
+        "brier": 0.07403689445336303,
+        "logloss": 0.2543071646917854,
+        "mean_prediction": 0.811667443299864,
+        "play_rate": 0.8490566037735849,
+        "ece": 0.09412622840606041,
+        "reliability": [
+          {
+            "n": 1,
+            "mean_prediction": 0.07395412049349384,
+            "observed": 0.0
+          },
+          {
+            "n": 4,
+            "mean_prediction": 0.16085561193893216,
+            "observed": 0.5
+          },
+          {
+            "n": 8,
+            "mean_prediction": 0.2500950610055246,
+            "observed": 0.375
+          },
+          {
+            "n": 2,
+            "mean_prediction": 0.36333188986564824,
+            "observed": 0.0
+          },
+          {
+            "n": 2,
+            "mean_prediction": 0.40325664436406294,
+            "observed": 0.0
+          },
+          {
+            "n": 3,
+            "mean_prediction": 0.5484785498007025,
+            "observed": 0.6666666666666666
+          },
+          {
+            "n": 2,
+            "mean_prediction": 0.6423065351322854,
+            "observed": 1.0
+          },
+          {
+            "n": 4,
+            "mean_prediction": 0.784064026456196,
+            "observed": 1.0
+          },
+          {
+            "n": 5,
+            "mean_prediction": 0.8799866822922162,
+            "observed": 0.6
+          },
+          {
+            "n": 75,
+            "mean_prediction": 0.9509226217077361,
+            "observed": 0.9866666666666667
+          }
+        ]
+      },
+      "status_intercept": {
+        "n": 106,
+        "brier": 0.07363932822944946,
+        "logloss": 0.2522192624242997,
+        "mean_prediction": 0.8166573278016126,
+        "play_rate": 0.8490566037735849,
+        "ece": 0.09127127023980684,
+        "reliability": [
+          {
+            "n": 1,
+            "mean_prediction": 0.07815875670611333,
+            "observed": 0.0
+          },
+          {
+            "n": 4,
+            "mean_prediction": 0.16907126842649736,
+            "observed": 0.5
+          },
+          {
+            "n": 7,
+            "mean_prediction": 0.2544252431274247,
+            "observed": 0.42857142857142855
+          },
+          {
+            "n": 3,
+            "mean_prediction": 0.3549956206363521,
+            "observed": 0.0
+          },
+          {
+            "n": 2,
+            "mean_prediction": 0.41773787347935337,
+            "observed": 0.0
+          },
+          {
+            "n": 3,
+            "mean_prediction": 0.563210391247348,
+            "observed": 0.6666666666666666
+          },
+          {
+            "n": 2,
+            "mean_prediction": 0.6558703492336844,
+            "observed": 1.0
+          },
+          {
+            "n": 2,
+            "mean_prediction": 0.7820233257347811,
+            "observed": 1.0
+          },
+          {
+            "n": 6,
+            "mean_prediction": 0.856932388436892,
+            "observed": 0.6666666666666666
+          },
+          {
+            "n": 76,
+            "mean_prediction": 0.9529313256776153,
+            "observed": 0.9868421052631579
+          }
+        ]
+      }
+    },
+    "Doubtful": {
+      "opportunities": 180,
+      "known": 180,
+      "unknown": 0,
+      "retained": {
+        "n": 180,
+        "brier": 0.05466626391788797,
+        "logloss": 0.24027706059859577,
+        "mean_prediction": 0.04444025539397145,
+        "play_rate": 0.05555555555555555,
+        "ece": 0.0325887313814272,
+        "reliability": [
+          {
+            "n": 163,
+            "mean_prediction": 0.037218632890361855,
+            "observed": 0.06134969325153374
+          },
+          {
+            "n": 17,
+            "mean_prediction": 0.11368287116387524,
+            "observed": 0.0
+          }
+        ]
+      },
+      "status_intercept": {
+        "n": 180,
+        "brier": 0.05457551262309001,
+        "logloss": 0.24098859127569905,
+        "mean_prediction": 0.042099519677071866,
+        "play_rate": 0.05555555555555555,
+        "ece": 0.02626426047612908,
+        "reliability": [
+          {
+            "n": 170,
+            "mean_prediction": 0.03779513722402853,
+            "observed": 0.058823529411764705
+          },
+          {
+            "n": 10,
+            "mean_prediction": 0.11527402137880856,
+            "observed": 0.0
+          }
+        ]
+      }
+    },
+    "Out": {
+      "opportunities": 2271,
+      "known": 2267,
+      "unknown": 4,
+      "retained": {
+        "n": 2267,
+        "brier": 0.0030954913069115102,
+        "logloss": 0.020881529586045607,
+        "mean_prediction": 0.007571439709801642,
+        "play_rate": 0.0030877812086457872,
+        "ece": 0.004483658501155854,
+        "reliability": [
+          {
+            "n": 2267,
+            "mean_prediction": 0.007571439709801642,
+            "observed": 0.0030877812086457872
+          }
+        ]
+      },
+      "status_intercept": {
+        "n": 2267,
+        "brier": 0.0030942115440225474,
+        "logloss": 0.020828739964259456,
+        "mean_prediction": 0.007483156960182983,
+        "play_rate": 0.0030877812086457872,
+        "ece": 0.004395375751537195,
+        "reliability": [
+          {
+            "n": 2267,
+            "mean_prediction": 0.007483156960182983,
+            "observed": 0.0030877812086457872
+          }
+        ]
+      }
+    },
+    "Probable": {
+      "opportunities": 169,
+      "known": 169,
+      "unknown": 0,
+      "retained": {
+        "n": 169,
+        "brier": 0.10493317651417165,
+        "logloss": 0.3677360867044643,
+        "mean_prediction": 0.8532445207119195,
+        "play_rate": 0.8698224852071006,
+        "ece": 0.08489403369651352,
+        "reliability": [
+          {
+            "n": 1,
+            "mean_prediction": 0.2654163308645343,
+            "observed": 0.0
+          },
+          {
+            "n": 4,
+            "mean_prediction": 0.4749505772420864,
+            "observed": 0.75
+          },
+          {
+            "n": 4,
+            "mean_prediction": 0.5501681301796476,
+            "observed": 0.5
+          },
+          {
+            "n": 8,
+            "mean_prediction": 0.6574152885439801,
+            "observed": 0.5
+          },
+          {
+            "n": 20,
+            "mean_prediction": 0.7553177400914667,
+            "observed": 0.9
+          },
+          {
+            "n": 55,
+            "mean_prediction": 0.8621719825818931,
+            "observed": 0.9454545454545454
+          },
+          {
+            "n": 77,
+            "mean_prediction": 0.9356791777607483,
+            "observed": 0.8831168831168831
+          }
+        ]
+      },
+      "status_intercept": {
+        "n": 169,
+        "brier": 0.10496544391613982,
+        "logloss": 0.36780021363147763,
+        "mean_prediction": 0.8528198152964523,
+        "play_rate": 0.8698224852071006,
+        "ece": 0.08497516189017217,
+        "reliability": [
+          {
+            "n": 1,
+            "mean_prediction": 0.26467234782655147,
+            "observed": 0.0
+          },
+          {
+            "n": 4,
+            "mean_prediction": 0.4739988017666804,
+            "observed": 0.75
+          },
+          {
+            "n": 4,
+            "mean_prediction": 0.5492256838294014,
+            "observed": 0.5
+          },
+          {
+            "n": 8,
+            "mean_prediction": 0.656557320605927,
+            "observed": 0.5
+          },
+          {
+            "n": 20,
+            "mean_prediction": 0.7546141629476659,
+            "observed": 0.9
+          },
+          {
+            "n": 55,
+            "mean_prediction": 0.8617199044874664,
+            "observed": 0.9454545454545454
+          },
+          {
+            "n": 77,
+            "mean_prediction": 0.9354498951204963,
+            "observed": 0.8831168831168831
+          }
+        ]
+      }
+    },
+    "Questionable": {
+      "opportunities": 752,
+      "known": 752,
+      "unknown": 0,
+      "retained": {
+        "n": 752,
+        "brier": 0.22725243287701216,
+        "logloss": 0.6471301282351645,
+        "mean_prediction": 0.46354215567063384,
+        "play_rate": 0.48138297872340424,
+        "ece": 0.05640050678373153,
+        "reliability": [
+          {
+            "n": 7,
+            "mean_prediction": 0.0918201819305623,
+            "observed": 0.2857142857142857
+          },
+          {
+            "n": 69,
+            "mean_prediction": 0.155535960146515,
+            "observed": 0.2028985507246377
+          },
+          {
+            "n": 37,
+            "mean_prediction": 0.2512361815165418,
+            "observed": 0.2972972972972973
+          },
+          {
+            "n": 68,
+            "mean_prediction": 0.359142925135493,
+            "observed": 0.3088235294117647
+          },
+          {
+            "n": 206,
+            "mean_prediction": 0.456683117347708,
+            "observed": 0.4029126213592233
+          },
+          {
+            "n": 279,
+            "mean_prediction": 0.5507289530649202,
+            "observed": 0.5878136200716846
+          },
+          {
+            "n": 74,
+            "mean_prediction": 0.6375518610568203,
+            "observed": 0.7702702702702703
+          },
+          {
+            "n": 12,
+            "mean_prediction": 0.7152152598685263,
+            "observed": 0.8333333333333334
+          }
+        ]
+      },
+      "status_intercept": {
+        "n": 752,
+        "brier": 0.22856182971881073,
+        "logloss": 0.6488750451499564,
+        "mean_prediction": 0.5147466074627165,
+        "play_rate": 0.48138297872340424,
+        "ece": 0.05062774509117206,
+        "reliability": [
+          {
+            "n": 1,
+            "mean_prediction": 0.09765568266305903,
+            "observed": 1.0
+          },
+          {
+            "n": 46,
+            "mean_prediction": 0.1592393878617934,
+            "observed": 0.21739130434782608
+          },
+          {
+            "n": 48,
+            "mean_prediction": 0.23726683716514907,
+            "observed": 0.22916666666666666
+          },
+          {
+            "n": 39,
+            "mean_prediction": 0.3500554514338419,
+            "observed": 0.3076923076923077
+          },
+          {
+            "n": 112,
+            "mean_prediction": 0.45721209833503457,
+            "observed": 0.39285714285714285
+          },
+          {
+            "n": 261,
+            "mean_prediction": 0.5515116653549802,
+            "observed": 0.4827586206896552
+          },
+          {
+            "n": 208,
+            "mean_prediction": 0.6364782985540453,
+            "observed": 0.6153846153846154
+          },
+          {
+            "n": 37,
+            "mean_prediction": 0.7320547223620311,
+            "observed": 0.8108108108108109
+          }
+        ]
+      }
+    },
+    "not_listed": {
+      "opportunities": 8225,
+      "known": 7723,
+      "unknown": 502,
+      "retained": {
+        "n": 7723,
+        "brier": 0.09538032276486406,
+        "logloss": 0.3063477374911288,
+        "mean_prediction": 0.8232013164190378,
+        "play_rate": 0.829858863136087,
+        "ece": 0.01740456881026705,
+        "reliability": [
+          {
+            "n": 2,
+            "mean_prediction": 0.09838246966638711,
+            "observed": 0.0
+          },
+          {
+            "n": 104,
+            "mean_prediction": 0.16479846938975778,
+            "observed": 0.2692307692307692
+          },
+          {
+            "n": 272,
+            "mean_prediction": 0.25367150172237274,
+            "observed": 0.3235294117647059
+          },
+          {
+            "n": 462,
+            "mean_prediction": 0.354758458590594,
+            "observed": 0.43073593073593075
+          },
+          {
+            "n": 440,
+            "mean_prediction": 0.44885308165588944,
+            "observed": 0.4909090909090909
+          },
+          {
+            "n": 323,
+            "mean_prediction": 0.5485839369126762,
+            "observed": 0.5541795665634675
+          },
+          {
+            "n": 261,
+            "mean_prediction": 0.6488891807892999,
+            "observed": 0.6781609195402298
+          },
+          {
+            "n": 311,
+            "mean_prediction": 0.7534524229743998,
+            "observed": 0.7459807073954984
+          },
+          {
+            "n": 575,
+            "mean_prediction": 0.8601409458251069,
+            "observed": 0.84
+          },
+          {
+            "n": 4973,
+            "mean_prediction": 0.9721291199435256,
+            "observed": 0.9666197466318118
+          }
+        ]
+      },
+      "status_intercept": {
+        "n": 7723,
+        "brier": 0.0959828047724795,
+        "logloss": 0.30749673629046237,
+        "mean_prediction": 0.8140961044067265,
+        "play_rate": 0.829858863136087,
+        "ece": 0.01962103359865399,
+        "reliability": [
+          {
+            "n": 4,
+            "mean_prediction": 0.09323151698841674,
+            "observed": 0.0
+          },
+          {
+            "n": 137,
+            "mean_prediction": 0.1624614540373847,
+            "observed": 0.27007299270072993
+          },
+          {
+            "n": 319,
+            "mean_prediction": 0.25363939093994775,
+            "observed": 0.3448275862068966
+          },
+          {
+            "n": 489,
+            "mean_prediction": 0.3512737866195023,
+            "observed": 0.4335378323108384
+          },
+          {
+            "n": 417,
+            "mean_prediction": 0.4464848759462522,
+            "observed": 0.5299760191846523
+          },
+          {
+            "n": 312,
+            "mean_prediction": 0.5478282499126427,
+            "observed": 0.5673076923076923
+          },
+          {
+            "n": 237,
+            "mean_prediction": 0.6511300089161949,
+            "observed": 0.70042194092827
+          },
+          {
+            "n": 311,
+            "mean_prediction": 0.7507779098084861,
+            "observed": 0.7427652733118971
+          },
+          {
+            "n": 603,
+            "mean_prediction": 0.8584217602580427,
+            "observed": 0.857379767827529
+          },
+          {
+            "n": 4894,
+            "mean_prediction": 0.9704547509100498,
+            "observed": 0.9681242337556192
+          }
+        ]
+      }
+    },
+    "not_submitted": {
+      "opportunities": 2847,
+      "known": 2730,
+      "unknown": 117,
+      "retained": {
+        "n": 2730,
+        "brier": 0.14839525843837148,
+        "logloss": 0.45842052916150217,
+        "mean_prediction": 0.6070125832319703,
+        "play_rate": 0.6175824175824176,
+        "ece": 0.04290114166178496,
+        "reliability": [
+          {
+            "n": 303,
+            "mean_prediction": 0.06123187755626898,
+            "observed": 0.0627062706270627
+          },
+          {
+            "n": 209,
+            "mean_prediction": 0.14258169236941662,
+            "observed": 0.15789473684210525
+          },
+          {
+            "n": 169,
+            "mean_prediction": 0.25280129227978543,
+            "observed": 0.28994082840236685
+          },
+          {
+            "n": 168,
+            "mean_prediction": 0.35428722659632533,
+            "observed": 0.5535714285714286
+          },
+          {
+            "n": 168,
+            "mean_prediction": 0.4486922882701617,
+            "observed": 0.5476190476190477
+          },
+          {
+            "n": 151,
+            "mean_prediction": 0.5454471076733093,
+            "observed": 0.5695364238410596
+          },
+          {
+            "n": 91,
+            "mean_prediction": 0.6586918349310913,
+            "observed": 0.6593406593406593
+          },
+          {
+            "n": 171,
+            "mean_prediction": 0.7534255583367727,
+            "observed": 0.6900584795321637
+          },
+          {
+            "n": 617,
+            "mean_prediction": 0.8610963760200776,
+            "observed": 0.807131280388979
+          },
+          {
+            "n": 683,
+            "mean_prediction": 0.9205444187529911,
+            "observed": 0.9341142020497804
+          }
+        ]
+      },
+      "status_intercept": {
+        "n": 2730,
+        "brier": 0.1479237718539202,
+        "logloss": 0.45806508441020255,
+        "mean_prediction": 0.6216387399849,
+        "play_rate": 0.6175824175824176,
+        "ece": 0.03749384748827228,
+        "reliability": [
+          {
+            "n": 262,
+            "mean_prediction": 0.06193752935464637,
+            "observed": 0.05725190839694656
+          },
+          {
+            "n": 226,
+            "mean_prediction": 0.1416230438569035,
+            "observed": 0.1415929203539823
+          },
+          {
+            "n": 155,
+            "mean_prediction": 0.2546990855554991,
+            "observed": 0.25806451612903225
+          },
+          {
+            "n": 155,
+            "mean_prediction": 0.3513767485949361,
+            "observed": 0.5225806451612903
+          },
+          {
+            "n": 174,
+            "mean_prediction": 0.44835131951804014,
+            "observed": 0.5229885057471264
+          },
+          {
+            "n": 163,
+            "mean_prediction": 0.5484840145303098,
+            "observed": 0.5828220858895705
+          },
+          {
+            "n": 92,
+            "mean_prediction": 0.6465276760585601,
+            "observed": 0.6195652173913043
+          },
+          {
+            "n": 157,
+            "mean_prediction": 0.750002226723906,
+            "observed": 0.6751592356687898
+          },
+          {
+            "n": 537,
+            "mean_prediction": 0.8607582018006713,
+            "observed": 0.7932960893854749
+          },
+          {
+            "n": 809,
+            "mean_prediction": 0.9246273067222516,
+            "observed": 0.9184177997527813
+          }
+        ]
+      }
+    },
+    "unresolved_identity": {
+      "opportunities": 70,
+      "known": 70,
+      "unknown": 0,
+      "retained": {
+        "n": 70,
+        "brier": 0.0034762613280183564,
+        "logloss": 0.054249034438485715,
+        "mean_prediction": 0.05241235830692404,
+        "play_rate": 0.0,
+        "ece": 0.05241235830692405,
+        "reliability": [
+          {
+            "n": 68,
+            "mean_prediction": 0.050365408423727075,
+            "observed": 0.0
+          },
+          {
+            "n": 2,
+            "mean_prediction": 0.12200865433562105,
+            "observed": 0.0
+          }
+        ]
+      },
+      "status_intercept": {
+        "n": 70,
+        "brier": 0.003394514314173032,
+        "logloss": 0.05357610940734412,
+        "mean_prediction": 0.05178380496725606,
+        "play_rate": 0.0,
+        "ece": 0.05178380496725606,
+        "reliability": [
+          {
+            "n": 68,
+            "mean_prediction": 0.049758765812024805,
+            "observed": 0.0
+          },
+          {
+            "n": 2,
+            "mean_prediction": 0.12063513624511901,
+            "observed": 0.0
+          }
+        ]
+      }
+    }
+  },
+  "probability_unknown_brier_gain_bounds": {
+    "low": -0.001181248191298539,
+    "high": 0.0006409284511470323
+  },
+  "probability_eligible_for_future_frozen_comparison": false,
+  "interval_adjustments": {
+    "50": {
+      "global": 0.14667751250308925,
+      "groups": {
+        "Available": {
+          "n": 52,
+          "eligible": false
+        },
+        "Doubtful": {
+          "n": 2,
+          "eligible": false
+        },
+        "Out": {
+          "n": 3,
+          "eligible": false
+        },
+        "Probable": {
+          "n": 62,
+          "eligible": true,
+          "symmetric": 0.6942313117518648,
+          "lower": 1.4599667789866153,
+          "upper": 0.14667751250308925
+        },
+        "Questionable": {
+          "n": 121,
+          "eligible": true,
+          "symmetric": 0.1806482188654357,
+          "lower": 0.14667751250308925,
+          "upper": 0.8826055227185066
+        },
+        "not_listed": {
+          "n": 2333,
+          "eligible": true,
+          "symmetric": 0.14667751250308925,
+          "lower": 0.4055965968759825,
+          "upper": 0.14667751250308925
+        },
+        "not_submitted": {
+          "n": 585,
+          "eligible": true,
+          "symmetric": 0.17887544132135602,
+          "lower": 0.14667751250308925,
+          "upper": 1.9043464888959747
+        },
+        "unresolved_identity": {
+          "n": 0,
+          "eligible": false
+        }
+      }
+    },
+    "80": {
+      "global": 0.3368948017579694,
+      "groups": {
+        "Available": {
+          "n": 52,
+          "eligible": false
+        },
+        "Doubtful": {
+          "n": 2,
+          "eligible": false
+        },
+        "Out": {
+          "n": 3,
+          "eligible": false
+        },
+        "Probable": {
+          "n": 62,
+          "eligible": true,
+          "symmetric": 0.3368948017579694,
+          "lower": 0.4474760583737796,
+          "upper": 0.3368948017579694
+        },
+        "Questionable": {
+          "n": 121,
+          "eligible": true,
+          "symmetric": 0.3368948017579694,
+          "lower": 0.3368948017579694,
+          "upper": 0.34443899225114194
+        },
+        "not_listed": {
+          "n": 2333,
+          "eligible": true,
+          "symmetric": 0.48599799334906457,
+          "lower": 0.619133154882018,
+          "upper": 0.3368948017579694
+        },
+        "not_submitted": {
+          "n": 585,
+          "eligible": true,
+          "symmetric": 0.3368948017579694,
+          "lower": 0.3368948017579694,
+          "upper": 1.815611374676223
+        },
+        "unresolved_identity": {
+          "n": 0,
+          "eligible": false
+        }
+      }
+    },
+    "95": {
+      "global": 0.35954095031530287,
+      "groups": {
+        "Available": {
+          "n": 52,
+          "eligible": false
+        },
+        "Doubtful": {
+          "n": 2,
+          "eligible": false
+        },
+        "Out": {
+          "n": 3,
+          "eligible": false
+        },
+        "Probable": {
+          "n": 62,
+          "eligible": true,
+          "symmetric": 0.35954095031530287,
+          "lower": 0.8028920676107276,
+          "upper": 0.35954095031530287
+        },
+        "Questionable": {
+          "n": 121,
+          "eligible": true,
+          "symmetric": 0.35954095031530287,
+          "lower": 0.35954095031530287,
+          "upper": 0.35954095031530287
+        },
+        "not_listed": {
+          "n": 2333,
+          "eligible": true,
+          "symmetric": 0.35954095031530287,
+          "lower": 0.641550508148649,
+          "upper": 0.35954095031530287
+        },
+        "not_submitted": {
+          "n": 585,
+          "eligible": true,
+          "symmetric": 1.0089061213083035,
+          "lower": 0.35954095031530287,
+          "upper": 3.823140194407671
+        },
+        "unresolved_identity": {
+          "n": 0,
+          "eligible": false
+        }
+      }
+    }
+  },
+  "conditional_interval_confirmation": {
+    "retained": {
+      "overall": {
+        "50": {
+          "n": 8711,
+          "coverage": 0.518080587762599,
+          "width": 10.932584062218568,
+          "interval_score": 20.179524912720517,
+          "below": 0.23384226839628056,
+          "above": 0.24807714384112042
+        },
+        "80": {
+          "n": 8711,
+          "coverage": 0.8077143841120422,
+          "width": 20.613625676680872,
+          "interval_score": 28.180366754934152,
+          "below": 0.08862357938239009,
+          "above": 0.10366203650556767
+        },
+        "95": {
+          "n": 8711,
+          "coverage": 0.9474227987601883,
+          "width": 30.85758021005312,
+          "interval_score": 38.74944127502312,
+          "below": 0.022270692228217197,
+          "above": 0.030306509011594537
+        }
+      },
+      "by_status": {
+        "Available": {
+          "50": {
+            "n": 90,
+            "coverage": 0.5666666666666667,
+            "width": 11.573495760824946,
+            "interval_score": 19.628566754103705,
+            "below": 0.28888888888888886,
+            "above": 0.14444444444444443
+          },
+          "80": {
+            "n": 90,
+            "coverage": 0.8,
+            "width": 22.18380802417655,
+            "interval_score": 29.178813328360476,
+            "below": 0.16666666666666666,
+            "above": 0.03333333333333333
+          },
+          "95": {
+            "n": 90,
+            "coverage": 0.9444444444444444,
+            "width": 33.399770781888606,
+            "interval_score": 40.33703707875025,
+            "below": 0.03333333333333333,
+            "above": 0.022222222222222223
+          }
+        },
+        "Doubtful": {
+          "50": {
+            "n": 10,
+            "coverage": 0.9,
+            "width": 9.687459452892812,
+            "interval_score": 10.364871426046477,
+            "below": 0.1,
+            "above": 0.0
+          },
+          "80": {
+            "n": 10,
+            "coverage": 1.0,
+            "width": 18.00656669478655,
+            "interval_score": 18.00656669478655,
+            "below": 0.0,
+            "above": 0.0
+          },
+          "95": {
+            "n": 10,
+            "coverage": 1.0,
+            "width": 28.143085554530423,
+            "interval_score": 28.143085554530423,
+            "below": 0.0,
+            "above": 0.0
+          }
+        },
+        "Out": {
+          "50": {
+            "n": 7,
+            "coverage": 0.42857142857142855,
+            "width": 4.961653150590364,
+            "interval_score": 11.316520950924541,
+            "below": 0.14285714285714285,
+            "above": 0.42857142857142855
+          },
+          "80": {
+            "n": 7,
+            "coverage": 0.7142857142857143,
+            "width": 11.167489651381374,
+            "interval_score": 14.48370521375605,
+            "below": 0.0,
+            "above": 0.2857142857142857
+          },
+          "95": {
+            "n": 7,
+            "coverage": 1.0,
+            "width": 20.347295835606875,
+            "interval_score": 20.347295835606875,
+            "below": 0.0,
+            "above": 0.0
+          }
+        },
+        "Probable": {
+          "50": {
+            "n": 147,
+            "coverage": 0.43537414965986393,
+            "width": 11.396261784005764,
+            "interval_score": 23.05640190747534,
+            "below": 0.2653061224489796,
+            "above": 0.29931972789115646
+          },
+          "80": {
+            "n": 147,
+            "coverage": 0.7414965986394558,
+            "width": 21.21514114949116,
+            "interval_score": 30.919699974876494,
+            "below": 0.10204081632653061,
+            "above": 0.1564625850340136
+          },
+          "95": {
+            "n": 147,
+            "coverage": 0.9183673469387755,
+            "width": 31.8045064303077,
+            "interval_score": 39.30855249325921,
+            "below": 0.047619047619047616,
+            "above": 0.034013605442176874
+          }
+        },
+        "Questionable": {
+          "50": {
+            "n": 362,
+            "coverage": 0.5718232044198895,
+            "width": 11.368254873230143,
+            "interval_score": 19.99112779101918,
+            "below": 0.2265193370165746,
+            "above": 0.20165745856353592
+          },
+          "80": {
+            "n": 362,
+            "coverage": 0.8176795580110497,
+            "width": 21.22444122139445,
+            "interval_score": 28.338301477529168,
+            "below": 0.11049723756906077,
+            "above": 0.0718232044198895
+          },
+          "95": {
+            "n": 362,
+            "coverage": 0.9585635359116023,
+            "width": 32.18082753432626,
+            "interval_score": 40.4235446880125,
+            "below": 0.027624309392265192,
+            "above": 0.013812154696132596
+          }
+        },
+        "not_listed": {
+          "50": {
+            "n": 6409,
+            "coverage": 0.5206740521142144,
+            "width": 10.930709255796748,
+            "interval_score": 20.08705447100335,
+            "below": 0.2306132001872367,
+            "above": 0.24871274769854892
+          },
+          "80": {
+            "n": 6409,
+            "coverage": 0.810578873459198,
+            "width": 20.59051360708417,
+            "interval_score": 28.024454636205704,
+            "below": 0.0845685754407864,
+            "above": 0.10485255110001561
+          },
+          "95": {
+            "n": 6409,
+            "coverage": 0.9488219691059447,
+            "width": 30.801579645803788,
+            "interval_score": 38.48766859102121,
+            "below": 0.02028397565922921,
+            "above": 0.030894055234826027
+          }
+        },
+        "not_submitted": {
+          "50": {
+            "n": 1686,
+            "coverage": 0.49940688018979834,
+            "width": 10.803703804370771,
+            "interval_score": 20.445073962345123,
+            "below": 0.2431791221826809,
+            "above": 0.25741399762752076
+          },
+          "80": {
+            "n": 1686,
+            "coverage": 0.8001186239620404,
+            "width": 20.488752831530974,
+            "interval_score": 28.564198816500596,
+            "below": 0.09489916963226572,
+            "above": 0.10498220640569395
+          },
+          "95": {
+            "n": 1686,
+            "coverage": 0.9418742586002372,
+            "width": 30.627813730943288,
+            "interval_score": 39.390889258493374,
+            "below": 0.02609727164887307,
+            "above": 0.03202846975088968
+          }
+        },
+        "unresolved_identity": {
+          "50": {
+            "n": 0
+          },
+          "80": {
+            "n": 0
+          },
+          "95": {
+            "n": 0
+          }
+        }
+      }
+    },
+    "status_symmetric": {
+      "overall": {
+        "50": {
+          "n": 8711,
+          "coverage": 0.5189989668235564,
+          "width": 10.966351370720538,
+          "interval_score": 20.178143616811475,
+          "below": 0.2331534841005625,
+          "above": 0.24784754907588108
+        },
+        "80": {
+          "n": 8711,
+          "coverage": 0.8119618872689702,
+          "width": 20.833026975017994,
+          "interval_score": 28.195459817754063,
+          "below": 0.08655722649523591,
+          "above": 0.10148088623579382
+        },
+        "95": {
+          "n": 8711,
+          "coverage": 0.9492595568821031,
+          "width": 31.108947373018157,
+          "interval_score": 38.73355694430316,
+          "below": 0.021352313167259787,
+          "above": 0.029388129950637127
+        }
+      },
+      "by_status": {
+        "Available": {
+          "50": {
+            "n": 90,
+            "coverage": 0.5666666666666667,
+            "width": 11.573495760824946,
+            "interval_score": 19.628566754103705,
+            "below": 0.28888888888888886,
+            "above": 0.14444444444444443
+          },
+          "80": {
+            "n": 90,
+            "coverage": 0.8,
+            "width": 22.18380802417655,
+            "interval_score": 29.178813328360476,
+            "below": 0.16666666666666666,
+            "above": 0.03333333333333333
+          },
+          "95": {
+            "n": 90,
+            "coverage": 0.9444444444444444,
+            "width": 33.399770781888606,
+            "interval_score": 40.33703707875025,
+            "below": 0.03333333333333333,
+            "above": 0.022222222222222223
+          }
+        },
+        "Doubtful": {
+          "50": {
+            "n": 10,
+            "coverage": 0.9,
+            "width": 9.687459452892812,
+            "interval_score": 10.364871426046477,
+            "below": 0.1,
+            "above": 0.0
+          },
+          "80": {
+            "n": 10,
+            "coverage": 1.0,
+            "width": 18.00656669478655,
+            "interval_score": 18.00656669478655,
+            "below": 0.0,
+            "above": 0.0
+          },
+          "95": {
+            "n": 10,
+            "coverage": 1.0,
+            "width": 28.143085554530423,
+            "interval_score": 28.143085554530423,
+            "below": 0.0,
+            "above": 0.0
+          }
+        },
+        "Out": {
+          "50": {
+            "n": 7,
+            "coverage": 0.42857142857142855,
+            "width": 4.961653150590364,
+            "interval_score": 11.316520950924541,
+            "below": 0.14285714285714285,
+            "above": 0.42857142857142855
+          },
+          "80": {
+            "n": 7,
+            "coverage": 0.7142857142857143,
+            "width": 11.167489651381374,
+            "interval_score": 14.48370521375605,
+            "below": 0.0,
+            "above": 0.2857142857142857
+          },
+          "95": {
+            "n": 7,
+            "coverage": 1.0,
+            "width": 20.347295835606875,
+            "interval_score": 20.347295835606875,
+            "below": 0.0,
+            "above": 0.0
+          }
+        },
+        "Probable": {
+          "50": {
+            "n": 147,
+            "coverage": 0.46258503401360546,
+            "width": 12.491369382503315,
+            "interval_score": 22.950055898318876,
+            "below": 0.24489795918367346,
+            "above": 0.2925170068027211
+          },
+          "80": {
+            "n": 147,
+            "coverage": 0.7414965986394558,
+            "width": 21.21514114949116,
+            "interval_score": 30.919699974876494,
+            "below": 0.10204081632653061,
+            "above": 0.1564625850340136
+          },
+          "95": {
+            "n": 147,
+            "coverage": 0.9183673469387755,
+            "width": 31.8045064303077,
+            "interval_score": 39.30855249325921,
+            "below": 0.047619047619047616,
+            "above": 0.034013605442176874
+          }
+        },
+        "Questionable": {
+          "50": {
+            "n": 362,
+            "coverage": 0.5718232044198895,
+            "width": 11.436196285954836,
+            "interval_score": 20.000887330968585,
+            "below": 0.2265193370165746,
+            "above": 0.20165745856353592
+          },
+          "80": {
+            "n": 362,
+            "coverage": 0.8176795580110497,
+            "width": 21.22444122139445,
+            "interval_score": 28.338301477529168,
+            "below": 0.11049723756906077,
+            "above": 0.0718232044198895
+          },
+          "95": {
+            "n": 362,
+            "coverage": 0.9585635359116023,
+            "width": 32.18082753432626,
+            "interval_score": 40.4235446880125,
+            "below": 0.027624309392265192,
+            "above": 0.013812154696132596
+          }
+        },
+        "not_listed": {
+          "50": {
+            "n": 6409,
+            "coverage": 0.5206740521142144,
+            "width": 10.930709255796748,
+            "interval_score": 20.08705447100335,
+            "below": 0.2306132001872367,
+            "above": 0.24871274769854892
+          },
+          "80": {
+            "n": 6409,
+            "coverage": 0.8163520049929787,
+            "width": 20.888719990266356,
+            "interval_score": 28.04496886154886,
+            "below": 0.08176002496489312,
+            "above": 0.10188797004212825
+          },
+          "95": {
+            "n": 6409,
+            "coverage": 0.9488219691059447,
+            "width": 30.801579645803788,
+            "interval_score": 38.48766859102121,
+            "below": 0.02028397565922921,
+            "above": 0.030894055234826027
+          }
+        },
+        "not_submitted": {
+          "50": {
+            "n": 1686,
+            "coverage": 0.501779359430605,
+            "width": 10.868099662007305,
+            "interval_score": 20.445113963069115,
+            "below": 0.24139976275207592,
+            "above": 0.2568208778173191
+          },
+          "80": {
+            "n": 1686,
+            "coverage": 0.8001186239620404,
+            "width": 20.488752831530974,
+            "interval_score": 28.564198816500596,
+            "below": 0.09489916963226572,
+            "above": 0.10498220640569395
+          },
+          "95": {
+            "n": 1686,
+            "coverage": 0.9513641755634639,
+            "width": 31.92654407292929,
+            "interval_score": 39.30882021644023,
+            "below": 0.021352313167259787,
+            "above": 0.027283511269276393
+          }
+        },
+        "unresolved_identity": {
+          "50": {
+            "n": 0
+          },
+          "80": {
+            "n": 0
+          },
+          "95": {
+            "n": 0
+          }
+        }
+      }
+    },
+    "status_asymmetric": {
+      "overall": {
+        "50": {
+          "n": 8711,
+          "coverage": 0.5425324302605901,
+          "width": 11.51601900284712,
+          "interval_score": 20.24230487176378,
+          "below": 0.22339570657789,
+          "above": 0.23407186316151993
+        },
+        "80": {
+          "n": 8711,
+          "coverage": 0.8168981747216163,
+          "width": 21.10969547813819,
+          "interval_score": 28.2414221159535,
+          "below": 0.08403168407760303,
+          "above": 0.09907014120078063
+        },
+        "95": {
+          "n": 8711,
+          "coverage": 0.951785099299736,
+          "width": 31.742920606785535,
+          "interval_score": 38.80994323039555,
+          "below": 0.020548731488922053,
+          "above": 0.027666169211341983
+        }
+      },
+      "by_status": {
+        "Available": {
+          "50": {
+            "n": 90,
+            "coverage": 0.5666666666666667,
+            "width": 11.573495760824946,
+            "interval_score": 19.628566754103705,
+            "below": 0.28888888888888886,
+            "above": 0.14444444444444443
+          },
+          "80": {
+            "n": 90,
+            "coverage": 0.8,
+            "width": 22.18380802417655,
+            "interval_score": 29.178813328360476,
+            "below": 0.16666666666666666,
+            "above": 0.03333333333333333
+          },
+          "95": {
+            "n": 90,
+            "coverage": 0.9444444444444444,
+            "width": 33.399770781888606,
+            "interval_score": 40.33703707875025,
+            "below": 0.03333333333333333,
+            "above": 0.022222222222222223
+          }
+        },
+        "Doubtful": {
+          "50": {
+            "n": 10,
+            "coverage": 0.9,
+            "width": 9.687459452892812,
+            "interval_score": 10.364871426046477,
+            "below": 0.1,
+            "above": 0.0
+          },
+          "80": {
+            "n": 10,
+            "coverage": 1.0,
+            "width": 18.00656669478655,
+            "interval_score": 18.00656669478655,
+            "below": 0.0,
+            "above": 0.0
+          },
+          "95": {
+            "n": 10,
+            "coverage": 1.0,
+            "width": 28.143085554530423,
+            "interval_score": 28.143085554530423,
+            "below": 0.0,
+            "above": 0.0
+          }
+        },
+        "Out": {
+          "50": {
+            "n": 7,
+            "coverage": 0.42857142857142855,
+            "width": 4.961653150590364,
+            "interval_score": 11.316520950924541,
+            "below": 0.14285714285714285,
+            "above": 0.42857142857142855
+          },
+          "80": {
+            "n": 7,
+            "coverage": 0.7142857142857143,
+            "width": 11.167489651381374,
+            "interval_score": 14.48370521375605,
+            "below": 0.0,
+            "above": 0.2857142857142857
+          },
+          "95": {
+            "n": 7,
+            "coverage": 1.0,
+            "width": 20.347295835606875,
+            "interval_score": 20.347295835606875,
+            "below": 0.0,
+            "above": 0.0
+          }
+        },
+        "Probable": {
+          "50": {
+            "n": 147,
+            "coverage": 0.5102040816326531,
+            "width": 12.70955105048929,
+            "interval_score": 23.149586453903602,
+            "below": 0.19047619047619047,
+            "above": 0.29931972789115646
+          },
+          "80": {
+            "n": 147,
+            "coverage": 0.7414965986394558,
+            "width": 21.326366832036115,
+            "interval_score": 30.918087640466535,
+            "below": 0.10204081632653061,
+            "above": 0.1564625850340136
+          },
+          "95": {
+            "n": 147,
+            "coverage": 0.9251700680272109,
+            "width": 32.24785754760311,
+            "interval_score": 39.00002020757422,
+            "below": 0.04081632653061224,
+            "above": 0.034013605442176874
+          }
+        },
+        "Questionable": {
+          "50": {
+            "n": 362,
+            "coverage": 0.5911602209944752,
+            "width": 12.10418288344556,
+            "interval_score": 20.169261382088795,
+            "below": 0.2265193370165746,
+            "above": 0.18232044198895028
+          },
+          "80": {
+            "n": 362,
+            "coverage": 0.8176795580110497,
+            "width": 21.2325409950087,
+            "interval_score": 28.340982771783683,
+            "below": 0.11049723756906077,
+            "above": 0.0718232044198895
+          },
+          "95": {
+            "n": 362,
+            "coverage": 0.9585635359116023,
+            "width": 32.18082753432626,
+            "interval_score": 40.4235446880125,
+            "below": 0.027624309392265192,
+            "above": 0.013812154696132596
+          }
+        },
+        "not_listed": {
+          "50": {
+            "n": 6409,
+            "coverage": 0.53315649867374,
+            "width": 11.189628340169639,
+            "interval_score": 20.11370028095858,
+            "below": 0.21813075362771103,
+            "above": 0.24871274769854892
+          },
+          "80": {
+            "n": 6409,
+            "coverage": 0.8168200967389608,
+            "width": 20.87275196020822,
+            "interval_score": 28.07658260286055,
+            "below": 0.07832735216102356,
+            "above": 0.10485255110001561
+          },
+          "95": {
+            "n": 6409,
+            "coverage": 0.9510063972538617,
+            "width": 31.083589203637132,
+            "interval_score": 38.554347217607095,
+            "below": 0.01809954751131222,
+            "above": 0.030894055234826027
+          }
+        },
+        "not_submitted": {
+          "50": {
+            "n": 1686,
+            "coverage": 0.5676156583629893,
+            "width": 12.561372780763657,
+            "interval_score": 20.621776654474775,
+            "below": 0.2431791221826809,
+            "above": 0.18920521945432978
+          },
+          "80": {
+            "n": 1686,
+            "coverage": 0.8238434163701067,
+            "width": 21.967469404449226,
+            "interval_score": 28.68106210012265,
+            "below": 0.09489916963226572,
+            "above": 0.08125741399762752
+          },
+          "95": {
+            "n": 1686,
+            "coverage": 0.9555160142348754,
+            "width": 34.09141297503566,
+            "interval_score": 39.47691740882311,
+            "below": 0.02609727164887307,
+            "above": 0.018386714116251483
+          }
+        },
+        "unresolved_identity": {
+          "50": {
+            "n": 0
+          },
+          "80": {
+            "n": 0
+          },
+          "95": {
+            "n": 0
+          }
+        }
+      }
+    }
+  },
+  "interval_score_gain_80": {
+    "status_symmetric": {
+      "date": {
+        "gain": -0.015093062819915437,
+        "low95": -0.02836162225386288,
+        "high95": -0.0003585593814248483,
+        "clusters": 52
+      },
+      "pid": {
+        "gain": -0.015093062819915437,
+        "low95": -0.02540813676429836,
+        "high95": -0.004445726799071464,
+        "clusters": 512
+      }
+    },
+    "status_asymmetric": {
+      "date": {
+        "gain": -0.06105536101935097,
+        "low95": -0.10637435846045774,
+        "high95": -0.013480555850792926,
+        "clusters": 52
+      },
+      "pid": {
+        "gain": -0.06105536101935097,
+        "low95": -0.10006986253029186,
+        "high95": -0.02248865103361061,
+        "clusters": 512
+      }
+    }
+  },
+  "interval_eligible_for_future_frozen_comparison": {
+    "status_symmetric": false,
+    "status_asymmetric": false
+  },
+  "limitations": [
+    "Reused historical 2025/26 confirmation, not independent prospective validation",
+    "Only observed prior-team membership and >=5 appearances, not full fantasy population",
+    "Unknown participation labels are not imputed as DNP",
+    "No new unconditional or weekly interval calibration claim",
+    "NBA reconstructed FP are not official Sports.ru credits",
+    "Original models and committed future forecasts remain unchanged"
+  ],
+  "runtime_seconds": 2.458597421646118
+}

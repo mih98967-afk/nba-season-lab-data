@@ -1,0 +1,78 @@
+{
+  "status": "exploratory_distribution_followon_not_deployed",
+  "adopt_on_site": false,
+  "real_KEEP_TRANSFER_gain_proven": false,
+  "mean_and_pplay_weights_unchanged": true,
+  "mean_winner": "ridge_context",
+  "participation_winner": "catboost_4",
+  "quantile_selection": {
+    "form": {
+      "by_quantile": {
+        "0.025": 0.4162231696343372,
+        "0.1": 1.3138607747281918,
+        "0.25": 2.486498296896613,
+        "0.5": 3.2525050126275223,
+        "0.75": 2.6928898799370433,
+        "0.9": 1.5386581211469639,
+        "0.975": 0.546023572188438
+      },
+      "mean_pinball": 1.7495226895941587
+    },
+    "context": {
+      "by_quantile": {
+        "0.025": 0.4131609883638978,
+        "0.1": 1.3032056970976595,
+        "0.25": 2.471104093084313,
+        "0.5": 3.2388929387062246,
+        "0.75": 2.683092013557366,
+        "0.9": 1.5403676296686348,
+        "0.975": 0.5485508635890727
+      },
+      "mean_pinball": 1.7426248891524527
+    },
+    "all": {
+      "by_quantile": {
+        "0.025": 0.4144694706723048,
+        "0.1": 1.3045409211807149,
+        "0.25": 2.4664150480079856,
+        "0.5": 3.2350359506500173,
+        "0.75": 2.6797063843279876,
+        "0.9": 1.5426908931577576,
+        "0.975": 0.5465322628162362
+      },
+      "mean_pinball": 1.7413415615447148
+    }
+  },
+  "quantile_winner": "all",
+  "conditional_global_offsets": {
+    "0.5": 0.17799823105807644,
+    "0.2": 0.351855156535116,
+    "0.05": 0.3688887711465867
+  },
+  "conditional_status_offsets": {
+    "0.5": {
+      "Questionable": 0.17799823105807644,
+      "Probable": 0.7801786888868705
+    },
+    "0.2": {
+      "Questionable": 0.351855156535116,
+      "Probable": 0.351855156535116
+    },
+    "0.05": {
+      "Questionable": 0.3688887711465867,
+      "Probable": 0.3688887711465867
+    }
+  },
+  "status_calibration_n": {
+    "Out": 3,
+    "Doubtful": 2,
+    "Questionable": 121,
+    "Probable": 62,
+    "Available": 52
+  },
+  "model_sha256": "61321e1571ab84bc5e7faf688dc69e776445d88fcfa296fee70b0261c427f0e3",
+  "protocol_sha256": "d3ee59ce3c6ef8c4fbc95855c79564254ea6d6c01e4b4bf045c47bff9eb82c23",
+  "no_current_outcomes_used_for_parameter_fit_or_calibration": true,
+  "current_subgroup_problem_motivated_followon": true,
+  "runtime_seconds": 111.97714114189148
+}

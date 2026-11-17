@@ -108,6 +108,60 @@ def validate_summary(payload, nba_game_id, home, away):
 
 
 
+def known_game_ids(records):
+    """Validated exact IDs only; unresolved upstream rows stay in the cohort."""
+    ids = set()
+    for row in records:
+        value = row.get("nba_game_id")
+        if value is None:
+            continue
+        if not isinstance(value, str) or not re.fullmatch(r"00226\d{5}", value):
+            raise ValueError("Malformed official NBA game ID")
+        ids.add(value)
+    if len(ids) > MAX_SOURCE_GAMES:
+        raise ValueError("Out-of-bounds official NBA game IDs")
+    return ids
+
+
+def validated_prior_identity(prior, row, game, now):
+    """Retain a verified verdict only with genuine source proof and same high ID.
+
+    A missing current person crosswalk yields UNKNOWN in the new report; the
+    old verified row is retained separately as historical evidence. A positive
+    contradiction or changed high-confidence ID fails closed for review.
+    """
+    prior_game = prior.get("nba_game_id")
+    prior_person = prior.get("nba_person_id")
+    if (not isinstance(prior_game, str)
+            or not re.fullmatch(r"00226\d{5}", prior_game)
+            or not str(prior_person or "").isdigit()
+            or prior.get("nba_identity_strength") != "high"
+            or prior.get("game_id") != row["game_id"]
+            or prior.get("player_id") != row["player_id"]
+            or prior.get("team") != row["team"]
+            or prior.get("game_utc") != game["utc"]
+            or prior.get("first_prediction_issued_at_utc") != row["first_prediction_issued_at_utc"]
+            or prior.get("source_url") != PREFIX + prior_game
+            or not re.fullmatch(r"[0-9a-f]{64}", str(prior.get("source_sha256") or ""))
+            or prior.get("game_match_complete_and_final") is not True
+            or prior.get("matched_explicit_official_inactive") is not True
+            or prior.get("model_training_negative") is not False
+            or prior.get("research_only") is not True
+            or prior.get("conflict_requires_review") is not False
+            or (row.get("nba_game_id") is not None and row["nba_game_id"] != prior_game)):
+        raise ValueError("Invalid verified prior identity or source provenance")
+    observed = utc(prior.get("source_first_observed_at_utc"))
+    if not utc(game["utc"]) <= observed <= now:
+        raise ValueError("Invalid verified prior source observation time")
+    method = row.get("identity_NBA_ID_strength")
+    identity = row.get("identity_nba_person_id")
+    if (method == "high" and str(identity) != str(prior_person)
+            or str(row.get("observed_official_game_played_flag")) == "1"
+            or row.get("conflict_requires_review") is True):
+        raise ValueError("Current identity or participation conflicts with verified prior")
+    return method == "high"
+
+
 def plan_requests(official, previous, now, max_requests=MAX_GAMES):
     """Cap requests per invocation; preserve a complete retryable source backlog."""
     if now.utcoffset() is None:
@@ -123,11 +177,8 @@ def plan_requests(official, previous, now, max_requests=MAX_GAMES):
                      previous.get("status") != STATUS or
                      previous.get("adopt_on_site") is not False):
         raise ValueError("Untrusted previous NBA inactive source")
-    ids = sorted({r["nba_game_id"] for r in official.get("records") or []})
-    if not ids or len(ids) > MAX_SOURCE_GAMES or any(
-            not re.fullmatch(r"00226\d{5}", str(gid)) for gid in ids):
-        raise ValueError("Out-of-bounds official NBA game IDs")
-    old_games = {r["nba_game_id"] for r in previous.get("records") or []}
+    ids = sorted(known_game_ids(official.get("records") or []))
+    old_games = known_game_ids(previous.get("records") or [])
     history = previous.get("source_attempted_utc_by_game") or {}
     if not isinstance(history, dict):
         raise ValueError("Malformed historical request provenance")
@@ -173,20 +224,21 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
     prior_rows = {(r["game_id"],r["player_id"]):r for r in old.get("records", [])}
     if len(prior_rows) != len(old.get("records", [])):
         raise ValueError("Duplicate previous evidence")
-    source_games = {r["nba_game_id"] for r in prev_cases}
+    source_games = known_game_ids(prev_cases)
     attempted = source_games if attempted_game_ids is None else set(attempted_game_ids)
     deferred = set(deferred_game_ids or [])
     pending = set(pending_game_ids or [])
     # No batch cap is allowed to silently remove a game from the denominator.
     if (attempted & deferred or attempted & pending or deferred & pending
             or attempted | deferred | pending != source_games
-            or deferred - {r["nba_game_id"] for r in prior_rows.values()}
+            or deferred - known_game_ids(prior_rows.values())
             or len(attempted) > MAX_GAMES):
         raise ValueError("Invalid source attempted/deferred/pending partition")
     attempt_history = dict(old.get("source_attempted_utc_by_game") or {})
     for prior in prior_rows.values():
-        if prior["nba_game_id"] not in attempt_history and old.get("updated_at_utc"):
-            attempt_history[prior["nba_game_id"]] = old["updated_at_utc"]
+        prior_id = prior.get("nba_game_id")
+        if prior_id is not None and prior_id not in attempt_history and old.get("updated_at_utc"):
+            attempt_history[prior_id] = old["updated_at_utc"]
     for gid in attempted:
         attempt_history[gid] = stamp(now)
     outputs = []
@@ -200,11 +252,48 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
         if (not first or not game or row["game_utc"] != game["utc"]
             or row.get("outcome") not in (UNKNOWN, "VERIFIED_GAME_DAY_INACTIVE", "VERIFIED_ACTIVE_NONPLAY")
             or row.get("team") not in (game["home"],game["away"])
-            or not isinstance(nba_id,str) or not re.fullmatch(r"00226\d{5}",nba_id)
             or row.get("p_play_shadow_untouched") is not True
             or first.get("boxscore_athlete_verdict") != "ESPN_person_not_listed_in_two_team_boxscore"
             or utc(game["utc"]) > now):
             raise ValueError("Unsafe or mismatched game/OUT evidence")
+        identity = row.get("identity_nba_person_id")
+        method = row.get("identity_NBA_ID_strength")
+        if method == "high" and (not str(identity or "").isdigit()):
+            raise ValueError("High identity without NBA ID")
+        old_item = prior_rows.get(key)
+        old_verified = bool(old_item and old_item.get("outcome") == VERIFIED)
+        preserve_verified = old_verified and validated_prior_identity(old_item, row, game, now)
+        if nba_id is None:
+            if preserve_verified:
+                outputs.append(old_item)
+                qa[VERIFIED] += 1
+                qa["historical_evidence_preserved"] += 1
+                continue
+            out = {
+                "game_id": row["game_id"], "nba_game_id": None,
+                "player_id": row["player_id"], "team": row["team"],
+                "game_utc": game["utc"],
+                "first_prediction_issued_at_utc": row["first_prediction_issued_at_utc"],
+                "nba_person_id": identity if method == "high" else None,
+                "nba_identity_strength": method,
+                "source_url": None, "source_first_observed_at_utc": None,
+                "source_sha256": None, "official_summary_inactive_total": None,
+                "game_match_complete_and_final": False,
+                "matched_explicit_official_inactive": False,
+                "outcome": UNKNOWN, "why_unknown": "unresolved_official_game_id",
+                "upstream_why_unknown": row.get("why_unknown"),
+                "conflict_requires_review": bool(row.get("conflict_requires_review")),
+                "separate_from_ESPN_didNotPlay": True,
+                "model_training_negative": False, "research_only": True,
+            }
+            if old_verified:
+                out["prior_verified_evidence"] = old_item
+                out["prior_verdict_not_reused_reason"] = "current_high_confidence_person_identity_unavailable"
+                qa["historical_verified_evidence_retained_without_current_verdict"] += 1
+            outputs.append(out)
+            qa[UNKNOWN] += 1
+            qa["unresolved_official_game_id"] += 1
+            continue
         if nba_id not in checked:
             if nba_id in pending:
                 qa["pending_due_to_game_cap_games"] += 1
@@ -224,11 +313,6 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
                 qa["source_unavailable_games"] += 1
                 checked[nba_id] = None
         indexed = checked[nba_id]
-        identity = row.get("identity_nba_person_id")
-        method = row.get("identity_NBA_ID_strength")
-        if method == "high" and (not str(identity or "").isdigit()):
-            raise ValueError("High identity without NBA ID")
-        old_item = prior_rows.get(key)
         if nba_id in deferred or (nba_id in pending and old_item is not None):
             if (old_item is None or old_item.get("outcome") not in (UNKNOWN, VERIFIED)
                     or old_item.get("nba_game_id") != nba_id
@@ -237,12 +321,15 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
                     or old_item.get("first_prediction_issued_at_utc") !=
                     row["first_prediction_issued_at_utc"]):
                 raise ValueError("Deferred source would change immutable prior identity")
+            if not old_verified or preserve_verified:
+                outputs.append(old_item)
+                qa[old_item["outcome"]] += 1
+                qa["historical_evidence_preserved"] += 1
+                continue
+        if preserve_verified:
             outputs.append(old_item)
-            qa[old_item["outcome"]] += 1
+            qa[VERIFIED] += 1
             qa["historical_evidence_preserved"] += 1
-            continue
-        if old_item and old_item.get("outcome") == VERIFIED:
-            outputs.append(old_item)
             continue
         outcome = UNKNOWN
         why = ("pending_due_to_game_cap" if nba_id in pending else
@@ -283,6 +370,10 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
             "model_training_negative":False,
             "research_only":True,
         }
+        if old_verified:
+            out["prior_verified_evidence"] = old_item
+            out["prior_verdict_not_reused_reason"] = "current_high_confidence_person_identity_unavailable"
+            qa["historical_verified_evidence_retained_without_current_verdict"] += 1
         outputs.append(out)
         qa[outcome] += 1
         if outcome == UNKNOWN:qa[why or "unresolved"] += 1
@@ -303,6 +394,7 @@ def reconcile(previous_nba_report, first_out_report, live, payloads, errors,
         "source_requests_pending_game_cap":len(pending),
         "source_retry_backoff_hours":24,
         "original_queue_count":len(outputs),
+        "unresolved_official_game_id_cases":sum(r.get("nba_game_id") is None for r in outputs),
         "verified_official_summary_games":qa["verified_official_summary_games"],
         "source_unavailable_games":qa["source_unavailable_games"],
         "resolved_confirmed":sum(x["outcome"]==VERIFIED for x in outputs),

@@ -5,7 +5,7 @@ from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 from src.sync import DATA
 from src.official_nba_inactive_summary_research import (
-    plan_requests, reconcile, UNKNOWN,
+    plan_requests, reconcile, known_game_ids, UNKNOWN,
 )
 NOW = datetime(2026, 10, 28, 10, tzinfo=timezone.utc)
 def get(filename):
@@ -31,10 +31,10 @@ class Catchup(unittest.TestCase):
         recent_old=deepcopy(self.old)
         fresh_attempt=(self.test_now-timedelta(minutes=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
         recent_old["source_attempted_utc_by_game"]={
-            x["nba_game_id"]:fresh_attempt for x in recent_old["records"]}
+            gid:fresh_attempt for gid in known_game_ids(recent_old["records"])}
         req,defer,pending=plan_requests(self.nba,recent_old,self.test_now)
-        old_games={x["nba_game_id"] for x in recent_old["records"]}
-        all_games={x["nba_game_id"] for x in self.nba["records"]}
+        old_games=known_game_ids(recent_old["records"])
+        all_games=known_game_ids(self.nba["records"])
         self.assertEqual(set(defer),old_games)
         self.assertEqual(set(req),all_games-old_games)
         self.assertEqual(pending,[])
@@ -53,7 +53,7 @@ class Catchup(unittest.TestCase):
     def test_future_finished_game_cannot_be_backdated(self):
         last=max(self.nba["records"],key=lambda x:x["game_utc"])
         premature=datetime.fromisoformat(last["game_utc"].replace("Z","+00:00"))-timedelta(seconds=1)
-        games={r["nba_game_id"] for r in self.nba["records"]}
+        games=known_game_ids(self.nba["records"])
         with self.assertRaisesRegex(ValueError,"Unsafe or mismatched game/OUT evidence"):
             reconcile(self.nba,self.espn,self.live,{},
                       {gid:"TimeoutError" for gid in games},premature,
@@ -73,7 +73,7 @@ class Catchup(unittest.TestCase):
         self.assertEqual(len(req),18)
         self.assertEqual(len(defer),0)
         self.assertEqual(len(req)+len(pending),
-                         len({r["nba_game_id"] for r in data["records"]}))
+                         len(known_game_ids(data["records"])))
         self.assertGreater(len(pending),0)
         self.assertEqual(len(set(req)&set(pending)),0)
         # Pending games may not masquerade as fetched sources.
@@ -89,26 +89,26 @@ class Catchup(unittest.TestCase):
     def test_future_provenance_rejected(self):
         old=deepcopy(self.old)
         old["source_attempted_utc_by_game"]={
-            self.old["records"][0]["nba_game_id"]:"2030-01-01T00:00:00Z"}
+            sorted(known_game_ids(self.old["records"]))[0]:"2030-01-01T00:00:00Z"}
         with self.assertRaises(ValueError):plan_requests(self.nba,old,NOW)
     def test_retry_after_24_hours_without_backdating(self):
         req,defer,pending=plan_requests(self.nba,self.old,self.test_now+timedelta(days=2))
         self.assertFalse(defer)
-        self.assertEqual(len(req)+len(pending),len({r["nba_game_id"] for r in self.nba["records"]}))
+        self.assertEqual(len(req)+len(pending),len(known_game_ids(self.nba["records"])))
     def test_new_game_cannot_be_deferred_without_prior(self):
         # Use a synthetic *older* saved snapshot. The real research archive
         # eventually catches up to all games; no test may require it to stay
         # perpetually at 23/27 cases.
-        games={r["nba_game_id"] for r in self.nba["records"]}
+        games=known_game_ids(self.nba["records"])
         self.assertTrue(games)
         unseen=sorted(games)[-1]
         earlier=deepcopy(self.old)
         earlier["records"]=[
-            r for r in earlier["records"] if r["nba_game_id"]!=unseen]
+            r for r in earlier["records"] if r.get("nba_game_id")!=unseen]
         earlier["source_attempted_utc_by_game"]={
             k:v for k,v in earlier.get("source_attempted_utc_by_game",{}).items()
             if k!=unseen}
-        self.assertNotIn(unseen,{r["nba_game_id"] for r in earlier["records"]})
+        self.assertNotIn(unseen,known_game_ids(earlier["records"]))
         with self.assertRaisesRegex(ValueError,"Invalid source attempted/deferred/pending partition"):
             reconcile(self.nba,self.espn,self.live,{}, {},self.test_now,earlier,
                       attempted_game_ids=[],deferred_game_ids=list(games))
