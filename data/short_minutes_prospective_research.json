@@ -3,7 +3,7 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-11-17T23:31:33Z",
+  "updated_at_utc": "2026-11-18T07:31:23Z",
   "target": "P(actual_minutes_below_10_given_verified_positive_minutes)",
   "population": "first_issued_frozen_minutes_same_team_p_play_proxy_only",
   "training_year": "2024/25",
@@ -70834,14 +70834,48 @@
       "p_play_probability_multiplied": false,
       "research_only": true,
       "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401910013",
+      "player_id": "n435",
+      "team": "DET",
+      "game_utc": "2026-11-19T01:00:00Z",
+      "individual_lock_utc": "2026-11-19T00:30:00Z",
+      "minutes_first_issued_at_utc": "2026-11-18T07:31:22Z",
+      "p_play_first_issued_at_utc": "2026-11-18T07:31:19Z",
+      "risk_first_issued_at_utc": "2026-11-18T07:31:23Z",
+      "minutes_source_issue_sha256": "e5dcf38958a7fbf1fbabd30378bf02acfd5879313a5c0bf8560f979fb0072333",
+      "dev_only_model_sha256": "b8a50db5db8a112a2a94b77c9c4f9c2e11bfdb2c8e3a891553f11bd7c8e2dd4c",
+      "conditional_predicted_minutes": 6.88355,
+      "preissue_predicted_minutes_group": "under_15",
+      "global_dev_short_given_played_probability": 0.10488127,
+      "group_dev_short_given_played_probability": 0.44131965,
+      "global_dev_q90_minutes_band": [
+        0,
+        18.3982
+      ],
+      "group_dev_q90_minutes_band": [
+        0,
+        23.8542
+      ],
+      "short_actual_minutes_threshold": 10.0,
+      "development_year": "2024/25",
+      "new_historical_holdout_unseen": false,
+      "game_day_roster_verified": false,
+      "outcome_at_first_issue": "UNKNOWN",
+      "observed_minutes_used_as_feature": false,
+      "model_training_negative": false,
+      "p_play_probability_multiplied": false,
+      "research_only": true,
+      "adopt_on_site": false
     }
   ],
-  "issued_total": 2083,
+  "issued_total": 2084,
   "issue_QA": {
-    "already_issued": 2040,
+    "already_issued": 2083,
     "locked_cannot_backfill": 62,
-    "new_genuine_prelock_issues": 43,
-    "minutes_source_total": 2145
+    "new_genuine_prelock_issues": 1,
+    "minutes_source_total": 2146
   },
   "quality_gate": {
     "all_new_issued_before_individual_lock": true,
