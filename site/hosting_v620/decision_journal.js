@@ -15,6 +15,73 @@
  const ID=/^n[0-9]{3,5}$/;
  const STATUS='owner_clicked_predecision_snapshot_unverified';
 
+ // Optional public model provenance. This records which published metadata
+ // was present at the existing explicit click; it is not a second receipt,
+ // an independent publication witness, or a full per-player forecast archive.
+ const HASH=/^[a-f0-9]{64}$/;
+ const MODEL_MODES=new Set(['current','legacy','research','validated']);
+ const RISK_MODES=new Set(['baseline','cautious','allplay']);
+ const PROVENANCE_KEYS=new Set(['schema_version','model_mode','risk_mode',
+  'model_requested','feed_usable_at_capture','feed','public_metadata_only',
+  'full_per_game_forecasts_frozen','source_publication_independently_witnessed',
+  'economic_benefit_proven']);
+ const FEED_META_KEYS=new Set(['schema_version','kind','issued_at_utc',
+  'source_capture_completed_at_utc','valid_until_utc','status',
+  'model_manifest_sha256','source_manifest_sha256',
+  'fresh_official_status_sha256','site_default']);
+ function validateForecastProvenance(entry){
+  const p=entry.forecast_provenance;
+  if(p===undefined)return undefined; // Older journals retain their schema.
+  ensure(p&&typeof p==='object'&&!Array.isArray(p)&&p.schema_version===1&&
+   Object.keys(p).every(k=>PROVENANCE_KEYS.has(k))&&
+   MODEL_MODES.has(p.model_mode)&&RISK_MODES.has(p.risk_mode)&&
+   typeof p.model_requested==='boolean'&&typeof p.feed_usable_at_capture==='boolean'&&
+   p.public_metadata_only===true&&p.full_per_game_forecasts_frozen===false&&
+   p.source_publication_independently_witnessed===false&&p.economic_benefit_proven===false,
+   'BAD_FORECAST_PROVENANCE');
+  const captured=instant(entry.captured_at_utc),f=p.feed;
+  ensure(Number.isFinite(captured),'BAD_FORECAST_CAPTURE_TIME');
+  if(f!==null){
+   ensure(f&&typeof f==='object'&&!Array.isArray(f)&&
+    Object.keys(f).every(k=>FEED_META_KEYS.has(k))&&
+    f.schema_version===1&&f.kind==='nba_per_game_model_forecasts'&&
+    ['ready','stale_inputs'].includes(f.status)&&typeof f.site_default==='boolean'&&
+    HASH.test(f.model_manifest_sha256||'')&&HASH.test(f.source_manifest_sha256||'')&&
+    (f.fresh_official_status_sha256===null||HASH.test(f.fresh_official_status_sha256||'')),
+    'BAD_FORECAST_PUBLIC_METADATA');
+   const issued=instant(f.issued_at_utc),source=instant(f.source_capture_completed_at_utc),until=instant(f.valid_until_utc);
+   ensure([issued,source,until].every(Number.isFinite)&&source<=issued&&issued<=captured&&until>issued,
+    'FUTURE_OR_INVALID_FORECAST_METADATA');
+   ensure(p.feed_usable_at_capture===(f.status==='ready'&&captured<=until),
+    'MODIFIED_FORECAST_FRESHNESS');
+  }else ensure(p.feed_usable_at_capture===false,'MISSING_FORECAST_CANNOT_BE_USABLE');
+  ensure(p.model_requested===(p.model_mode==='research'||p.model_mode==='current'&&f?.site_default===true),
+   'MODIFIED_FORECAST_MODE');
+  return p;
+ }
+ function buildForecastProvenance(src,entry){
+  if(src===undefined||src===null)return undefined;
+  ensure(src&&typeof src==='object'&&!Array.isArray(src)&&
+   MODEL_MODES.has(src.modelMode)&&RISK_MODES.has(src.riskMode),'BAD_FORECAST_PROVENANCE_INPUT');
+  const f=src.feed;let feed=null;
+  if(f!==undefined&&f!==null){
+   // Do not copy arbitrary feed keys, player rows or an input owner profile.
+   feed={schema_version:f.schema_version,kind:f.kind,issued_at_utc:f.issued_at_utc,
+    source_capture_completed_at_utc:f.source_capture_completed_at_utc,
+    valid_until_utc:f.valid_until_utc,status:f.status,
+    model_manifest_sha256:f.model_manifest_sha256,source_manifest_sha256:f.source_manifest_sha256,
+    fresh_official_status_sha256:f.fresh_official_status_sha256??null,
+    site_default:f.model_policy?.site_default===true};
+  }
+  entry.forecast_provenance={schema_version:1,model_mode:src.modelMode,risk_mode:src.riskMode,
+   model_requested:src.modelMode==='research'||src.modelMode==='current'&&feed?.site_default===true,
+   feed_usable_at_capture:!!feed&&feed.status==='ready'&&instant(entry.captured_at_utc)<=instant(feed.valid_until_utc),
+   feed,public_metadata_only:true,full_per_game_forecasts_frozen:false,
+   source_publication_independently_witnessed:false,economic_benefit_proven:false};
+  validateForecastProvenance(entry);
+  return entry.forecast_provenance;
+ }
+
  // Optional as-of schedule envelope. Existing v1 journals remain readable.
  // This is owner-clicked, not independently witnessed or Sports.ru-attested.
  const SLATE_STATUS='owner_clicked_model_schedule_unverified';
@@ -500,6 +567,7 @@
      }
      ensure(s.routes.some(r=>r.kind==='keep'),'NO_KEEP_COMPARISON');
      validateSlate(e);
+     validateForecastProvenance(e);
    }
    return journal;
  }
@@ -571,6 +639,7 @@
      no_sportsru_transfer_executed:true,model_was_not_retrained:true,
      caution:'Owner-clicked local observation, not independent source publication time or proof of real transfer advantage.'};
    buildSlate(input.slate,entry);
+   buildForecastProvenance(input.forecastProvenance,entry);
    const next={...journal,entries:[...journal.entries,entry]};
    validate(next);
    ensure(typeof storage.setItem==='function','NO_STORAGE_WRITE');
@@ -584,5 +653,5 @@
    ensure(storage&&typeof storage.removeItem==='function','NO_STORAGE');
    storage.removeItem(KEY);
  }
- return {KEY,CREDIT_KEY,read,take,exportData,clear,inspectCoverage,auditCoverage,differentialEvidence,CREDIT_PAGE_SIZE,creditMergePage,creditRead,creditFind,creditSave,creditDelete,creditReview,_status:STATUS};
+ return {KEY,CREDIT_KEY,read,take,exportData,clear,inspectCoverage,auditCoverage,differentialEvidence,validateForecastProvenance,CREDIT_PAGE_SIZE,creditMergePage,creditRead,creditFind,creditSave,creditDelete,creditReview,_status:STATUS};
 });
