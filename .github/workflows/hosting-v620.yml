@@ -7,6 +7,7 @@ on:
       - 'scripts/build_hosting_v621.py'
       - 'scripts/test_build_hosting_v621.py'
       - 'scripts/test_hosting_v621_browser.py'
+      - 'scripts/test_browser_v621_clock.py'
       - '.github/workflows/hosting-v620.yml'
 permissions:
   contents: read
@@ -28,6 +29,7 @@ jobs:
         run: |
           python scripts/build_hosting_v621.py --verify-source-only
           python -m unittest discover -s scripts -p 'test_build_hosting_v621.py'
+          python -m unittest discover -s scripts -p 'test_browser_v621_clock.py'
       - name: Explain generated snapshot boundary
         run: |
           echo 'Current forecast snapshots are generated from immutable weights by the main inference workflow.'

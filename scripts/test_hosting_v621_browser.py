@@ -35,6 +35,18 @@ def parse_time(value):
     return datetime.fromisoformat(value.replace("Z", "+00:00"))
 
 
+def difficulty_snapshot_is_fresh(as_of_utc, replay_tick, actual_mode, wall_now=None):
+    """Replayed forecast time and current wall time are distinct clocks.
+
+    The difficulty generator runs after issuing the forecast, so its timestamp
+    can legitimately be newer than the UI replay tick. Do not relax the 72 h
+    limit or permit future snapshots in actual mode.
+    """
+    reference = (wall_now or datetime.now(UTC)) if actual_mode else replay_tick
+    observed = parse_time(as_of_utc)
+    return reference - timedelta(hours=72) <= observed <= reference
+
+
 def encoded(value):
     return json.dumps(value, ensure_ascii=False, separators=(",", ":")).encode()
 
@@ -170,7 +182,13 @@ def main():
         assert all(set(["ALL", *POSITIONS]) <= set(row) for row in difficulty["opponents"].values())
         assert schedule["schema_version"] == 1 and 1100 <= len(schedule["games"]) <= 1230
         assert live["schema_version"] == 4 and live["mode"] == "live_sync"
-        assert tick - timedelta(hours=72) <= parse_time(difficulty["as_of_utc"]) <= tick
+        # UI replay uses a clock fixed 60 s after forecast issuance. The
+        # difficulty snapshot is produced later in the same pipeline, so
+        # checking its wall-clock timestamp against that replay clock would
+        # reject a valid, fresh snapshot as "from the future".
+        # Keep the strict <=72 h freshness requirement against the actual
+        # verification clock; the release builder checks it independently.
+        assert difficulty_snapshot_is_fresh(difficulty["as_of_utc"], tick, args.mode == "actual"), "DIFFICULTY_SNAPSHOT_NOT_FRESH"
         state = guest_state(base, forecast, tick)
         payloads = {name: encoded(value) for name, value in data.items()}
         report.update({"clock_utc": stamp(tick), "clock_purpose": "UI replay at issuance + 60 seconds; real freshness is a separate release gate",
