@@ -1,0 +1,74 @@
+{
+  "schema": "season_position_ingest_provenance_v1",
+  "input_workbooks": [
+    {
+      "file": "NBA_2324.xlsx",
+      "sha256": "4f96bc654a4384c8b73fa2c7204fedc8290d3840bf892ae5a492f9f5570c0c4e",
+      "sheets": [
+        {
+          "name": "Статистика игроков",
+          "xml": "xl/worksheets/sheet1.xml",
+          "physical_rows": 600,
+          "roster_rows": 599
+        }
+      ],
+      "workbook_created_at": "2026-11-18T14:24:18.00Z",
+      "historical_vintage_verified": false
+    },
+    {
+      "file": "NBA_2425.xlsx",
+      "sha256": "f3e84befbdde1f9969188ba5e8758374ab5fe3d8ce60dc5c632599071b8c85f4",
+      "sheets": [
+        {
+          "name": "Статистика игроков",
+          "xml": "xl/worksheets/sheet1.xml",
+          "physical_rows": 619,
+          "roster_rows": 618
+        }
+      ],
+      "workbook_created_at": "2026-11-18T14:24:07.00Z",
+      "historical_vintage_verified": false
+    },
+    {
+      "file": "NBA_2526.xlsx",
+      "sha256": "dd5a1c0fbc593154f6ac577b7d3f070fa7d53305b9256db8abb1ba9ca58f20b1",
+      "sheets": [
+        {
+          "name": "Статистика игроков",
+          "xml": "xl/worksheets/sheet1.xml",
+          "physical_rows": 648,
+          "roster_rows": 647
+        }
+      ],
+      "workbook_created_at": "2026-11-18T14:23:53.00Z",
+      "historical_vintage_verified": false
+    },
+    {
+      "file": "NBA_2627.xlsx",
+      "sha256": "bea412a765afd0eb644a6cbf7b1b81431584bf1124028d9bdb51e00ab34f3acb",
+      "sheets": [
+        {
+          "name": "Статистика игроков",
+          "xml": "xl/worksheets/sheet1.xml",
+          "physical_rows": 537,
+          "roster_rows": 536
+        }
+      ],
+      "workbook_created_at": "2026-11-18T14:23:38.00Z",
+      "historical_vintage_verified": false
+    }
+  ],
+  "files": {
+    "ingest_positions.py": "016a336c7a1866f9a019736f88ae5cca8733272a3270b894f27d11272406f4b3",
+    "reviewed_aliases.json": "da0355f3d856ad8c44b94d112b0fa323fb7bddc46de5484febba609de19419a7",
+    "reviewed_alias_pairs.tsv": "9201c71876c20c3d4244d1b1c0d3a82acfe85da82b149149aad8a420d564f4ae",
+    "results/SEASON_POSITION_MAPPING.json": "7b1277cbcb5b891e5f83b7590403d77440b514eef2ec63c4e673321eceeb6cde",
+    "results/NBA_IDENTITY_INDEX.json": "6f740b1158bf405fc534d3cbfc3ebb85895cb50b2aa2fb1af36ce4b8c20c6e23",
+    "results/catalog_history_corrections.json": "125b315a379256b9b10eab0e6eb6aa256a52fd733b7a19cf78ccde1d6b1ebabe",
+    "results/CURRENT_ROSTER_PUBLIC.json": "9ef9af88d2b5c4606cc2708c818a224766c2a0768263f3819fef9f8ecd80398e",
+    "results/XLSX_SCHEMA_AND_CREDIT_QA.json": "5452b6b303453933a7a4830cd6a56591eb0b9612b9e4298b36117fe1fe3ba7f6"
+  },
+  "source_mutated": false,
+  "ownership_data_included": false,
+  "identity_policy": "Exact NBA ID with season membership; source-row-specific reviewed aliases; duplicate identity conflicts fail closed; unresolved preserved."
+}

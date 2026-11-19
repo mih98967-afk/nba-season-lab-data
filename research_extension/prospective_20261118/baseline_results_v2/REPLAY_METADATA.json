@@ -1,0 +1,53 @@
+{
+  "schema": "nba-exact-app-public-default-replay-v1",
+  "generated_at_utc": "2026-11-18T11:43:41.224Z",
+  "baseline_predictions_were_not_prospectively_frozen": true,
+  "private_owner_settings_replayed": false,
+  "source_PR175_confirmed_hosting": true,
+  "pregame_team_update_applied": true,
+  "PR176_same_prediction_functions_verified": true,
+  "app_sha256": "e0098a5ac73ffb28800a20dfd0f3c1e01c75a2405eee14f202bf0d4564145319",
+  "base_sha256": "69071d5b0940d7e5200416d7415de4fa8b2dde63460ca2bf05d6e2f2d281f95f",
+  "official_status_module_sha256": "78bb7292ecced608181f49b286acf5d31622ce8346bc5d11dbbd379f77755284",
+  "function_sha256": {
+    "updatePlayerTeams": "edc618f78c7f7758288a544ee964226c2320c2792408ac1f849da4f1426c2864",
+    "actualByPlayer": "432a9f38368892340041434d7e203a72702973f81c55ccd1e906ab66880f5046",
+    "playerActual": "5ba3cc0b7155b61d9811638a06e0f463c253e451c5d5abf8ab6dec60c28eaf84",
+    "verifiedOfficialForGame": "73f7f06b146504897bb0811ad70f10eab1bb7fc05b1ad7f68ae1b50cf85f3573",
+    "oldGameProjection": "23c93dc31cc04a7828a49146750972a6d5f7c99164e2f8ffe6ee54c5515a9323",
+    "probability": "c14d711671df122be7f799a5ed8115dd6e23ec3ce93abed1c5b0303983d9dd49",
+    "learnedMean": "15f852b36b5aab331580588a21a0e65d27c928be7f8cafaba4e825106b75acdf"
+  },
+  "cohorts": {
+    "original_20261116": {
+      "issued_at_utc": "2026-11-16T18:49:16.873587+00:00",
+      "live_updated_at_utc": "2026-11-16T06:32:59Z",
+      "official_updated_at_utc": "2026-11-16T07:22:37.579917+00:00",
+      "live_sha256": "539f85dacbc4e109bf7085c373483d36fbd256a044b0037f7c3422e0ea1a720e",
+      "official_sha256": "c023a891a175a7090d0a0715b7878b908ca92d4335c54c759a50624dfb468af7",
+      "forecast_sha256": "5aa81fa5db8f8a4e240cce3ec2477fad17626822c5eea2c02f39dab1b932a0cb",
+      "counts": {
+        "AVAILABLE": 1238,
+        "no_unique_pregame_identity_or_seed_player": 503
+      },
+      "official_OUT_rows": 44,
+      "all_live_outcomes_predate_issue": true,
+      "all_status_observations_predate_issue": true
+    },
+    "paired_20261117": {
+      "issued_at_utc": "2026-11-17T19:38:30.998904+00:00",
+      "live_updated_at_utc": "2026-11-17T13:28:44Z",
+      "official_updated_at_utc": "2026-11-17T13:54:55.355751+00:00",
+      "live_sha256": "cf913c09b759c9187c2f0c0b85dc176802295e67f6328730b2e99632eb280a61",
+      "official_sha256": "d95668d9791172ded0273f08bcaa72149942c940c08936b34bd72cd5de8eed47",
+      "forecast_sha256": "9b3cd732075d06c99ff0c3a30a2bd861ff606b0787c6de98d15302f93fa61ebb",
+      "counts": {
+        "AVAILABLE": 230,
+        "no_unique_pregame_identity_or_seed_player": 104
+      },
+      "official_OUT_rows": 34,
+      "all_live_outcomes_predate_issue": true,
+      "all_status_observations_predate_issue": true
+    }
+  }
+}

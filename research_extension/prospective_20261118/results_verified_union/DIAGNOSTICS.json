@@ -1,0 +1,1132 @@
+{
+  "schema": "nba-prospective-subgroup-diagnostics-v1",
+  "created_at_utc": "2026-11-18T11:42:51.953900+00:00",
+  "exploratory_subgroups_no_selection_or_tuning": true,
+  "current_statuses_not_backfilled": true,
+  "cohorts": {
+    "original_20261116": {
+      "frozen_feature_frame_sha256": "f6c295c74f6e589fd7a85f4881646ffce6a4864f60f8af877479d7374cbbf891",
+      "by_role_lead": {
+        "long_lead_primary:lead1": {
+          "by_frozen_status": {
+            "REPORT_UNAVAILABLE": {
+              "total": 167,
+              "known": 152,
+              "UNKNOWN": 15,
+              "candidate": {
+                "n": 152,
+                "brier": 0.09041141426432399,
+                "log_loss": 0.31468609348121157,
+                "predicted_mean": 0.677579835094221,
+                "observed_play_fraction": 0.6710526315789473
+              },
+              "historical_baseline": {
+                "n": 152,
+                "brier": 0.1394199065580124,
+                "log_loss": 0.44088622425874463,
+                "predicted_mean": 0.7250050414157542,
+                "observed_play_fraction": 0.6710526315789473
+              }
+            }
+          },
+          "by_history_n": {
+            "100_plus": {
+              "total": 110,
+              "known": 107,
+              "UNKNOWN": 3,
+              "candidate": {
+                "n": 107,
+                "brier": 0.09184563190842389,
+                "log_loss": 0.32408288381375816,
+                "predicted_mean": 0.7436209972832561,
+                "observed_play_fraction": 0.7102803738317757
+              },
+              "historical_baseline": {
+                "n": 107,
+                "brier": 0.14395091795575526,
+                "log_loss": 0.46210283544859565,
+                "predicted_mean": 0.7744559355985339,
+                "observed_play_fraction": 0.7102803738317757
+              }
+            },
+            "25_to99": {
+              "total": 34,
+              "known": 29,
+              "UNKNOWN": 5,
+              "candidate": {
+                "n": 29,
+                "brier": 0.08462506650954318,
+                "log_loss": 0.2811234847061767,
+                "predicted_mean": 0.5616872558331341,
+                "observed_play_fraction": 0.6551724137931034
+              },
+              "historical_baseline": {
+                "n": 29,
+                "brier": 0.11986765176625572,
+                "log_loss": 0.3710713575895024,
+                "predicted_mean": 0.6350862019020935,
+                "observed_play_fraction": 0.6551724137931034
+              }
+            },
+            "5_to24": {
+              "total": 23,
+              "known": 16,
+              "UNKNOWN": 7,
+              "candidate": {
+                "n": 16,
+                "brier": 0.09130783907494612,
+                "log_loss": 0.3126772865370566,
+                "predicted_mean": 0.44598486286576877,
+                "observed_play_fraction": 0.4375
+              },
+              "historical_baseline": {
+                "n": 16,
+                "brier": 0.14455722964566603,
+                "log_loss": 0.42553958276461745,
+                "predicted_mean": 0.5572800831869245,
+                "observed_play_fraction": 0.4375
+              }
+            }
+          },
+          "interval_coverage": {
+            "50": {
+              "True": {
+                "n": 100,
+                "games": 5,
+                "nominal": 0.5,
+                "coverage": 0.5,
+                "game_cluster_95CI": [
+                  0.4073232323232323,
+                  0.594059405940594
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 150,
+                "games": 5,
+                "nominal": 0.5,
+                "coverage": 0.6133333333333333,
+                "game_cluster_95CI": [
+                  0.5637583892617449,
+                  0.6713286713286714
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "80": {
+              "True": {
+                "n": 100,
+                "games": 5,
+                "nominal": 0.8,
+                "coverage": 0.73,
+                "game_cluster_95CI": [
+                  0.61,
+                  0.8516626662666272
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 150,
+                "games": 5,
+                "nominal": 0.8,
+                "coverage": 0.8133333333333334,
+                "game_cluster_95CI": [
+                  0.7354838709677419,
+                  0.896551724137931
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "95": {
+              "True": {
+                "n": 100,
+                "games": 5,
+                "nominal": 0.95,
+                "coverage": 0.92,
+                "game_cluster_95CI": [
+                  0.8653846153846154,
+                  0.9702970297029703
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 150,
+                "games": 5,
+                "nominal": 0.95,
+                "coverage": 0.9333333333333333,
+                "game_cluster_95CI": [
+                  0.8895705521472392,
+                  0.972972972972973
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            }
+          }
+        },
+        "near_interval_challenger:lead0": {
+          "by_frozen_status": {
+            "UNKNOWN": {
+              "total": 81,
+              "known": 81,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 81,
+                "brier": 0.10313796017844885,
+                "log_loss": 0.3465002091784521,
+                "predicted_mean": 0.6463566936070343,
+                "observed_play_fraction": 0.6790123456790124
+              },
+              "historical_baseline": {
+                "n": 81,
+                "brier": 0.15242395624166336,
+                "log_loss": 0.4726875173575948,
+                "predicted_mean": 0.705772500715138,
+                "observed_play_fraction": 0.6790123456790124
+              }
+            },
+            "available": {
+              "total": 2,
+              "known": 2,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 2,
+                "brier": 0.003588915498417865,
+                "log_loss": 0.06129386162564855,
+                "predicted_mean": 0.9405775837281373,
+                "observed_play_fraction": 1.0
+              },
+              "historical_baseline": {
+                "n": 2,
+                "brier": 0.024581764048946297,
+                "log_loss": 0.17053417361919518,
+                "predicted_mean": 0.8432142734527588,
+                "observed_play_fraction": 1.0
+              }
+            },
+            "not_listed": {
+              "total": 133,
+              "known": 131,
+              "UNKNOWN": 2,
+              "candidate": {
+                "n": 131,
+                "brier": 0.0837966573766637,
+                "log_loss": 0.25640982105670695,
+                "predicted_mean": 0.8450124184774455,
+                "observed_play_fraction": 0.8854961832061069
+              },
+              "historical_baseline": {
+                "n": 131,
+                "brier": 0.11443339114520842,
+                "log_loss": 0.3676448689551679,
+                "predicted_mean": 0.7213281338451473,
+                "observed_play_fraction": 0.8854961832061069
+              }
+            },
+            "out": {
+              "total": 36,
+              "known": 36,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 36,
+                "brier": 0.00011445654501381552,
+                "log_loss": 0.008090328923059468,
+                "predicted_mean": 0.008032297714810805,
+                "observed_play_fraction": 0.0
+              },
+              "historical_baseline": {
+                "n": 36,
+                "brier": 0.28868514015630575,
+                "log_loss": 0.7870081202850657,
+                "predicted_mean": 0.48745105788111687,
+                "observed_play_fraction": 0.0
+              }
+            },
+            "questionable": {
+              "total": 9,
+              "known": 9,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 9,
+                "brier": 0.32265692814293656,
+                "log_loss": 0.8486700673033138,
+                "predicted_mean": 0.4734527413999953,
+                "observed_play_fraction": 0.6666666666666666
+              },
+              "historical_baseline": {
+                "n": 9,
+                "brier": 0.2718351539413406,
+                "log_loss": 0.7729715255375874,
+                "predicted_mean": 0.5932142866982354,
+                "observed_play_fraction": 0.6666666666666666
+              }
+            }
+          },
+          "by_history_n": {
+            "100_plus": {
+              "total": 176,
+              "known": 176,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 176,
+                "brier": 0.07741127139111072,
+                "log_loss": 0.24887919575055772,
+                "predicted_mean": 0.7012117218422578,
+                "observed_play_fraction": 0.7215909090909091
+              },
+              "historical_baseline": {
+                "n": 176,
+                "brier": 0.15011733022801266,
+                "log_loss": 0.4613731064552766,
+                "predicted_mean": 0.7159821376712485,
+                "observed_play_fraction": 0.7215909090909091
+              }
+            },
+            "25_to99": {
+              "total": 56,
+              "known": 55,
+              "UNKNOWN": 1,
+              "candidate": {
+                "n": 55,
+                "brier": 0.07548205654271987,
+                "log_loss": 0.24407545210574894,
+                "predicted_mean": 0.5532375565043768,
+                "observed_play_fraction": 0.5818181818181818
+              },
+              "historical_baseline": {
+                "n": 55,
+                "brier": 0.16459985201609842,
+                "log_loss": 0.48814663737918357,
+                "predicted_mean": 0.6126948036930778,
+                "observed_play_fraction": 0.5818181818181818
+              }
+            },
+            "5_to24": {
+              "total": 29,
+              "known": 28,
+              "UNKNOWN": 1,
+              "candidate": {
+                "n": 28,
+                "brier": 0.15967323700057084,
+                "log_loss": 0.4457566197921478,
+                "predicted_mean": 0.5586279610188022,
+                "observed_play_fraction": 0.7142857142857143
+              },
+              "historical_baseline": {
+                "n": 28,
+                "brier": 0.16970777406351287,
+                "log_loss": 0.5010549769445509,
+                "predicted_mean": 0.5901458167604038,
+                "observed_play_fraction": 0.7142857142857143
+              }
+            }
+          },
+          "interval_coverage": {
+            "50": {
+              "True": {
+                "n": 175,
+                "games": 8,
+                "nominal": 0.5,
+                "coverage": 0.4742857142857143,
+                "game_cluster_95CI": [
+                  0.4235239985564778,
+                  0.5229885057471264
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 255,
+                "games": 8,
+                "nominal": 0.5,
+                "coverage": 0.6,
+                "game_cluster_95CI": [
+                  0.5758754863813229,
+                  0.6290322580645161
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "80": {
+              "True": {
+                "n": 175,
+                "games": 8,
+                "nominal": 0.8,
+                "coverage": 0.7714285714285715,
+                "game_cluster_95CI": [
+                  0.7261759581881533,
+                  0.8108108108108109
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 255,
+                "games": 8,
+                "nominal": 0.8,
+                "coverage": 0.8235294117647058,
+                "game_cluster_95CI": [
+                  0.8,
+                  0.8488372093023255
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "95": {
+              "True": {
+                "n": 175,
+                "games": 8,
+                "nominal": 0.95,
+                "coverage": 0.9428571428571428,
+                "game_cluster_95CI": [
+                  0.9096385542168675,
+                  0.9717553799276328
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 255,
+                "games": 8,
+                "nominal": 0.95,
+                "coverage": 0.9333333333333333,
+                "game_cluster_95CI": [
+                  0.9182879377431906,
+                  0.9496124031007752
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            }
+          }
+        },
+        "near_primary:lead0": {
+          "by_frozen_status": {
+            "UNKNOWN": {
+              "total": 81,
+              "known": 81,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 81,
+                "brier": 0.10313796017844885,
+                "log_loss": 0.3465002091784521,
+                "predicted_mean": 0.6463566936070343,
+                "observed_play_fraction": 0.6790123456790124
+              },
+              "historical_baseline": {
+                "n": 81,
+                "brier": 0.15242395624166336,
+                "log_loss": 0.4726875173575948,
+                "predicted_mean": 0.705772500715138,
+                "observed_play_fraction": 0.6790123456790124
+              }
+            },
+            "available": {
+              "total": 2,
+              "known": 2,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 2,
+                "brier": 0.003588915498417865,
+                "log_loss": 0.06129386162564855,
+                "predicted_mean": 0.9405775837281373,
+                "observed_play_fraction": 1.0
+              },
+              "historical_baseline": {
+                "n": 2,
+                "brier": 0.024581764048946297,
+                "log_loss": 0.17053417361919518,
+                "predicted_mean": 0.8432142734527588,
+                "observed_play_fraction": 1.0
+              }
+            },
+            "not_listed": {
+              "total": 133,
+              "known": 131,
+              "UNKNOWN": 2,
+              "candidate": {
+                "n": 131,
+                "brier": 0.0837966573766637,
+                "log_loss": 0.25640982105670695,
+                "predicted_mean": 0.8450124184774455,
+                "observed_play_fraction": 0.8854961832061069
+              },
+              "historical_baseline": {
+                "n": 131,
+                "brier": 0.11443339114520842,
+                "log_loss": 0.3676448689551679,
+                "predicted_mean": 0.7213281338451473,
+                "observed_play_fraction": 0.8854961832061069
+              }
+            },
+            "out": {
+              "total": 36,
+              "known": 36,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 36,
+                "brier": 0.00011445654501381552,
+                "log_loss": 0.008090328923059468,
+                "predicted_mean": 0.008032297714810805,
+                "observed_play_fraction": 0.0
+              },
+              "historical_baseline": {
+                "n": 36,
+                "brier": 0.28868514015630575,
+                "log_loss": 0.7870081202850657,
+                "predicted_mean": 0.48745105788111687,
+                "observed_play_fraction": 0.0
+              }
+            },
+            "questionable": {
+              "total": 9,
+              "known": 9,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 9,
+                "brier": 0.32265692814293656,
+                "log_loss": 0.8486700673033138,
+                "predicted_mean": 0.4734527413999953,
+                "observed_play_fraction": 0.6666666666666666
+              },
+              "historical_baseline": {
+                "n": 9,
+                "brier": 0.2718351539413406,
+                "log_loss": 0.7729715255375874,
+                "predicted_mean": 0.5932142866982354,
+                "observed_play_fraction": 0.6666666666666666
+              }
+            }
+          },
+          "by_history_n": {
+            "100_plus": {
+              "total": 176,
+              "known": 176,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 176,
+                "brier": 0.07741127139111072,
+                "log_loss": 0.24887919575055772,
+                "predicted_mean": 0.7012117218422578,
+                "observed_play_fraction": 0.7215909090909091
+              },
+              "historical_baseline": {
+                "n": 176,
+                "brier": 0.15011733022801266,
+                "log_loss": 0.4613731064552766,
+                "predicted_mean": 0.7159821376712485,
+                "observed_play_fraction": 0.7215909090909091
+              }
+            },
+            "25_to99": {
+              "total": 56,
+              "known": 55,
+              "UNKNOWN": 1,
+              "candidate": {
+                "n": 55,
+                "brier": 0.07548205654271987,
+                "log_loss": 0.24407545210574894,
+                "predicted_mean": 0.5532375565043768,
+                "observed_play_fraction": 0.5818181818181818
+              },
+              "historical_baseline": {
+                "n": 55,
+                "brier": 0.16459985201609842,
+                "log_loss": 0.48814663737918357,
+                "predicted_mean": 0.6126948036930778,
+                "observed_play_fraction": 0.5818181818181818
+              }
+            },
+            "5_to24": {
+              "total": 29,
+              "known": 28,
+              "UNKNOWN": 1,
+              "candidate": {
+                "n": 28,
+                "brier": 0.15967323700057084,
+                "log_loss": 0.4457566197921478,
+                "predicted_mean": 0.5586279610188022,
+                "observed_play_fraction": 0.7142857142857143
+              },
+              "historical_baseline": {
+                "n": 28,
+                "brier": 0.16970777406351287,
+                "log_loss": 0.5010549769445509,
+                "predicted_mean": 0.5901458167604038,
+                "observed_play_fraction": 0.7142857142857143
+              }
+            }
+          },
+          "interval_coverage": {
+            "50": {
+              "True": {
+                "n": 175,
+                "games": 8,
+                "nominal": 0.5,
+                "coverage": 0.48,
+                "game_cluster_95CI": [
+                  0.42168674698795183,
+                  0.5414364640883977
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 255,
+                "games": 8,
+                "nominal": 0.5,
+                "coverage": 0.592156862745098,
+                "game_cluster_95CI": [
+                  0.5686274509803921,
+                  0.6184738955823293
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "80": {
+              "True": {
+                "n": 175,
+                "games": 8,
+                "nominal": 0.8,
+                "coverage": 0.7714285714285715,
+                "game_cluster_95CI": [
+                  0.7108433734939759,
+                  0.822231182795699
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 255,
+                "games": 8,
+                "nominal": 0.8,
+                "coverage": 0.8235294117647058,
+                "game_cluster_95CI": [
+                  0.7992125984251969,
+                  0.85
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "95": {
+              "True": {
+                "n": 175,
+                "games": 8,
+                "nominal": 0.95,
+                "coverage": 0.9428571428571428,
+                "game_cluster_95CI": [
+                  0.9096385542168675,
+                  0.9717553799276328
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 255,
+                "games": 8,
+                "nominal": 0.95,
+                "coverage": 0.9411764705882353,
+                "game_cluster_95CI": [
+                  0.9204545454545454,
+                  0.9641434262948207
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            }
+          }
+        }
+      }
+    },
+    "paired_20261117": {
+      "frozen_feature_frame_sha256": "d4e9f66895cd1028fa580dd9b3da6b4f83d3d44e8adce782efc173acb989389d",
+      "by_role_lead": {
+        "near_day_ewma_challenger_20261117:lead0": {
+          "by_frozen_status": {
+            "UNKNOWN": {
+              "total": 50,
+              "known": 44,
+              "UNKNOWN": 6,
+              "candidate": {
+                "n": 44,
+                "brier": 0.08524049192534204,
+                "log_loss": 0.302091003485483,
+                "predicted_mean": 0.6947419807257159,
+                "observed_play_fraction": 0.6818181818181818
+              },
+              "historical_baseline": {
+                "n": 44,
+                "brier": 0.1272956990243652,
+                "log_loss": 0.44346490934100974,
+                "predicted_mean": 0.7287662290036678,
+                "observed_play_fraction": 0.6818181818181818
+              }
+            },
+            "available": {
+              "total": 1,
+              "known": 1,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 1,
+                "brier": 0.0038591288892886604,
+                "log_loss": 0.06413528230097786,
+                "predicted_mean": 0.9378781126390331,
+                "observed_play_fraction": 1.0
+              },
+              "historical_baseline": {
+                "n": 1,
+                "brier": 0.014658297909036833,
+                "log_loss": 0.12905167909852655,
+                "predicted_mean": 0.878928542137146,
+                "observed_play_fraction": 1.0
+              }
+            },
+            "doubtful": {
+              "total": 1,
+              "known": 1,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 1,
+                "brier": 0.000973958535317863,
+                "log_loss": 0.03170566311624812,
+                "predicted_mean": 0.031208308754526622,
+                "observed_play_fraction": 0.0
+              },
+              "historical_baseline": {
+                "n": 1,
+                "brier": 0.3519031742280845,
+                "log_loss": 0.8994687025736418,
+                "predicted_mean": 0.5932142734527588,
+                "observed_play_fraction": 0.0
+              }
+            },
+            "not_listed": {
+              "total": 91,
+              "known": 82,
+              "UNKNOWN": 9,
+              "candidate": {
+                "n": 82,
+                "brier": 0.0666552629646565,
+                "log_loss": 0.22799116971197633,
+                "predicted_mean": 0.8715984353948418,
+                "observed_play_fraction": 0.8658536585365854
+              },
+              "historical_baseline": {
+                "n": 82,
+                "brier": 0.0930708907619795,
+                "log_loss": 0.2954762546058874,
+                "predicted_mean": 0.7920812862675365,
+                "observed_play_fraction": 0.8658536585365854
+              }
+            },
+            "out": {
+              "total": 24,
+              "known": 24,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 24,
+                "brier": 0.00014047956829951364,
+                "log_loss": 0.008902236580080485,
+                "predicted_mean": 0.008831012639032113,
+                "observed_play_fraction": 0.0
+              },
+              "historical_baseline": {
+                "n": 24,
+                "brier": 0.31003259945598655,
+                "log_loss": 0.9123405867213803,
+                "predicted_mean": 0.4954506413390239,
+                "observed_play_fraction": 0.0
+              }
+            }
+          },
+          "by_history_n": {
+            "100_plus": {
+              "total": 110,
+              "known": 107,
+              "UNKNOWN": 3,
+              "candidate": {
+                "n": 107,
+                "brier": 0.06028602764501008,
+                "log_loss": 0.2112740134489508,
+                "predicted_mean": 0.7286373969522048,
+                "observed_play_fraction": 0.7102803738317757
+              },
+              "historical_baseline": {
+                "n": 107,
+                "brier": 0.1430714121160541,
+                "log_loss": 0.46018248749363205,
+                "predicted_mean": 0.7747897143675903,
+                "observed_play_fraction": 0.7102803738317757
+              }
+            },
+            "25_to99": {
+              "total": 34,
+              "known": 29,
+              "UNKNOWN": 5,
+              "candidate": {
+                "n": 29,
+                "brier": 0.05553761027122877,
+                "log_loss": 0.20450290454427747,
+                "predicted_mean": 0.6165305938366388,
+                "observed_play_fraction": 0.6551724137931034
+              },
+              "historical_baseline": {
+                "n": 29,
+                "brier": 0.11856751153791047,
+                "log_loss": 0.3676249966412373,
+                "predicted_mean": 0.63754925491481,
+                "observed_play_fraction": 0.6551724137931034
+              }
+            },
+            "5_to24": {
+              "total": 23,
+              "known": 16,
+              "UNKNOWN": 7,
+              "candidate": {
+                "n": 16,
+                "brier": 0.07270763431243527,
+                "log_loss": 0.23499193889129288,
+                "predicted_mean": 0.4610725552431513,
+                "observed_play_fraction": 0.4375
+              },
+              "historical_baseline": {
+                "n": 16,
+                "brier": 0.1433167954761248,
+                "log_loss": 0.422847017953624,
+                "predicted_mean": 0.5617443704977632,
+                "observed_play_fraction": 0.4375
+              }
+            }
+          },
+          "interval_coverage": {
+            "50": {
+              "True": {
+                "n": 100,
+                "games": 5,
+                "nominal": 0.5,
+                "coverage": 0.52,
+                "game_cluster_95CI": [
+                  0.41414141414141414,
+                  0.6237623762376238
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 150,
+                "games": 5,
+                "nominal": 0.5,
+                "coverage": 0.6333333333333333,
+                "game_cluster_95CI": [
+                  0.5828220858895705,
+                  0.6827586206896552
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "80": {
+              "True": {
+                "n": 100,
+                "games": 5,
+                "nominal": 0.8,
+                "coverage": 0.76,
+                "game_cluster_95CI": [
+                  0.63,
+                  0.89
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 150,
+                "games": 5,
+                "nominal": 0.8,
+                "coverage": 0.82,
+                "game_cluster_95CI": [
+                  0.7361963190184049,
+                  0.900709219858156
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "95": {
+              "True": {
+                "n": 100,
+                "games": 5,
+                "nominal": 0.95,
+                "coverage": 0.91,
+                "game_cluster_95CI": [
+                  0.8484848484848485,
+                  0.9702970297029703
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 150,
+                "games": 5,
+                "nominal": 0.95,
+                "coverage": 0.94,
+                "game_cluster_95CI": [
+                  0.9032258064516129,
+                  0.9793103448275862
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            }
+          }
+        },
+        "near_primary_20261117:lead0": {
+          "by_frozen_status": {
+            "UNKNOWN": {
+              "total": 50,
+              "known": 44,
+              "UNKNOWN": 6,
+              "candidate": {
+                "n": 44,
+                "brier": 0.08524049192534204,
+                "log_loss": 0.302091003485483,
+                "predicted_mean": 0.6947419807257159,
+                "observed_play_fraction": 0.6818181818181818
+              },
+              "historical_baseline": {
+                "n": 44,
+                "brier": 0.1272956990243652,
+                "log_loss": 0.44346490934100974,
+                "predicted_mean": 0.7287662290036678,
+                "observed_play_fraction": 0.6818181818181818
+              }
+            },
+            "available": {
+              "total": 1,
+              "known": 1,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 1,
+                "brier": 0.0038591288892886604,
+                "log_loss": 0.06413528230097786,
+                "predicted_mean": 0.9378781126390331,
+                "observed_play_fraction": 1.0
+              },
+              "historical_baseline": {
+                "n": 1,
+                "brier": 0.014658297909036833,
+                "log_loss": 0.12905167909852655,
+                "predicted_mean": 0.878928542137146,
+                "observed_play_fraction": 1.0
+              }
+            },
+            "doubtful": {
+              "total": 1,
+              "known": 1,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 1,
+                "brier": 0.000973958535317863,
+                "log_loss": 0.03170566311624812,
+                "predicted_mean": 0.031208308754526622,
+                "observed_play_fraction": 0.0
+              },
+              "historical_baseline": {
+                "n": 1,
+                "brier": 0.3519031742280845,
+                "log_loss": 0.8994687025736418,
+                "predicted_mean": 0.5932142734527588,
+                "observed_play_fraction": 0.0
+              }
+            },
+            "not_listed": {
+              "total": 91,
+              "known": 82,
+              "UNKNOWN": 9,
+              "candidate": {
+                "n": 82,
+                "brier": 0.0666552629646565,
+                "log_loss": 0.22799116971197633,
+                "predicted_mean": 0.8715984353948418,
+                "observed_play_fraction": 0.8658536585365854
+              },
+              "historical_baseline": {
+                "n": 82,
+                "brier": 0.0930708907619795,
+                "log_loss": 0.2954762546058874,
+                "predicted_mean": 0.7920812862675365,
+                "observed_play_fraction": 0.8658536585365854
+              }
+            },
+            "out": {
+              "total": 24,
+              "known": 24,
+              "UNKNOWN": 0,
+              "candidate": {
+                "n": 24,
+                "brier": 0.00014047956829951364,
+                "log_loss": 0.008902236580080485,
+                "predicted_mean": 0.008831012639032113,
+                "observed_play_fraction": 0.0
+              },
+              "historical_baseline": {
+                "n": 24,
+                "brier": 0.31003259945598655,
+                "log_loss": 0.9123405867213803,
+                "predicted_mean": 0.4954506413390239,
+                "observed_play_fraction": 0.0
+              }
+            }
+          },
+          "by_history_n": {
+            "100_plus": {
+              "total": 110,
+              "known": 107,
+              "UNKNOWN": 3,
+              "candidate": {
+                "n": 107,
+                "brier": 0.06028602764501008,
+                "log_loss": 0.2112740134489508,
+                "predicted_mean": 0.7286373969522048,
+                "observed_play_fraction": 0.7102803738317757
+              },
+              "historical_baseline": {
+                "n": 107,
+                "brier": 0.1430714121160541,
+                "log_loss": 0.46018248749363205,
+                "predicted_mean": 0.7747897143675903,
+                "observed_play_fraction": 0.7102803738317757
+              }
+            },
+            "25_to99": {
+              "total": 34,
+              "known": 29,
+              "UNKNOWN": 5,
+              "candidate": {
+                "n": 29,
+                "brier": 0.05553761027122877,
+                "log_loss": 0.20450290454427747,
+                "predicted_mean": 0.6165305938366388,
+                "observed_play_fraction": 0.6551724137931034
+              },
+              "historical_baseline": {
+                "n": 29,
+                "brier": 0.11856751153791047,
+                "log_loss": 0.3676249966412373,
+                "predicted_mean": 0.63754925491481,
+                "observed_play_fraction": 0.6551724137931034
+              }
+            },
+            "5_to24": {
+              "total": 23,
+              "known": 16,
+              "UNKNOWN": 7,
+              "candidate": {
+                "n": 16,
+                "brier": 0.07270763431243527,
+                "log_loss": 0.23499193889129288,
+                "predicted_mean": 0.4610725552431513,
+                "observed_play_fraction": 0.4375
+              },
+              "historical_baseline": {
+                "n": 16,
+                "brier": 0.1433167954761248,
+                "log_loss": 0.422847017953624,
+                "predicted_mean": 0.5617443704977632,
+                "observed_play_fraction": 0.4375
+              }
+            }
+          },
+          "interval_coverage": {
+            "50": {
+              "True": {
+                "n": 100,
+                "games": 5,
+                "nominal": 0.5,
+                "coverage": 0.52,
+                "game_cluster_95CI": [
+                  0.41414141414141414,
+                  0.6237623762376238
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 150,
+                "games": 5,
+                "nominal": 0.5,
+                "coverage": 0.6333333333333333,
+                "game_cluster_95CI": [
+                  0.5828220858895705,
+                  0.6827586206896552
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "80": {
+              "True": {
+                "n": 100,
+                "games": 5,
+                "nominal": 0.8,
+                "coverage": 0.76,
+                "game_cluster_95CI": [
+                  0.63,
+                  0.89
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 150,
+                "games": 5,
+                "nominal": 0.8,
+                "coverage": 0.82,
+                "game_cluster_95CI": [
+                  0.7361963190184049,
+                  0.900709219858156
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            },
+            "95": {
+              "True": {
+                "n": 100,
+                "games": 5,
+                "nominal": 0.95,
+                "coverage": 0.91,
+                "game_cluster_95CI": [
+                  0.8484848484848485,
+                  0.9702970297029703
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              },
+              "False": {
+                "n": 150,
+                "games": 5,
+                "nominal": 0.95,
+                "coverage": 0.94,
+                "game_cluster_95CI": [
+                  0.9032258064516129,
+                  0.9793103448275862
+                ],
+                "date_cluster_CI": null,
+                "small_cluster_inference_caveat": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

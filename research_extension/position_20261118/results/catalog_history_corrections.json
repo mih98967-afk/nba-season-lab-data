@@ -1,0 +1,449 @@
+{
+  "schema": "catalog_history_identity_corrections_v1",
+  "catalog_sha256": "717f41f8441db07fe3c6dcfc8776ced78f56a740d422c39b6f06bf3cd78cc261",
+  "position_mapping_sha256": "7b1277cbcb5b891e5f83b7590403d77440b514eef2ec63c4e673321eceeb6cde",
+  "current_identity_policy": "exact NBA ID; never transfer by surname",
+  "history_fingerprint_checked": 1062,
+  "correction_count": 5,
+  "affected_player_count": 4,
+  "corrections": [
+    {
+      "player_id": "n133",
+      "player_name": "Бэйли",
+      "season": "2023/24",
+      "season_end_year": 2024,
+      "current_nba_person_id": "1642846",
+      "current_english_name": "Ace Bailey",
+      "action": "remove_wrong_history",
+      "wrong_history_nba_person_id": "1641735",
+      "wrong_history_english_name": "Amari Bailey",
+      "wrong_history_source": {
+        "file": "NBA_2324.xlsx",
+        "sheet": "Статистика игроков",
+        "row": 498,
+        "russian_name": "Бэйли",
+        "team": "Шарлотт",
+        "games": 10.0,
+        "total": 10.0
+      },
+      "evidence": "Exact stored history season+worksheet row+team+games+total fingerprint matches a different NBA ID resolved from the supplied season roster. Current player identity separately uses exact English NBA name and/or existing explicit NBA ID.",
+      "legacy_seed_contaminated": true,
+      "legacy_seed_use_allowed": false,
+      "nba_id_boxscore_model_features_affected": false
+    },
+    {
+      "player_id": "n326",
+      "player_name": "Траоре",
+      "season": "2024/25",
+      "season_end_year": 2025,
+      "current_nba_person_id": "1642849",
+      "current_english_name": "Nolan Traore",
+      "action": "remove_wrong_history",
+      "wrong_history_nba_person_id": "1642422",
+      "wrong_history_english_name": "Armel Traore",
+      "wrong_history_source": {
+        "file": "NBA_2425.xlsx",
+        "sheet": "Статистика игроков",
+        "row": 580,
+        "russian_name": "Траоре",
+        "team": "Лейкерс",
+        "games": 9.0,
+        "total": 0.0
+      },
+      "evidence": "Exact stored history season+worksheet row+team+games+total fingerprint matches a different NBA ID resolved from the supplied season roster. Current player identity separately uses exact English NBA name and/or existing explicit NBA ID.",
+      "legacy_seed_contaminated": true,
+      "legacy_seed_use_allowed": false,
+      "nba_id_boxscore_model_features_affected": false
+    },
+    {
+      "player_id": "n346",
+      "player_name": "Ричардсон",
+      "season": "2023/24",
+      "season_end_year": 2024,
+      "current_nba_person_id": "1642859",
+      "current_english_name": "Jase Richardson",
+      "action": "remove_wrong_history",
+      "wrong_history_nba_person_id": "1626196",
+      "wrong_history_english_name": "Josh Richardson",
+      "wrong_history_source": {
+        "file": "NBA_2324.xlsx",
+        "sheet": "Статистика игроков",
+        "row": 257,
+        "russian_name": "Ричардсон",
+        "team": "Майами",
+        "games": 43.0,
+        "total": 440.0
+      },
+      "evidence": "Exact stored history season+worksheet row+team+games+total fingerprint matches a different NBA ID resolved from the supplied season roster. Current player identity separately uses exact English NBA name and/or existing explicit NBA ID.",
+      "legacy_seed_contaminated": true,
+      "legacy_seed_use_allowed": false,
+      "nba_id_boxscore_model_features_affected": false
+    },
+    {
+      "player_id": "n346",
+      "player_name": "Ричардсон",
+      "season": "2024/25",
+      "season_end_year": 2025,
+      "current_nba_person_id": "1642859",
+      "current_english_name": "Jase Richardson",
+      "action": "remove_wrong_history",
+      "wrong_history_nba_person_id": "1626196",
+      "wrong_history_english_name": "Josh Richardson",
+      "wrong_history_source": {
+        "file": "NBA_2425.xlsx",
+        "sheet": "Статистика игроков",
+        "row": 564,
+        "russian_name": "Ричардсон",
+        "team": "Юта",
+        "games": 8.0,
+        "total": 0.0
+      },
+      "evidence": "Exact stored history season+worksheet row+team+games+total fingerprint matches a different NBA ID resolved from the supplied season roster. Current player identity separately uses exact English NBA name and/or existing explicit NBA ID.",
+      "legacy_seed_contaminated": true,
+      "legacy_seed_use_allowed": false,
+      "nba_id_boxscore_model_features_affected": false
+    },
+    {
+      "player_id": "n406",
+      "player_name": "Холмс",
+      "season": "2023/24",
+      "season_end_year": 2024,
+      "current_nba_person_id": "1641747",
+      "current_english_name": "DaRon Holmes II",
+      "action": "remove_wrong_history",
+      "wrong_history_nba_person_id": "1626158",
+      "wrong_history_english_name": "Richaun Holmes",
+      "wrong_history_source": {
+        "file": "NBA_2324.xlsx",
+        "sheet": "Статистика игроков",
+        "row": 334,
+        "russian_name": "Холмс",
+        "team": "Вашингтон",
+        "games": 40.0,
+        "total": 263.0
+      },
+      "evidence": "Exact stored history season+worksheet row+team+games+total fingerprint matches a different NBA ID resolved from the supplied season roster. Current player identity separately uses exact English NBA name and/or existing explicit NBA ID.",
+      "legacy_seed_contaminated": true,
+      "legacy_seed_use_allowed": false,
+      "nba_id_boxscore_model_features_affected": false
+    }
+  ],
+  "unchecked": [
+    {
+      "player_id": "n015",
+      "season": "2025/26",
+      "reason": "source_fingerprint_not_identical"
+    },
+    {
+      "player_id": "n017",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n027",
+      "season": "2025/26",
+      "reason": "source_fingerprint_not_identical"
+    },
+    {
+      "player_id": "n053",
+      "season": "2025/26",
+      "reason": "source_fingerprint_not_identical"
+    },
+    {
+      "player_id": "n079",
+      "season": "2025/26",
+      "reason": "source_fingerprint_not_identical"
+    },
+    {
+      "player_id": "n131",
+      "season": "2024/25",
+      "reason": "source_fingerprint_not_identical"
+    },
+    {
+      "player_id": "n132",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n133",
+      "season": "2024/25",
+      "reason": "source_row_or_identity_unresolved"
+    },
+    {
+      "player_id": "n160",
+      "season": "2023/24",
+      "reason": "source_row_or_identity_unresolved"
+    },
+    {
+      "player_id": "n169",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n202",
+      "season": "2023/24",
+      "reason": "source_fingerprint_not_identical"
+    },
+    {
+      "player_id": "n207",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n228",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n273",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n288",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n306",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n307",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n308",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n311",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n318",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n325",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n327",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n333",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n337",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n356",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n361",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n371",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n375",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n377",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n379",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n383",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n394",
+      "season": "2025/26",
+      "reason": "source_fingerprint_not_identical"
+    },
+    {
+      "player_id": "n407",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n408",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n416",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n419",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n422",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n423",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n425",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n428",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n430",
+      "season": "2024/25",
+      "reason": "source_fingerprint_not_identical"
+    },
+    {
+      "player_id": "n438",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n440",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n447",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n448",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n449",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n450",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n453",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n454",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n455",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n456",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n457",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n459",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n463",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n464",
+      "season": "2024/25",
+      "reason": "source_row_or_identity_unresolved"
+    },
+    {
+      "player_id": "n465",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n469",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n470",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n471",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n473",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n477",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n481",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    },
+    {
+      "player_id": "n485",
+      "reason": "current_NBA_identity_not_unique",
+      "candidate_ids": []
+    }
+  ],
+  "scope": "Read-only release overlay proposal. Preserved source files/frozen forecasts/research models unchanged. Research Ridge/CatBoost historical features use NBA-ID-keyed boxscores, not catalog.history."
+}

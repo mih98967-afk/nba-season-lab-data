@@ -1,0 +1,157 @@
+{
+  "schema": "nba-current-source-additive-official-supplement-v1",
+  "built_at_utc": "2026-11-18T11:33:47.056184+00:00",
+  "source_availability_upper_bound_utc": "2026-11-18T11:32:20.202068+00:00",
+  "original_sources_modified": false,
+  "fit_or_tuning_performed": false,
+  "raw_archive_manifest_sha256": "114283dad04cec7050ff582a4c9cc4b9242b98c7936f084b64985dc8a1a87aa9",
+  "direct_NBA_manifest_sha256": "6ccb1738aa8309bccda71c0be11fe561b1075b3cc9e965d8611baaf8b55e983d",
+  "direct_sources": [
+    {
+      "file": "scheduleLeagueV2_1.json",
+      "url": "https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json",
+      "started_at_utc": "2026-11-18T11:32:09.306720+00:00",
+      "fetched_at_utc": "2026-11-18T11:32:15.554930+00:00",
+      "status": "retrieved",
+      "sha256": "64465aa7e40c5208d53c0cdd6af4ef88b8198a3947422a51415effe1e2708159",
+      "bytes": 7515028,
+      "response_last_modified": null,
+      "response_etag": null
+    },
+    {
+      "file": "0022600253.json",
+      "url": "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022600253.json",
+      "started_at_utc": "2026-11-18T11:32:09.307411+00:00",
+      "fetched_at_utc": "2026-11-18T11:32:15.277056+00:00",
+      "status": "retrieved",
+      "sha256": "fd8fb29dde034e6a90f41936d8c5a67c052ea5ac93f4dc74c7533d2e48f84b17",
+      "bytes": 39079,
+      "response_last_modified": null,
+      "response_etag": null
+    },
+    {
+      "file": "0022600254.json",
+      "url": "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022600254.json",
+      "started_at_utc": "2026-11-18T11:32:09.308140+00:00",
+      "fetched_at_utc": "2026-11-18T11:32:15.331927+00:00",
+      "status": "retrieved",
+      "sha256": "3b9f7f2baa400b5276c56e799a06d5ba51b05a3832b9d367e452d4dca5cf3498",
+      "bytes": 39613,
+      "response_last_modified": null,
+      "response_etag": null
+    },
+    {
+      "file": "0022600255.json",
+      "url": "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022600255.json",
+      "started_at_utc": "2026-11-18T11:32:15.277151+00:00",
+      "fetched_at_utc": "2026-11-18T11:32:20.202068+00:00",
+      "status": "retrieved",
+      "sha256": "e19951afbb9837ba5d117b29c51629b1f2daee9e22783b195efb1f45329d23f4",
+      "bytes": 40422,
+      "response_last_modified": null,
+      "response_etag": null
+    },
+    {
+      "file": "0022600256.json",
+      "url": "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022600256.json",
+      "started_at_utc": "2026-11-18T11:32:15.332097+00:00",
+      "fetched_at_utc": "2026-11-18T11:32:20.170407+00:00",
+      "status": "retrieved",
+      "sha256": "00eb39997f42d4a0637d639c1ec165a0df2783f97da516416870ff130caf1ceb",
+      "bytes": 41468,
+      "response_last_modified": null,
+      "response_etag": null
+    },
+    {
+      "file": "0022600257.json",
+      "url": "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022600257.json",
+      "started_at_utc": "2026-11-18T11:32:15.559842+00:00",
+      "fetched_at_utc": "2026-11-18T11:32:20.182982+00:00",
+      "status": "retrieved",
+      "sha256": "f2fa5b3bd734920e85a2cad138ff7977d54d19cb1cb52db99ec65f813abd6144",
+      "bytes": 41466,
+      "response_last_modified": null,
+      "response_etag": null
+    }
+  ],
+  "normalizer_sha256": "b847f7f14aea3ab7910111c1f5c737fa24f82286485c7b548d24c30eb914bf8f",
+  "official_validation_code_sha256": "67c30f94f012f00908b1ec0d5a5124152a2b3226565f28d46a9a28f74f1337fa",
+  "added_games": [
+    {
+      "NBA_game_id": "0022600253",
+      "calendar_game_id": "espn_401910002",
+      "tipoff_utc": "2026-11-18T00:30:00Z",
+      "exact_fixture_match": true,
+      "box_rows": 34,
+      "explicit_inactive_rows": 7
+    },
+    {
+      "NBA_game_id": "0022600254",
+      "calendar_game_id": "espn_401910003",
+      "tipoff_utc": "2026-11-18T01:00:00Z",
+      "exact_fixture_match": true,
+      "box_rows": 34,
+      "explicit_inactive_rows": 9
+    },
+    {
+      "NBA_game_id": "0022600255",
+      "calendar_game_id": "espn_401910004",
+      "tipoff_utc": "2026-11-18T01:00:00Z",
+      "exact_fixture_match": true,
+      "box_rows": 35,
+      "explicit_inactive_rows": 12
+    },
+    {
+      "NBA_game_id": "0022600256",
+      "calendar_game_id": "espn_401910005",
+      "tipoff_utc": "2026-11-18T04:00:00Z",
+      "exact_fixture_match": true,
+      "box_rows": 36,
+      "explicit_inactive_rows": 10
+    },
+    {
+      "NBA_game_id": "0022600257",
+      "calendar_game_id": "espn_401910006",
+      "tipoff_utc": "2026-11-18T03:30:00Z",
+      "exact_fixture_match": true,
+      "box_rows": 36,
+      "explicit_inactive_rows": 11
+    }
+  ],
+  "added_box_rows": 175,
+  "added_explicit_inactive_rows": 49,
+  "UNKNOWN_is_DNP": false,
+  "injury_source_unchanged": true,
+  "injury_source_freshness_not_upgraded": true,
+  "not_Sports_ru_credited_FP": true,
+  "current_files": {
+    "player_boxscores_2027.csv": {
+      "sha256": "5ac9e18bde1b811c28d820a687f722686ef1cbc371b2c4d02cce759724337fda",
+      "bytes": 1030668
+    },
+    "manifest.json": {
+      "sha256": "fd06b526ca4ab8ceb6709ce1499938d93335f0721c6cd4b156cc15268cfb943a",
+      "bytes": 2282
+    },
+    "nba_schedule_2027.csv.gz": {
+      "sha256": "8e255e4371b28a0c1805efdbcfb3dc54546a44a7e688fcedd77b2dab380af871",
+      "bytes": 18039
+    },
+    "injury_report_2027.parquet": {
+      "sha256": "c4706fdb736ef4a487ad853a43f3b80f4f682b02200dd29ba173c1c6b7cebeaf",
+      "bytes": 141165
+    },
+    "injury_conversion_manifest.json": {
+      "sha256": "16c79e24cb764d8fbe3140c5b79e5c6a5ca0c1c0fb0040b8be08ff1ee039c249",
+      "bytes": 307
+    },
+    "injury_report_2027.csv.gz": {
+      "sha256": "89da8634d2339335bae3bbc49c7737d1e5d2b776a6c6f8a3d5102d6ec93765cd",
+      "bytes": 300866
+    },
+    "game_rosters_2027.csv": {
+      "sha256": "d6a2da8df272b35b5e938eeb507e5c345c314153da637eb99beb4382ea392a0a",
+      "bytes": 114101
+    }
+  }
+}

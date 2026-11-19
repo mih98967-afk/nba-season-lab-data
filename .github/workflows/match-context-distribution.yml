@@ -7,19 +7,38 @@ on:
       - 'research_extension/**'
       - 'src/official_nba_inactive_summary_research.py'
       - 'test_official_nba_inactive*'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/match-context-distribution.yml'
+      - 'research_extension/production_20261118/**'
+      - 'research_extension/position_20261118/**'
+  workflow_run:
+    workflows: ['NBA public data sync', 'Official injury rows isolated research']
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       full_research:
-        description: 'Collect public sources and run historical phase2 plus lead models (not deployment)'
+        description: 'Explicitly collect sources and train historical research (not required for inference)'
+        type: boolean
+        default: false
+      refresh_forecasts:
+        description: 'Refresh frozen-model forecasts and build a verified Hosting ZIP (no deploy)'
+        type: boolean
+        default: true
+      force_refresh:
+        description: 'Refresh even if meaningful source/date/injury/model hashes are unchanged'
         type: boolean
         default: false
 permissions:
   contents: read
 concurrency:
-  group: match-context-research-${{ github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.event_name == 'pull_request' && format('nba-match-context-pr-{0}', github.event.pull_request.number) || 'nba-season-lab-shared-write' }}
+  cancel-in-progress: false
 jobs:
   research:
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.full_research) }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -27,6 +46,7 @@ jobs:
       OPENBLAS_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'
       PYTHONPATH: 'research/match_context'
+      NBA_CODE_ROOT: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,10 +54,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install pinned scientific test dependencies
+          cache: pip
+          cache-dependency-path: research_extension/production_20261118/runtime_requirements.txt
+      - name: Install pinned scientific inference and test dependencies
         run: |
-          python -m pip install --only-binary=:all: 'numpy==2.3.5' 'pandas==2.2.3' 'scipy==1.17.0' 'scikit-learn==1.8.0' 'lightgbm==4.6.0' 'catboost==1.2.8'
-      - name: Validate original evidence and scientific safeguards
+          python -m pip install --only-binary=:all: -r research_extension/production_20261118/runtime_requirements.txt
+      - name: Validate original evidence, actual weight parity and release safeguards
         run: |
           python research/match_context/verify_preserved.py
           python -m unittest discover -s research/match_context -p 'test_*.py'
@@ -45,11 +67,14 @@ jobs:
           python -m unittest discover -s research_extension/participation -p 'test_*.py'
           python -m unittest discover -s research_extension/position -p 'test_*.py'
           python -m unittest discover -s research_extension/prospective -p 'test_*.py'
+          python -m unittest discover -s research_extension/prospective_20261118 -p 'test_*.py'
+          python -m unittest discover -s research_extension/production_20261118 -p 'test_*.py'
+          python -m unittest discover -s research_extension/position_20261118 -p 'test_*.py'
           python -m unittest test_official_nba_gameday_status_research test_official_nba_inactive_summary_research test_official_nba_inactive_retry_research test_official_nba_inactive_missing_id_research
-      - name: Collect new source snapshots for explicitly requested full research
+      - name: Collect new source snapshots only for explicitly requested full research
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.full_research }}
         run: |
-          python -m pip install --only-binary=:all: 'pyarrow==20.0.0' 'xgboost==3.1.3'
+          python -m pip install --only-binary=:all: 'xgboost==3.1.3'
           python research/match_context/collect_sources.py --root match-context-artifact
       - name: Run explicitly requested historical model experiments
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.full_research }}
@@ -64,3 +89,119 @@ jobs:
           path: match-context-artifact/
           retention-days: 3
           if-no-files-found: error
+  inference:
+    needs: research
+    if: >-
+      ${{ always() && (needs.research.result == 'success' || needs.research.result == 'skipped') &&
+          ((github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+           (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.refresh_forecasts) ||
+           (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' &&
+            github.event.workflow_run.head_branch == 'main' &&
+            github.event.workflow_run.head_repository.full_name == github.repository &&
+            github.event.workflow_run.event != 'pull_request')) }}
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      NBA_CODE_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Skip unchanged meaningful inputs before dependency installation
+        id: cadence
+        env:
+          FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' && inputs.force_refresh }}
+        run: |
+          if [ "$FORCE_REFRESH" = 'true' ]; then
+            python research_extension/production_20261118/refresh_decision.py --root . --force --github-output "$GITHUB_OUTPUT"
+          else
+            python research_extension/production_20261118/refresh_decision.py --root . --github-output "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/cache@v4
+        if: steps.cadence.outputs.refresh == 'true'
+        with:
+          path: ~/.cache/pip
+          key: nba-inference-pip-${{ runner.os }}-py312-${{ hashFiles('research_extension/production_20261118/runtime_requirements.txt') }}
+      - uses: actions/cache@v4
+        if: steps.cadence.outputs.refresh == 'true'
+        with:
+          path: ${{ runner.temp }}/nba-model-history-cache
+          key: nba-frozen-history-${{ hashFiles('research_extension/production_20261118/HISTORICAL_SOURCE_MANIFEST.json') }}
+      - name: Install pinned CPU inference dependencies
+        if: steps.cadence.outputs.refresh == 'true'
+        run: |
+          python -m pip install --only-binary=:all: -r research_extension/production_20261118/runtime_requirements.txt
+      - name: Refresh coherent sources and infer from frozen weights without fitting
+        if: steps.cadence.outputs.refresh == 'true'
+        run: |
+          python research_extension/production_20261118/run_daily.py --work "$RUNNER_TEMP/nba-model-run" --cache "$RUNNER_TEMP/nba-model-history-cache" --snapshot-data data --base site/hosting_v620/data/base.json --out data/model_forecasts_v1.json --site-gate research_extension/production_20261118/SITE_DEFAULT_GATE.json
+      - name: Build descriptive opponent calendar from the same current features
+        if: steps.cadence.outputs.refresh == 'true'
+        run: |
+          ASOF_ET=$(python -c "import json; print(json.load(open('data/model_forecasts_v1.json'))['asof_date_et'])")
+          python research_extension/position_20261118/build_difficulty.py --future-frame "$RUNNER_TEMP/nba-model-run/inference/future_features.pkl" --source "$RUNNER_TEMP/nba-model-run/sources/derived/source" --asof-date "$ASOF_ET" --work "$RUNNER_TEMP/nba-model-run/difficulty" --output data/matchup_difficulty_v1.json
+      - name: Verify every published row against the unchanged fitted model
+        if: steps.cadence.outputs.refresh == 'true'
+        run: |
+          python research_extension/production_20261118/verify_release.py --feed data/model_forecasts_v1.json --research-feed "$RUNNER_TEMP/nba-model-run/inference/full_research_forecasts.json" --features "$RUNNER_TEMP/nba-model-run/inference/future_features.pkl" --snapshot-data data --base site/hosting_v620/data/base.json --out "$RUNNER_TEMP/nba-model-run/inference/RELEASE_QA.json"
+      - name: Install pinned isolated browser test runtime
+        if: steps.cadence.outputs.refresh == 'true'
+        run: |
+          python -m pip install --only-binary=:all: 'playwright==1.62.0'
+          python -m playwright install --with-deps chromium
+      - name: Check actual forecast and calendar presentation before publication
+        if: steps.cadence.outputs.refresh == 'true'
+        run: python scripts/test_hosting_v621_browser.py --site-dir site/hosting_v620 --data-root data --output browser-qa-actual --mode actual
+      - name: Build and verify complete Hosting ZIP without deploying
+        if: steps.cadence.outputs.refresh == 'true'
+        run: python scripts/build_hosting_v621.py --data-root data --release-qa "$RUNNER_TEMP/nba-model-run/inference/RELEASE_QA.json" --browser-qa browser-qa-actual/BROWSER_QA.json --output nba-season-lab-v6.21-hosting.zip
+      - name: Publish only validated public forecast and calendar JSON
+        if: steps.cadence.outputs.refresh == 'true'
+        run: |
+          git config user.name "nba-season-lab-bot"
+          git config user.email "nba-season-lab-bot@users.noreply.github.com"
+          git add data/model_forecasts_v1.json data/matchup_difficulty_v1.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: refresh frozen NBA model forecasts and opponent calendar"
+            # A concurrent owner/code update must fail closed. Do not move a
+            # snapshot produced by earlier code onto changed code via rebase.
+            git push origin HEAD:main
+          fi
+      - uses: actions/upload-artifact@v4
+        if: success() && steps.cadence.outputs.refresh == 'true'
+        with:
+          name: nba-season-lab-v6.21-verified-hosting
+          path: nba-season-lab-v6.21-hosting.zip
+          retention-days: 3
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.cadence.outputs.refresh == 'true'
+        with:
+          name: nba-v6.21-browser-actual
+          path: browser-qa-actual/
+          retention-days: 3
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.cadence.outputs.refresh == 'true'
+        with:
+          name: nba-frozen-inference-reproducibility
+          path: |
+            ${{ runner.temp }}/nba-model-run/inference/
+            ${{ runner.temp }}/nba-model-run/sources/raw_current/
+            ${{ runner.temp }}/nba-model-run/sources/derived/source/current/
+            ${{ runner.temp }}/nba-model-run/sources/derived/direct_nba/
+            ${{ runner.temp }}/nba-model-run/sources/derived/SOURCE_QA.json
+            ${{ runner.temp }}/nba-model-run/sources/derived/CAPTURE_SUMMARY.json
+            ${{ runner.temp }}/nba-model-run/sources/derived/DERIVATION.json
+            ${{ runner.temp }}/nba-model-run/official_injury/
+            ${{ runner.temp }}/nba-model-run/OFFICIAL_EXTENSION_UNAVAILABLE.json
+          retention-days: 3
+          if-no-files-found: warn
