@@ -1,5 +1,13 @@
 name: NBA v6.22 UX source and browser checks
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/hosting_v622/**'
+      - 'scripts/build_hosting_v622.py'
+      - 'scripts/test_hosting_v622_browser.py'
+      - '.github/workflows/hosting-v622.yml'
+  workflow_dispatch:
   pull_request:
     branches: [main]
     paths:
@@ -9,6 +17,7 @@ on:
       - '.github/workflows/hosting-v622.yml'
 permissions:
   contents: read
+  actions: read
 jobs:
   source:
     runs-on: ubuntu-latest
@@ -61,5 +70,60 @@ jobs:
         with:
           name: nba-v6.22-ux-browser-fixture
           path: browser-qa-v622-fixture/
+          retention-days: 3
+          if-no-files-found: error
+
+  release:
+    needs: [source, browser]
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: nba-v6.22-ux-browser-actual
+          path: browser-qa-v622-actual
+      - name: Find byte-identical frozen inference QA from a successful main run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/v622-release-proof"
+          matched=0
+          for id in $(gh run list --repo "$GITHUB_REPOSITORY" --workflow match-context-distribution.yml --branch main --status success --limit 15 --json databaseId --jq '.[].databaseId'); do
+            rm -rf "$RUNNER_TEMP/v622-release-proof/inference"
+            if gh run download "$id" --repo "$GITHUB_REPOSITORY" --name nba-frozen-inference-reproducibility --dir "$RUNNER_TEMP/v622-release-proof" >/dev/null 2>&1; then
+              if python - "$RUNNER_TEMP/v622-release-proof/inference/RELEASE_QA.json" <<'PY'
+          import hashlib, json, pathlib, sys
+          path = pathlib.Path(sys.argv[1])
+          feed = pathlib.Path('data/model_forecasts_v1.json')
+          if not path.is_file():
+              sys.exit(1)
+          report = json.loads(path.read_text())
+          if report.get('status') != 'PASS' or report.get('feed_sha256') != hashlib.sha256(feed.read_bytes()).hexdigest():
+              sys.exit(1)
+          print('PASS identical published feed and frozen inference QA')
+          PY
+              then
+                matched=1
+                echo "Pinned inference evidence from run $id"
+                break
+              fi
+            fi
+          done
+          test "$matched" -eq 1 || { echo 'No verified same-byte inference QA; release refused'; exit 1; }
+      - name: Verify unexpired public data, actual browser QA and complete immutable Hosting ZIP
+        run: |
+          python scripts/build_hosting_v622.py --data-root data \
+            --release-qa "$RUNNER_TEMP/v622-release-proof/inference/RELEASE_QA.json" \
+            --browser-qa browser-qa-v622-actual/BROWSER_QA.json \
+            --output nba-season-lab-v6.22-hosting.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nba-season-lab-v6.22-verified-hosting
+          path: nba-season-lab-v6.22-hosting.zip
           retention-days: 3
           if-no-files-found: error
