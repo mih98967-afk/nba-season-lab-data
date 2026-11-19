@@ -13,6 +13,9 @@ on:
       - '.github/workflows/match-context-distribution.yml'
       - 'research_extension/production_20261118/**'
       - 'research_extension/position_20261118/**'
+      - 'scripts/test_hosting_v621_browser.py'
+      - 'scripts/test_browser_v621_clock.py'
+      - 'scripts/build_hosting_v621.py'
   workflow_run:
     workflows: ['NBA public data sync', 'Official injury rows isolated research']
     types: [completed]
