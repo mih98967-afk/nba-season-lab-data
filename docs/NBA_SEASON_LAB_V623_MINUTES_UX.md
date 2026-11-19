@@ -17,3 +17,13 @@ The existing Planner/Optimizer has kept all original calculations and protected 
 ## Release boundary
 
 The v6.23 source is copied from published v6.22 to avoid altering production. A merge does **not** authorize deployment; full ZIP requires pinned source manifest, real-data browser acceptance and model parity from a coherent fresh evidence set. No Firebase deployment, paid actions, scheduler or new repo is introduced.
+
+## Reproducible first real results (19 November 2026)
+
+Run [44575864166](https://github.com/mih98967-afk/nba-season-lab-data/actions/runs/44575864166) passed. The immutable shadow snapshot contains 1,688 original forecasts, 1,337 independently verified positive-minute outcomes, 94 literal DNP excluded from conditional errors, 180 UNKNOWN retained unscored, and 77 awaiting checks. The covered outcomes span 106 distinct NBA games and 16 NBA ET dates.
+
+On the same selected played observations, prior-season baseline MAE=6.3928 minutes, contemporaneous-form research challenger MAE=5.2233 minutes: absolute improvement 1.1695 minutes, 18.29% of baseline MAE. Predicted-minus-actual bias shifts from +0.9442 to +0.3365 minutes. Resampling **ET dates**, not player-game rows, yields an exploratory paired improvement interval [0.9902, 1.3280] minutes. This is not a predeclared independent confirmatory selection gate.
+
+The separate `conditional_minutes_robustness_research.json` has a different issuance cohort and was **not pooled**. The QA explicitly labels `separate_robustness_report_same_cohort=false`.
+
+**Decision:** Do not promote a personal expected-minutes claim or change the deployed FP model. The gains are played-only, selected, and researched after current-season observations; genuine independent model-selection evidence and representative scheduled-player denominator remain unproven. Do not turn UNKNOWN into 0 minutes.
