@@ -97,3 +97,19 @@
  .difficulty-footer{align-items:flex-start;flex-direction:column}
 }
 @media(prefers-reduced-motion:reduce){.difficulty-table tbody tr,.model-game{transition:none}}
+
+/* UX v6.22: condensed long calendars and calm secondary controls. */
+.difficulty-fixtures-more{flex-basis:100%;width:100%;border-top:1px solid var(--line);padding:6px 0 0;margin-top:3px}
+.difficulty-fixtures-more>summary{font-size:12px;color:#85503C;font-weight:650;list-style-position:inside;padding:3px 1px}
+.difficulty-fixtures-more>.difficulty-fixtures{padding:9px 0 3px;border:0;gap:5px}
+.difficulty-fixtures-more:not([open])>.difficulty-fixtures{display:none}
+.difficulty-fixture{min-width:74px}
+.view-switch,.market-quick-filters,.calendar-quick-switch{background:#F5EFE8;border-color:#E6DBCF}
+.view-switch button,.market-quick-filters button,.calendar-quick-switch button{color:#7A675B}
+.view-switch button.selected,.market-quick-filters button.selected,.calendar-quick-switch button.selected{color:#854933;background:var(--paper);box-shadow:0 1px 5px rgba(73,41,23,.09)}
+.view-switch button:hover:not(.selected),.market-quick-filters button:hover:not(.selected),.calendar-quick-switch button:hover:not(.selected){background:#FCF7F2}
+.today-research-toggle{background:var(--paper);border:1px solid var(--line);border-radius:12px;margin:0 0 19px;padding:0 15px}
+.today-research-toggle>summary{font-size:13px;font-weight:660;color:#745341;padding:12px 0;min-height:43px;line-height:1.4}
+.today-research-toggle>.today-evidence{margin:0 0 14px;border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none;padding:13px 0 2px}
+.today-research-toggle:not([open])>.today-evidence{display:none}
+@media(max-width:600px){.difficulty-fixtures-more>summary{min-height:32px}.today-research-toggle{margin-bottom:15px}}

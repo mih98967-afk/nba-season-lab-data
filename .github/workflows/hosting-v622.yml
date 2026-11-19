@@ -47,6 +47,15 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Desktop and mobile fixture QA; not evidence for production deployment
         run: python scripts/test_hosting_v622_browser.py --site-dir site/hosting_v622 --data-root data --output browser-qa-v622-fixture --mode fixture
+      - name: Check current public data with synthetic guest; no Firebase access
+        run: python scripts/test_hosting_v622_browser.py --site-dir site/hosting_v622 --data-root data --output browser-qa-v622-actual --mode actual
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-v6.22-ux-browser-actual
+          path: browser-qa-v622-actual/
+          retention-days: 3
+          if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         if: always()
         with:

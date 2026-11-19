@@ -259,6 +259,13 @@ def main():
             assert page.locator(".model-mode-bar").count() == 1
             assert "Новая модель FP и участия" in page.locator(".model-mode-bar").inner_text()
             check_page("desktop new-model default"); shot("01_today_desktop.png")
+            journal = page.locator(".today-research-toggle")
+            assert journal.count() == 1 and journal.get_attribute("open") is None
+            journal.locator("summary").click()
+            assert journal.get_attribute("open") is not None
+            assert journal.locator(".today-evidence").count() == 1
+            journal.locator("summary").click()
+            report["checks"].append("optional decision evidence hidden by default, accessible on demand")
             page.locator('[data-model-choice="legacy"]').click()
             assert page.evaluate("window.PythosNBA.getState().modelMode") == "legacy"
             page.locator('[data-model-choice="research"]').click()
@@ -286,6 +293,13 @@ def main():
                 assert page.locator(f'[data-difficulty-days="{days}"]').get_attribute("aria-pressed") == "true"
             assert page.locator("#difficulty-position").input_value() == "PG"
             shot("03_difficulty_pg_28_desktop.png")
+            reveal = page.locator(".difficulty-fixtures-more").first
+            assert reveal.count() > 0, "Long difficulty windows must disclose extra fixtures"
+            reveal.locator("summary").click()
+            assert reveal.get_attribute("open") is not None
+            assert reveal.locator(".difficulty-fixture").count() > 0
+            reveal.locator("summary").click()
+            report["checks"].append("four fixtures by default; extra matches disclose and collapse")
             page.select_option("#difficulty-sort", "hardest")
             values = page.locator(".difficulty-table tbody td:nth-child(3) strong").all_text_contents()
             scores = [float(value.replace("\u00a0", "").replace(",", ".")) for value in values if value != "—"]
@@ -322,6 +336,25 @@ def main():
             page.locator(f'.market-item [data-player="{target_id}"]').click()
             page.locator(".model-ranges summary").first.click()
             check_page("mobile player ranges without document overflow"); shot("06_player_ranges_mobile.png")
+            for width, height in ((1280, 800), (768, 1024), (320, 700)):
+                page.set_viewport_size({"width": width, "height": height})
+                page.locator('#navigation [data-tab="calendar"]').click()
+                page.locator('[data-calendar-quick="difficulty"]').click()
+                check_page(f"difficulty viewport {width}")
+                if width == 320:
+                    shot("07_difficulty_320.png")
+                page.locator('[data-calendar-quick="full"]').click()
+                check_page(f"full calendar viewport {width}")
+                for tab in ("today", "planner", "overview", "players"):
+                    page.locator(f'#navigation [data-tab="{tab}"]').click()
+                    check_page(f"{tab} viewport {width}")
+            page.locator('[data-market-view="mine"]').click()
+            page.locator(f'.market-item [data-player="{target_id}"]').click()
+            check_page("320px modal overlay")
+            modal = page.locator(".modalpanel")
+            assert modal.evaluate("(e) => e.scrollWidth <= e.clientWidth + 2"), "Modal content overflows horizontally"
+            page.locator('[data-action="close-modal"]').click()
+            report["checks"].append("five widths, all main sections, modal scroll and no document overflow")
             final_state = page.evaluate("window.PythosNBA.getState()")
             for key in ["roster", "initialRoster", "cash", "executed", "medical", "prices", "teamOverrides"]:
                 assert final_state[key] == state[key], "UI changed synthetic owner data: " + key
