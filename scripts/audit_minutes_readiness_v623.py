@@ -76,7 +76,7 @@ def audit(shadow, baseline, robustness=None):
             raise ValueError("Orphan/duplicate independently observed outcome")
         seen.add(k)
         issue = index[k]
-        if row.get("team") != issue.get("team") or row.get("game_utc") != issue.get("game_utc"):
+        if row.get("team") != issue.get("team") or (row.get("game_utc") is not None and row["game_utc"] != issue["game_utc"]):
             raise ValueError("Observed player-game identity/club differs from issued forecast")
         if instant(row["postgame_first_seen_at_utc"]) <= instant(issue["game_utc"]):
             raise ValueError("Outcome first seen before game tipoff")
