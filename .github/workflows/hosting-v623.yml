@@ -1,0 +1,59 @@
+name: NBA v6.23 conditional minutes gate and planner UI
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/audit_minutes_readiness_v623.py'
+      - 'scripts/test_audit_minutes_readiness_v623.py'
+      - 'site/hosting_v623/**'
+      - '.github/workflows/hosting-v623.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  minutes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test independent prospective evaluation gate
+        run: python -m unittest -v scripts/test_audit_minutes_readiness_v623.py
+      - name: Reconcile real immutable prelock minutes and played-only outcomes
+        run: python scripts/audit_minutes_readiness_v623.py --data-root data --output minutes-audit-v623.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-v623-research-only-minutes-evidence
+          path: minutes-audit-v623.json
+          retention-days: 3
+          if-no-files-found: warn
+  ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify unchanged prediction and transfer engines
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          original=Path('site/hosting_v622')
+          current=Path('site/hosting_v623')
+          for file in ('app.js','forecast_runtime.js','multi_planner.js','chain_planner.js',
+                       'transfer_guard.js','schedule_difficulty.js','decision_breakdown.js'):
+              a=(original/file).read_bytes()
+              b=(current/file).read_bytes()
+              assert hashlib.sha256(a).digest()==hashlib.sha256(b).digest(), file
+          print('PASS immutable forecast and optimizer runtime')
+          PY
+      - name: Run JS syntax and full existing regression tests
+        run: |
+          cd site/hosting_v623
+          for f in *.js; do node --check "$f"; done
+          for f in test_*.cjs; do node "$f"; done
