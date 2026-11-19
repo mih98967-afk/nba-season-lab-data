@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "status": "PREREGISTERED_FUTURE_ONLY",
+  "as_of_release": "6.23",
+  "frozen_at_commit": "0175df0bb64f07b1be24c70107377bbf705299b7",
+  "model_sha256": "4f8357abadb37ae3fe3f1d5f4c10d502d8967737781fb4fb8039532dd867ff0d",
+  "start_inclusive_utc": "2026-11-21T00:00:00Z",
+  "end_exclusive_utc": "2026-12-08T00:00:00Z",
+  "cohort": "Only first genuine prelock player-game issue, features first seen before issue; outcomes verified positive minutes after game",
+  "baseline": "baseline_minutes",
+  "challenger": "challenger_minutes",
+  "metric": "same-player-game paired mean(|baseline-actual|-|challenger-actual|), positive favors challenger",
+  "conditional_on_play": true,
+  "prior_verified_games": [
+    3,
+    4,
+    5
+  ],
+  "minutes_groups": [
+    0,
+    15,
+    25,
+    35,
+    48.000001
+  ],
+  "cluster_resampling": "NBA ET dates",
+  "resamples": 2000,
+  "seed": 20261120,
+  "thresholds": {
+    "ET_dates": 12,
+    "NBA_games": 60,
+    "positive_minute_pairs": 600
+  },
+  "exploratory_threshold_minutes_gain": 0.5,
+  "UNKNOWN": "not scored and never DNP",
+  "DNP": "not scored as zero minutes",
+  "site_adoption_allowed": false,
+  "unconditional_fp_allowed": false,
+  "individual_intervals_calibrated": false,
+  "optimizer_validated": false,
+  "qualification": "Frozen rule studied in earlier 2026/27 observations; future replication only, not a fresh development sample. Selected played cohort not full fantasy population."
+}
