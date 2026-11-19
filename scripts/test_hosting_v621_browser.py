@@ -170,7 +170,14 @@ def main():
         assert all(set(["ALL", *POSITIONS]) <= set(row) for row in difficulty["opponents"].values())
         assert schedule["schema_version"] == 1 and 1100 <= len(schedule["games"]) <= 1230
         assert live["schema_version"] == 4 and live["mode"] == "live_sync"
-        assert tick - timedelta(hours=72) <= parse_time(difficulty["as_of_utc"]) <= tick
+        # UI replay uses a clock fixed 60 s after forecast issuance. The
+        # difficulty snapshot is produced later in the same pipeline, so
+        # checking its wall-clock timestamp against that replay clock would
+        # reject a valid, fresh snapshot as "from the future".
+        # Keep the strict <=72 h freshness requirement against the actual
+        # verification clock; the release builder checks it independently.
+        freshness_clock = datetime.now(UTC) if args.mode == "actual" else tick
+        assert freshness_clock - timedelta(hours=72) <= parse_time(difficulty["as_of_utc"]) <= freshness_clock, "DIFFICULTY_SNAPSHOT_NOT_FRESH"
         state = guest_state(base, forecast, tick)
         payloads = {name: encoded(value) for name, value in data.items()}
         report.update({"clock_utc": stamp(tick), "clock_purpose": "UI replay at issuance + 60 seconds; real freshness is a separate release gate",
