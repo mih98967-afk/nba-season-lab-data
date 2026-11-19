@@ -5,6 +5,7 @@ on:
     paths:
       - 'site/hosting_v622/**'
       - 'scripts/build_hosting_v622.py'
+      - 'scripts/test_hosting_v622_browser.py'
       - '.github/workflows/hosting-v622.yml'
 permissions:
   contents: read
@@ -45,7 +46,7 @@ jobs:
           python -m pip install --only-binary=:all: 'playwright==1.62.0'
           python -m playwright install --with-deps chromium
       - name: Desktop and mobile fixture QA; not evidence for production deployment
-        run: python scripts/test_hosting_v621_browser.py --site-dir site/hosting_v622 --data-root data --output browser-qa-v622-fixture --mode fixture
+        run: python scripts/test_hosting_v622_browser.py --site-dir site/hosting_v622 --data-root data --output browser-qa-v622-fixture --mode fixture
       - uses: actions/upload-artifact@v4
         if: always()
         with:
