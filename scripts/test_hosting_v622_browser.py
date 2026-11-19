@@ -336,6 +336,8 @@ def main():
             page.locator(f'.market-item [data-player="{target_id}"]').click()
             page.locator(".model-ranges summary").first.click()
             check_page("mobile player ranges without document overflow"); shot("06_player_ranges_mobile.png")
+            page.locator('[data-action="close-modal"]').click()
+            assert page.locator("#modal-root").count() == 0
             for width, height in ((1280, 800), (768, 1024), (320, 700)):
                 page.set_viewport_size({"width": width, "height": height})
                 page.locator('#navigation [data-tab="calendar"]').click()
