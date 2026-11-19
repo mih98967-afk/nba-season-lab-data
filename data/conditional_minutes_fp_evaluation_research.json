@@ -3,18 +3,18 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-11-19T13:12:43.252269Z",
+  "updated_at_utc": "2026-11-19T23:04:15.473466Z",
   "target": "minutes_and_reconstructed_Sportsru_FP_given_verified_positive_minutes",
   "population": "frozen_prelock_same_team_minutes_issues_only_NOT_full_fantasy_roster",
-  "frozen_minutes_issue_sha256": "49b53e8e0ddf00f86c71859e4b8200e62d5947d199ffea0d72475b063cccce6c",
+  "frozen_minutes_issue_sha256": "781a8ff386e9cad04dc8b662f131252e683309d47db39688c2b4952f28d40978",
   "model_frozen_hash": "96fe3f30009c36de525ec089d03cad6b8bd14fb07f46137ae991031568d5e6f0",
   "first_issued_source_artifact": "data/conditional_minutes_fp_research.json",
   "cohort_sources": {
-    "minutes_issued_updated": "2026-11-19T09:56:47Z",
-    "p_play_shadow_updated": "2026-11-19T09:56:44Z",
-    "participation_cohort_updated": "2026-11-19T13:12:37Z",
-    "explicit_DNP_updated": "2026-11-19T13:12:36Z",
-    "NBA_live_updated": "2026-11-19T13:12:29Z"
+    "minutes_issued_updated": "2026-11-19T23:04:14Z",
+    "p_play_shadow_updated": "2026-11-19T23:04:11Z",
+    "participation_cohort_updated": "2026-11-19T23:04:08Z",
+    "explicit_DNP_updated": "2026-11-19T23:04:07Z",
+    "NBA_live_updated": "2026-11-19T23:03:54Z"
   },
   "summary": {
     "finished_checked": 2132,
@@ -22,8 +22,8 @@
     "explicit_DNP_not_scored": 157,
     "UNKNOWN_not_imputed": 261,
     "unknown_fraction": 0.12242,
-    "issued_total": 2210,
-    "awaiting_or_unchecked": 78,
+    "issued_total": 2360,
+    "awaiting_or_unchecked": 228,
     "played_distinct_games": 133,
     "played_distinct_ET_dates": 19,
     "finished_distinct_ET_dates": 19
@@ -42,13 +42,13 @@
     },
     "decomposed_FP": {
       "MAE": 7.1264,
-      "RMSE": 8.9351,
-      "prediction_minus_actual_bias": 1.5528
+      "RMSE": 8.9347,
+      "prediction_minus_actual_bias": 1.5517
     },
     "direct_FP": {
       "MAE": 7.127,
-      "RMSE": 8.9356,
-      "prediction_minus_actual_bias": 1.6741
+      "RMSE": 8.9352,
+      "prediction_minus_actual_bias": 1.6729
     },
     "direct_minus_decomposed_FP_MAE": 0.0006,
     "frozen_historical_error_bands": {
@@ -58,7 +58,7 @@
         "nominal_dev_coverage_not_prospective_claim": 0.9
       },
       "fp_frozen_dev_q90_not_guaranteed": {
-        "empirical_coverage": 0.911319,
+        "empirical_coverage": 0.911902,
         "mean_width": 29.7006,
         "nominal_dev_coverage_not_prospective_claim": 0.9
       }
@@ -84,18 +84,18 @@
         },
         "predicted_FP_per_minute": {
           "MAE": 0.2945,
-          "RMSE": 0.3969,
+          "RMSE": 0.3968,
           "prediction_minus_actual_bias": 0.0172
         },
         "decomposed_FP": {
-          "MAE": 7.907,
-          "RMSE": 9.8283,
-          "prediction_minus_actual_bias": 0.6565
+          "MAE": 7.904,
+          "RMSE": 9.8237,
+          "prediction_minus_actual_bias": 0.6536
         },
         "direct_FP": {
-          "MAE": 7.9786,
-          "RMSE": 9.8672,
-          "prediction_minus_actual_bias": 0.862
+          "MAE": 7.9756,
+          "RMSE": 9.8626,
+          "prediction_minus_actual_bias": 0.859
         },
         "direct_minus_decomposed_FP_MAE": 0.0716,
         "frozen_historical_error_bands": {
@@ -105,7 +105,7 @@
             "nominal_dev_coverage_not_prospective_claim": 0.9
           },
           "fp_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.890533,
+            "empirical_coverage": 0.893491,
             "mean_width": 29.7006,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           }
@@ -179,19 +179,19 @@
           "prediction_minus_actual_bias": 1.1119
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3367,
-          "RMSE": 0.5748,
-          "prediction_minus_actual_bias": 0.0071
+          "MAE": 0.3368,
+          "RMSE": 0.5749,
+          "prediction_minus_actual_bias": 0.0069
         },
         "decomposed_FP": {
-          "MAE": 6.8057,
-          "RMSE": 8.6684,
-          "prediction_minus_actual_bias": 1.0035
+          "MAE": 6.8084,
+          "RMSE": 8.6714,
+          "prediction_minus_actual_bias": 1.0007
         },
         "direct_FP": {
-          "MAE": 6.7665,
-          "RMSE": 8.5968,
-          "prediction_minus_actual_bias": 1.0269
+          "MAE": 6.7693,
+          "RMSE": 8.5996,
+          "prediction_minus_actual_bias": 1.0241
         },
         "direct_minus_decomposed_FP_MAE": -0.0392,
         "frozen_historical_error_bands": {
@@ -351,19 +351,19 @@
         "prediction_minus_actual_bias": 1.3244
       },
       "predicted_FP_per_minute": {
-        "MAE": 0.3134,
-        "RMSE": 0.4486,
+        "MAE": 0.3135,
+        "RMSE": 0.4487,
         "prediction_minus_actual_bias": 0.0645
       },
       "decomposed_FP": {
-        "MAE": 7.0244,
-        "RMSE": 8.7968,
-        "prediction_minus_actual_bias": 1.5348
+        "MAE": 7.0253,
+        "RMSE": 8.7977,
+        "prediction_minus_actual_bias": 1.5338
       },
       "direct_FP": {
-        "MAE": 7.008,
-        "RMSE": 8.7755,
-        "prediction_minus_actual_bias": 1.6868
+        "MAE": 7.0089,
+        "RMSE": 8.7764,
+        "prediction_minus_actual_bias": 1.6859
       },
       "direct_minus_decomposed_FP_MAE": -0.0164,
       "frozen_historical_error_bands": {
@@ -387,19 +387,19 @@
         "prediction_minus_actual_bias": 2.3403
       },
       "predicted_FP_per_minute": {
-        "MAE": 0.2644,
-        "RMSE": 0.3353,
-        "prediction_minus_actual_bias": 0.068
+        "MAE": 0.2643,
+        "RMSE": 0.3352,
+        "prediction_minus_actual_bias": 0.0679
       },
       "decomposed_FP": {
-        "MAE": 8.2874,
-        "RMSE": 10.1353,
-        "prediction_minus_actual_bias": 2.7277
+        "MAE": 8.2851,
+        "RMSE": 10.1319,
+        "prediction_minus_actual_bias": 2.7255
       },
       "direct_FP": {
-        "MAE": 8.3091,
-        "RMSE": 10.171,
-        "prediction_minus_actual_bias": 2.7461
+        "MAE": 8.3068,
+        "RMSE": 10.1677,
+        "prediction_minus_actual_bias": 2.7439
       },
       "direct_minus_decomposed_FP_MAE": 0.0217,
       "frozen_historical_error_bands": {
@@ -409,7 +409,7 @@
           "nominal_dev_coverage_not_prospective_claim": 0.9
         },
         "fp_frozen_dev_q90_not_guaranteed": {
-          "empirical_coverage": 0.863135,
+          "empirical_coverage": 0.865342,
           "mean_width": 29.7006,
           "nominal_dev_coverage_not_prospective_claim": 0.9
         }
@@ -1198,19 +1198,19 @@
           "prediction_minus_actual_bias": -2.0089
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3083,
-          "RMSE": 0.3886,
-          "prediction_minus_actual_bias": 0.1397
+          "MAE": 0.308,
+          "RMSE": 0.3881,
+          "prediction_minus_actual_bias": 0.1393
         },
         "decomposed_FP": {
-          "MAE": 7.4965,
-          "RMSE": 10.0205,
-          "prediction_minus_actual_bias": 1.5971
+          "MAE": 7.4809,
+          "RMSE": 9.9967,
+          "prediction_minus_actual_bias": 1.5815
         },
         "direct_FP": {
-          "MAE": 7.6203,
-          "RMSE": 10.1522,
-          "prediction_minus_actual_bias": 1.6594
+          "MAE": 7.6047,
+          "RMSE": 10.1287,
+          "prediction_minus_actual_bias": 1.6438
         },
         "direct_minus_decomposed_FP_MAE": 0.1238,
         "frozen_historical_error_bands": {
@@ -1220,7 +1220,7 @@
             "nominal_dev_coverage_not_prospective_claim": 0.9
           },
           "fp_frozen_dev_q90_not_guaranteed": {
-            "empirical_coverage": 0.859375,
+            "empirical_coverage": 0.875,
             "mean_width": 29.7006,
             "nominal_dev_coverage_not_prospective_claim": 0.9
           }
@@ -1243,19 +1243,19 @@
           "prediction_minus_actual_bias": 1.7558
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3477,
-          "RMSE": 0.5651,
-          "prediction_minus_actual_bias": 0.0575
+          "MAE": 0.3481,
+          "RMSE": 0.5653,
+          "prediction_minus_actual_bias": 0.0571
         },
         "decomposed_FP": {
-          "MAE": 7.0705,
-          "RMSE": 8.9347,
-          "prediction_minus_actual_bias": 1.3691
+          "MAE": 7.077,
+          "RMSE": 8.9413,
+          "prediction_minus_actual_bias": 1.3626
         },
         "direct_FP": {
-          "MAE": 7.0153,
-          "RMSE": 8.8778,
-          "prediction_minus_actual_bias": 1.486
+          "MAE": 7.0218,
+          "RMSE": 8.8842,
+          "prediction_minus_actual_bias": 1.4795
         },
         "direct_minus_decomposed_FP_MAE": -0.0553,
         "frozen_historical_error_bands": {
@@ -47595,8 +47595,8 @@
       "postgame_first_seen_at_utc": "2026-11-18T07:31:16Z",
       "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910005",
       "actual_minutes": 42.0,
-      "actual_fp_reconstructed": 17.0,
-      "actual_rate": 0.4047619,
+      "actual_fp_reconstructed": 18.0,
+      "actual_rate": 0.42857143,
       "predicted_minutes": 36.8414,
       "predicted_rate": 0.889969,
       "predicted_decomposed_fp": 32.7877,
@@ -51975,8 +51975,8 @@
       "postgame_first_seen_at_utc": "2026-11-19T09:56:42Z",
       "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910016",
       "actual_minutes": 20.0,
-      "actual_fp_reconstructed": 15.0,
-      "actual_rate": 0.75,
+      "actual_fp_reconstructed": 16.0,
+      "actual_rate": 0.8,
       "predicted_minutes": 18.6857,
       "predicted_rate": 0.341394,
       "predicted_decomposed_fp": 6.37919,
@@ -58692,12 +58692,12 @@
       1.5269
     ],
     "mean_predicted_minus_actual_FP_95pct_exploratory": [
-      1.3347,
-      2.0252
+      1.3335,
+      2.0244
     ],
     "direct_FP_MAE_95pct_exploratory": [
       6.8853,
-      7.3383
+      7.3377
     ],
     "direct_minus_decomposed_FP_MAE_95pct_exploratory": [
       -0.032,
