@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict');const C=require('./calendar_context.js');
+const t=x=>Date.parse(x);const games=[
+{home:'BOS',away:'NYK',utc:'2026-11-01T00:00:00Z'},
+{home:'BOS',away:'LAL',utc:'2026-11-03T00:00:00Z'},
+{home:'MIA',away:'BOS',utc:'2026-11-04T00:00:00Z'},
+{home:'MIA',away:'BOS',utc:'2026-11-04T00:00:00Z',id:'duplicate'},
+{home:'BOS',away:'DEN',utc:'2026-11-07T00:00:00Z'}];
+const r=C.describe(games,'BOS',t('2026-11-02T00:00:00Z'),t('2026-11-09T00:00:00Z'),true);
+assert.equal(r.ready,true);assert.equal(r.games,3);assert.equal(r.b2b,1);assert.equal(r.shortRest,1);assert.equal(r.next[1].restDays,0);assert.equal(r.difficulty,'unknown');
+assert.equal(C.describe(games,'BOS',0,1,false).ready,false);
+assert.equal(C.describe(games,'CHI',0,1,true).games,0);
+assert.equal(C.describe([], 'CHI',0,1,false).games,null);
+console.log('PASS calendar schedule facts and no invented difficulty');
