@@ -1,0 +1,55 @@
+name: NBA v6.22 UX source and browser checks
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'site/hosting_v622/**'
+      - 'scripts/build_hosting_v622.py'
+      - '.github/workflows/hosting-v622.yml'
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax and all existing regression tests
+        run: |
+          cd site/hosting_v622
+          for f in *.js; do node --check "$f"; done
+          for f in test_*.cjs; do node "$f"; done
+      - name: Source manifest and release boundary
+        run: |
+          python scripts/build_hosting_v622.py --write-source-manifest --verify-source-only
+          python scripts/build_hosting_v622.py --verify-source-only
+          python -m unittest discover -s scripts -p 'test_build_hosting_v621.py'
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned browser runtime
+        run: |
+          python -m pip install --only-binary=:all: 'playwright==1.62.0'
+          python -m playwright install --with-deps chromium
+      - name: Desktop and mobile fixture QA; not evidence for production deployment
+        run: python scripts/test_hosting_v621_browser.py --site-dir site/hosting_v622 --data-root data --output browser-qa-v622-fixture --mode fixture
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-v6.22-ux-browser-fixture
+          path: browser-qa-v622-fixture/
+          retention-days: 3
+          if-no-files-found: error
