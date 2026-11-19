@@ -124,16 +124,23 @@ def audit(shadow, baseline, robustness=None):
         ci = [round(results[int(0.025*(RESAMPLES-1))], 4),
               round(results[int(0.975*(RESAMPLES-1))], 4)]
 
+    # Independent robustness snapshots are refreshed on a different schedule.
+    # A different issue count is evidence of a *different* cohort, not a
+    # corrupted original: label it explicitly and never combine its metrics.
+    robustness_same_cohort = None
     if robustness:
         if robustness.get("adopt_on_site") is not False:
             raise ValueError("Related robustness report wrongly promoted")
-        if robustness.get("summary", {}).get("frozen_issues_total") != len(issued):
-            raise ValueError("Robustness report built from a different minute cohort")
+        robustness_same_cohort = (
+            robustness.get("summary", {}).get("frozen_issues_total") == len(issued)
+            and robustness.get("frozen_issue_sha256") == shadow["source_frozen_minutes_issue_sha256"])
 
     return {
         "schema": "nba_conditional_minutes_promotion_gate_v623",
         "status": "PASS_RESEARCH_ONLY_NO_PROMOTION",
         "original_research_status": EXPECTED_STATUS,
+        "separate_robustness_report_same_cohort": robustness_same_cohort,
+        "separate_robustness_not_pooled_when_different": robustness_same_cohort is False,
         "frozen_source_sha256": shadow["source_frozen_minutes_issue_sha256"],
         "sample": {
             "issued": len(issued),
