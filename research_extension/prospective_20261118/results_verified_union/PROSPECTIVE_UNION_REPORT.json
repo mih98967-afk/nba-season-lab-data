@@ -1,0 +1,3242 @@
+{
+  "schema": "nba-verified-source-union-sensitivity-v1",
+  "evaluated_at_utc": "2026-11-18T11:39:37.010053+00:00",
+  "evaluation_only": true,
+  "rule": "Use all exact ESPN known labels when archive/direct NBA label UNKNOWN and no explicit source conflict. Keep every known archive label. Never replace an explicit disagreement. No prediction/error-dependent inclusion.",
+  "original_source_report_sha256": "f17948f7076e30e0c0861b4b6c28929852660420eb5becca654a08ef51b68694",
+  "original_archive_report_unchanged": true,
+  "training_or_tuning_performed": false,
+  "official_Sports_ru_credits_proven": false,
+  "cohorts": {
+    "original_20261116": {
+      "additional_record_labels": 8,
+      "additional_unique_player_games": 8,
+      "by_role_and_lead": {
+        "long_lead_primary:lead1": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 79,
+              "EXPLICIT_DNP": 11,
+              "UNKNOWN": 77
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 79,
+                "mae": 7.965822809481923,
+                "rmse": 11.056992728831707,
+                "bias_prediction_minus_actual": 0.008860748025435435
+              },
+              "frozen_candidate": {
+                "n": 79,
+                "mae": 7.473855444524862,
+                "rmse": 10.309946187790429,
+                "bias_prediction_minus_actual": -0.4651585911648182
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 90,
+                "brier": 0.09959168211046021,
+                "log_loss": 0.3359769611587728,
+                "predicted_mean": 0.8340872950024075,
+                "observed_play_fraction": 0.8777777777777778
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "brier": 0.07533264959851932,
+                "log_loss": 0.2614640131283187,
+                "predicted_mean": 0.8388865164425277,
+                "observed_play_fraction": 0.8777777777777778
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 90,
+                "mae": 7.554949227450221,
+                "rmse": 10.653770630379029,
+                "bias_prediction_minus_actual": -0.7841207322560136
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "mae": 7.004480997286128,
+                "rmse": 9.953425143155302,
+                "bias_prediction_minus_actual": -0.7611781692604345
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.4936708860759494,
+                  "width": 10.643813161507461,
+                  "interval_score": 25.169969066259146
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.5333333333333333,
+                  "width": 10.693521538514615,
+                  "interval_score": 23.635367882313197
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.7215189873417721,
+                  "width": 20.921367514355556,
+                  "interval_score": 37.77420521643375
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.7666666666666667,
+                  "width": 20.107903548714486,
+                  "interval_score": 34.32428661983831
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.9113924050632911,
+                  "width": 31.636346687326185,
+                  "interval_score": 59.68695332864292
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.9111111111111111,
+                  "width": 29.734049972449483,
+                  "interval_score": 58.35659985263411
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.10159792130031778,
+              0.07990759551093995
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "PLAYED": 100,
+              "EXPLICIT_DNP": 11,
+              "OFFICIAL_INACTIVE": 39,
+              "UNKNOWN": 17
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 100,
+                "mae": 7.06725003451109,
+                "rmse": 10.006085975284877,
+                "bias_prediction_minus_actual": 0.006750000715255737
+              },
+              "frozen_candidate": {
+                "n": 100,
+                "mae": 6.859564076662064,
+                "rmse": 9.563796280131628,
+                "bias_prediction_minus_actual": -0.27186411261558535
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 150,
+                "brier": 0.14063169408777865,
+                "log_loss": 0.4437954641104794,
+                "predicted_mean": 0.7239051085710525,
+                "observed_play_fraction": 0.6666666666666666
+              },
+              "frozen_candidate": {
+                "n": 150,
+                "brier": 0.09150767619512411,
+                "log_loss": 0.3176593736293638,
+                "predicted_mean": 0.6744448929692013,
+                "observed_play_fraction": 0.6666666666666666
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 150,
+                "mae": 6.448893171570759,
+                "rmse": 9.227696629265948,
+                "bias_prediction_minus_actual": 0.6978989996125855
+              },
+              "frozen_candidate": {
+                "n": 150,
+                "mae": 5.362744678845318,
+                "rmse": 8.273877877741446,
+                "bias_prediction_minus_actual": -0.0036116827402353615
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 100,
+                  "coverage": 0.5,
+                  "width": 10.20421620036602,
+                  "interval_score": 22.865433708584483
+                },
+                "unconditional": {
+                  "n": 150,
+                  "coverage": 0.6133333333333333,
+                  "width": 8.04652680318822,
+                  "interval_score": 17.171948711517434
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 100,
+                  "coverage": 0.73,
+                  "width": 20.1258444152776,
+                  "interval_score": 34.40447701300831
+                },
+                "unconditional": {
+                  "n": 150,
+                  "coverage": 0.8133333333333334,
+                  "width": 15.515595386300795,
+                  "interval_score": 25.20121653013074
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 100,
+                  "coverage": 0.92,
+                  "width": 30.528889906215213,
+                  "interval_score": 53.24679877748892
+                },
+                "unconditional": {
+                  "n": 150,
+                  "coverage": 0.9333333333333333,
+                  "width": 25.256564496677118,
+                  "interval_score": 43.19235864515235
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.02280778350015122,
+              0.06169223549269475
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 152,
+            "played": 102,
+            "explicit_nonplay": 50,
+            "UNKNOWN": 15,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 152,
+              "brier": 0.1394199065580124,
+              "log_loss": 0.44088622425874463,
+              "predicted_mean": 0.7250050414157542,
+              "observed_play_fraction": 0.6710526315789473
+            },
+            "frozen_candidate": {
+              "n": 152,
+              "brier": 0.09041141426432399,
+              "log_loss": 0.31468609348121157,
+              "predicted_mean": 0.677579835094221,
+              "observed_play_fraction": 0.6710526315789473
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.02532755570859019,
+              0.06169223549269475
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "unresolved_or_conflicting_archive_label": 11,
+            "missing_exact_player_game": 4,
+            "ESPN_archive_disagreement": 2
+          },
+          "ESPN_unknown_reasons": {
+            "no_unique_high_confidence_identity": 52,
+            "supplementary_official_game_day_evidence": 22,
+            "no_matching_evidence": 3
+          },
+          "source_overlap": {
+            "exact_agreement": 80,
+            "not_both_known": 85,
+            "CONFLICT": 2
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 100,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.20768595784902555,
+              "game_cluster_percentile_95CI": [
+                -0.29464451867399877,
+                0.7595614092424512
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.20768595784902555
+              }
+            },
+            "conditional_rmse": {
+              "n": 100,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.44228969515324934,
+              "game_cluster_percentile_95CI": [
+                -0.1323165080862827,
+                0.7468597145211824
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.44228969515324934
+              }
+            },
+            "unconditional_mae": {
+              "n": 150,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 1.0861484927254415,
+              "game_cluster_percentile_95CI": [
+                0.7383800254426154,
+                1.6169562375885924
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 1.0861484927254415
+              }
+            },
+            "unconditional_rmse": {
+              "n": 150,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.9538187515245014,
+              "game_cluster_percentile_95CI": [
+                0.42154501363123487,
+                1.3987601450428802
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.9538187515245014
+              }
+            },
+            "participation_brier": {
+              "n": 152,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "brier",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.04900849229368841,
+              "game_cluster_percentile_95CI": [
+                0.03749056408022096,
+                0.05928729928206608
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.04900849229368841
+              }
+            }
+          }
+        },
+        "near_interval_challenger:lead0": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 136,
+              "UNKNOWN": 110,
+              "EXPLICIT_DNP": 15
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 136,
+                "mae": 7.663235315066927,
+                "rmse": 9.438492861393108,
+                "bias_prediction_minus_actual": 0.5338234923341695
+              },
+              "frozen_candidate": {
+                "n": 136,
+                "mae": 7.63446041676282,
+                "rmse": 9.313846061214306,
+                "bias_prediction_minus_actual": 0.2597289305356571
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 151,
+                "brier": 0.10930435872325805,
+                "log_loss": 0.3582198710378287,
+                "predicted_mean": 0.7651631921924502,
+                "observed_play_fraction": 0.9006622516556292
+              },
+              "frozen_candidate": {
+                "n": 151,
+                "brier": 0.06968342840885818,
+                "log_loss": 0.23415821957409222,
+                "predicted_mean": 0.8455129937690885,
+                "observed_play_fraction": 0.9006622516556292
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 151,
+                "mae": 7.6220860841787115,
+                "rmse": 9.562317677894603,
+                "bias_prediction_minus_actual": -1.3308998230526263
+              },
+              "frozen_candidate": {
+                "n": 151,
+                "mae": 7.344121453488257,
+                "rmse": 9.297868947972598,
+                "bias_prediction_minus_actual": -0.4714738522204039
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.4411764705882353,
+                  "width": 11.165326084030633,
+                  "interval_score": 22.966461149459548
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.4768211920529801,
+                  "width": 10.960653342610804,
+                  "interval_score": 22.416514272799095
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.7352941176470589,
+                  "width": 21.64294763135292,
+                  "interval_score": 30.863960115753358
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.7417218543046358,
+                  "width": 20.588867851010573,
+                  "interval_score": 29.896418314454543
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.9338235294117647,
+                  "width": 32.13667666610741,
+                  "interval_score": 39.02374981040652
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.9072847682119205,
+                  "width": 29.965468101056825,
+                  "interval_score": 38.13802120192001
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.13315341069435502,
+              0.09964843479989534
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "PLAYED": 175,
+              "OFFICIAL_INACTIVE": 57,
+              "EXPLICIT_DNP": 23,
+              "UNKNOWN": 6
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 175,
+                "mae": 6.80645126581192,
+                "rmse": 8.627201017686525,
+                "bias_prediction_minus_actual": 0.5752856857436044
+              },
+              "frozen_candidate": {
+                "n": 175,
+                "mae": 6.850961823571109,
+                "rmse": 8.585177702930027,
+                "bias_prediction_minus_actual": 0.3644054021975721
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 255,
+                "brier": 0.157366906547622,
+                "log_loss": 0.47661711723483147,
+                "predicted_mean": 0.6773311336250866,
+                "observed_play_fraction": 0.6862745098039216
+              },
+              "frozen_candidate": {
+                "n": 255,
+                "brier": 0.0872355609833614,
+                "log_loss": 0.2730690968367208,
+                "predicted_mean": 0.6492451398694569,
+                "observed_play_fraction": 0.6862745098039216
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 255,
+                "mae": 6.185276598726634,
+                "rmse": 8.152567742273881,
+                "bias_prediction_minus_actual": 0.1343581343059355
+              },
+              "frozen_candidate": {
+                "n": 255,
+                "mae": 5.324183622521351,
+                "rmse": 7.656667248982149,
+                "bias_prediction_minus_actual": -0.03363306207076358
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.4742857142857143,
+                  "width": 10.690194262478471,
+                  "interval_score": 20.830044835100576
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.6,
+                  "width": 8.040091034646556,
+                  "interval_score": 16.058136256649103
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.7714285714285715,
+                  "width": 20.72152108477796,
+                  "interval_score": 28.380549659847404
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.8235294117647058,
+                  "width": 15.325550851039011,
+                  "interval_score": 21.450698750162378
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.9428571428571428,
+                  "width": 30.922257514868097,
+                  "interval_score": 36.90427290091068
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.9333333333333333,
+                  "width": 23.245996921487812,
+                  "interval_score": 28.80618473083761
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.0652418681563172,
+              0.07019113141606267
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 259,
+            "played": 179,
+            "explicit_nonplay": 80,
+            "UNKNOWN": 2,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 259,
+              "brier": 0.1553106550378147,
+              "log_loss": 0.47134853724490816,
+              "predicted_mean": 0.6804446073457541,
+              "observed_play_fraction": 0.6911196911196911
+            },
+            "frozen_candidate": {
+              "n": 259,
+              "brier": 0.08589477803359484,
+              "log_loss": 0.2691431415910985,
+              "predicted_mean": 0.654374175909284,
+              "observed_play_fraction": 0.6911196911196911
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.06840610059166538,
+              0.07016626040324206
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "missing_exact_player_game": 2,
+            "ESPN_archive_disagreement": 4
+          },
+          "ESPN_unknown_reasons": {
+            "supplementary_official_game_day_evidence": 36,
+            "no_unique_high_confidence_identity": 73,
+            "no_matching_evidence": 1
+          },
+          "source_overlap": {
+            "exact_agreement": 147,
+            "not_both_known": 110,
+            "CONFLICT": 4
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 175,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": -0.044510557759188885,
+              "game_cluster_percentile_95CI": [
+                -0.4667434846622118,
+                0.3569407003102576
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": -0.044510557759188885
+              }
+            },
+            "conditional_rmse": {
+              "n": 175,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.042023314756498564,
+              "game_cluster_percentile_95CI": [
+                -0.3464811340179619,
+                0.46425813308490227
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.042023314756498564
+              }
+            },
+            "unconditional_mae": {
+              "n": 255,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.861092976205283,
+              "game_cluster_percentile_95CI": [
+                0.453707753286535,
+                1.3551483304754193
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.861092976205283
+              }
+            },
+            "unconditional_rmse": {
+              "n": 255,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.4959004932917317,
+              "game_cluster_percentile_95CI": [
+                0.0700380588012965,
+                0.9816727275278079
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.4959004932917317
+              }
+            },
+            "participation_brier": {
+              "n": 259,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "brier",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.06941587700421985,
+              "game_cluster_percentile_95CI": [
+                0.05216089963710103,
+                0.08488423980906257
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.06941587700421985
+              }
+            }
+          }
+        },
+        "near_primary:lead0": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 136,
+              "UNKNOWN": 110,
+              "EXPLICIT_DNP": 15
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 136,
+                "mae": 7.663235315066927,
+                "rmse": 9.438492861393108,
+                "bias_prediction_minus_actual": 0.5338234923341695
+              },
+              "frozen_candidate": {
+                "n": 136,
+                "mae": 7.63446041676282,
+                "rmse": 9.313846061214306,
+                "bias_prediction_minus_actual": 0.2597289305356571
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 151,
+                "brier": 0.10930435872325805,
+                "log_loss": 0.3582198710378287,
+                "predicted_mean": 0.7651631921924502,
+                "observed_play_fraction": 0.9006622516556292
+              },
+              "frozen_candidate": {
+                "n": 151,
+                "brier": 0.06968342840885818,
+                "log_loss": 0.23415821957409222,
+                "predicted_mean": 0.8455129937690885,
+                "observed_play_fraction": 0.9006622516556292
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 151,
+                "mae": 7.6220860841787115,
+                "rmse": 9.562317677894603,
+                "bias_prediction_minus_actual": -1.3308998230526263
+              },
+              "frozen_candidate": {
+                "n": 151,
+                "mae": 7.344121453488257,
+                "rmse": 9.297868947972598,
+                "bias_prediction_minus_actual": -0.4714738522204039
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.4411764705882353,
+                  "width": 11.078037876656852,
+                  "interval_score": 22.943782950133148
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.47019867549668876,
+                  "width": 10.899746123467759,
+                  "interval_score": 22.398407259696082
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.7352941176470589,
+                  "width": 21.457822786574862,
+                  "interval_score": 31.152323339336142
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.7417218543046358,
+                  "width": 20.49027519696176,
+                  "interval_score": 30.074046361823328
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.9338235294117647,
+                  "width": 32.02832041890549,
+                  "interval_score": 39.03239845869569
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.9205298013245033,
+                  "width": 29.890775354377123,
+                  "interval_score": 37.96650539882365
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.13315341069435502,
+              0.09964843479989534
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "PLAYED": 175,
+              "OFFICIAL_INACTIVE": 57,
+              "EXPLICIT_DNP": 23,
+              "UNKNOWN": 6
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 175,
+                "mae": 6.80645126581192,
+                "rmse": 8.627201017686525,
+                "bias_prediction_minus_actual": 0.5752856857436044
+              },
+              "frozen_candidate": {
+                "n": 175,
+                "mae": 6.850961823571109,
+                "rmse": 8.585177702930027,
+                "bias_prediction_minus_actual": 0.3644054021975721
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 255,
+                "brier": 0.157366906547622,
+                "log_loss": 0.47661711723483147,
+                "predicted_mean": 0.6773311336250866,
+                "observed_play_fraction": 0.6862745098039216
+              },
+              "frozen_candidate": {
+                "n": 255,
+                "brier": 0.0872355609833614,
+                "log_loss": 0.2730690968367208,
+                "predicted_mean": 0.6492451398694569,
+                "observed_play_fraction": 0.6862745098039216
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 255,
+                "mae": 6.185276598726634,
+                "rmse": 8.152567742273881,
+                "bias_prediction_minus_actual": 0.1343581343059355
+              },
+              "frozen_candidate": {
+                "n": 255,
+                "mae": 5.324183622521351,
+                "rmse": 7.656667248982149,
+                "bias_prediction_minus_actual": -0.03363306207076358
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.48,
+                  "width": 10.58059720366695,
+                  "interval_score": 20.809905447737
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.592156862745098,
+                  "width": 7.986459935129705,
+                  "interval_score": 16.06078207952431
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.7714285714285715,
+                  "width": 20.53332235440943,
+                  "interval_score": 28.620988454932977
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.8235294117647058,
+                  "width": 15.241566434339141,
+                  "interval_score": 21.557682205562212
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.9428571428571428,
+                  "width": 30.77200359805063,
+                  "interval_score": 36.92118512185002
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.9411764705882353,
+                  "width": 23.18320287943178,
+                  "interval_score": 28.708923157545268
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.0652418681563172,
+              0.07019113141606267
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 259,
+            "played": 179,
+            "explicit_nonplay": 80,
+            "UNKNOWN": 2,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 259,
+              "brier": 0.1553106550378147,
+              "log_loss": 0.47134853724490816,
+              "predicted_mean": 0.6804446073457541,
+              "observed_play_fraction": 0.6911196911196911
+            },
+            "frozen_candidate": {
+              "n": 259,
+              "brier": 0.08589477803359484,
+              "log_loss": 0.2691431415910985,
+              "predicted_mean": 0.654374175909284,
+              "observed_play_fraction": 0.6911196911196911
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.06840610059166538,
+              0.07016626040324206
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "missing_exact_player_game": 2,
+            "ESPN_archive_disagreement": 4
+          },
+          "ESPN_unknown_reasons": {
+            "supplementary_official_game_day_evidence": 36,
+            "no_unique_high_confidence_identity": 73,
+            "no_matching_evidence": 1
+          },
+          "source_overlap": {
+            "exact_agreement": 147,
+            "not_both_known": 110,
+            "CONFLICT": 4
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 175,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": -0.044510557759188885,
+              "game_cluster_percentile_95CI": [
+                -0.4667434846622118,
+                0.3569407003102576
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": -0.044510557759188885
+              }
+            },
+            "conditional_rmse": {
+              "n": 175,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.042023314756498564,
+              "game_cluster_percentile_95CI": [
+                -0.3464811340179619,
+                0.46425813308490227
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.042023314756498564
+              }
+            },
+            "unconditional_mae": {
+              "n": 255,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.861092976205283,
+              "game_cluster_percentile_95CI": [
+                0.453707753286535,
+                1.3551483304754193
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.861092976205283
+              }
+            },
+            "unconditional_rmse": {
+              "n": 255,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.4959004932917317,
+              "game_cluster_percentile_95CI": [
+                0.0700380588012965,
+                0.9816727275278079
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.4959004932917317
+              }
+            },
+            "participation_brier": {
+              "n": 259,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "brier",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.06941587700421985,
+              "game_cluster_percentile_95CI": [
+                0.05216089963710103,
+                0.08488423980906257
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.06941587700421985
+              }
+            }
+          }
+        }
+      },
+      "additional_evidence": [
+        {
+          "model_role": "long_lead_primary",
+          "nba_player_id": "1631218",
+          "nba_game_id": "0022600253",
+          "calendar_game_id": "espn_401910002",
+          "tipoff_utc": "2026-11-18T00:30:00Z",
+          "date_ET": "2026-11-17",
+          "team": "TOR",
+          "opponent": "NYK",
+          "player_name": "Trayce Jackson-Davis",
+          "lead_days": 1,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "ee2fc118be2de60dd118cc5227ef519e699e3ed640b25a83816ba8e198140ea9",
+          "p_play": 0.2733802009952438,
+          "mean_if_play": 1.895188719034195,
+          "expected_fp": 0.5181070729334868,
+          "conditional_lo50": 0.8864364516006917,
+          "conditional_hi50": 8.284937465816185,
+          "lo50": 0.0,
+          "hi50": 0.0,
+          "conditional_lo80": -1.980639366031113,
+          "conditional_hi80": 13.946990116615432,
+          "lo80": 0.0,
+          "hi80": 6.333177124194394,
+          "conditional_lo95": -3.8414992861842174,
+          "conditional_hi95": 21.073426918928096,
+          "lo95": -1.9911939737169304,
+          "hi95": 14.557979554195589,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 7.199999809265137,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910002",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n412",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T00:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 29.678646225833337,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "model_role": "long_lead_primary",
+          "nba_player_id": "1642359",
+          "nba_game_id": "0022600253",
+          "calendar_game_id": "espn_401910002",
+          "tipoff_utc": "2026-11-18T00:30:00Z",
+          "date_ET": "2026-11-17",
+          "team": "NYK",
+          "opponent": "TOR",
+          "player_name": "Pacôme Dadiet",
+          "lead_days": 1,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "ee2fc118be2de60dd118cc5227ef519e699e3ed640b25a83816ba8e198140ea9",
+          "p_play": 0.3442353386282294,
+          "mean_if_play": 3.6694392263889313,
+          "expected_fp": 1.2631506546717022,
+          "conditional_lo50": 0.1267866607867644,
+          "conditional_hi50": 5.370156293829773,
+          "lo50": 0.0,
+          "hi50": 0.352918951662501,
+          "conditional_lo80": -2.0833857311295176,
+          "conditional_hi80": 9.406872420559608,
+          "lo80": 0.0,
+          "hi80": 4.906314513270692,
+          "conditional_lo95": -4.17273958396735,
+          "conditional_hi95": 16.966187962891677,
+          "lo95": -2.6296339578012784,
+          "hi95": 11.949676043110813,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 3.4000000953674316,
+          "baseline_p_play": 0.414642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910002",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n452",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T00:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 29.678646225833337,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "model_role": "long_lead_primary",
+          "nba_player_id": "1642885",
+          "nba_game_id": "0022600253",
+          "calendar_game_id": "espn_401910002",
+          "tipoff_utc": "2026-11-18T00:30:00Z",
+          "date_ET": "2026-11-17",
+          "team": "NYK",
+          "opponent": "TOR",
+          "player_name": "Mohamed Diawara",
+          "lead_days": 1,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "ee2fc118be2de60dd118cc5227ef519e699e3ed640b25a83816ba8e198140ea9",
+          "p_play": 0.3628310025009501,
+          "mean_if_play": 5.552490621805191,
+          "expected_fp": 2.014615738686701,
+          "conditional_lo50": 1.0271889853141634,
+          "conditional_hi50": 8.623411009046459,
+          "lo50": 0.0,
+          "hi50": 1.8079876541658428,
+          "conditional_lo80": -1.7524218803866098,
+          "conditional_hi80": 13.48195322712543,
+          "lo80": 0.0,
+          "hi80": 8.17319418923505,
+          "conditional_lo95": -4.790411790297,
+          "conditional_hi95": 20.05513002278688,
+          "lo95": -2.792782819827442,
+          "hi95": 15.988115701709177,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 5.900000095367432,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910002",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n388",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T00:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 29.678646225833337,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "model_role": "long_lead_primary",
+          "nba_player_id": "1629162",
+          "nba_game_id": "0022600255",
+          "calendar_game_id": "espn_401910004",
+          "tipoff_utc": "2026-11-18T01:00:00Z",
+          "date_ET": "2026-11-17",
+          "team": "SAS",
+          "opponent": "DET",
+          "player_name": "Jordan McLaughlin",
+          "lead_days": 1,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "ee2fc118be2de60dd118cc5227ef519e699e3ed640b25a83816ba8e198140ea9",
+          "p_play": 0.8389131918613756,
+          "mean_if_play": 5.267877489328384,
+          "expected_fp": 4.419291918907165,
+          "conditional_lo50": 1.3674929735475123,
+          "conditional_hi50": 8.6996528804914,
+          "lo50": 0.0,
+          "hi50": 7.776182705737197,
+          "conditional_lo80": -1.627035271985248,
+          "conditional_hi80": 13.744942297946611,
+          "lo80": -1.0737088780339077,
+          "hi80": 12.929093253940836,
+          "conditional_lo95": -3.7859978266159793,
+          "conditional_hi95": 21.150678299747582,
+          "lo95": -3.397916935444802,
+          "hi95": 20.426771645819453,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 7.5,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910004",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n315",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 30.178646225833337,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "model_role": "long_lead_primary",
+          "nba_player_id": "1642449",
+          "nba_game_id": "0022600255",
+          "calendar_game_id": "espn_401910004",
+          "tipoff_utc": "2026-11-18T01:00:00Z",
+          "date_ET": "2026-11-17",
+          "team": "DET",
+          "opponent": "SAS",
+          "player_name": "Tolu Smith",
+          "lead_days": 1,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "ee2fc118be2de60dd118cc5227ef519e699e3ed640b25a83816ba8e198140ea9",
+          "p_play": 0.4649311668283556,
+          "mean_if_play": 2.0151244699954987,
+          "expected_fp": 0.936894171139379,
+          "conditional_lo50": 0.0130556644766897,
+          "conditional_hi50": 4.403934545867522,
+          "lo50": 0.0,
+          "hi50": 2.166514963315775,
+          "conditional_lo80": -1.8695848438416904,
+          "conditional_hi80": 7.998894397139475,
+          "lo80": -0.379776735153388,
+          "hi80": 5.195330936805536,
+          "conditional_lo95": -4.052874735283639,
+          "conditional_hi95": 13.414075362177284,
+          "lo95": -2.984193191810822,
+          "hi95": 11.105580050511971,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 3.4000000953674316,
+          "baseline_p_play": 0.628928542137146,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910004",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n472",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 30.178646225833337,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "model_role": "long_lead_primary",
+          "nba_player_id": "1642355",
+          "nba_game_id": "0022600256",
+          "calendar_game_id": "espn_401910005",
+          "tipoff_utc": "2026-11-18T04:00:00Z",
+          "date_ET": "2026-11-17",
+          "team": "LAL",
+          "opponent": "CHA",
+          "player_name": "Bronny James",
+          "lead_days": 1,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "ee2fc118be2de60dd118cc5227ef519e699e3ed640b25a83816ba8e198140ea9",
+          "p_play": 0.3640380496181541,
+          "mean_if_play": 2.7348856031894684,
+          "expected_fp": 0.9956024209138632,
+          "conditional_lo50": 1.236983855645649,
+          "conditional_hi50": 5.82289401049036,
+          "lo50": 0.0,
+          "hi50": 1.6655811870567174,
+          "conditional_lo80": -2.076208391038234,
+          "conditional_hi80": 9.87752838846558,
+          "lo80": 0.0,
+          "hi80": 5.537196314144179,
+          "conditional_lo95": -4.161351463264648,
+          "conditional_hi95": 17.681010827631972,
+          "lo95": -2.7276613982891207,
+          "hi95": 12.917406705083812,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 4.5,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910005",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n334",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T04:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 33.17864622583333,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "model_role": "long_lead_primary",
+          "nba_player_id": "1642268",
+          "nba_game_id": "0022600257",
+          "calendar_game_id": "espn_401910006",
+          "tipoff_utc": "2026-11-18T03:30:00Z",
+          "date_ET": "2026-11-17",
+          "team": "UTA",
+          "opponent": "LAC",
+          "player_name": "Isaiah Collier",
+          "lead_days": 1,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "ee2fc118be2de60dd118cc5227ef519e699e3ed640b25a83816ba8e198140ea9",
+          "p_play": 0.5548423802726437,
+          "mean_if_play": 7.190050035715103,
+          "expected_fp": 3.9893444760955754,
+          "conditional_lo50": 1.394437613184294,
+          "conditional_hi50": 10.54115091185451,
+          "lo50": 0.0,
+          "hi50": 6.318103316899814,
+          "conditional_lo80": -2.1364331166027046,
+          "conditional_hi80": 16.17496298145614,
+          "lo80": -0.157182101448728,
+          "hi80": 13.07089959370471,
+          "conditional_lo95": -6.272035622207897,
+          "conditional_hi95": 22.493940929455523,
+          "lo95": -4.928067525982459,
+          "hi95": 20.566055520575294,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 3.5,
+          "baseline_p_play": 0.5575000047683716,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910006",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n220",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T03:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 32.67864622583333,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "model_role": "long_lead_primary",
+          "nba_player_id": "1642271",
+          "nba_game_id": "0022600257",
+          "calendar_game_id": "espn_401910006",
+          "tipoff_utc": "2026-11-18T03:30:00Z",
+          "date_ET": "2026-11-17",
+          "team": "UTA",
+          "opponent": "LAC",
+          "player_name": "Kyle Filipowski",
+          "lead_days": 1,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "ee2fc118be2de60dd118cc5227ef519e699e3ed640b25a83816ba8e198140ea9",
+          "p_play": 0.4674897156129815,
+          "mean_if_play": 7.923684984445572,
+          "expected_fp": 3.704241239985312,
+          "conditional_lo50": -0.1130665976484039,
+          "conditional_hi50": 7.481841222713891,
+          "lo50": 0.0,
+          "hi50": 3.619222112186166,
+          "conditional_lo80": -2.2651880819658703,
+          "conditional_hi80": 13.539860308150873,
+          "lo80": -0.5839834112952309,
+          "hi80": 8.892557385626748,
+          "conditional_lo95": -5.455708432878024,
+          "conditional_hi95": 18.54628070014271,
+          "lo95": -4.012923226032178,
+          "hi95": 16.414007635775544,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 0.800000011920929,
+          "baseline_p_play": 0.7003571391105652,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910006",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n284",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T03:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 32.67864622583333,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        }
+      ]
+    },
+    "paired_20261117": {
+      "additional_record_labels": 16,
+      "additional_unique_player_games": 8,
+      "by_role_and_lead": {
+        "near_day_ewma_challenger_20261117:lead0": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 79,
+              "EXPLICIT_DNP": 11,
+              "UNKNOWN": 77
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 79,
+                "mae": 7.936708922250362,
+                "rmse": 11.042369499088746,
+                "bias_prediction_minus_actual": -0.03291143948518777
+              },
+              "frozen_candidate": {
+                "n": 79,
+                "mae": 7.377148754017999,
+                "rmse": 10.302378956621915,
+                "bias_prediction_minus_actual": -0.5438645993307797
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 90,
+                "brier": 0.09880738540985179,
+                "log_loss": 0.33413085068053644,
+                "predicted_mean": 0.8352777706252204,
+                "observed_play_fraction": 0.8777777777777778
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "brier": 0.06740388637580015,
+                "log_loss": 0.21902706121143278,
+                "predicted_mean": 0.8798825100750353,
+                "observed_play_fraction": 0.8777777777777778
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 90,
+                "mae": 7.541662364270977,
+                "rmse": 10.639056429606308,
+                "bias_prediction_minus_actual": -0.799531473114992
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "mae": 6.9682253971207135,
+                "rmse": 9.95204657609425,
+                "bias_prediction_minus_actual": -0.4580980922133768
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.5063291139240507,
+                  "width": 10.976373036397595,
+                  "interval_score": 25.035018189128856
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.5333333333333333,
+                  "width": 10.53845210070801,
+                  "interval_score": 23.468248520863177
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.7468354430379747,
+                  "width": 21.3967508765901,
+                  "interval_score": 36.851692248297205
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.7555555555555555,
+                  "width": 19.898811685368823,
+                  "interval_score": 33.58087145610836
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.8987341772151899,
+                  "width": 31.34208154624329,
+                  "interval_score": 60.74633423924768
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.9111111111111111,
+                  "width": 29.19259844051885,
+                  "interval_score": 56.581008757587064
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.1348337259791743,
+              0.09963229120288741
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "PLAYED": 100,
+              "EXPLICIT_DNP": 11,
+              "OFFICIAL_INACTIVE": 39,
+              "UNKNOWN": 17
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 100,
+                "mae": 7.03622228115797,
+                "rmse": 9.987991957502706,
+                "bias_prediction_minus_actual": -0.01822224497795105
+              },
+              "frozen_candidate": {
+                "n": 100,
+                "mae": 6.801627977159868,
+                "rmse": 9.520987233282543,
+                "bias_prediction_minus_actual": -0.3977822911291014
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 150,
+                "brier": 0.1396206398332273,
+                "log_loss": 0.44147211253943475,
+                "predicted_mean": 0.725095584988594,
+                "observed_play_fraction": 0.6666666666666666
+              },
+              "frozen_candidate": {
+                "n": 150,
+                "brier": 0.061483326325114,
+                "log_loss": 0.21492650914679312,
+                "predicted_mean": 0.6751834052494909,
+                "observed_play_fraction": 0.6666666666666666
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 150,
+                "mae": 6.4354083224303045,
+                "rmse": 9.213806389143173,
+                "bias_prediction_minus_actual": 0.6958981512996782
+              },
+              "frozen_candidate": {
+                "n": 150,
+                "mae": 4.959602872236639,
+                "rmse": 8.019571010102727,
+                "bias_prediction_minus_actual": -0.1975549215832828
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 100,
+                  "coverage": 0.52,
+                  "width": 10.569359474404184,
+                  "interval_score": 22.62040696572196
+                },
+                "unconditional": {
+                  "n": 150,
+                  "coverage": 0.6333333333333333,
+                  "width": 7.646095930689902,
+                  "interval_score": 16.142223139250213
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 100,
+                  "coverage": 0.76,
+                  "width": 20.55420390669813,
+                  "interval_score": 33.55326654113234
+                },
+                "unconditional": {
+                  "n": 150,
+                  "coverage": 0.82,
+                  "width": 14.64024427565148,
+                  "interval_score": 23.614259058579165
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 100,
+                  "coverage": 0.91,
+                  "width": 30.24123344715874,
+                  "interval_score": 54.16688354962613
+                },
+                "unconditional": {
+                  "n": 150,
+                  "coverage": 0.94,
+                  "width": 22.337625481267988,
+                  "interval_score": 39.355567772981146
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.05111381729948162,
+              0.08908601637456805
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 152,
+            "played": 102,
+            "explicit_nonplay": 50,
+            "UNKNOWN": 15,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 152,
+              "brier": 0.1384221556489157,
+              "log_loss": 0.4385934431031085,
+              "predicted_mean": 0.7261798536699069,
+              "observed_play_fraction": 0.6710526315789473
+            },
+            "frozen_candidate": {
+              "n": 152,
+              "brier": 0.06068761713737288,
+              "log_loss": 0.21247878087554256,
+              "predicted_mean": 0.6790838788094663,
+              "observed_play_fraction": 0.6710526315789473
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.05504482067766739,
+              0.08908601637456806
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "unresolved_or_conflicting_archive_label": 11,
+            "missing_exact_player_game": 4,
+            "ESPN_archive_disagreement": 2
+          },
+          "ESPN_unknown_reasons": {
+            "no_unique_high_confidence_identity": 52,
+            "supplementary_official_game_day_evidence": 22,
+            "no_matching_evidence": 3
+          },
+          "source_overlap": {
+            "exact_agreement": 80,
+            "not_both_known": 85,
+            "CONFLICT": 2
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 100,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.23459430399810177,
+              "game_cluster_percentile_95CI": [
+                -0.11093660357362811,
+                0.6430564134860015
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.23459430399810177
+              }
+            },
+            "conditional_rmse": {
+              "n": 100,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.46700472422016226,
+              "game_cluster_percentile_95CI": [
+                0.09006370766298755,
+                0.7073179181994025
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.46700472422016226
+              }
+            },
+            "unconditional_mae": {
+              "n": 150,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 1.4758054501936657,
+              "game_cluster_percentile_95CI": [
+                0.9887397384287064,
+                2.1210904135904842
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 1.4758054501936657
+              }
+            },
+            "unconditional_rmse": {
+              "n": 150,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 1.194235379040446,
+              "game_cluster_percentile_95CI": [
+                0.7245627783682238,
+                1.475924016061418
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 1.194235379040446
+              }
+            },
+            "participation_brier": {
+              "n": 152,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "brier",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.0777345385115428,
+              "game_cluster_percentile_95CI": [
+                0.05456104220031678,
+                0.10351765626110673
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.0777345385115428
+              }
+            }
+          }
+        },
+        "near_primary_20261117:lead0": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 79,
+              "EXPLICIT_DNP": 11,
+              "UNKNOWN": 77
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 79,
+                "mae": 7.936708922250362,
+                "rmse": 11.042369499088746,
+                "bias_prediction_minus_actual": -0.03291143948518777
+              },
+              "frozen_candidate": {
+                "n": 79,
+                "mae": 7.398990751683609,
+                "rmse": 10.289244117281774,
+                "bias_prediction_minus_actual": -0.5354463664306842
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 90,
+                "brier": 0.09880738540985179,
+                "log_loss": 0.33413085068053644,
+                "predicted_mean": 0.8352777706252204,
+                "observed_play_fraction": 0.8777777777777778
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "brier": 0.06740388637580015,
+                "log_loss": 0.21902706121143278,
+                "predicted_mean": 0.8798825100750353,
+                "observed_play_fraction": 0.8777777777777778
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 90,
+                "mae": 7.541662364270977,
+                "rmse": 10.639056429606308,
+                "bias_prediction_minus_actual": -0.799531473114992
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "mae": 6.999541424040131,
+                "rmse": 9.941659901883725,
+                "bias_prediction_minus_actual": -0.44559908823476746
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.5063291139240507,
+                  "width": 10.976373036397595,
+                  "interval_score": 25.035018189128856
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.5333333333333333,
+                  "width": 10.53845210070801,
+                  "interval_score": 23.468248520863177
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.7468354430379747,
+                  "width": 21.3967508765901,
+                  "interval_score": 36.851692248297205
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.7555555555555555,
+                  "width": 19.898811685368823,
+                  "interval_score": 33.58087145610836
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.8987341772151899,
+                  "width": 31.34208154624329,
+                  "interval_score": 60.74633423924768
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.9111111111111111,
+                  "width": 29.19259844051885,
+                  "interval_score": 56.581008757587064
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.1348337259791743,
+              0.09963229120288741
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "PLAYED": 100,
+              "EXPLICIT_DNP": 11,
+              "OFFICIAL_INACTIVE": 39,
+              "UNKNOWN": 17
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 100,
+                "mae": 7.03622228115797,
+                "rmse": 9.987991957502706,
+                "bias_prediction_minus_actual": -0.01822224497795105
+              },
+              "frozen_candidate": {
+                "n": 100,
+                "mae": 6.789542554392357,
+                "rmse": 9.520824220173424,
+                "bias_prediction_minus_actual": -0.3317916863786805
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 150,
+                "brier": 0.1396206398332273,
+                "log_loss": 0.44147211253943475,
+                "predicted_mean": 0.725095584988594,
+                "observed_play_fraction": 0.6666666666666666
+              },
+              "frozen_candidate": {
+                "n": 150,
+                "brier": 0.061483326325114,
+                "log_loss": 0.21492650914679312,
+                "predicted_mean": 0.6751834052494909,
+                "observed_play_fraction": 0.6666666666666666
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 150,
+                "mae": 6.4354083224303045,
+                "rmse": 9.213806389143173,
+                "bias_prediction_minus_actual": 0.6958981512996782
+              },
+              "frozen_candidate": {
+                "n": 150,
+                "mae": 4.964090489604232,
+                "rmse": 8.016007275890292,
+                "bias_prediction_minus_actual": -0.164777174162582
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 100,
+                  "coverage": 0.52,
+                  "width": 10.569359474404184,
+                  "interval_score": 22.62040696572196
+                },
+                "unconditional": {
+                  "n": 150,
+                  "coverage": 0.6333333333333333,
+                  "width": 7.646095930689902,
+                  "interval_score": 16.142223139250213
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 100,
+                  "coverage": 0.76,
+                  "width": 20.55420390669813,
+                  "interval_score": 33.55326654113234
+                },
+                "unconditional": {
+                  "n": 150,
+                  "coverage": 0.82,
+                  "width": 14.64024427565148,
+                  "interval_score": 23.614259058579165
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 100,
+                  "coverage": 0.91,
+                  "width": 30.24123344715874,
+                  "interval_score": 54.16688354962613
+                },
+                "unconditional": {
+                  "n": 150,
+                  "coverage": 0.94,
+                  "width": 22.337625481267988,
+                  "interval_score": 39.355567772981146
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.05111381729948162,
+              0.08908601637456805
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 152,
+            "played": 102,
+            "explicit_nonplay": 50,
+            "UNKNOWN": 15,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 152,
+              "brier": 0.1384221556489157,
+              "log_loss": 0.4385934431031085,
+              "predicted_mean": 0.7261798536699069,
+              "observed_play_fraction": 0.6710526315789473
+            },
+            "frozen_candidate": {
+              "n": 152,
+              "brier": 0.06068761713737288,
+              "log_loss": 0.21247878087554256,
+              "predicted_mean": 0.6790838788094663,
+              "observed_play_fraction": 0.6710526315789473
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.05504482067766739,
+              0.08908601637456806
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "unresolved_or_conflicting_archive_label": 11,
+            "missing_exact_player_game": 4,
+            "ESPN_archive_disagreement": 2
+          },
+          "ESPN_unknown_reasons": {
+            "no_unique_high_confidence_identity": 52,
+            "supplementary_official_game_day_evidence": 22,
+            "no_matching_evidence": 3
+          },
+          "source_overlap": {
+            "exact_agreement": 80,
+            "not_both_known": 85,
+            "CONFLICT": 2
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 100,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.24667972676561334,
+              "game_cluster_percentile_95CI": [
+                -0.1599067646323924,
+                0.6858519061706225
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.24667972676561334
+              }
+            },
+            "conditional_rmse": {
+              "n": 100,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.46716773732928196,
+              "game_cluster_percentile_95CI": [
+                -0.055996136997641166,
+                0.7407572809496674
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.46716773732928196
+              }
+            },
+            "unconditional_mae": {
+              "n": 150,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 1.471317832826072,
+              "game_cluster_percentile_95CI": [
+                0.9873018004008438,
+                2.0992923579098006
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 1.471317832826072
+              }
+            },
+            "unconditional_rmse": {
+              "n": 150,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 1.1977991132528807,
+              "game_cluster_percentile_95CI": [
+                0.6998464263538029,
+                1.516238789871861
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 1.1977991132528807
+              }
+            },
+            "participation_brier": {
+              "n": 152,
+              "games": 5,
+              "NBA_dates": [
+                "2026-11-17"
+              ],
+              "metric": "brier",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.0777345385115428,
+              "game_cluster_percentile_95CI": [
+                0.05456104220031678,
+                0.10351765626110673
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-17": 0.0777345385115428
+              }
+            }
+          }
+        }
+      },
+      "additional_evidence": [
+        {
+          "nba_player_id": "1631218",
+          "nba_game_id": "0022600253",
+          "calendar_game_id": "espn_401910002",
+          "tipoff_utc": "2026-11-18T00:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 4.85805586,
+          "team": "TOR",
+          "opponent": "NYK",
+          "player_name": "Trayce Jackson-Davis",
+          "baseline_last10": 7.199999809265137,
+          "baseline_history_p_play": 0.664642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_primary_20261117",
+          "mean_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.36106433904039764,
+          "mean_if_play": 1.579361246156421,
+          "expected_fp": 0.5702510244494869,
+          "conditional_lo50": 0.4557642955504866,
+          "conditional_hi50": 8.500920123061723,
+          "lo50": 0.0,
+          "hi50": 1.324062989687588,
+          "conditional_lo80": -2.3003002841326783,
+          "conditional_hi80": 13.543847492621504,
+          "lo80": 0.0,
+          "hi80": 7.856051229105789,
+          "conditional_lo95": -3.7824050503073767,
+          "conditional_hi95": 20.223646235707907,
+          "lo95": -2.5619832211909452,
+          "hi95": 15.937296188710182,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 7.199999809265137,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910002",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n412",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T00:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 4.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1631218",
+          "nba_game_id": "0022600253",
+          "calendar_game_id": "espn_401910002",
+          "tipoff_utc": "2026-11-18T00:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 4.85805586,
+          "team": "TOR",
+          "opponent": "NYK",
+          "player_name": "Trayce Jackson-Davis",
+          "baseline_last10": 7.199999809265137,
+          "baseline_history_p_play": 0.664642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_day_ewma_challenger_20261117",
+          "mean_model_sha256": "a76fdf1dc1d6d53a7abb008bc386f43dac942ce4aa1996cbf721635dd71c2012",
+          "p_play": 0.36106433904039764,
+          "mean_if_play": 2.9712725834031133,
+          "expected_fp": 1.0728205714352999,
+          "conditional_lo50": 0.4557642955504866,
+          "conditional_hi50": 8.500920123061723,
+          "lo50": 0.0,
+          "hi50": 1.324062989687588,
+          "conditional_lo80": -2.3003002841326783,
+          "conditional_hi80": 13.543847492621504,
+          "lo80": 0.0,
+          "hi80": 7.856051229105789,
+          "conditional_lo95": -3.7824050503073767,
+          "conditional_hi95": 20.223646235707907,
+          "lo95": -2.5619832211909452,
+          "hi95": 15.937296188710182,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 7.199999809265137,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910002",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n412",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T00:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 4.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642359",
+          "nba_game_id": "0022600253",
+          "calendar_game_id": "espn_401910002",
+          "tipoff_utc": "2026-11-18T00:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 4.85805586,
+          "team": "NYK",
+          "opponent": "TOR",
+          "player_name": "Pacôme Dadiet",
+          "baseline_last10": 3.4000000953674316,
+          "baseline_history_p_play": 0.414642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_primary_20261117",
+          "mean_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.3639699092371101,
+          "mean_if_play": 2.9310028548524127,
+          "expected_fp": 1.0667968430543433,
+          "conditional_lo50": -0.4930007317824403,
+          "conditional_hi50": 5.521154505317465,
+          "lo50": 0.0,
+          "hi50": 0.28275290326678093,
+          "conditional_lo80": -2.271853955313519,
+          "conditional_hi80": 9.141866547643277,
+          "lo80": -0.09971526649232618,
+          "hi80": 5.054771781663943,
+          "conditional_lo95": -4.510015543839575,
+          "conditional_hi95": 16.481098439809987,
+          "lo95": -2.8599517136489636,
+          "hi95": 11.859695380860153,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 3.4000000953674316,
+          "baseline_p_play": 0.414642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910002",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n452",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T00:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 4.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642359",
+          "nba_game_id": "0022600253",
+          "calendar_game_id": "espn_401910002",
+          "tipoff_utc": "2026-11-18T00:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 4.85805586,
+          "team": "NYK",
+          "opponent": "TOR",
+          "player_name": "Pacôme Dadiet",
+          "baseline_last10": 3.4000000953674316,
+          "baseline_history_p_play": 0.414642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_day_ewma_challenger_20261117",
+          "mean_model_sha256": "a76fdf1dc1d6d53a7abb008bc386f43dac942ce4aa1996cbf721635dd71c2012",
+          "p_play": 0.3639699092371101,
+          "mean_if_play": 3.7841998528679186,
+          "expected_fp": 1.3773348769834217,
+          "conditional_lo50": -0.4930007317824403,
+          "conditional_hi50": 5.521154505317465,
+          "lo50": 0.0,
+          "hi50": 0.28275290326678093,
+          "conditional_lo80": -2.271853955313519,
+          "conditional_hi80": 9.141866547643277,
+          "lo80": -0.09971526649232618,
+          "hi80": 5.054771781663943,
+          "conditional_lo95": -4.510015543839575,
+          "conditional_hi95": 16.481098439809987,
+          "lo95": -2.8599517136489636,
+          "hi95": 11.859695380860153,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 3.4000000953674316,
+          "baseline_p_play": 0.414642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910002",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n452",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T00:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 4.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642885",
+          "nba_game_id": "0022600253",
+          "calendar_game_id": "espn_401910002",
+          "tipoff_utc": "2026-11-18T00:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 4.85805586,
+          "team": "NYK",
+          "opponent": "TOR",
+          "player_name": "Mohamed Diawara",
+          "baseline_last10": 5.900000095367432,
+          "baseline_history_p_play": 0.664642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_primary_20261117",
+          "mean_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.4055909752156109,
+          "mean_if_play": 5.16791233630308,
+          "expected_fp": 2.096058604309952,
+          "conditional_lo50": 0.35793293798230064,
+          "conditional_hi50": 8.373463732813583,
+          "lo50": 0.0,
+          "hi50": 2.0664763960537194,
+          "conditional_lo80": -2.3711860669509104,
+          "conditional_hi80": 13.223694520271874,
+          "lo80": 0.0,
+          "hi80": 8.33384818488789,
+          "conditional_lo95": -5.119138728830624,
+          "conditional_hi95": 19.713298893890244,
+          "lo95": -3.428250940763042,
+          "hi95": 16.19456673307322,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 5.900000095367432,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910002",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n388",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T00:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 4.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642885",
+          "nba_game_id": "0022600253",
+          "calendar_game_id": "espn_401910002",
+          "tipoff_utc": "2026-11-18T00:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 4.85805586,
+          "team": "NYK",
+          "opponent": "TOR",
+          "player_name": "Mohamed Diawara",
+          "baseline_last10": 5.900000095367432,
+          "baseline_history_p_play": 0.664642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_day_ewma_challenger_20261117",
+          "mean_model_sha256": "a76fdf1dc1d6d53a7abb008bc386f43dac942ce4aa1996cbf721635dd71c2012",
+          "p_play": 0.4055909752156109,
+          "mean_if_play": 5.496506683943031,
+          "expected_fp": 2.2293335062195774,
+          "conditional_lo50": 0.35793293798230064,
+          "conditional_hi50": 8.373463732813583,
+          "lo50": 0.0,
+          "hi50": 2.0664763960537194,
+          "conditional_lo80": -2.3711860669509104,
+          "conditional_hi80": 13.223694520271874,
+          "lo80": 0.0,
+          "hi80": 8.33384818488789,
+          "conditional_lo95": -5.119138728830624,
+          "conditional_hi95": 19.713298893890244,
+          "lo95": -3.428250940763042,
+          "hi95": 16.19456673307322,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 5.900000095367432,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910002",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n388",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T00:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 4.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1629162",
+          "nba_game_id": "0022600255",
+          "calendar_game_id": "espn_401910004",
+          "tipoff_utc": "2026-11-18T01:00:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 5.35805586,
+          "team": "SAS",
+          "opponent": "DET",
+          "player_name": "Jordan McLaughlin",
+          "baseline_last10": 7.5,
+          "baseline_history_p_play": 0.664642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_primary_20261117",
+          "mean_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.846821489710765,
+          "mean_if_play": 5.130304615934575,
+          "expected_fp": 4.344452197535731,
+          "conditional_lo50": 1.9304940292011041,
+          "conditional_hi50": 9.80150905781448,
+          "lo50": 0.0,
+          "hi50": 8.856083407635776,
+          "conditional_lo80": -0.9227909563145147,
+          "conditional_hi80": 14.233394516240653,
+          "lo80": -0.26475429449980287,
+          "hi80": 13.384992925712798,
+          "conditional_lo95": -3.2908312076382558,
+          "conditional_hi95": 20.52997039863337,
+          "lo95": -2.7898736073094916,
+          "hi95": 19.792139878845568,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 7.5,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910004",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n315",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 5.35805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1629162",
+          "nba_game_id": "0022600255",
+          "calendar_game_id": "espn_401910004",
+          "tipoff_utc": "2026-11-18T01:00:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 5.35805586,
+          "team": "SAS",
+          "opponent": "DET",
+          "player_name": "Jordan McLaughlin",
+          "baseline_last10": 7.5,
+          "baseline_history_p_play": 0.664642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_day_ewma_challenger_20261117",
+          "mean_model_sha256": "a76fdf1dc1d6d53a7abb008bc386f43dac942ce4aa1996cbf721635dd71c2012",
+          "p_play": 0.846821489710765,
+          "mean_if_play": 5.638501405296146,
+          "expected_fp": 4.774804159769124,
+          "conditional_lo50": 1.9304940292011041,
+          "conditional_hi50": 9.80150905781448,
+          "lo50": 0.0,
+          "hi50": 8.856083407635776,
+          "conditional_lo80": -0.9227909563145147,
+          "conditional_hi80": 14.233394516240653,
+          "lo80": -0.26475429449980287,
+          "hi80": 13.384992925712798,
+          "conditional_lo95": -3.2908312076382558,
+          "conditional_hi95": 20.52997039863337,
+          "lo95": -2.7898736073094916,
+          "hi95": 19.792139878845568,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 7.5,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910004",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n315",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 5.35805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642449",
+          "nba_game_id": "0022600255",
+          "calendar_game_id": "espn_401910004",
+          "tipoff_utc": "2026-11-18T01:00:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 5.35805586,
+          "team": "DET",
+          "opponent": "SAS",
+          "player_name": "Tolu Smith",
+          "baseline_last10": 3.4000000953674316,
+          "baseline_history_p_play": 0.628928542137146,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_primary_20261117",
+          "mean_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.5509082862395596,
+          "mean_if_play": 1.2128071181740174,
+          "expected_fp": 0.668145491012387,
+          "conditional_lo50": -0.3860449815339235,
+          "conditional_hi50": 4.342692275238415,
+          "lo50": 0.0,
+          "hi50": 2.4258969796806085,
+          "conditional_lo80": -2.8357783512101795,
+          "conditional_hi80": 8.876341960665906,
+          "lo80": -1.270935723203131,
+          "hi80": 6.178982271955089,
+          "conditional_lo95": -4.336384330709985,
+          "conditional_hi95": 14.859512246338129,
+          "lo95": -3.5752402279730338,
+          "hi95": 12.880329656625761,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 3.4000000953674316,
+          "baseline_p_play": 0.628928542137146,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910004",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n472",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 5.35805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642449",
+          "nba_game_id": "0022600255",
+          "calendar_game_id": "espn_401910004",
+          "tipoff_utc": "2026-11-18T01:00:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 5.35805586,
+          "team": "DET",
+          "opponent": "SAS",
+          "player_name": "Tolu Smith",
+          "baseline_last10": 3.4000000953674316,
+          "baseline_history_p_play": 0.628928542137146,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_day_ewma_challenger_20261117",
+          "mean_model_sha256": "a76fdf1dc1d6d53a7abb008bc386f43dac942ce4aa1996cbf721635dd71c2012",
+          "p_play": 0.5509082862395596,
+          "mean_if_play": 0.25562137124052264,
+          "expected_fp": 0.14082393155632256,
+          "conditional_lo50": -0.3860449815339235,
+          "conditional_hi50": 4.342692275238415,
+          "lo50": 0.0,
+          "hi50": 2.4258969796806085,
+          "conditional_lo80": -2.8357783512101795,
+          "conditional_hi80": 8.876341960665906,
+          "lo80": -1.270935723203131,
+          "hi80": 6.178982271955089,
+          "conditional_lo95": -4.336384330709985,
+          "conditional_hi95": 14.859512246338129,
+          "lo95": -3.5752402279730338,
+          "hi95": 12.880329656625761,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 3.4000000953674316,
+          "baseline_p_play": 0.628928542137146,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910004",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n472",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 5.35805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642355",
+          "nba_game_id": "0022600256",
+          "calendar_game_id": "espn_401910005",
+          "tipoff_utc": "2026-11-18T04:00:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 8.35805586,
+          "team": "LAL",
+          "opponent": "CHA",
+          "player_name": "Bronny James",
+          "baseline_last10": 4.5,
+          "baseline_history_p_play": 0.664642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_primary_20261117",
+          "mean_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.4753090609074766,
+          "mean_if_play": 2.321945124762073,
+          "expected_fp": 1.1036415567293545,
+          "conditional_lo50": 1.0844562338646972,
+          "conditional_hi50": 5.120930169686025,
+          "lo50": 0.0,
+          "hi50": 3.022254067782518,
+          "conditional_lo80": -1.6629064734844965,
+          "conditional_hi80": 10.236021932491445,
+          "lo80": 0.0,
+          "hi80": 6.274766723343675,
+          "conditional_lo95": -3.2480694674848607,
+          "conditional_hi95": 15.474949504378003,
+          "lo95": -2.3135773970021685,
+          "hi95": 13.196000864988388,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 4.5,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910005",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n334",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T04:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 8.35805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642355",
+          "nba_game_id": "0022600256",
+          "calendar_game_id": "espn_401910005",
+          "tipoff_utc": "2026-11-18T04:00:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 8.35805586,
+          "team": "LAL",
+          "opponent": "CHA",
+          "player_name": "Bronny James",
+          "baseline_last10": 4.5,
+          "baseline_history_p_play": 0.664642870426178,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_day_ewma_challenger_20261117",
+          "mean_model_sha256": "a76fdf1dc1d6d53a7abb008bc386f43dac942ce4aa1996cbf721635dd71c2012",
+          "p_play": 0.4753090609074766,
+          "mean_if_play": 1.6044770427977968,
+          "expected_fp": 0.762622476459826,
+          "conditional_lo50": 1.0844562338646972,
+          "conditional_hi50": 5.120930169686025,
+          "lo50": 0.0,
+          "hi50": 3.022254067782518,
+          "conditional_lo80": -1.6629064734844965,
+          "conditional_hi80": 10.236021932491445,
+          "lo80": 0.0,
+          "hi80": 6.274766723343675,
+          "conditional_lo95": -3.2480694674848607,
+          "conditional_hi95": 15.474949504378003,
+          "lo95": -2.3135773970021685,
+          "hi95": 13.196000864988388,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 4.5,
+          "baseline_p_play": 0.664642870426178,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910005",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n334",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T04:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 8.35805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642268",
+          "nba_game_id": "0022600257",
+          "calendar_game_id": "espn_401910006",
+          "tipoff_utc": "2026-11-18T03:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 7.85805586,
+          "team": "UTA",
+          "opponent": "LAC",
+          "player_name": "Isaiah Collier",
+          "baseline_last10": 3.5,
+          "baseline_history_p_play": 0.5575000047683716,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_primary_20261117",
+          "mean_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.7749388327801263,
+          "mean_if_play": 7.031979737719237,
+          "expected_fp": 5.449354170081644,
+          "conditional_lo50": 1.1118058445916028,
+          "conditional_hi50": 11.358616826606006,
+          "lo50": 0.0,
+          "hi50": 9.393622703036542,
+          "conditional_lo80": -2.2527479603105807,
+          "conditional_hi80": 16.165024835309215,
+          "lo80": -1.3012499140640648,
+          "hi80": 14.934360334161855,
+          "conditional_lo95": -6.464319983566252,
+          "conditional_hi95": 22.535511479032436,
+          "lo95": -5.699256899598615,
+          "hi95": 21.561447880504904,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 3.5,
+          "baseline_p_play": 0.5575000047683716,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910006",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n220",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T03:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 7.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642268",
+          "nba_game_id": "0022600257",
+          "calendar_game_id": "espn_401910006",
+          "tipoff_utc": "2026-11-18T03:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 7.85805586,
+          "team": "UTA",
+          "opponent": "LAC",
+          "player_name": "Isaiah Collier",
+          "baseline_last10": 3.5,
+          "baseline_history_p_play": 0.5575000047683716,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_day_ewma_challenger_20261117",
+          "mean_model_sha256": "a76fdf1dc1d6d53a7abb008bc386f43dac942ce4aa1996cbf721635dd71c2012",
+          "p_play": 0.7749388327801263,
+          "mean_if_play": 6.651878624573678,
+          "expected_fp": 5.154799057122198,
+          "conditional_lo50": 1.1118058445916028,
+          "conditional_hi50": 11.358616826606006,
+          "lo50": 0.0,
+          "hi50": 9.393622703036542,
+          "conditional_lo80": -2.2527479603105807,
+          "conditional_hi80": 16.165024835309215,
+          "lo80": -1.3012499140640648,
+          "hi80": 14.934360334161855,
+          "conditional_lo95": -6.464319983566252,
+          "conditional_hi95": 22.535511479032436,
+          "lo95": -5.699256899598615,
+          "hi95": 21.561447880504904,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 3.5,
+          "baseline_p_play": 0.5575000047683716,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910006",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n220",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T03:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 7.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642271",
+          "nba_game_id": "0022600257",
+          "calendar_game_id": "espn_401910006",
+          "tipoff_utc": "2026-11-18T03:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 7.85805586,
+          "team": "UTA",
+          "opponent": "LAC",
+          "player_name": "Kyle Filipowski",
+          "baseline_last10": 0.800000011920929,
+          "baseline_history_p_play": 0.7003571391105652,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_primary_20261117",
+          "mean_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.6838270728796009,
+          "mean_if_play": 7.124870489086855,
+          "expected_fp": 4.872179331198514,
+          "conditional_lo50": -0.013261142838902673,
+          "conditional_hi50": 7.5795320038711935,
+          "lo50": 0.0,
+          "hi50": 5.610732073724106,
+          "conditional_lo80": -2.5563244991378467,
+          "conditional_hi80": 12.209849057258422,
+          "lo80": -1.494191541337058,
+          "hi80": 10.504343783829851,
+          "conditional_lo95": -5.124187781372191,
+          "conditional_hi95": 18.023590675077337,
+          "lo95": -4.372379651615876,
+          "hi95": 16.771529925353384,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 0.800000011920929,
+          "baseline_p_play": 0.7003571391105652,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910006",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n284",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T03:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 7.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        },
+        {
+          "nba_player_id": "1642271",
+          "nba_game_id": "0022600257",
+          "calendar_game_id": "espn_401910006",
+          "tipoff_utc": "2026-11-18T03:30:00Z",
+          "date_ET": "2026-11-17",
+          "feature_date_ET": "2026-11-17",
+          "lead_days": 0,
+          "issued_to_tipoff_hours": 7.85805586,
+          "team": "UTA",
+          "opponent": "LAC",
+          "player_name": "Kyle Filipowski",
+          "baseline_last10": 0.800000011920929,
+          "baseline_history_p_play": 0.7003571391105652,
+          "distribution_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "model_role": "near_day_ewma_challenger_20261117",
+          "mean_model_sha256": "a76fdf1dc1d6d53a7abb008bc386f43dac942ce4aa1996cbf721635dd71c2012",
+          "p_play": 0.6838270728796009,
+          "mean_if_play": 5.155255193514818,
+          "expected_fp": 3.5253030689285985,
+          "conditional_lo50": -0.013261142838902673,
+          "conditional_hi50": 7.5795320038711935,
+          "lo50": 0.0,
+          "hi50": 5.610732073724106,
+          "conditional_lo80": -2.5563244991378467,
+          "conditional_hi80": 12.209849057258422,
+          "lo80": -1.494191541337058,
+          "hi80": 10.504343783829851,
+          "conditional_lo95": -5.124187781372191,
+          "conditional_hi95": 18.023590675077337,
+          "lo95": -4.372379651615876,
+          "hi95": 16.771529925353384,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "unresolved_or_conflicting_archive_label",
+          "source_comment": "",
+          "baseline_fp10": 0.800000011920929,
+          "baseline_p_play": 0.7003571391105652,
+          "participation_verified": null,
+          "espn_archive_overlap": "not_both_known",
+          "outcome_espn": "EXPLICIT_DNP",
+          "outcome_augmented": "EXPLICIT_DNP",
+          "reason": "explicit_espn_didNotPlay_true",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910006",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n284",
+          "espn_y_fp": 0.0,
+          "observed_schedule_tipoff_utc": "2026-11-18T03:30:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 7.85805586,
+          "outcome_evidence_union": "EXPLICIT_DNP",
+          "union_y_fp": 0.0,
+          "union_participation_verified": 0,
+          "union_evidence_source": "independent_exact_ESPN_label_additional_to_unknown_NBA"
+        }
+      ],
+      "paired_mean_challenger_comparison": {
+        "unique_pairs": 167,
+        "same_p_play_and_intervals_verified": true,
+        "conditional": {
+          "n": 100,
+          "anchor": {
+            "n": 100,
+            "mae": 6.789542554392357,
+            "rmse": 9.520824220173424,
+            "bias_prediction_minus_actual": -0.3317916863786805
+          },
+          "day_ewma": {
+            "n": 100,
+            "mae": 6.801627977159868,
+            "rmse": 9.520987233282543,
+            "bias_prediction_minus_actual": -0.3977822911291014
+          }
+        },
+        "unconditional": {
+          "n": 150,
+          "anchor": {
+            "n": 150,
+            "mae": 4.964090489604232,
+            "rmse": 8.016007275890292,
+            "bias_prediction_minus_actual": -0.164777174162582
+          },
+          "day_ewma": {
+            "n": 150,
+            "mae": 4.959602872236639,
+            "rmse": 8.019571010102727,
+            "bias_prediction_minus_actual": -0.1975549215832828
+          }
+        },
+        "paired_uncertainty": {
+          "conditional_mae": {
+            "n": 100,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": -0.012085422767511567,
+            "game_cluster_percentile_95CI": [
+              -0.14712151115519312,
+              0.16886002616885065
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": -0.012085422767511567
+            }
+          },
+          "conditional_rmse": {
+            "n": 100,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": -0.0001630131091197029,
+            "game_cluster_percentile_95CI": [
+              -0.1283942669393987,
+              0.15842604499095714
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": -0.0001630131091197029
+            }
+          },
+          "unconditional_mae": {
+            "n": 150,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.0044876173675936215,
+            "game_cluster_percentile_95CI": [
+              -0.07879073137522496,
+              0.08450014851265664
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.0044876173675936215
+            }
+          },
+          "unconditional_rmse": {
+            "n": 150,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": -0.0035637342124346105,
+            "game_cluster_percentile_95CI": [
+              -0.09439320292377573,
+              0.08935492671382139
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": -0.0035637342124346105
+            }
+          }
+        }
+      }
+    }
+  }
+}

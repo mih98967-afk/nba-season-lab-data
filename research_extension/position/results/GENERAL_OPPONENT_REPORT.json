@@ -1,0 +1,213 @@
+{
+  "status": "generic_opponent_extension_not_retained",
+  "adopt_on_site": false,
+  "five_position_difficulty_validated": false,
+  "real_KEEP_TRANSFER_gain_proven": false,
+  "selection": {
+    "ridge_context": {
+      "pooled": {
+        "n": 9704,
+        "mae": 6.470650661376712,
+        "rmse": 8.260112379007245,
+        "bias": 0.6081261535187664
+      },
+      "folds": {
+        "oct_nov_2024": {
+          "n": 5704,
+          "mae": 6.539223103937989,
+          "rmse": 8.32457328645745,
+          "bias": 0.9540819163564116
+        },
+        "dec_2024": {
+          "n": 4000,
+          "mae": 6.372866358284331,
+          "rmse": 8.167311149323591,
+          "bias": 0.11479323571228418
+        }
+      }
+    },
+    "ridge_context_generic_k50": {
+      "pooled": {
+        "n": 9704,
+        "mae": 6.473332608271087,
+        "rmse": 8.262788889203897,
+        "bias": 0.6223988517055329
+      },
+      "folds": {
+        "oct_nov_2024": {
+          "n": 5704,
+          "mae": 6.543558614715972,
+          "rmse": 8.328554604150542,
+          "bias": 0.9702536660594866
+        },
+        "dec_2024": {
+          "n": 4000,
+          "mae": 6.373190323080681,
+          "rmse": 8.168091108291048,
+          "bias": 0.12635788643679477
+        }
+      }
+    },
+    "ridge_context_generic_k150": {
+      "pooled": {
+        "n": 9704,
+        "mae": 6.4734474151124815,
+        "rmse": 8.262911184523226,
+        "bias": 0.6211214837042789
+      },
+      "folds": {
+        "oct_nov_2024": {
+          "n": 5704,
+          "mae": 6.543896877185703,
+          "rmse": 8.328851501567668,
+          "bias": 0.9706121036242662
+        },
+        "dec_2024": {
+          "n": 4000,
+          "mae": 6.37298648219607,
+          "rmse": 8.167959536894468,
+          "bias": 0.12274785969837686
+        }
+      }
+    }
+  },
+  "chosen_by_development_only": "ridge_context",
+  "retained_as_research_candidate": false,
+  "results": {
+    "confirmation_2025": {
+      "ridge_context": {
+        "n": 8673,
+        "mae": 6.431365706678395,
+        "rmse": 8.29858382188346,
+        "bias": -0.11495988006637686
+      },
+      "ridge_context_generic_k50": {
+        "n": 8673,
+        "mae": 6.4308317452813,
+        "rmse": 8.297613567805977,
+        "bias": -0.10972065301322306
+      },
+      "ridge_context_generic_k150": {
+        "n": 8673,
+        "mae": 6.430903744987813,
+        "rmse": 8.29773924193321,
+        "bias": -0.11064376280902331
+      }
+    },
+    "exposed_audit_2025_26": {
+      "ridge_context": {
+        "n": 25769,
+        "mae": 6.349007265360133,
+        "rmse": 8.168621902517087,
+        "bias": 0.18203163278977164
+      },
+      "ridge_context_generic_k50": {
+        "n": 25769,
+        "mae": 6.3487553399551055,
+        "rmse": 8.167998359384265,
+        "bias": 0.18332587286857296
+      },
+      "ridge_context_generic_k150": {
+        "n": 25769,
+        "mae": 6.348749226841531,
+        "rmse": 8.168047500077053,
+        "bias": 0.18271931108393724
+      }
+    }
+  },
+  "paired_mae_gain": {
+    "confirmation_2025": {
+      "ridge_context_generic_k50": {
+        "date": {
+          "point": 0.0005339613970943347,
+          "low": -7.37158992830509e-05,
+          "high": 0.0011894030220328828,
+          "clusters": 53
+        },
+        "pid": {
+          "point": 0.0005339613970943347,
+          "low": 0.00010717824215554666,
+          "high": 0.0009636098770783646,
+          "clusters": 503
+        }
+      },
+      "ridge_context_generic_k150": {
+        "date": {
+          "point": 0.0004619616905813618,
+          "low": -7.454540869228497e-05,
+          "high": 0.0010260954401625543,
+          "clusters": 53
+        },
+        "pid": {
+          "point": 0.0004619616905813618,
+          "low": 0.00010252704586824081,
+          "high": 0.0008247617495870127,
+          "clusters": 503
+        }
+      }
+    },
+    "exposed_audit_2025_26": {
+      "ridge_context_generic_k50": {
+        "date": {
+          "point": 0.0002519254050281495,
+          "low": -0.00013715315250873637,
+          "high": 0.0006500730837950588,
+          "clusters": 162
+        },
+        "pid": {
+          "point": 0.0002519254050281495,
+          "low": -5.7354729631604606e-05,
+          "high": 0.0005661740158410861,
+          "clusters": 566
+        }
+      },
+      "ridge_context_generic_k150": {
+        "date": {
+          "point": 0.00025803851860195086,
+          "low": -5.2188265942368403e-05,
+          "high": 0.000583791947629509,
+          "clusters": 162
+        },
+        "pid": {
+          "point": 0.00025803851860195086,
+          "low": 9.695120368011605e-06,
+          "high": 0.0005152288324823368,
+          "clusters": 566
+        }
+      }
+    }
+  },
+  "mean_calibration_offsets": {
+    "ridge_context": 0.17240107596573243,
+    "ridge_context_generic_k50": 0.16637100768960977,
+    "ridge_context_generic_k150": 0.16793107263849644
+  },
+  "nuisance_fit_count": 19,
+  "nuisance_missing_rows": 4542,
+  "eligible_rows": 117426,
+  "played_rows": 74728,
+  "feature_count_original": 82,
+  "frame_sha256": "d406041de5890933a0f420b91ae51d5388df49c53315182baec7f041e83c0b6b",
+  "protocol_sha256": "6e3542f5b364a4cd985e89af39d2b359915c393a2079192e5518065c49dcd575",
+  "code_hashes": {
+    "run_general_opponent.py": "7858317dd3ab542d8ec1a034ba68f2b0ce94477774034215d1ef34eb5a05f84d",
+    "audit_positions.py": "4e5ddd98e28d05c07ce79bf31d84a37032830e58401903aed6fd236244f1f9de",
+    "position_contract.py": "598af0785fef6e568f5fa14527450ead33466a5951c16aa9ad53307a56c85c27",
+    "test_position_general.py": "066fcdf41129146bc74cdda03af8886e3135c749d07cbd21c52c1dc15a8db07f",
+    "general_opponent.py": "34aa820950e30252b9b5b2364b0196ba0a98a11550d7ddb97ad987bf40b154e2"
+  },
+  "environment": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "sklearn": "1.8.0"
+  },
+  "limits": [
+    "Historical replay, not pregame-captured source vintages",
+    "2025/26 already exposed; not independent prospective evidence",
+    "No current-season outcomes read",
+    "Prediction residual adjustment is not a causal defensive effect",
+    "Five-position historical mapping unavailable",
+    "P(play), intervals and economic utility not tested by this mean-only ablation"
+  ],
+  "runtime_seconds": 10.035306930541992
+}

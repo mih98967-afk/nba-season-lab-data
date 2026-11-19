@@ -1,0 +1,1119 @@
+{
+  "schema": "nba-exact-deployed-public-runtime-comparison-v1",
+  "evaluated_at_utc": "2026-11-18T11:44:14.945257+00:00",
+  "comparison_predefined_without_current_outcome_tuning": true,
+  "new_models_prospectively_frozen": true,
+  "runtime_baseline_reconstructed_after_outcomes_from_preserved_pregame_inputs": true,
+  "runtime_baseline_originally_frozen": false,
+  "user_private_manual_settings_replayed": false,
+  "Sports_ru_credited_FP_verified": false,
+  "real_KEEP_TRANSFER_gain_proven": false,
+  "source_metadata_sha256": "7b2d374f4ff4f4e58b5baa6b5c0749cd58e3af0cc1997824bf5d69f5d6f5a41e",
+  "outcome_report_sha256": "f17948f7076e30e0c0861b4b6c28929852660420eb5becca654a08ef51b68694",
+  "cohorts": {
+    "original_20261116": {
+      "long_lead_primary:lead1": {
+        "completed_candidate_rows": 167,
+        "runtime_common_rows": 115,
+        "runtime_unavailable_reasons": {
+          "no_unique_pregame_identity_or_seed_player": 52
+        },
+        "FP_counts": {
+          "PLAYED": 78,
+          "UNKNOWN": 11,
+          "OFFICIAL_INACTIVE": 23,
+          "EXPLICIT_DNP": 3
+        },
+        "participation_counts": {
+          "known": 106,
+          "played": 80,
+          "explicit_nonplay": 26,
+          "UNKNOWN": 9
+        },
+        "conditional": {
+          "runtime": {
+            "n": 78,
+            "mae": 7.557028871973316,
+            "rmse": 10.341715828232527,
+            "bias_prediction_minus_actual": 0.3502938505372834
+          },
+          "frozen_candidate": {
+            "n": 78,
+            "mae": 7.455906267349537,
+            "rmse": 10.30189855373585,
+            "bias_prediction_minus_actual": -0.584889999566934
+          }
+        },
+        "unconditional": {
+          "runtime": {
+            "n": 104,
+            "mae": 8.78484619108234,
+            "rmse": 11.296372248032426,
+            "bias_prediction_minus_actual": 2.578142442263725
+          },
+          "frozen_candidate": {
+            "n": 104,
+            "mae": 6.466542745277319,
+            "rmse": 9.488560363011015,
+            "bias_prediction_minus_actual": -0.25373922577259267
+          }
+        },
+        "participation": {
+          "runtime": {
+            "n": 106,
+            "brier": 0.2043771690081412,
+            "log_loss": 0.6633809265392525,
+            "predicted_mean": 0.8930045533861093,
+            "observed_play_fraction": 0.7547169811320755
+          },
+          "frozen_candidate": {
+            "n": 106,
+            "brier": 0.08802649681060305,
+            "log_loss": 0.3133525204012544,
+            "predicted_mean": 0.7440786513112202,
+            "observed_play_fraction": 0.7547169811320755
+          }
+        },
+        "paired_uncertainty": {
+          "conditional_mae": {
+            "n": 78,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.10112260462377876,
+            "game_cluster_percentile_95CI": [
+              -0.5657714194563699,
+              0.5783771224948993
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.10112260462377876
+            }
+          },
+          "conditional_rmse": {
+            "n": 78,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.03981727449667716,
+            "game_cluster_percentile_95CI": [
+              -0.49634501656340824,
+              0.6559994977312584
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.03981727449667716
+            }
+          },
+          "unconditional_mae": {
+            "n": 104,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 2.31830344580502,
+            "game_cluster_percentile_95CI": [
+              1.6940670607959056,
+              2.8091596756754003
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 2.31830344580502
+            }
+          },
+          "unconditional_rmse": {
+            "n": 104,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 1.8078118850214118,
+            "game_cluster_percentile_95CI": [
+              1.2036198726463887,
+              2.534043018536595
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 1.8078118850214118
+            }
+          },
+          "participation_brier": {
+            "n": 106,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "brier",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.11635067219753815,
+            "game_cluster_percentile_95CI": [
+              0.07195103697728591,
+              0.17642982359075868
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.11635067219753815
+            }
+          }
+        },
+        "UNKNOWN_label_paired_Brier_gain_bounds": [
+          0.08657655820449879,
+          0.13842138548177646
+        ],
+        "UNKNOWN_bounds_not_confidence_intervals": true
+      },
+      "near_interval_challenger:lead0": {
+        "completed_candidate_rows": 261,
+        "runtime_common_rows": 188,
+        "runtime_unavailable_reasons": {
+          "no_unique_pregame_identity_or_seed_player": 73
+        },
+        "FP_counts": {
+          "PLAYED": 133,
+          "OFFICIAL_INACTIVE": 36,
+          "EXPLICIT_DNP": 15,
+          "UNKNOWN": 4
+        },
+        "participation_counts": {
+          "known": 188,
+          "played": 137,
+          "explicit_nonplay": 51,
+          "UNKNOWN": 0
+        },
+        "conditional": {
+          "runtime": {
+            "n": 133,
+            "mae": 7.651540276589637,
+            "rmse": 9.52088433639929,
+            "bias_prediction_minus_actual": 1.3177312303625097
+          },
+          "frozen_candidate": {
+            "n": 133,
+            "mae": 7.619104849119075,
+            "rmse": 9.318899377864149,
+            "bias_prediction_minus_actual": 0.29583251894856183
+          }
+        },
+        "unconditional": {
+          "runtime": {
+            "n": 184,
+            "mae": 6.772401818718367,
+            "rmse": 8.823794315590142,
+            "bias_prediction_minus_actual": 1.1617700043768053
+          },
+          "frozen_candidate": {
+            "n": 184,
+            "mae": 6.175462996728217,
+            "rmse": 8.53697772519507,
+            "bias_prediction_minus_actual": -0.07763642867282651
+          }
+        },
+        "participation": {
+          "runtime": {
+            "n": 188,
+            "brier": 0.12368916467724546,
+            "log_loss": 0.4018488916477044,
+            "predicted_mean": 0.7680754210210549,
+            "observed_play_fraction": 0.7287234042553191
+          },
+          "frozen_candidate": {
+            "n": 188,
+            "brier": 0.0716266046411616,
+            "log_loss": 0.23326058871482006,
+            "predicted_mean": 0.704347137925219,
+            "observed_play_fraction": 0.7287234042553191
+          }
+        },
+        "paired_uncertainty": {
+          "conditional_mae": {
+            "n": 133,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.032435427470562495,
+            "game_cluster_percentile_95CI": [
+              -0.5272575655177608,
+              0.6428428424098965
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.032435427470562495
+            }
+          },
+          "conditional_rmse": {
+            "n": 133,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.20198495853514054,
+            "game_cluster_percentile_95CI": [
+              -0.3919961217903424,
+              0.8438632367944201
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.20198495853514054
+            }
+          },
+          "unconditional_mae": {
+            "n": 184,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.5969388219901504,
+            "game_cluster_percentile_95CI": [
+              0.0640826676812898,
+              1.1613719360138517
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.5969388219901504
+            }
+          },
+          "unconditional_rmse": {
+            "n": 184,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.28681659039507146,
+            "game_cluster_percentile_95CI": [
+              -0.12083702357797553,
+              0.7469190972550015
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.28681659039507146
+            }
+          },
+          "participation_brier": {
+            "n": 188,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "brier",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.05206256003608385,
+            "game_cluster_percentile_95CI": [
+              0.010235510882789942,
+              0.09773969490313227
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.05206256003608385
+            }
+          }
+        },
+        "UNKNOWN_label_paired_Brier_gain_bounds": [
+          0.052062560036083824,
+          0.052062560036083824
+        ],
+        "UNKNOWN_bounds_not_confidence_intervals": true
+      },
+      "near_primary:lead0": {
+        "completed_candidate_rows": 261,
+        "runtime_common_rows": 188,
+        "runtime_unavailable_reasons": {
+          "no_unique_pregame_identity_or_seed_player": 73
+        },
+        "FP_counts": {
+          "PLAYED": 133,
+          "OFFICIAL_INACTIVE": 36,
+          "EXPLICIT_DNP": 15,
+          "UNKNOWN": 4
+        },
+        "participation_counts": {
+          "known": 188,
+          "played": 137,
+          "explicit_nonplay": 51,
+          "UNKNOWN": 0
+        },
+        "conditional": {
+          "runtime": {
+            "n": 133,
+            "mae": 7.651540276589637,
+            "rmse": 9.52088433639929,
+            "bias_prediction_minus_actual": 1.3177312303625097
+          },
+          "frozen_candidate": {
+            "n": 133,
+            "mae": 7.619104849119075,
+            "rmse": 9.318899377864149,
+            "bias_prediction_minus_actual": 0.29583251894856183
+          }
+        },
+        "unconditional": {
+          "runtime": {
+            "n": 184,
+            "mae": 6.772401818718367,
+            "rmse": 8.823794315590142,
+            "bias_prediction_minus_actual": 1.1617700043768053
+          },
+          "frozen_candidate": {
+            "n": 184,
+            "mae": 6.175462996728217,
+            "rmse": 8.53697772519507,
+            "bias_prediction_minus_actual": -0.07763642867282651
+          }
+        },
+        "participation": {
+          "runtime": {
+            "n": 188,
+            "brier": 0.12368916467724546,
+            "log_loss": 0.4018488916477044,
+            "predicted_mean": 0.7680754210210549,
+            "observed_play_fraction": 0.7287234042553191
+          },
+          "frozen_candidate": {
+            "n": 188,
+            "brier": 0.0716266046411616,
+            "log_loss": 0.23326058871482006,
+            "predicted_mean": 0.704347137925219,
+            "observed_play_fraction": 0.7287234042553191
+          }
+        },
+        "paired_uncertainty": {
+          "conditional_mae": {
+            "n": 133,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.032435427470562495,
+            "game_cluster_percentile_95CI": [
+              -0.5272575655177608,
+              0.6428428424098965
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.032435427470562495
+            }
+          },
+          "conditional_rmse": {
+            "n": 133,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.20198495853514054,
+            "game_cluster_percentile_95CI": [
+              -0.3919961217903424,
+              0.8438632367944201
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.20198495853514054
+            }
+          },
+          "unconditional_mae": {
+            "n": 184,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.5969388219901504,
+            "game_cluster_percentile_95CI": [
+              0.0640826676812898,
+              1.1613719360138517
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.5969388219901504
+            }
+          },
+          "unconditional_rmse": {
+            "n": 184,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.28681659039507146,
+            "game_cluster_percentile_95CI": [
+              -0.12083702357797553,
+              0.7469190972550015
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.28681659039507146
+            }
+          },
+          "participation_brier": {
+            "n": 188,
+            "games": 8,
+            "NBA_dates": [
+              "2026-11-16"
+            ],
+            "metric": "brier",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.05206256003608385,
+            "game_cluster_percentile_95CI": [
+              0.010235510882789942,
+              0.09773969490313227
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-16": 0.05206256003608385
+            }
+          }
+        },
+        "UNKNOWN_label_paired_Brier_gain_bounds": [
+          0.052062560036083824,
+          0.052062560036083824
+        ],
+        "UNKNOWN_bounds_not_confidence_intervals": true
+      }
+    },
+    "paired_20261117": {
+      "near_day_ewma_challenger_20261117:lead0": {
+        "completed_candidate_rows": 167,
+        "runtime_common_rows": 115,
+        "runtime_unavailable_reasons": {
+          "no_unique_pregame_identity_or_seed_player": 52
+        },
+        "FP_counts": {
+          "PLAYED": 78,
+          "UNKNOWN": 11,
+          "OFFICIAL_INACTIVE": 23,
+          "EXPLICIT_DNP": 3
+        },
+        "participation_counts": {
+          "known": 106,
+          "played": 80,
+          "explicit_nonplay": 26,
+          "UNKNOWN": 9
+        },
+        "conditional": {
+          "runtime": {
+            "n": 78,
+            "mae": 7.513239193544886,
+            "rmse": 10.340929747731947,
+            "bias_prediction_minus_actual": 0.2964692852772502
+          },
+          "frozen_candidate": {
+            "n": 78,
+            "mae": 7.341095556214459,
+            "rmse": 10.276877710950222,
+            "bias_prediction_minus_actual": -0.6814692503823813
+          }
+        },
+        "unconditional": {
+          "runtime": {
+            "n": 104,
+            "mae": 6.641662313411159,
+            "rmse": 9.763786798901165,
+            "bias_prediction_minus_actual": 0.4088736589696043
+          },
+          "frozen_candidate": {
+            "n": 104,
+            "mae": 5.8997536199116345,
+            "rmse": 9.190564590427542,
+            "bias_prediction_minus_actual": -0.5268902094799253
+          }
+        },
+        "participation": {
+          "runtime": {
+            "n": 106,
+            "brier": 0.07637880882610083,
+            "log_loss": 0.2763383449860633,
+            "predicted_mean": 0.7501340687772574,
+            "observed_play_fraction": 0.7547169811320755
+          },
+          "frozen_candidate": {
+            "n": 106,
+            "brier": 0.04368827112635619,
+            "log_loss": 0.17108890908344804,
+            "predicted_mean": 0.7302232015442474,
+            "observed_play_fraction": 0.7547169811320755
+          }
+        },
+        "paired_uncertainty": {
+          "conditional_mae": {
+            "n": 78,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.1721436373304277,
+            "game_cluster_percentile_95CI": [
+              -0.673899137227977,
+              0.8810409380094582
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.1721436373304277
+            }
+          },
+          "conditional_rmse": {
+            "n": 78,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.06405203678172455,
+            "game_cluster_percentile_95CI": [
+              -0.5695265995034138,
+              0.7582341453856536
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.06405203678172455
+            }
+          },
+          "unconditional_mae": {
+            "n": 104,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.7419086934995249,
+            "game_cluster_percentile_95CI": [
+              -0.28171031179393236,
+              2.1160472551301854
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.7419086934995249
+            }
+          },
+          "unconditional_rmse": {
+            "n": 104,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.5732222084736236,
+            "game_cluster_percentile_95CI": [
+              -0.34236626679758153,
+              1.7604805491632476
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.5732222084736236
+            }
+          },
+          "participation_brier": {
+            "n": 106,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "brier",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.03269053769974464,
+            "game_cluster_percentile_95CI": [
+              -0.005419062273061735,
+              0.07295725353570229
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.03269053769974464
+            }
+          }
+        },
+        "UNKNOWN_label_paired_Brier_gain_bounds": [
+          0.015801071178524508,
+          0.05314861536908645
+        ],
+        "UNKNOWN_bounds_not_confidence_intervals": true
+      },
+      "near_primary_20261117:lead0": {
+        "completed_candidate_rows": 167,
+        "runtime_common_rows": 115,
+        "runtime_unavailable_reasons": {
+          "no_unique_pregame_identity_or_seed_player": 52
+        },
+        "FP_counts": {
+          "PLAYED": 78,
+          "UNKNOWN": 11,
+          "OFFICIAL_INACTIVE": 23,
+          "EXPLICIT_DNP": 3
+        },
+        "participation_counts": {
+          "known": 106,
+          "played": 80,
+          "explicit_nonplay": 26,
+          "UNKNOWN": 9
+        },
+        "conditional": {
+          "runtime": {
+            "n": 78,
+            "mae": 7.513239193544886,
+            "rmse": 10.340929747731947,
+            "bias_prediction_minus_actual": 0.2964692852772502
+          },
+          "frozen_candidate": {
+            "n": 78,
+            "mae": 7.371454309828232,
+            "rmse": 10.271283708664594,
+            "bias_prediction_minus_actual": -0.6647063610823992
+          }
+        },
+        "unconditional": {
+          "runtime": {
+            "n": 104,
+            "mae": 6.641662313411159,
+            "rmse": 9.763786798901165,
+            "bias_prediction_minus_actual": 0.4088736589696043
+          },
+          "frozen_candidate": {
+            "n": 104,
+            "mae": 5.913139210294705,
+            "rmse": 9.175468611453345,
+            "bias_prediction_minus_actual": -0.529770848404726
+          }
+        },
+        "participation": {
+          "runtime": {
+            "n": 106,
+            "brier": 0.07637880882610083,
+            "log_loss": 0.2763383449860633,
+            "predicted_mean": 0.7501340687772574,
+            "observed_play_fraction": 0.7547169811320755
+          },
+          "frozen_candidate": {
+            "n": 106,
+            "brier": 0.04368827112635619,
+            "log_loss": 0.17108890908344804,
+            "predicted_mean": 0.7302232015442474,
+            "observed_play_fraction": 0.7547169811320755
+          }
+        },
+        "paired_uncertainty": {
+          "conditional_mae": {
+            "n": 78,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.141784883716654,
+            "game_cluster_percentile_95CI": [
+              -0.5632748170305373,
+              0.7162170567744894
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.141784883716654
+            }
+          },
+          "conditional_rmse": {
+            "n": 78,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.06964603906735256,
+            "game_cluster_percentile_95CI": [
+              -0.49481104804247344,
+              0.7343950721610337
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.06964603906735256
+            }
+          },
+          "unconditional_mae": {
+            "n": 104,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "mae",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.7285231031164541,
+            "game_cluster_percentile_95CI": [
+              -0.22812858958424442,
+              2.0296446905225745
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.7285231031164541
+            }
+          },
+          "unconditional_rmse": {
+            "n": 104,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "rmse",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.58831818744782,
+            "game_cluster_percentile_95CI": [
+              -0.3174053501069256,
+              1.6730503388537379
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.58831818744782
+            }
+          },
+          "participation_brier": {
+            "n": 106,
+            "games": 5,
+            "NBA_dates": [
+              "2026-11-17"
+            ],
+            "metric": "brier",
+            "positive_gain_favors_candidate": true,
+            "paired_gain": 0.03269053769974464,
+            "game_cluster_percentile_95CI": [
+              -0.005419062273061735,
+              0.07295725353570229
+            ],
+            "bootstrap_draws": 4000,
+            "seed": 20261118,
+            "small_game_cluster_count": true,
+            "date_cluster_CI": null,
+            "date_cluster_inference_withheld_below_5_dates": true,
+            "date_point_gains": {
+              "2026-11-17": 0.03269053769974464
+            }
+          }
+        },
+        "UNKNOWN_label_paired_Brier_gain_bounds": [
+          0.015801071178524508,
+          0.05314861536908645
+        ],
+        "UNKNOWN_bounds_not_confidence_intervals": true
+      }
+    }
+  },
+  "limitations": [
+    "Only two NBA dates; game-level bootstrap is descriptive and date uncertainty remains unmeasured",
+    "Canonical public/default modelMode=current/riskMode=baseline/medical={} may differ from actual owner settings",
+    "Runtime is reconstructed after outcomes from unchanged pregame inputs; it was not separately frozen prospectively",
+    "No model or gate threshold was tuned to outcomes",
+    "Exact two-source FP conflicts excluded; participation retained when agreed",
+    "Only common high-confidence IDs and same seed-team are compared; missing baseline is not zero",
+    "No financial or fantasy-transfer utility proven"
+  ],
+  "pooled_near_primary_two_dates_unique_forecast_per_player_game": {
+    "completed_candidate_rows": 428,
+    "runtime_common_rows": 303,
+    "runtime_unavailable_reasons": {
+      "no_unique_pregame_identity_or_seed_player": 125
+    },
+    "FP_counts": {
+      "PLAYED": 211,
+      "OFFICIAL_INACTIVE": 59,
+      "EXPLICIT_DNP": 18,
+      "UNKNOWN": 15
+    },
+    "participation_counts": {
+      "known": 294,
+      "played": 217,
+      "explicit_nonplay": 77,
+      "UNKNOWN": 9
+    },
+    "conditional": {
+      "runtime": {
+        "n": 211,
+        "mae": 7.60041475773897,
+        "rmse": 9.832000976227725,
+        "bias_prediction_minus_actual": 0.9402031179613238
+      },
+      "frozen_candidate": {
+        "n": 211,
+        "mae": 7.527556308528146,
+        "rmse": 9.681886583867229,
+        "bias_prediction_minus_actual": -0.05924820447520571
+      }
+    },
+    "unconditional": {
+      "runtime": {
+        "n": 288,
+        "mae": 6.725190330690764,
+        "rmse": 9.174352664653265,
+        "bias_prediction_minus_actual": 0.8898907685353161
+      },
+      "frozen_candidate": {
+        "n": 288,
+        "mae": 6.080734962738338,
+        "rmse": 8.772905978016,
+        "bias_prediction_minus_actual": -0.24090719135379024
+      }
+    },
+    "participation": {
+      "runtime": {
+        "n": 294,
+        "brier": 0.10663168943839738,
+        "log_loss": 0.35659678979010584,
+        "predicted_mean": 0.7616067702120667,
+        "observed_play_fraction": 0.7380952380952381
+      },
+      "frozen_candidate": {
+        "n": 294,
+        "brier": 0.06155360004058552,
+        "log_loss": 0.2108449491198356,
+        "predicted_mean": 0.7136766030395625,
+        "observed_play_fraction": 0.7380952380952381
+      }
+    },
+    "paired_uncertainty": {
+      "conditional_mae": {
+        "n": 211,
+        "games": 13,
+        "NBA_dates": [
+          "2026-11-16",
+          "2026-11-17"
+        ],
+        "metric": "mae",
+        "positive_gain_favors_candidate": true,
+        "paired_gain": 0.07285844921082418,
+        "game_cluster_percentile_95CI": [
+          -0.3729838285720962,
+          0.5068388111710634
+        ],
+        "bootstrap_draws": 4000,
+        "seed": 20261118,
+        "small_game_cluster_count": true,
+        "date_cluster_CI": null,
+        "date_cluster_inference_withheld_below_5_dates": true,
+        "date_point_gains": {
+          "2026-11-16": 0.032435427470562495,
+          "2026-11-17": 0.141784883716654
+        }
+      },
+      "conditional_rmse": {
+        "n": 211,
+        "games": 13,
+        "NBA_dates": [
+          "2026-11-16",
+          "2026-11-17"
+        ],
+        "metric": "rmse",
+        "positive_gain_favors_candidate": true,
+        "paired_gain": 0.1501143923604964,
+        "game_cluster_percentile_95CI": [
+          -0.2779739721332872,
+          0.6026862149530381
+        ],
+        "bootstrap_draws": 4000,
+        "seed": 20261118,
+        "small_game_cluster_count": true,
+        "date_cluster_CI": null,
+        "date_cluster_inference_withheld_below_5_dates": true,
+        "date_point_gains": {
+          "2026-11-16": 0.20198495853514054,
+          "2026-11-17": 0.06964603906735256
+        }
+      },
+      "unconditional_mae": {
+        "n": 288,
+        "games": 13,
+        "NBA_dates": [
+          "2026-11-16",
+          "2026-11-17"
+        ],
+        "metric": "mae",
+        "positive_gain_favors_candidate": true,
+        "paired_gain": 0.6444553679524265,
+        "game_cluster_percentile_95CI": [
+          0.1256033068203056,
+          1.2300844744630661
+        ],
+        "bootstrap_draws": 4000,
+        "seed": 20261118,
+        "small_game_cluster_count": true,
+        "date_cluster_CI": null,
+        "date_cluster_inference_withheld_below_5_dates": true,
+        "date_point_gains": {
+          "2026-11-16": 0.5969388219901504,
+          "2026-11-17": 0.7285231031164541
+        }
+      },
+      "unconditional_rmse": {
+        "n": 288,
+        "games": 13,
+        "NBA_dates": [
+          "2026-11-16",
+          "2026-11-17"
+        ],
+        "metric": "rmse",
+        "positive_gain_favors_candidate": true,
+        "paired_gain": 0.40144668663726435,
+        "game_cluster_percentile_95CI": [
+          -0.052222653671779445,
+          0.9392687822190098
+        ],
+        "bootstrap_draws": 4000,
+        "seed": 20261118,
+        "small_game_cluster_count": true,
+        "date_cluster_CI": null,
+        "date_cluster_inference_withheld_below_5_dates": true,
+        "date_point_gains": {
+          "2026-11-16": 0.28681659039507146,
+          "2026-11-17": 0.58831818744782
+        }
+      },
+      "participation_brier": {
+        "n": 294,
+        "games": 13,
+        "NBA_dates": [
+          "2026-11-16",
+          "2026-11-17"
+        ],
+        "metric": "brier",
+        "positive_gain_favors_candidate": true,
+        "paired_gain": 0.045078089397811855,
+        "game_cluster_percentile_95CI": [
+          0.014569898165791429,
+          0.07728484107800247
+        ],
+        "bootstrap_draws": 4000,
+        "seed": 20261118,
+        "small_game_cluster_count": true,
+        "date_cluster_CI": null,
+        "date_cluster_inference_withheld_below_5_dates": true,
+        "date_point_gains": {
+          "2026-11-16": 0.05206256003608385,
+          "2026-11-17": 0.03269053769974464
+        }
+      }
+    },
+    "UNKNOWN_label_paired_Brier_gain_bounds": [
+      0.0382999487535118,
+      0.052474759254880196
+    ],
+    "UNKNOWN_bounds_not_confidence_intervals": true
+  },
+  "outcome_evidence_layer": "archive_reconciled"
+}

@@ -10,6 +10,79 @@ const fixture=()=>({userConfirmedNow:true,roster:[...roster],cash:850,liveUpdate
   {kind:'later',gain:14.2,net:10.2,moves:[{out:'n101',in_:'n222',epoch:NOW+2*DAY,sell:1345,buy:1200}]}
  ]}});
 const engine=(ms=NOW)=>j._makeForTests(()=>ms);
+const forecastFixture=()=>({modelMode:'current',riskMode:'baseline',feed:{
+ schema_version:1,kind:'nba_per_game_model_forecasts',status:'ready',
+ issued_at_utc:new Date(NOW-60000).toISOString(),
+ source_capture_completed_at_utc:new Date(NOW-120000).toISOString(),
+ valid_until_utc:new Date(NOW+86400000).toISOString(),
+ model_manifest_sha256:'a'.repeat(64),source_manifest_sha256:'b'.repeat(64),
+ fresh_official_status_sha256:'c'.repeat(64),model_policy:{site_default:true},
+ rows:[{player_id:'n999',private_hint:'must not be copied'}]}});
+test('optional forecast provenance freezes only public metadata at the existing user click',()=>{
+ const storage=local(),api=engine(),input=fixture();input.forecastProvenance=forecastFixture();
+ const entry=api.take(storage,input),p=entry.forecast_provenance;
+ assert.equal(p.model_requested,true);assert.equal(p.feed_usable_at_capture,true);
+ assert.equal(p.feed.model_manifest_sha256,'a'.repeat(64));
+ assert.equal(p.feed.source_manifest_sha256,'b'.repeat(64));
+ assert.equal(p.full_per_game_forecasts_frozen,false);
+ assert.equal(p.source_publication_independently_witnessed,false);
+ assert.equal(p.economic_benefit_proven,false);
+ assert.equal(entry.frozen_original_model_issue_proven,false);
+ assert.doesNotMatch(JSON.stringify(p),/private_hint|n999|roster|prices/);
+ input.forecastProvenance.feed.model_manifest_sha256='d'.repeat(64);
+ assert.equal(api.read(storage).entries[0].forecast_provenance.feed.model_manifest_sha256,'a'.repeat(64));
+ assert.equal(storage.store.size,1);
+});
+test('old journal entries remain readable without a fabricated model receipt',()=>{
+ const storage=local(),api=engine(),entry=api.take(storage,fixture());
+ assert.equal(entry.forecast_provenance,undefined);
+ assert.equal(api.validateForecastProvenance(entry),undefined);
+ assert.equal(api.read(storage).entries[0].forecast_provenance,undefined);
+});
+test('provenance never creates storage or a receipt without the user click',()=>{
+ const storage=local(),api=engine(),input=fixture();input.forecastProvenance=forecastFixture();input.userConfirmedNow=false;
+ assert.throws(()=>api.take(storage,input),/CLICK_REQUIRED/);assert.equal(storage.store.size,0);
+});
+test('requested model with absent or expired feed is explicitly unusable metadata',()=>{
+ for(const missing of [false,true]){
+  const storage=local(),input=fixture();input.forecastProvenance=forecastFixture();
+  input.forecastProvenance.modelMode='research';
+  if(missing)input.forecastProvenance.feed=null;
+  else input.forecastProvenance.feed.valid_until_utc=new Date(NOW-1).toISOString();
+  const p=engine().take(storage,input).forecast_provenance;
+  assert.equal(p.model_requested,true);assert.equal(p.feed_usable_at_capture,false);
+ }
+});
+test('legacy choice keeps the loaded public feed receipt without claiming model usage',()=>{
+ const input=fixture();input.forecastProvenance=forecastFixture();input.forecastProvenance.modelMode='legacy';
+ const p=engine().take(local(),input).forecast_provenance;
+ assert.equal(p.model_requested,false);assert.equal(p.feed_usable_at_capture,true);
+});
+test('future issuance or source capture cannot enter forecast provenance',()=>{
+ for(const field of ['issued_at_utc','source_capture_completed_at_utc']){
+  const input=fixture(),storage=local();input.forecastProvenance=forecastFixture();
+  input.forecastProvenance.feed[field]=new Date(NOW+1).toISOString();
+  assert.throws(()=>engine().take(storage,input),/FUTURE_OR_INVALID_FORECAST_METADATA/);
+  assert.equal(storage.store.size,0);
+ }
+});
+test('missing or malformed manifest hashes cannot masquerade as identified model inputs',()=>{
+ for(const field of ['model_manifest_sha256','source_manifest_sha256','fresh_official_status_sha256']){
+  const input=fixture(),storage=local();input.forecastProvenance=forecastFixture();
+  input.forecastProvenance.feed[field]='not-a-sha256';
+  assert.throws(()=>engine().take(storage,input),/BAD_FORECAST_PUBLIC_METADATA/);
+  assert.equal(storage.store.size,0);
+ }
+});
+test('changed forecast mode, freshness or arbitrary personal fields are rejected on read',()=>{
+ const mutations=[p=>p.model_requested=false,p=>p.feed_usable_at_capture=false,
+  p=>p.economic_benefit_proven=true,p=>p.private_owner_id='not-public'];
+ for(const mutate of mutations){
+  const storage=local(),api=engine(),input=fixture();input.forecastProvenance=forecastFixture();api.take(storage,input);
+  const raw=JSON.parse(storage.store.get(j.KEY));mutate(raw.entries[0].forecast_provenance);storage.store.set(j.KEY,JSON.stringify(raw));
+  assert.throws(()=>api.read(storage),/FORECAST/);
+ }
+});
 test('seven-day KEEP/NOW/LATER comparison can be frozen before games',()=>{
  const store=local(),a=engine(),x=fixture();
  x.plan.horizonDays=7;x.plan.end=x.plan.start+7*DAY;

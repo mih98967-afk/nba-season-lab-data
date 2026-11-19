@@ -40,8 +40,9 @@ CLUBS={norm(k):v for k,v in CLUBS.items()}
 def group_lines(words):
     lines=[]
     for w in sorted(words,key=lambda x:(x["top"],x["x0"])):
-        # Discard header area, page footer and invisible fragments.
-        if w["top"]<98 or w["top"]>580:continue
+        # Continuation-page rows can start above y=98. Do not crop either
+        # parsing or completeness counting: semantic columns reject headings.
+        if not str(w.get("text", "")).strip():continue
         if lines and abs(lines[-1][0]-w["top"])<2.2:
             lines[-1][1].append(w)
         else:lines.append([w["top"],[w]])

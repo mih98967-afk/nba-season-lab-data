@@ -1,0 +1,2452 @@
+{
+  "schema": "nba-frozen-prospective-20261118-v1",
+  "evaluated_at_utc": "2026-11-18T11:32:16.276324+00:00",
+  "evaluation_only": true,
+  "adopt_on_site": false,
+  "fit_or_calibration_performed": false,
+  "outcome_tuning_performed": false,
+  "official_Sports_ru_credits_proven": false,
+  "real_KEEP_TRANSFER_gain_proven": false,
+  "old_forecast_sha256": "5aa81fa5db8f8a4e240cce3ec2477fad17626822c5eea2c02f39dab1b932a0cb",
+  "new_forecast_sha256": "9b3cd732075d06c99ff0c3a30a2bd861ff606b0787c6de98d15302f93fa61ebb",
+  "original_forecast_bytes_unchanged": true,
+  "source_main_commit": "367d333aed59cc1ab30afa402eb0cbcecf9cfb51",
+  "source_manifest_sha256": "114283dad04cec7050ff582a4c9cc4b9242b98c7936f084b64985dc8a1a87aa9",
+  "live_updated_at_utc": "2026-11-18T07:31:11Z",
+  "source_qa_2027": {
+    "finished_games_before_asof": 205,
+    "schedule_rows": 1206,
+    "earliest_date": "2026-10-20",
+    "latest_finished_date": "2026-11-16",
+    "positive_minute_rows": 4618,
+    "explicit_no_play_rows": 2274,
+    "unknown_rows": 254,
+    "inactive_join": {
+      "unknown_resolved": 122,
+      "new_explicit_inactive": 1306
+    }
+  },
+  "source_kind": "NBA-derived SportsDataverse archives reconciled to exact current-main ESPN-derived rows",
+  "baseline_kind": "frozen last10 FP and historical observed participation; not exact deployed app runtime",
+  "limitations": [
+    "Only two NBA dates have completed; no date-cluster confidence interval or robust promotion proof",
+    "Game bootstrap is descriptive with only five or eight games per cohort",
+    "Source archives can incorporate later stat corrections; no atomic source vintage guarantee",
+    "FP targets reconstruct the NBA formula and are not independent official Sports.ru credited points",
+    "UNKNOWN and conflicting FP remain excluded with explicit denominators; agreed participation survives FP-only conflicts",
+    "No owner transactions, prices, quota or economic gain tested",
+    "Week/player multi-game predictive intervals are not validated by these one-game-per-player cohorts"
+  ],
+  "cohorts": {
+    "original_20261116": {
+      "records": 1741,
+      "elapsed_records": 689,
+      "elapsed_player_games": 428,
+      "elapsed_games": 13,
+      "elapsed_ET_dates": [
+        "2026-11-16",
+        "2026-11-17"
+      ],
+      "by_role_and_lead": {
+        "long_lead_primary:lead1": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 79,
+              "EXPLICIT_DNP": 11,
+              "UNKNOWN": 77
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 79,
+                "mae": 7.965822809481923,
+                "rmse": 11.056992728831707,
+                "bias_prediction_minus_actual": 0.008860748025435435
+              },
+              "frozen_candidate": {
+                "n": 79,
+                "mae": 7.473855444524862,
+                "rmse": 10.309946187790429,
+                "bias_prediction_minus_actual": -0.4651585911648182
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 90,
+                "brier": 0.09959168211046021,
+                "log_loss": 0.3359769611587728,
+                "predicted_mean": 0.8340872950024075,
+                "observed_play_fraction": 0.8777777777777778
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "brier": 0.07533264959851932,
+                "log_loss": 0.2614640131283187,
+                "predicted_mean": 0.8388865164425277,
+                "observed_play_fraction": 0.8777777777777778
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 90,
+                "mae": 7.554949227450221,
+                "rmse": 10.653770630379029,
+                "bias_prediction_minus_actual": -0.7841207322560136
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "mae": 7.004480997286128,
+                "rmse": 9.953425143155302,
+                "bias_prediction_minus_actual": -0.7611781692604345
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.4936708860759494,
+                  "width": 10.643813161507461,
+                  "interval_score": 25.169969066259146
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.5333333333333333,
+                  "width": 10.693521538514615,
+                  "interval_score": 23.635367882313197
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.7215189873417721,
+                  "width": 20.921367514355556,
+                  "interval_score": 37.77420521643375
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.7666666666666667,
+                  "width": 20.107903548714486,
+                  "interval_score": 34.32428661983831
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.9113924050632911,
+                  "width": 31.636346687326185,
+                  "interval_score": 59.68695332864292
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.9111111111111111,
+                  "width": 29.734049972449483,
+                  "interval_score": 58.35659985263411
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.10159792130031778,
+              0.07990759551093995
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "UNKNOWN": 167
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.1833174371150412,
+              0.10979230884285542
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 0,
+            "played": 0,
+            "explicit_nonplay": 0,
+            "UNKNOWN": 167,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 0
+            },
+            "frozen_candidate": {
+              "n": 0
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.1833174371150412,
+              0.10979230884285542
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "game_not_final_in_archive": 167
+          },
+          "ESPN_unknown_reasons": {
+            "no_unique_high_confidence_identity": 52,
+            "supplementary_official_game_day_evidence": 22,
+            "no_matching_evidence": 3
+          },
+          "source_overlap": {
+            "not_both_known": 167
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 0
+            },
+            "conditional_rmse": {
+              "n": 0
+            },
+            "unconditional_mae": {
+              "n": 0
+            },
+            "unconditional_rmse": {
+              "n": 0
+            },
+            "participation_brier": {
+              "n": 0
+            }
+          }
+        },
+        "long_lead_primary:lead3": {
+          "strict_ESPN": {
+            "counts": {
+              "FUTURE": 134
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            }
+          },
+          "archive_reconciled": {
+            "counts": {
+              "FUTURE": 134
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            }
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 0,
+            "played": 0,
+            "explicit_nonplay": 0,
+            "UNKNOWN": 0,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 0
+            },
+            "frozen_candidate": {
+              "n": 0
+            },
+            "missing_label_paired_brier_gain_bounds": null,
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {},
+          "ESPN_unknown_reasons": {},
+          "source_overlap": {
+            "not_both_known": 134
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 0
+            },
+            "conditional_rmse": {
+              "n": 0
+            },
+            "unconditional_mae": {
+              "n": 0
+            },
+            "unconditional_rmse": {
+              "n": 0
+            },
+            "participation_brier": {
+              "n": 0
+            }
+          }
+        },
+        "long_lead_primary:lead7": {
+          "strict_ESPN": {
+            "counts": {
+              "FUTURE": 332
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            }
+          },
+          "archive_reconciled": {
+            "counts": {
+              "FUTURE": 332
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            }
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 0,
+            "played": 0,
+            "explicit_nonplay": 0,
+            "UNKNOWN": 0,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 0
+            },
+            "frozen_candidate": {
+              "n": 0
+            },
+            "missing_label_paired_brier_gain_bounds": null,
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {},
+          "ESPN_unknown_reasons": {},
+          "source_overlap": {
+            "not_both_known": 332
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 0
+            },
+            "conditional_rmse": {
+              "n": 0
+            },
+            "unconditional_mae": {
+              "n": 0
+            },
+            "unconditional_rmse": {
+              "n": 0
+            },
+            "participation_brier": {
+              "n": 0
+            }
+          }
+        },
+        "long_lead_primary:lead14": {
+          "strict_ESPN": {
+            "counts": {
+              "FUTURE": 226
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            }
+          },
+          "archive_reconciled": {
+            "counts": {
+              "FUTURE": 226
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            }
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 0,
+            "played": 0,
+            "explicit_nonplay": 0,
+            "UNKNOWN": 0,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 0
+            },
+            "frozen_candidate": {
+              "n": 0
+            },
+            "missing_label_paired_brier_gain_bounds": null,
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {},
+          "ESPN_unknown_reasons": {},
+          "source_overlap": {
+            "not_both_known": 226
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 0
+            },
+            "conditional_rmse": {
+              "n": 0
+            },
+            "unconditional_mae": {
+              "n": 0
+            },
+            "unconditional_rmse": {
+              "n": 0
+            },
+            "participation_brier": {
+              "n": 0
+            }
+          }
+        },
+        "long_lead_primary:lead28": {
+          "strict_ESPN": {
+            "counts": {
+              "FUTURE": 360
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            }
+          },
+          "archive_reconciled": {
+            "counts": {
+              "FUTURE": 360
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            }
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 0,
+            "played": 0,
+            "explicit_nonplay": 0,
+            "UNKNOWN": 0,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 0
+            },
+            "frozen_candidate": {
+              "n": 0
+            },
+            "missing_label_paired_brier_gain_bounds": null,
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {},
+          "ESPN_unknown_reasons": {},
+          "source_overlap": {
+            "not_both_known": 360
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 0
+            },
+            "conditional_rmse": {
+              "n": 0
+            },
+            "unconditional_mae": {
+              "n": 0
+            },
+            "unconditional_rmse": {
+              "n": 0
+            },
+            "participation_brier": {
+              "n": 0
+            }
+          }
+        },
+        "near_interval_challenger:lead0": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 136,
+              "UNKNOWN": 110,
+              "EXPLICIT_DNP": 15
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 136,
+                "mae": 7.663235315066927,
+                "rmse": 9.438492861393108,
+                "bias_prediction_minus_actual": 0.5338234923341695
+              },
+              "frozen_candidate": {
+                "n": 136,
+                "mae": 7.63446041676282,
+                "rmse": 9.313846061214306,
+                "bias_prediction_minus_actual": 0.2597289305356571
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 151,
+                "brier": 0.10930435872325805,
+                "log_loss": 0.3582198710378287,
+                "predicted_mean": 0.7651631921924502,
+                "observed_play_fraction": 0.9006622516556292
+              },
+              "frozen_candidate": {
+                "n": 151,
+                "brier": 0.06968342840885818,
+                "log_loss": 0.23415821957409222,
+                "predicted_mean": 0.8455129937690885,
+                "observed_play_fraction": 0.9006622516556292
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 151,
+                "mae": 7.6220860841787115,
+                "rmse": 9.562317677894603,
+                "bias_prediction_minus_actual": -1.3308998230526263
+              },
+              "frozen_candidate": {
+                "n": 151,
+                "mae": 7.344121453488257,
+                "rmse": 9.297868947972598,
+                "bias_prediction_minus_actual": -0.4714738522204039
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.4411764705882353,
+                  "width": 11.165326084030633,
+                  "interval_score": 22.966461149459548
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.4768211920529801,
+                  "width": 10.960653342610804,
+                  "interval_score": 22.416514272799095
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.7352941176470589,
+                  "width": 21.64294763135292,
+                  "interval_score": 30.863960115753358
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.7417218543046358,
+                  "width": 20.588867851010573,
+                  "interval_score": 29.896418314454543
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.9338235294117647,
+                  "width": 32.13667666610741,
+                  "interval_score": 39.02374981040652
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.9072847682119205,
+                  "width": 29.965468101056825,
+                  "interval_score": 38.13802120192001
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.13315341069435502,
+              0.09964843479989534
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "PLAYED": 175,
+              "OFFICIAL_INACTIVE": 57,
+              "EXPLICIT_DNP": 23,
+              "UNKNOWN": 6
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 175,
+                "mae": 6.80645126581192,
+                "rmse": 8.627201017686525,
+                "bias_prediction_minus_actual": 0.5752856857436044
+              },
+              "frozen_candidate": {
+                "n": 175,
+                "mae": 6.850961823571109,
+                "rmse": 8.585177702930027,
+                "bias_prediction_minus_actual": 0.3644054021975721
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 255,
+                "brier": 0.157366906547622,
+                "log_loss": 0.47661711723483147,
+                "predicted_mean": 0.6773311336250866,
+                "observed_play_fraction": 0.6862745098039216
+              },
+              "frozen_candidate": {
+                "n": 255,
+                "brier": 0.0872355609833614,
+                "log_loss": 0.2730690968367208,
+                "predicted_mean": 0.6492451398694569,
+                "observed_play_fraction": 0.6862745098039216
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 255,
+                "mae": 6.185276598726634,
+                "rmse": 8.152567742273881,
+                "bias_prediction_minus_actual": 0.1343581343059355
+              },
+              "frozen_candidate": {
+                "n": 255,
+                "mae": 5.324183622521351,
+                "rmse": 7.656667248982149,
+                "bias_prediction_minus_actual": -0.03363306207076358
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.4742857142857143,
+                  "width": 10.690194262478471,
+                  "interval_score": 20.830044835100576
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.6,
+                  "width": 8.040091034646556,
+                  "interval_score": 16.058136256649103
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.7714285714285715,
+                  "width": 20.72152108477796,
+                  "interval_score": 28.380549659847404
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.8235294117647058,
+                  "width": 15.325550851039011,
+                  "interval_score": 21.450698750162378
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.9428571428571428,
+                  "width": 30.922257514868097,
+                  "interval_score": 36.90427290091068
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.9333333333333333,
+                  "width": 23.245996921487812,
+                  "interval_score": 28.80618473083761
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.0652418681563172,
+              0.07019113141606267
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 259,
+            "played": 179,
+            "explicit_nonplay": 80,
+            "UNKNOWN": 2,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 259,
+              "brier": 0.1553106550378147,
+              "log_loss": 0.47134853724490816,
+              "predicted_mean": 0.6804446073457541,
+              "observed_play_fraction": 0.6911196911196911
+            },
+            "frozen_candidate": {
+              "n": 259,
+              "brier": 0.08589477803359484,
+              "log_loss": 0.2691431415910985,
+              "predicted_mean": 0.654374175909284,
+              "observed_play_fraction": 0.6911196911196911
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.06840610059166538,
+              0.07016626040324206
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "missing_exact_player_game": 2,
+            "ESPN_archive_disagreement": 4
+          },
+          "ESPN_unknown_reasons": {
+            "supplementary_official_game_day_evidence": 36,
+            "no_unique_high_confidence_identity": 73,
+            "no_matching_evidence": 1
+          },
+          "source_overlap": {
+            "exact_agreement": 147,
+            "not_both_known": 110,
+            "CONFLICT": 4
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 175,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": -0.044510557759188885,
+              "game_cluster_percentile_95CI": [
+                -0.4667434846622118,
+                0.3569407003102576
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": -0.044510557759188885
+              }
+            },
+            "conditional_rmse": {
+              "n": 175,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.042023314756498564,
+              "game_cluster_percentile_95CI": [
+                -0.3464811340179619,
+                0.46425813308490227
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.042023314756498564
+              }
+            },
+            "unconditional_mae": {
+              "n": 255,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.861092976205283,
+              "game_cluster_percentile_95CI": [
+                0.453707753286535,
+                1.3551483304754193
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.861092976205283
+              }
+            },
+            "unconditional_rmse": {
+              "n": 255,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.4959004932917317,
+              "game_cluster_percentile_95CI": [
+                0.0700380588012965,
+                0.9816727275278079
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.4959004932917317
+              }
+            },
+            "participation_brier": {
+              "n": 259,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "brier",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.06941587700421985,
+              "game_cluster_percentile_95CI": [
+                0.05216089963710103,
+                0.08488423980906257
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.06941587700421985
+              }
+            }
+          }
+        },
+        "near_primary:lead0": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 136,
+              "UNKNOWN": 110,
+              "EXPLICIT_DNP": 15
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 136,
+                "mae": 7.663235315066927,
+                "rmse": 9.438492861393108,
+                "bias_prediction_minus_actual": 0.5338234923341695
+              },
+              "frozen_candidate": {
+                "n": 136,
+                "mae": 7.63446041676282,
+                "rmse": 9.313846061214306,
+                "bias_prediction_minus_actual": 0.2597289305356571
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 151,
+                "brier": 0.10930435872325805,
+                "log_loss": 0.3582198710378287,
+                "predicted_mean": 0.7651631921924502,
+                "observed_play_fraction": 0.9006622516556292
+              },
+              "frozen_candidate": {
+                "n": 151,
+                "brier": 0.06968342840885818,
+                "log_loss": 0.23415821957409222,
+                "predicted_mean": 0.8455129937690885,
+                "observed_play_fraction": 0.9006622516556292
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 151,
+                "mae": 7.6220860841787115,
+                "rmse": 9.562317677894603,
+                "bias_prediction_minus_actual": -1.3308998230526263
+              },
+              "frozen_candidate": {
+                "n": 151,
+                "mae": 7.344121453488257,
+                "rmse": 9.297868947972598,
+                "bias_prediction_minus_actual": -0.4714738522204039
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.4411764705882353,
+                  "width": 11.078037876656852,
+                  "interval_score": 22.943782950133148
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.47019867549668876,
+                  "width": 10.899746123467759,
+                  "interval_score": 22.398407259696082
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.7352941176470589,
+                  "width": 21.457822786574862,
+                  "interval_score": 31.152323339336142
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.7417218543046358,
+                  "width": 20.49027519696176,
+                  "interval_score": 30.074046361823328
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 136,
+                  "coverage": 0.9338235294117647,
+                  "width": 32.02832041890549,
+                  "interval_score": 39.03239845869569
+                },
+                "unconditional": {
+                  "n": 151,
+                  "coverage": 0.9205298013245033,
+                  "width": 29.890775354377123,
+                  "interval_score": 37.96650539882365
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.13315341069435502,
+              0.09964843479989534
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "PLAYED": 175,
+              "OFFICIAL_INACTIVE": 57,
+              "EXPLICIT_DNP": 23,
+              "UNKNOWN": 6
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 175,
+                "mae": 6.80645126581192,
+                "rmse": 8.627201017686525,
+                "bias_prediction_minus_actual": 0.5752856857436044
+              },
+              "frozen_candidate": {
+                "n": 175,
+                "mae": 6.850961823571109,
+                "rmse": 8.585177702930027,
+                "bias_prediction_minus_actual": 0.3644054021975721
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 255,
+                "brier": 0.157366906547622,
+                "log_loss": 0.47661711723483147,
+                "predicted_mean": 0.6773311336250866,
+                "observed_play_fraction": 0.6862745098039216
+              },
+              "frozen_candidate": {
+                "n": 255,
+                "brier": 0.0872355609833614,
+                "log_loss": 0.2730690968367208,
+                "predicted_mean": 0.6492451398694569,
+                "observed_play_fraction": 0.6862745098039216
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 255,
+                "mae": 6.185276598726634,
+                "rmse": 8.152567742273881,
+                "bias_prediction_minus_actual": 0.1343581343059355
+              },
+              "frozen_candidate": {
+                "n": 255,
+                "mae": 5.324183622521351,
+                "rmse": 7.656667248982149,
+                "bias_prediction_minus_actual": -0.03363306207076358
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.48,
+                  "width": 10.58059720366695,
+                  "interval_score": 20.809905447737
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.592156862745098,
+                  "width": 7.986459935129705,
+                  "interval_score": 16.06078207952431
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.7714285714285715,
+                  "width": 20.53332235440943,
+                  "interval_score": 28.620988454932977
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.8235294117647058,
+                  "width": 15.241566434339141,
+                  "interval_score": 21.557682205562212
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 175,
+                  "coverage": 0.9428571428571428,
+                  "width": 30.77200359805063,
+                  "interval_score": 36.92118512185002
+                },
+                "unconditional": {
+                  "n": 255,
+                  "coverage": 0.9411764705882353,
+                  "width": 23.18320287943178,
+                  "interval_score": 28.708923157545268
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.0652418681563172,
+              0.07019113141606267
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 259,
+            "played": 179,
+            "explicit_nonplay": 80,
+            "UNKNOWN": 2,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 259,
+              "brier": 0.1553106550378147,
+              "log_loss": 0.47134853724490816,
+              "predicted_mean": 0.6804446073457541,
+              "observed_play_fraction": 0.6911196911196911
+            },
+            "frozen_candidate": {
+              "n": 259,
+              "brier": 0.08589477803359484,
+              "log_loss": 0.2691431415910985,
+              "predicted_mean": 0.654374175909284,
+              "observed_play_fraction": 0.6911196911196911
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              0.06840610059166538,
+              0.07016626040324206
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "missing_exact_player_game": 2,
+            "ESPN_archive_disagreement": 4
+          },
+          "ESPN_unknown_reasons": {
+            "supplementary_official_game_day_evidence": 36,
+            "no_unique_high_confidence_identity": 73,
+            "no_matching_evidence": 1
+          },
+          "source_overlap": {
+            "exact_agreement": 147,
+            "not_both_known": 110,
+            "CONFLICT": 4
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 175,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": -0.044510557759188885,
+              "game_cluster_percentile_95CI": [
+                -0.4667434846622118,
+                0.3569407003102576
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": -0.044510557759188885
+              }
+            },
+            "conditional_rmse": {
+              "n": 175,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.042023314756498564,
+              "game_cluster_percentile_95CI": [
+                -0.3464811340179619,
+                0.46425813308490227
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.042023314756498564
+              }
+            },
+            "unconditional_mae": {
+              "n": 255,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "mae",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.861092976205283,
+              "game_cluster_percentile_95CI": [
+                0.453707753286535,
+                1.3551483304754193
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.861092976205283
+              }
+            },
+            "unconditional_rmse": {
+              "n": 255,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "rmse",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.4959004932917317,
+              "game_cluster_percentile_95CI": [
+                0.0700380588012965,
+                0.9816727275278079
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.4959004932917317
+              }
+            },
+            "participation_brier": {
+              "n": 259,
+              "games": 8,
+              "NBA_dates": [
+                "2026-11-16"
+              ],
+              "metric": "brier",
+              "positive_gain_favors_candidate": true,
+              "paired_gain": 0.06941587700421985,
+              "game_cluster_percentile_95CI": [
+                0.05216089963710103,
+                0.08488423980906257
+              ],
+              "bootstrap_draws": 4000,
+              "seed": 20261118,
+              "small_game_cluster_count": true,
+              "date_cluster_CI": null,
+              "date_cluster_inference_withheld_below_5_dates": true,
+              "date_point_gains": {
+                "2026-11-16": 0.06941587700421985
+              }
+            }
+          }
+        }
+      },
+      "source_conflicts": [
+        {
+          "model_role": "near_primary",
+          "nba_player_id": "1630200",
+          "nba_game_id": "0022600246",
+          "calendar_game_id": "espn_401909995",
+          "tipoff_utc": "2026-11-17T00:00:00Z",
+          "date_ET": "2026-11-16",
+          "team": "CHI",
+          "opponent": "CLE",
+          "player_name": "Tre Jones",
+          "lead_days": 0,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.9828257406218612,
+          "mean_if_play": 11.624541178670771,
+          "expected_fp": 11.424898293316422,
+          "conditional_lo50": 3.238625948476184,
+          "conditional_hi50": 16.497973943047988,
+          "lo50": 3.049255893657248,
+          "hi50": 16.23288757647687,
+          "conditional_lo80": -0.7977682496689109,
+          "conditional_hi80": 21.067893161272394,
+          "lo80": -0.4160671056013379,
+          "hi80": 20.67997667525704,
+          "conditional_lo95": -4.58979975372538,
+          "conditional_hi95": 25.429586320061304,
+          "lo95": -4.208302926894762,
+          "hi95": 25.044771333964068,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "ESPN_archive_disagreement",
+          "source_comment": "",
+          "baseline_fp10": 8.5,
+          "baseline_p_play": 0.9860714077949524,
+          "participation_verified": 1,
+          "espn_archive_overlap": "CONFLICT",
+          "archive_outcome_before_quarantine": "PLAYED",
+          "archive_fp_before_quarantine": 21.0,
+          "espn_outcome": "PLAYED",
+          "espn_fp": 23.0,
+          "outcome_espn": "PLAYED",
+          "outcome_augmented": "PLAYED",
+          "reason": "positive_minutes_exact_game",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909995",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n157",
+          "espn_y_fp": 23.0,
+          "observed_schedule_tipoff_utc": "2026-11-17T00:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 5.178646225833334
+        },
+        {
+          "model_role": "near_primary",
+          "nba_player_id": "1641824",
+          "nba_game_id": "0022600246",
+          "calendar_game_id": "espn_401909995",
+          "tipoff_utc": "2026-11-17T00:00:00Z",
+          "date_ET": "2026-11-16",
+          "team": "CHI",
+          "opponent": "CLE",
+          "player_name": "Matas Buzelis",
+          "lead_days": 0,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.9870051698459782,
+          "mean_if_play": 10.891327714221196,
+          "expected_fp": 10.7497967604231,
+          "conditional_lo50": 4.564677696352825,
+          "conditional_hi50": 17.015444666732172,
+          "lo50": 4.380726723040252,
+          "hi50": 16.783722911154207,
+          "conditional_lo80": -0.6480296282552125,
+          "conditional_hi80": 22.32167146386825,
+          "lo80": -0.2670510283884881,
+          "hi80": 21.939872017465817,
+          "conditional_lo95": -5.3430738754443805,
+          "conditional_hi95": 29.3422327822473,
+          "lo95": -4.963027453439343,
+          "hi95": 28.95198050375045,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "ESPN_archive_disagreement",
+          "source_comment": "",
+          "baseline_fp10": 9.100000381469727,
+          "baseline_p_play": 0.8432142734527588,
+          "participation_verified": 1,
+          "espn_archive_overlap": "CONFLICT",
+          "archive_outcome_before_quarantine": "PLAYED",
+          "archive_fp_before_quarantine": 16.0,
+          "espn_outcome": "PLAYED",
+          "espn_fp": 14.0,
+          "outcome_espn": "PLAYED",
+          "outcome_augmented": "PLAYED",
+          "reason": "positive_minutes_exact_game",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909995",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n105",
+          "espn_y_fp": 14.0,
+          "observed_schedule_tipoff_utc": "2026-11-17T00:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 5.178646225833334
+        },
+        {
+          "model_role": "near_primary",
+          "nba_player_id": "1631255",
+          "nba_game_id": "0022600251",
+          "calendar_game_id": "espn_401910000",
+          "tipoff_utc": "2026-11-17T01:00:00Z",
+          "date_ET": "2026-11-16",
+          "team": "NOP",
+          "opponent": "GSW",
+          "player_name": "Karlo Matković",
+          "lead_days": 0,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.9670932668923192,
+          "mean_if_play": 7.349675737800487,
+          "expected_fp": 7.107821919868688,
+          "conditional_lo50": 2.2180095974973044,
+          "conditional_hi50": 13.602092746854773,
+          "lo50": 1.7586839659346405,
+          "hi50": 13.248919085516064,
+          "conditional_lo80": -1.5341629817208418,
+          "conditional_hi80": 18.8862143977164,
+          "lo80": -1.1164677607541051,
+          "hi80": 18.43376800299292,
+          "conditional_lo95": -4.582401534001416,
+          "conditional_hi95": 25.26288228676568,
+          "lo95": -4.188543879141204,
+          "hi95": 24.8312731072758,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "ESPN_archive_disagreement",
+          "source_comment": "",
+          "baseline_fp10": 8.899999618530273,
+          "baseline_p_play": 0.7360714077949524,
+          "participation_verified": 1,
+          "espn_archive_overlap": "CONFLICT",
+          "archive_outcome_before_quarantine": "PLAYED",
+          "archive_fp_before_quarantine": -2.0,
+          "espn_outcome": "PLAYED",
+          "espn_fp": -3.0,
+          "outcome_espn": "PLAYED",
+          "outcome_augmented": "PLAYED",
+          "reason": "positive_minutes_exact_game",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910000",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n390",
+          "espn_y_fp": -3.0,
+          "observed_schedule_tipoff_utc": "2026-11-17T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 6.178646225833334
+        },
+        {
+          "model_role": "near_primary",
+          "nba_player_id": "1641764",
+          "nba_game_id": "0022600251",
+          "calendar_game_id": "espn_401910000",
+          "tipoff_utc": "2026-11-17T01:00:00Z",
+          "date_ET": "2026-11-16",
+          "team": "GSW",
+          "opponent": "NOP",
+          "player_name": "Brandin Podziemski",
+          "lead_days": 0,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+          "p_play": 0.9884767164329162,
+          "mean_if_play": 17.937394052102483,
+          "expected_fp": 17.730696373985584,
+          "conditional_lo50": 12.685700300929508,
+          "conditional_hi50": 24.981341193521367,
+          "lo50": 12.517614779946674,
+          "hi50": 24.75655779558508,
+          "conditional_lo80": 7.09535677190409,
+          "conditional_hi80": 30.31236586428706,
+          "lo80": 6.578158582656827,
+          "hi80": 29.93551801812174,
+          "conditional_lo95": 0.9673108446990212,
+          "conditional_hi95": 37.43663307480753,
+          "lo95": 1.3268517950143242,
+          "hi95": 37.04949613026444,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "ESPN_archive_disagreement",
+          "source_comment": "",
+          "baseline_fp10": 18.899999618530273,
+          "baseline_p_play": 0.9503571391105652,
+          "participation_verified": 1,
+          "espn_archive_overlap": "CONFLICT",
+          "archive_outcome_before_quarantine": "PLAYED",
+          "archive_fp_before_quarantine": 8.0,
+          "espn_outcome": "PLAYED",
+          "espn_fp": 11.0,
+          "outcome_espn": "PLAYED",
+          "outcome_augmented": "PLAYED",
+          "reason": "positive_minutes_exact_game",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910000",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n102",
+          "espn_y_fp": 11.0,
+          "observed_schedule_tipoff_utc": "2026-11-17T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 6.178646225833334
+        },
+        {
+          "model_role": "near_interval_challenger",
+          "nba_player_id": "1630200",
+          "nba_game_id": "0022600246",
+          "calendar_game_id": "espn_401909995",
+          "tipoff_utc": "2026-11-17T00:00:00Z",
+          "date_ET": "2026-11-16",
+          "team": "CHI",
+          "opponent": "CLE",
+          "player_name": "Tre Jones",
+          "lead_days": 0,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "61321e1571ab84bc5e7faf688dc69e776445d88fcfa296fee70b0261c427f0e3",
+          "p_play": 0.9828257406218612,
+          "mean_if_play": 11.624541178670771,
+          "expected_fp": 11.424898293316422,
+          "conditional_lo50": 3.329576348901516,
+          "conditional_hi50": 16.574814938594244,
+          "lo50": 3.137952629825209,
+          "hi50": 16.279730760334193,
+          "conditional_lo80": -1.0747275366736524,
+          "conditional_hi80": 20.36189957995347,
+          "lo80": -0.6735894534539517,
+          "hi80": 19.967951841169693,
+          "conditional_lo95": -4.649070800792909,
+          "conditional_hi95": 26.022443006511544,
+          "lo95": -4.259461449491951,
+          "hi95": 25.620681978257235,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "ESPN_archive_disagreement",
+          "source_comment": "",
+          "baseline_fp10": 8.5,
+          "baseline_p_play": 0.9860714077949524,
+          "participation_verified": 1,
+          "espn_archive_overlap": "CONFLICT",
+          "archive_outcome_before_quarantine": "PLAYED",
+          "archive_fp_before_quarantine": 21.0,
+          "espn_outcome": "PLAYED",
+          "espn_fp": 23.0,
+          "outcome_espn": "PLAYED",
+          "outcome_augmented": "PLAYED",
+          "reason": "positive_minutes_exact_game",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909995",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n157",
+          "espn_y_fp": 23.0,
+          "observed_schedule_tipoff_utc": "2026-11-17T00:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 5.178646225833334
+        },
+        {
+          "model_role": "near_interval_challenger",
+          "nba_player_id": "1641824",
+          "nba_game_id": "0022600246",
+          "calendar_game_id": "espn_401909995",
+          "tipoff_utc": "2026-11-17T00:00:00Z",
+          "date_ET": "2026-11-16",
+          "team": "CHI",
+          "opponent": "CLE",
+          "player_name": "Matas Buzelis",
+          "lead_days": 0,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "61321e1571ab84bc5e7faf688dc69e776445d88fcfa296fee70b0261c427f0e3",
+          "p_play": 0.9870051698459782,
+          "mean_if_play": 10.891327714221196,
+          "expected_fp": 10.7497967604231,
+          "conditional_lo50": 4.38381540019661,
+          "conditional_hi50": 16.923121787949796,
+          "lo50": 4.221408454805359,
+          "hi50": 16.665099484759082,
+          "conditional_lo80": -0.961046686803618,
+          "conditional_hi80": 22.54133478825161,
+          "lo80": -0.5638041734085915,
+          "hi80": 22.141692997528004,
+          "conditional_lo95": -5.440279198257462,
+          "conditional_hi95": 29.116456129065867,
+          "lo95": -5.051807443978518,
+          "hi95": 28.71878627390852,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "ESPN_archive_disagreement",
+          "source_comment": "",
+          "baseline_fp10": 9.100000381469727,
+          "baseline_p_play": 0.8432142734527588,
+          "participation_verified": 1,
+          "espn_archive_overlap": "CONFLICT",
+          "archive_outcome_before_quarantine": "PLAYED",
+          "archive_fp_before_quarantine": 16.0,
+          "espn_outcome": "PLAYED",
+          "espn_fp": 14.0,
+          "outcome_espn": "PLAYED",
+          "outcome_augmented": "PLAYED",
+          "reason": "positive_minutes_exact_game",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401909995",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n105",
+          "espn_y_fp": 14.0,
+          "observed_schedule_tipoff_utc": "2026-11-17T00:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 5.178646225833334
+        },
+        {
+          "model_role": "near_interval_challenger",
+          "nba_player_id": "1631255",
+          "nba_game_id": "0022600251",
+          "calendar_game_id": "espn_401910000",
+          "tipoff_utc": "2026-11-17T01:00:00Z",
+          "date_ET": "2026-11-16",
+          "team": "NOP",
+          "opponent": "GSW",
+          "player_name": "Karlo Matković",
+          "lead_days": 0,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "61321e1571ab84bc5e7faf688dc69e776445d88fcfa296fee70b0261c427f0e3",
+          "p_play": 0.9670932668923192,
+          "mean_if_play": 7.349675737800487,
+          "expected_fp": 7.107821919868688,
+          "conditional_lo50": 2.424382269320583,
+          "conditional_hi50": 13.602562759923677,
+          "lo50": 1.9457719659289223,
+          "hi50": 13.205143322407928,
+          "conditional_lo80": -1.6088774754667463,
+          "conditional_hi80": 19.025721947473198,
+          "lo80": -1.169474514338332,
+          "hi80": 18.554790107262644,
+          "conditional_lo95": -4.660498775685706,
+          "conditional_hi95": 25.541845233005297,
+          "lo95": -4.257191274212303,
+          "hi95": 25.09924285133622,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "ESPN_archive_disagreement",
+          "source_comment": "",
+          "baseline_fp10": 8.899999618530273,
+          "baseline_p_play": 0.7360714077949524,
+          "participation_verified": 1,
+          "espn_archive_overlap": "CONFLICT",
+          "archive_outcome_before_quarantine": "PLAYED",
+          "archive_fp_before_quarantine": -2.0,
+          "espn_outcome": "PLAYED",
+          "espn_fp": -3.0,
+          "outcome_espn": "PLAYED",
+          "outcome_augmented": "PLAYED",
+          "reason": "positive_minutes_exact_game",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910000",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n390",
+          "espn_y_fp": -3.0,
+          "observed_schedule_tipoff_utc": "2026-11-17T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 6.178646225833334
+        },
+        {
+          "model_role": "near_interval_challenger",
+          "nba_player_id": "1641764",
+          "nba_game_id": "0022600251",
+          "calendar_game_id": "espn_401910000",
+          "tipoff_utc": "2026-11-17T01:00:00Z",
+          "date_ET": "2026-11-16",
+          "team": "GSW",
+          "opponent": "NOP",
+          "player_name": "Brandin Podziemski",
+          "lead_days": 0,
+          "feature_date_ET": "2026-11-16",
+          "model_sha256": "61321e1571ab84bc5e7faf688dc69e776445d88fcfa296fee70b0261c427f0e3",
+          "p_play": 0.9884767164329162,
+          "mean_if_play": 17.937394052102483,
+          "expected_fp": 17.730696373985584,
+          "conditional_lo50": 13.088725250883297,
+          "conditional_hi50": 25.260685771135343,
+          "lo50": 12.931553718340371,
+          "hi50": 24.999716793647384,
+          "conditional_lo80": 7.164640876030747,
+          "conditional_hi80": 31.621063121687364,
+          "lo80": 6.668415670394253,
+          "hi80": 31.221127905557147,
+          "conditional_lo95": 1.0851881688753906,
+          "conditional_hi95": 38.82987314501359,
+          "lo95": 1.4540769400219773,
+          "hi95": 38.43303804745352,
+          "outcome_archive": "UNKNOWN",
+          "y_fp": null,
+          "archive_reason": "ESPN_archive_disagreement",
+          "source_comment": "",
+          "baseline_fp10": 18.899999618530273,
+          "baseline_p_play": 0.9503571391105652,
+          "participation_verified": 1,
+          "espn_archive_overlap": "CONFLICT",
+          "archive_outcome_before_quarantine": "PLAYED",
+          "archive_fp_before_quarantine": 8.0,
+          "espn_outcome": "PLAYED",
+          "espn_fp": 11.0,
+          "outcome_espn": "PLAYED",
+          "outcome_augmented": "PLAYED",
+          "reason": "positive_minutes_exact_game",
+          "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910000",
+          "official_source_url": null,
+          "official_source_sha256": null,
+          "catalog_id": "n102",
+          "espn_y_fp": 11.0,
+          "observed_schedule_tipoff_utc": "2026-11-17T01:00:00Z",
+          "frozen_tipoff_matches_observed": true,
+          "actual_issue_to_observed_tipoff_hours": 6.178646225833334
+        }
+      ],
+      "changed_tipoffs": []
+    },
+    "paired_20261117": {
+      "records": 334,
+      "elapsed_records": 334,
+      "elapsed_player_games": 167,
+      "elapsed_games": 5,
+      "elapsed_ET_dates": [
+        "2026-11-17"
+      ],
+      "by_role_and_lead": {
+        "near_day_ewma_challenger_20261117:lead0": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 79,
+              "EXPLICIT_DNP": 11,
+              "UNKNOWN": 77
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 79,
+                "mae": 7.936708922250362,
+                "rmse": 11.042369499088746,
+                "bias_prediction_minus_actual": -0.03291143948518777
+              },
+              "frozen_candidate": {
+                "n": 79,
+                "mae": 7.377148754017999,
+                "rmse": 10.302378956621915,
+                "bias_prediction_minus_actual": -0.5438645993307797
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 90,
+                "brier": 0.09880738540985179,
+                "log_loss": 0.33413085068053644,
+                "predicted_mean": 0.8352777706252204,
+                "observed_play_fraction": 0.8777777777777778
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "brier": 0.06740388637580015,
+                "log_loss": 0.21902706121143278,
+                "predicted_mean": 0.8798825100750353,
+                "observed_play_fraction": 0.8777777777777778
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 90,
+                "mae": 7.541662364270977,
+                "rmse": 10.639056429606308,
+                "bias_prediction_minus_actual": -0.799531473114992
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "mae": 6.9682253971207135,
+                "rmse": 9.95204657609425,
+                "bias_prediction_minus_actual": -0.4580980922133768
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.5063291139240507,
+                  "width": 10.976373036397595,
+                  "interval_score": 25.035018189128856
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.5333333333333333,
+                  "width": 10.53845210070801,
+                  "interval_score": 23.468248520863177
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.7468354430379747,
+                  "width": 21.3967508765901,
+                  "interval_score": 36.851692248297205
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.7555555555555555,
+                  "width": 19.898811685368823,
+                  "interval_score": 33.58087145610836
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.8987341772151899,
+                  "width": 31.34208154624329,
+                  "interval_score": 60.74633423924768
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.9111111111111111,
+                  "width": 29.19259844051885,
+                  "interval_score": 56.581008757587064
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.1348337259791743,
+              0.09963229120288741
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "UNKNOWN": 167
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.2331666583739316,
+              0.1170714015401798
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 0,
+            "played": 0,
+            "explicit_nonplay": 0,
+            "UNKNOWN": 167,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 0
+            },
+            "frozen_candidate": {
+              "n": 0
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.2331666583739316,
+              0.1170714015401798
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "game_not_final_in_archive": 167
+          },
+          "ESPN_unknown_reasons": {
+            "no_unique_high_confidence_identity": 52,
+            "supplementary_official_game_day_evidence": 22,
+            "no_matching_evidence": 3
+          },
+          "source_overlap": {
+            "not_both_known": 167
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 0
+            },
+            "conditional_rmse": {
+              "n": 0
+            },
+            "unconditional_mae": {
+              "n": 0
+            },
+            "unconditional_rmse": {
+              "n": 0
+            },
+            "participation_brier": {
+              "n": 0
+            }
+          }
+        },
+        "near_primary_20261117:lead0": {
+          "strict_ESPN": {
+            "counts": {
+              "PLAYED": 79,
+              "EXPLICIT_DNP": 11,
+              "UNKNOWN": 77
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 79,
+                "mae": 7.936708922250362,
+                "rmse": 11.042369499088746,
+                "bias_prediction_minus_actual": -0.03291143948518777
+              },
+              "frozen_candidate": {
+                "n": 79,
+                "mae": 7.398990751683609,
+                "rmse": 10.289244117281774,
+                "bias_prediction_minus_actual": -0.5354463664306842
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 90,
+                "brier": 0.09880738540985179,
+                "log_loss": 0.33413085068053644,
+                "predicted_mean": 0.8352777706252204,
+                "observed_play_fraction": 0.8777777777777778
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "brier": 0.06740388637580015,
+                "log_loss": 0.21902706121143278,
+                "predicted_mean": 0.8798825100750353,
+                "observed_play_fraction": 0.8777777777777778
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 90,
+                "mae": 7.541662364270977,
+                "rmse": 10.639056429606308,
+                "bias_prediction_minus_actual": -0.799531473114992
+              },
+              "frozen_candidate": {
+                "n": 90,
+                "mae": 6.999541424040131,
+                "rmse": 9.941659901883725,
+                "bias_prediction_minus_actual": -0.44559908823476746
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.5063291139240507,
+                  "width": 10.976373036397595,
+                  "interval_score": 25.035018189128856
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.5333333333333333,
+                  "width": 10.53845210070801,
+                  "interval_score": 23.468248520863177
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.7468354430379747,
+                  "width": 21.3967508765901,
+                  "interval_score": 36.851692248297205
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.7555555555555555,
+                  "width": 19.898811685368823,
+                  "interval_score": 33.58087145610836
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 79,
+                  "coverage": 0.8987341772151899,
+                  "width": 31.34208154624329,
+                  "interval_score": 60.74633423924768
+                },
+                "unconditional": {
+                  "n": 90,
+                  "coverage": 0.9111111111111111,
+                  "width": 29.19259844051885,
+                  "interval_score": 56.581008757587064
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.1348337259791743,
+              0.09963229120288741
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_reconciled": {
+            "counts": {
+              "UNKNOWN": 167
+            },
+            "conditional": {
+              "baseline_last10": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "participation": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "unconditional": {
+              "baseline_history": {
+                "n": 0
+              },
+              "frozen_candidate": {
+                "n": 0
+              }
+            },
+            "intervals": {
+              "50": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "80": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              },
+              "95": {
+                "conditional": {
+                  "n": 0
+                },
+                "unconditional": {
+                  "n": 0
+                }
+              }
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.2331666583739316,
+              0.1170714015401798
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "participation_with_separate_FP_conflicts": {
+            "known": 0,
+            "played": 0,
+            "explicit_nonplay": 0,
+            "UNKNOWN": 167,
+            "FP_conflicts_do_not_erase_confirmed_participation": true,
+            "baseline_history": {
+              "n": 0
+            },
+            "frozen_candidate": {
+              "n": 0
+            },
+            "missing_label_paired_brier_gain_bounds": [
+              -0.2331666583739316,
+              0.1170714015401798
+            ],
+            "bounds_are_partial_identification_not_confidence_interval": true
+          },
+          "archive_unknown_reasons": {
+            "game_not_final_in_archive": 167
+          },
+          "ESPN_unknown_reasons": {
+            "no_unique_high_confidence_identity": 52,
+            "supplementary_official_game_day_evidence": 22,
+            "no_matching_evidence": 3
+          },
+          "source_overlap": {
+            "not_both_known": 167
+          },
+          "paired_uncertainty_vs_research_baseline": {
+            "conditional_mae": {
+              "n": 0
+            },
+            "conditional_rmse": {
+              "n": 0
+            },
+            "unconditional_mae": {
+              "n": 0
+            },
+            "unconditional_rmse": {
+              "n": 0
+            },
+            "participation_brier": {
+              "n": 0
+            }
+          }
+        }
+      },
+      "source_conflicts": [],
+      "changed_tipoffs": [],
+      "paired_mean_challenger_comparison": {
+        "unique_pairs": 167,
+        "same_p_play_and_intervals_verified": true,
+        "conditional": {
+          "n": 0,
+          "anchor": {
+            "n": 0
+          },
+          "day_ewma": {
+            "n": 0
+          }
+        },
+        "unconditional": {
+          "n": 0,
+          "anchor": {
+            "n": 0
+          },
+          "day_ewma": {
+            "n": 0
+          }
+        },
+        "paired_uncertainty": {
+          "conditional_mae": {
+            "n": 0
+          },
+          "conditional_rmse": {
+            "n": 0
+          },
+          "unconditional_mae": {
+            "n": 0
+          },
+          "unconditional_rmse": {
+            "n": 0
+          }
+        }
+      }
+    }
+  }
+}

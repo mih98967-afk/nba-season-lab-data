@@ -1,0 +1,130 @@
+{
+  "status": "FRESH_DAY_LEVEL_FEATURES_ONLY_NO_FIT_NO_SCORE",
+  "inputs": {
+    "historical_upstream_manifest_sha256": "968fe6f5150bd88ba280e611707707b8c7cba2fd352a268afd663a6ea0c6d5fb",
+    "current_manifest_sha256": "ba4ae086dc97a39e4476a8785428045743891c64da1a05abfaac39cd0a37af57",
+    "public_live_source_sha256": "cf913c09b759c9187c2f0c0b85dc176802295e67f6328730b2e99632eb280a61",
+    "public_live_updated_at_utc": "2026-11-17T13:28:44Z",
+    "derived_schedule_sha256": "65609789a4a873c5859d093772ca3393685b017095e811f4f2eb9702b37faba5",
+    "utc_schedule_games": 1200
+  },
+  "started_at_utc": "2026-11-17T19:37:06.859158+00:00",
+  "completed_at_utc": "2026-11-17T19:37:47.868295+00:00",
+  "availability_verified_by_capture_utc": "2026-11-17T19:35:23.563040+00:00",
+  "feature_history_date_rule": "strictly earlier NBA game dates than issue_date",
+  "literal_midnight_input_availability_not_claimed": true,
+  "asof_date_ET_feature_semantics": "2026-11-17",
+  "lead_days": [
+    0,
+    1,
+    3,
+    7,
+    14,
+    21,
+    28
+  ],
+  "full_feature_frame_sha256": "d4e9f66895cd1028fa580dd9b3da6b4f83d3d44e8adce782efc173acb989389d",
+  "full_rows": 26443,
+  "future_feature_frame_sha256": "c24a5d9d73007e1fbf0fd83a754f9199d36e466163ee32edf82066863d8a9503",
+  "future_rows": 1291,
+  "future_rows_by_lead": {
+    "0": 167,
+    "1": 397,
+    "3": 297,
+    "7": 98,
+    "14": 269,
+    "28": 63
+  },
+  "future_games": 39,
+  "future_players": 496,
+  "future_dates": [
+    "2026-11-17",
+    "2026-11-18",
+    "2026-11-20",
+    "2026-11-24",
+    "2026-12-01",
+    "2026-12-15"
+  ],
+  "future_labels_removed": true,
+  "full_frame_contains_reconstructed_past_outcomes": true,
+  "score_or_fit_or_calibration_performed": false,
+  "original_files_changed": false,
+  "source_qa": {
+    "source_qa": {
+      "2024": {
+        "played": 26393,
+        "explicit_no_play": 5983,
+        "UNKNOWN": 9,
+        "rows": 32385,
+        "games": 1230,
+        "players": 586,
+        "explicit_inactive_rows": 11010,
+        "inactive_games": 1230
+      },
+      "2025": {
+        "played": 26302,
+        "explicit_no_play": 6209,
+        "UNKNOWN": 4,
+        "rows": 32515,
+        "games": 1230,
+        "players": 577,
+        "explicit_inactive_rows": 10854,
+        "inactive_games": 1230
+      },
+      "2026": {
+        "played": 26648,
+        "explicit_no_play": 5528,
+        "UNKNOWN": 3,
+        "rows": 32179,
+        "games": 1230,
+        "players": 591,
+        "explicit_inactive_rows": 11059,
+        "inactive_games": 1227
+      },
+      "inactive_join": {
+        "new_explicit_inactive": 32923
+      },
+      "2027": {
+        "finished_games_before_asof": 205,
+        "schedule_rows": 1206,
+        "earliest_date": "2026-10-20",
+        "latest_finished_date": "2026-11-16",
+        "positive_minute_rows": 4618,
+        "explicit_no_play_rows": 2274,
+        "unknown_rows": 254,
+        "inactive_join": {
+          "unknown_resolved": 122,
+          "new_explicit_inactive": 1306
+        }
+      }
+    },
+    "injury_qa": {
+      "raw_rows": 54695,
+      "accepted_rows": 17699,
+      "team_games": 444
+    },
+    "forecast_qa": {
+      "lead_1_opportunities": 6327,
+      "lead_1_known": 5771,
+      "lead_1_UNKNOWN": 556,
+      "lead_3_opportunities": 5577,
+      "lead_3_known": 5180,
+      "lead_3_UNKNOWN": 397,
+      "lead_7_opportunities": 4386,
+      "lead_7_known": 4251,
+      "lead_14_opportunities": 2896,
+      "lead_14_known": 2602,
+      "lead_14_UNKNOWN": 294,
+      "lead_21_opportunities": 1085,
+      "lead_21_known": 1076,
+      "lead_21_UNKNOWN": 9,
+      "lead_0_opportunities": 6109,
+      "lead_0_known": 5782,
+      "lead_0_UNKNOWN": 327,
+      "lead_7_UNKNOWN": 135,
+      "lead_28_opportunities": 63,
+      "lead_28_UNKNOWN": 63
+    },
+    "history_qa": {}
+  }
+}

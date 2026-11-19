@@ -1,0 +1,22 @@
+{
+  "schema": "fixed_ridge_effect_reference_v1",
+  "source_model_sha256": "70d288d753184916f354e3916016c7c6b0907da32bfcbf92ddcdcb22fb536c25",
+  "historical_position_identity_digest": "6b13faf67a42df878d9c07c0f341edc3edd3347a585d1729dc9331548a1712aa",
+  "train_rows": 59141,
+  "train_max_date": "2025-12-31",
+  "date_clusters": 379,
+  "player_clusters": 713,
+  "feature_count": 82,
+  "normal_equation_parameter_max_abs_difference": 4.3826053897078054e-14,
+  "refit_performed": false,
+  "current_season_outcomes_used": false,
+  "method": "Ridge sandwich covariance conditional on selected model and historical design; separate date/player clusters. Daily contrasts use the larger one-way cluster standard error.",
+  "limits": "Approximate effect uncertainty, not prediction intervals or guaranteed 95% coverage. Does not include selection, future source errors or all model misspecification.",
+  "residual_anchor_rows": 71072,
+  "residual_anchor_last_date": "2026-04-12",
+  "files": {
+    "general_ridge_reference.pkl": "8f8ac609863eae75ad201dfd9b3cfa69f52902a32cc9e4b9997ece6b0550656b",
+    "general_reference_covariance.npz": "65e50945094773ef9b11ee16a87e0771a26182e306754ea222062f6fc5e2fc40",
+    "historical_residual_anchor.csv.gz": "35ac17d8d187b3c699005a9a9f1bbe08d7365d759946507a17a0fe23e0a409c5"
+  }
+}

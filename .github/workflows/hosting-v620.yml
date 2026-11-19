@@ -1,9 +1,12 @@
-name: NBA v6.20 Today / Transfers advice integrity
+name: NBA v6.21 model and calendar Hosting integrity
 on:
   pull_request:
     branches: [main]
     paths:
       - 'site/hosting_v620/**'
+      - 'scripts/build_hosting_v621.py'
+      - 'scripts/test_build_hosting_v621.py'
+      - 'scripts/test_hosting_v621_browser.py'
       - '.github/workflows/hosting-v620.yml'
 permissions:
   contents: read
@@ -21,54 +24,35 @@ jobs:
           cd site/hosting_v620
           for f in *.js; do node --check "$f"; done
           for f in test_*.cjs; do node "$f"; done
-      - name: Complete SHA-256 manifest and dependency order
+      - name: Verify every static source asset and dynamic dependency
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          import hashlib, json, re
-          root=Path('site/hosting_v620')
-          entries=json.loads((root/'SOURCE_MANIFEST_v620.json').read_text())['files']
-          assert len(entries)==44, f"Expected 44 release assets, got {len(entries)}"
-          paths={p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file()}
-          assert paths==set(entries)|{'SOURCE_MANIFEST_v620.json'}, (
-              sorted(paths-set(entries)), sorted(set(entries)-paths))
-          for rel,sha in entries.items():
-              actual=hashlib.sha256((root/rel).read_bytes()).hexdigest()
-              assert actual==sha, f"release source mismatch: {rel}"
-          html=(root/'index.html').read_text()
-          scripts=re.findall(r'<script[^>]+src="([^"]+)"',html)
-          bare=[s.split('?')[0] for s in scripts]
-          assert all((root/name).is_file() for name in bare), 'Missing linked script'
-          assert bare.index('advice_readiness.js')<bare.index('today_brief.js')<bare.index('app.js')
-          assert 'styles.css?v=6.20' in html
-          print('PASS 44 SHA-256 assets, dependency order and runtime references')
-          PY
-      - name: Assemble verified v6.20 Hosting ZIP (no deployment)
+          python scripts/build_hosting_v621.py --verify-source-only
+          python -m unittest discover -s scripts -p 'test_build_hosting_v621.py'
+      - name: Explain generated snapshot boundary
         run: |
-          python - <<'PY'
-          from pathlib import Path
-          from zipfile import ZipFile, ZIP_DEFLATED
-          import hashlib, json
-          root=Path('site/hosting_v620')
-          expected=json.loads((root/'SOURCE_MANIFEST_v620.json').read_text())['files']
-          bundle=Path('nba-season-lab-v6.20-hosting.zip')
-          with ZipFile(bundle,'w',compression=ZIP_DEFLATED,compresslevel=8) as archive:
-              for path in sorted(root.rglob('*')):
-                  if path.is_file():
-                      archive.write(path,path.relative_to(root).as_posix())
-          with ZipFile(bundle) as archive:
-              included=set(archive.namelist())
-              assert included==set(expected)|{'SOURCE_MANIFEST_v620.json'}
-              for name,sha in expected.items():
-                  assert hashlib.sha256(archive.read(name)).hexdigest()==sha, name
-              assert archive.read('firebase.json')
-              assert archive.read('index.html')
-          print('PASS v6.20 verified offline Hosting bundle',bundle,bundle.stat().st_size)
-          PY
-      - name: Upload verified Hosting ZIP (no Firebase deploy)
-        uses: actions/upload-artifact@v4
+          echo 'Current forecast snapshots are generated from immutable weights by the main inference workflow.'
+          echo 'That workflow assembles the full verified v6.21 Hosting ZIP after checking snapshot freshness.'
+          echo 'Neither workflow deploys Firebase or writes any personal state.'
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
         with:
-          name: nba-season-lab-v6.20-hosting
-          path: nba-season-lab-v6.20-hosting.zip
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned browser test runtime
+        run: |
+          python -m pip install --only-binary=:all: 'playwright==1.62.0'
+          python -m playwright install --with-deps chromium
+      - name: Check desktop and mobile with explicit synthetic public fixtures
+        run: python scripts/test_hosting_v621_browser.py --site-dir site/hosting_v620 --data-root data --output browser-qa-fixture --mode fixture
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-v6.21-browser-fixture
+          path: browser-qa-fixture/
+          retention-days: 3
           if-no-files-found: error
-          retention-days: 14

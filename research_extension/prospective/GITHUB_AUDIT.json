@@ -1,0 +1,42 @@
+{
+  "source_commit": "11d89bb61b56460d8f1d7aaa4214c9a12b77503a",
+  "prs": [
+    {
+      "number": 177,
+      "state": "open",
+      "draft": true,
+      "head": "4ee0cd4fc30264f4500a174565b14fe1ddfc0f54",
+      "run": 43886154433,
+      "result": "success",
+      "files": [
+        ".github/workflows/context-distribution-research.yml",
+        "research/context_distribution_v1/collect_gamebooks.py",
+        "research/context_distribution_v1/collect_injury_history.py",
+        "research/context_distribution_v1/fetch_public.py",
+        "research/context_distribution_v1/probe_gamebooks.py"
+      ]
+    },
+    {
+      "number": 178,
+      "state": "open",
+      "draft": true,
+      "head": "a7a19a4cfa9ae93f3abd79d358b9b1815905213d",
+      "run": 43933451846,
+      "result": "success",
+      "files": [
+        ".github/workflows/match-context-distribution.yml",
+        "research/match_context/RESULTS_20261116.md",
+        "research/match_context/collect_sources.py",
+        "research/match_context/intake_current.py",
+        "research/match_context/prospective/20261116_COMMITMENT.json"
+      ]
+    }
+  ],
+  "failed_runs": [
+    44141639128,
+    44148423521
+  ],
+  "failure": "6 of 18 tests raise KeyError nba_game_id; 28 of 84 upstream records legitimately have no exact NBA game ID because game_fetch_cap_reached",
+  "local_fix_only": true,
+  "branches_or_deployment_changed": false
+}

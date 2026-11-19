@@ -1,0 +1,74 @@
+{
+  "status": "INTERNAL_COHERENCE_PASS",
+  "checked_at_utc": "2026-11-17T19:36:20.088394+00:00",
+  "errors": [],
+  "coherent_current_snapshot_verified": true,
+  "upstream_atomic_version_proven": false,
+  "source_freshness_separate_from_fetch_time": true,
+  "schedule": {
+    "regular_season_games": 1206,
+    "dates": [
+      "2026-10-20",
+      "2027-04-11"
+    ],
+    "completed_games_with_score": 205,
+    "latest_completed_date": "2026-11-16",
+    "coherent_completed_games": 205,
+    "latest_coherent_completed_date": "2026-11-16",
+    "schedule_time_precision": "NBA game date only; no UTC tipoff in this source"
+  },
+  "boxscore": {
+    "rows": 5840,
+    "games": 205,
+    "players": 530,
+    "positive_minute_rows": 4618,
+    "explicit_DNP_comment_rows": 846,
+    "UNKNOWN_zero_minute_rows": 376,
+    "missing_or_invalid_played_stat_rows": 0
+  },
+  "inactive": {
+    "explicit_rows": 1428,
+    "games": 169,
+    "positive_minutes_conflicts": 0
+  },
+  "injury": {
+    "raw_version_rows": 54695,
+    "mapped_game_rows": 54695,
+    "unmapped_or_blank_game_rows": 0,
+    "weak_or_missing_player_identity_rows": 6101,
+    "weak_named_player_identity_rows": 572,
+    "not_yet_submitted_placeholder_rows": 5529,
+    "latest_report_datetime_source": "2026-11-17 00:00:00",
+    "earliest_report_datetime_source": "2026-10-19 00:00:00",
+    "timezone_note": "source report_datetime is naive; do not mistake for UTC",
+    "game_dates": [
+      "2026-10-20",
+      "2026-11-18"
+    ]
+  },
+  "hashes": {
+    "player_boxscores_2027.csv": {
+      "sha256": "443b4bd14a7220e33f7a8c21ec8fb72d4a96af551ce6822e60c17d0cb24aacb7",
+      "bytes": 1032661,
+      "same_as_preserved_20261116": false
+    },
+    "nba_schedule_2027.csv.gz": {
+      "sha256": "8ddf6504567b63f6dfa4f9754b9ec8b2a6f8f4b9d892231a5df75d49402ef24f",
+      "bytes": 18026,
+      "same_as_preserved_20261116": false
+    },
+    "game_rosters_2027.csv": {
+      "sha256": "fe032dbd8c30a3717fc3cf67506987bda6c57066cb400572fd672231dc4a483d",
+      "bytes": 110424,
+      "same_as_preserved_20261116": false
+    },
+    "injury_report_2027.parquet": {
+      "sha256": "c4706fdb736ef4a487ad853a43f3b80f4f682b02200dd29ba173c1c6b7cebeaf",
+      "bytes": 141165,
+      "same_as_preserved_20261116": false
+    }
+  },
+  "feature_frame_built": false,
+  "fit_or_selection_performed": false,
+  "official_Sports_ru_credits_proven": false
+}

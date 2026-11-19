@@ -1,0 +1,25 @@
+{
+  "authoritative_runtime_comparison": "baseline_results_v2/DEPLOYED_RUNTIME_COMPARISON.json",
+  "authoritative_runtime_comparison_sha256": "e6a3ee5c359d55d0ffe05e2eb69a7fdb0589f75ffa71c6304cfa53ac34dda6fa",
+  "superseded_but_preserved": "baseline_results/DEPLOYED_RUNTIME_COMPARISON.json",
+  "superseded_sha256": "a222b00182d82394c449ee6b4bcb73648bafd816aeda8e847c61b5b32be57a6d",
+  "correction": "V1 used static seed team before calculating exact functions. V2 also invokes unchanged PR175 updatePlayerTeams() on preserved preissue LIVE; it adds one completed common near player-game. No frozen prediction or outcome was changed.",
+  "v2_base_is_reconstructed_public_default_not_owner_private_runtime": true,
+  "public_prediction_functions_PR175_PR176_identical": true,
+  "outcome_evidence_notes": {
+    "results": "Unmodified newly retrieved SportsDataverse archives alone were still stale at205final games. Keep for capture-lag evidence, not final full-cohort scoring.",
+    "results_official_supplement": "Original NBA-derived archives plus exact direct official CDN boxscore additive rows for five17Nov games. Source path derived_current/source; raw download source/current unchanged.",
+    "results_verified_union": "Sensitivity accepting every additional exact ESPN known label where official/archive evidence unresolved; never replaces conflicts. Eight unique additional ESPN DNP labels."
+  },
+  "sources": {
+    "GITHUB_INPUT_MANIFEST.json": "9c5e7ac360c3770d2716494981b5d177f2629496d34dcf90db461d8d8a250c59",
+    "CAPTURE_SUMMARY.json": "2253299b65ccc82d3c3e11b1a166dffbacc827ac41425642ad6f75a9aa39bf05",
+    "direct_nba/MANIFEST.json": "6ccb1738aa8309bccda71c0be11fe561b1075b3cc9e965d8611baaf8b55e983d",
+    "derived_current/DERIVATION.json": "7e98db6171f0617cca5f4faf492bf7766a6fe06e85933345db89466e5e875731",
+    "derived_current/SOURCE_QA.json": "4813fc66782f91accb34325504b55d359e564c9316b0ac403291109d49b678eb",
+    "baseline_inputs/INPUT_MANIFEST.json": "4993a81b1810a25f877f43459e363724f9e2dd25a3f7687c376dd769e5fe944d"
+  },
+  "old_forecast_sha256": "5aa81fa5db8f8a4e240cce3ec2477fad17626822c5eea2c02f39dab1b932a0cb",
+  "paired_forecast_sha256": "9b3cd732075d06c99ff0c3a30a2bd861ff606b0787c6de98d15302f93fa61ebb",
+  "no_prediction_training_or_current_outcome_tuning": true
+}

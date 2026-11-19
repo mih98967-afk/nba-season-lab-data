@@ -1,0 +1,80 @@
+{
+  "schema": "nba_forecast_default_release_gate_v1",
+  "reviewed_at_utc": "2026-11-18T11:45:57.203200+00:00",
+  "site_default_gate_passed": true,
+  "exact_deployed_default_replay": true,
+  "accepted_by_root_release_review": true,
+  "selection": "original_near_latest_and_long_latest",
+  "day_ewma_selected": false,
+  "intraday_probability_selected": false,
+  "optimizer_policy_validated": false,
+  "economic_gain_proven": false,
+  "baseline_replay_report": "research_extension/production_20261118/DEPLOYED_RUNTIME_BASELINE_V2.json",
+  "baseline_replay_sha256": "e6a3ee5c359d55d0ffe05e2eb69a7fdb0589f75ffa71c6304cfa53ac34dda6fa",
+  "runtime_baseline_was_originally_frozen": false,
+  "private_user_settings_replayed": false,
+  "Sports_ru_credited_FP_verified": false,
+  "common_cohort": {
+    "completed_model_cases": 428,
+    "runtime_common_cases": 303,
+    "conditional_known": 211,
+    "unconditional_known": 288,
+    "participation_known": 294
+  },
+  "metrics": {
+    "conditional": {
+      "runtime": {
+        "n": 211,
+        "mae": 7.60041475773897,
+        "rmse": 9.832000976227725,
+        "bias_prediction_minus_actual": 0.9402031179613238
+      },
+      "frozen_candidate": {
+        "n": 211,
+        "mae": 7.527556308528146,
+        "rmse": 9.681886583867229,
+        "bias_prediction_minus_actual": -0.05924820447520571
+      }
+    },
+    "unconditional": {
+      "runtime": {
+        "n": 288,
+        "mae": 6.725190330690764,
+        "rmse": 9.174352664653265,
+        "bias_prediction_minus_actual": 0.8898907685353161
+      },
+      "frozen_candidate": {
+        "n": 288,
+        "mae": 6.080734962738338,
+        "rmse": 8.772905978016,
+        "bias_prediction_minus_actual": -0.24090719135379024
+      }
+    },
+    "participation": {
+      "runtime": {
+        "n": 294,
+        "brier": 0.10663168943839738,
+        "log_loss": 0.35659678979010584,
+        "predicted_mean": 0.7616067702120667,
+        "observed_play_fraction": 0.7380952380952381
+      },
+      "frozen_candidate": {
+        "n": 294,
+        "brier": 0.06155360004058552,
+        "log_loss": 0.2108449491198356,
+        "predicted_mean": 0.7136766030395625,
+        "observed_play_fraction": 0.7380952380952381
+      }
+    }
+  },
+  "limits": [
+    "Two NBA dates and13 games only; not stable prospective superiority or economic proof.",
+    "Current outputs of original frozen model have not been fitted/tuned on these outcomes.",
+    "Conditional gain is small and uncertain; public baseline reconstructed after outcomes from preserved pregame inputs.",
+    "Historical multiseason evidence and inference/identity/source gates support a practical release decision, not global optimality.",
+    "Intermediate nonanchor calibration eligibility separately flagged; no calibrated window totals."
+  ],
+  "exact_runtime_state_includes_updatePlayerTeams": true,
+  "identity_exclusion_sensitivity_sha256": "ddb6d1a5bddf498c6920db8ea711d3b838fa602324c74eae21e437c9d22e447d",
+  "forecast_inputs_for_advisory_comparisons": true
+}

@@ -1,0 +1,97 @@
+{
+  "status": "FIVE_POSITION_HISTORICAL_VALIDATION_BLOCKED",
+  "adopt_on_site": false,
+  "historical": {
+    "2024": {
+      "raw_file_rows": 34843,
+      "raw_position_labels": {
+        "F": 5276,
+        "C": 2638,
+        "G": 5276,
+        "": 21653
+      },
+      "regular_season_rows": 32385,
+      "regular_season_position_labels": {
+        "F": 4920,
+        "C": 2460,
+        "G": 4920,
+        "": 20085
+      },
+      "players": 586,
+      "exact_pg_sg_sf_pf_rows": 0,
+      "historical_verified_fantasy_position_rows": 0
+    },
+    "2025": {
+      "raw_file_rows": 35114,
+      "raw_position_labels": {
+        "F": 5284,
+        "C": 2642,
+        "G": 5284,
+        "": 21904
+      },
+      "regular_season_rows": 32515,
+      "regular_season_position_labels": {
+        "F": 4920,
+        "C": 2460,
+        "G": 4920,
+        "": 20215
+      },
+      "players": 577,
+      "exact_pg_sg_sf_pf_rows": 0,
+      "historical_verified_fantasy_position_rows": 0
+    },
+    "2026": {
+      "raw_file_rows": 34786,
+      "raw_position_labels": {
+        "F": 5288,
+        "C": 2644,
+        "G": 5288,
+        "": 21566
+      },
+      "regular_season_rows": 32179,
+      "regular_season_position_labels": {
+        "F": 4920,
+        "C": 2460,
+        "G": 4920,
+        "": 19879
+      },
+      "players": 591,
+      "exact_pg_sg_sf_pf_rows": 0,
+      "historical_verified_fantasy_position_rows": 0
+    }
+  },
+  "catalog_players": 484,
+  "catalog_position_counts": {
+    "C": 88,
+    "PG": 89,
+    "PF": 95,
+    "SF": 102,
+    "SG": 110
+  },
+  "identity_resolved": 392,
+  "identity_unresolved": 92,
+  "resolved_position_counts": {
+    "C": 71,
+    "PG": 73,
+    "PF": 78,
+    "SF": 77,
+    "SG": 93
+  },
+  "source_hashes": {
+    "player_boxscores_2024.csv": "7a2a57f37309a067d77fd3acd72b70aeb71366006b41e8c9a3544c4f7ea03e27",
+    "player_boxscores_2025.csv": "71645d3569e0c0a94e51d136c6454f20d59d70f4b518c62c6bbbdb9e905cb7c0",
+    "player_boxscores_2026.csv": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7",
+    "player_boxscores_2027.csv": "3dfeb007ca6cfe5dd8e1b38f6b221757e06f21790cdb89c2e8ff37b5fcbbe5cb"
+  },
+  "catalog_sha256": "69071d5b0940d7e5200416d7415de4fa8b2dde63460ca2bf05d6e2f2d281f95f",
+  "identity_bridge_sha256": "539f85dacbc4e109bf7085c373483d36fbd256a044b0037f7c3422e0ea1a720e",
+  "observed_at": "2026-11-17T19:31:43.947358Z",
+  "limits": [
+    "NBA historical G/F/C are starter labels, not five Sports.ru positions",
+    "Historical C starter labels do not certify fantasy C",
+    "Current season catalog cannot validate past seasons",
+    "No current outcomes are used in model selection",
+    "Exact normalized-name join is reviewable but not independent official identity certification",
+    "Mapping cannot be used before actual observation time"
+  ]
+}

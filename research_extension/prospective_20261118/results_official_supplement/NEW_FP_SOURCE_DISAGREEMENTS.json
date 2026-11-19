@@ -1,0 +1,45 @@
+{
+  "schema": "nba-exact-source-conflicts-20261118-v1",
+  "records": [
+    {
+      "nba_player_id": "203084",
+      "nba_game_id": "0022600255",
+      "calendar_game_id": "espn_401910004",
+      "player_name": "Harrison Barnes",
+      "ESPN_fp": 3.0,
+      "NBA_fp": 2.0,
+      "ESPN_minutes": 10.0,
+      "NBA_minutes_original": "PT09M36.00S",
+      "stat_disagreements": {},
+      "NBA_source_sha256": "e19951afbb9837ba5d117b29c51629b1f2daee9e22783b195efb1f45329d23f4",
+      "ESPN_source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910004",
+      "official_NBA_source_url": "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022600255.json",
+      "FP_scoring_quarantined": true,
+      "agreed_participation_retained": true,
+      "Sports_ru_credited_points_unknown": true
+    },
+    {
+      "nba_player_id": "1629029",
+      "nba_game_id": "0022600256",
+      "calendar_game_id": "espn_401910005",
+      "player_name": "Luka Dončić",
+      "ESPN_fp": 17.0,
+      "NBA_fp": 18.0,
+      "ESPN_minutes": 42.0,
+      "NBA_minutes_original": "PT42M20.00S",
+      "stat_disagreements": {
+        "reb": {
+          "ESPN": 6,
+          "NBA": 7
+        }
+      },
+      "NBA_source_sha256": "00eb39997f42d4a0637d639c1ec165a0df2783f97da516416870ff130caf1ceb",
+      "ESPN_source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910005",
+      "official_NBA_source_url": "https://cdn.nba.com/static/json/liveData/boxscore/boxscore_0022600256.json",
+      "FP_scoring_quarantined": true,
+      "agreed_participation_retained": true,
+      "Sports_ru_credited_points_unknown": true
+    }
+  ],
+  "no_parameter_tuning_or_arbitrary_FP_offsets": true
+}
