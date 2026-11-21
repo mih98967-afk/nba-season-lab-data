@@ -3,27 +3,27 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-11-21T01:32:56.078824Z",
+  "updated_at_utc": "2026-11-21T12:41:59.477038Z",
   "scope": "same_first_issued_prelock_selected_prospective_minutes_if_play_only",
   "frozen_issue_sha256": "2db06c9dff1202a70d09d899685364cb392f6c19e381659ba07bd3c51a03d78c",
   "frozen_model_sha256": "96fe3f30009c36de525ec089d03cad6b8bd14fb07f46137ae991031568d5e6f0",
-  "input_evaluation_last_updated_at_utc": "2026-11-21T01:32:33.503627Z",
+  "input_evaluation_last_updated_at_utc": "2026-11-21T12:41:32.046738Z",
   "summary": {
     "frozen_issues_total": 2454,
-    "finished_checked": 2196,
-    "played_scored_conditional": 1764,
-    "explicit_DNP_not_scored_as_zero": 162,
-    "UNKNOWN_not_imputed": 270,
-    "independent_ET_date_clusters": 20,
-    "distinct_NBA_games": 137,
-    "observed_pairwise_direct_minus_decomposed_FP_MAE_gain": -0.0007,
-    "relative_gain_pct_descriptive_ONLY": -0.01,
+    "finished_checked": 2346,
+    "played_scored_conditional": 1871,
+    "explicit_DNP_not_scored_as_zero": 180,
+    "UNKNOWN_not_imputed": 295,
+    "independent_ET_date_clusters": 21,
+    "distinct_NBA_games": 146,
+    "observed_pairwise_direct_minus_decomposed_FP_MAE_gain": -0.0019,
+    "relative_gain_pct_descriptive_ONLY": -0.03,
     "positive_gain_does_not_prove_future_generalization": true
   },
   "frozen_bands_descriptive_played_only": {
-    "minutes_coverage": 0.855442,
-    "minutes_mean_width": 22.8708,
-    "FP_coverage": 0.911565,
+    "minutes_coverage": 0.855692,
+    "minutes_mean_width": 22.8744,
+    "FP_coverage": 0.912346,
     "FP_mean_width": 29.7006,
     "not_validated_prospective_individual_intervals": true
   },
@@ -227,6 +227,16 @@
       "minutes_MAE": 4.4636,
       "minutes_frozen_band_empirical_coverage": 0.94,
       "FP_frozen_band_empirical_coverage": 0.9
+    },
+    "2026-11-20": {
+      "played": 107,
+      "distinct_NBA_games": 9,
+      "paired_direct_minus_decomposed_FP_MAE": -0.021,
+      "decomposed_FP_MAE": 6.8449,
+      "direct_FP_MAE": 6.8238,
+      "minutes_MAE": 6.2397,
+      "minutes_frozen_band_empirical_coverage": 0.859813,
+      "FP_frozen_band_empirical_coverage": 0.925234
     }
   },
   "fixed_research_thresholds": {
@@ -239,8 +249,8 @@
     "first_exploratory_interval_eligible": true
   },
   "ET_date_cluster_paired_MAE_gain_95pct_interval_if_eligible": {
-    "lower": -0.0328,
-    "upper": 0.0423,
+    "lower": -0.0327,
+    "upper": 0.037,
     "resamples": 2000,
     "seed": 20261028,
     "resampling_unit": "NBA_ET_date_with_all_verified_played_player_games",
