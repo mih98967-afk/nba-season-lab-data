@@ -3,18 +3,18 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-11-20T16:59:03.343797Z",
+  "updated_at_utc": "2026-11-21T01:32:33.503627Z",
   "target": "minutes_and_reconstructed_Sportsru_FP_given_verified_positive_minutes",
   "population": "frozen_prelock_same_team_minutes_issues_only_NOT_full_fantasy_roster",
-  "frozen_minutes_issue_sha256": "54cd4cd00e0fdca87f18059af4d9a9bc776b238bb619fe1cb999c474cad8af57",
+  "frozen_minutes_issue_sha256": "2db06c9dff1202a70d09d899685364cb392f6c19e381659ba07bd3c51a03d78c",
   "model_frozen_hash": "96fe3f30009c36de525ec089d03cad6b8bd14fb07f46137ae991031568d5e6f0",
   "first_issued_source_artifact": "data/conditional_minutes_fp_research.json",
   "cohort_sources": {
-    "minutes_issued_updated": "2026-11-20T16:59:02Z",
-    "p_play_shadow_updated": "2026-11-20T16:58:58Z",
-    "participation_cohort_updated": "2026-11-20T16:58:55Z",
-    "explicit_DNP_updated": "2026-11-20T16:58:54Z",
-    "NBA_live_updated": "2026-11-20T16:58:45Z"
+    "minutes_issued_updated": "2026-11-21T01:32:32Z",
+    "p_play_shadow_updated": "2026-11-21T01:32:28Z",
+    "participation_cohort_updated": "2026-11-21T01:32:25Z",
+    "explicit_DNP_updated": "2026-11-21T01:32:24Z",
+    "NBA_live_updated": "2026-11-21T01:32:10Z"
   },
   "summary": {
     "finished_checked": 2196,
@@ -22,8 +22,8 @@
     "explicit_DNP_not_scored": 162,
     "UNKNOWN_not_imputed": 270,
     "unknown_fraction": 0.122951,
-    "issued_total": 2373,
-    "awaiting_or_unchecked": 177,
+    "issued_total": 2454,
+    "awaiting_or_unchecked": 258,
     "played_distinct_games": 137,
     "played_distinct_ET_dates": 20,
     "finished_distinct_ET_dates": 20
@@ -36,19 +36,19 @@
       "prediction_minus_actual_bias": 1.0241
     },
     "predicted_FP_per_minute": {
-      "MAE": 0.3176,
+      "MAE": 0.3175,
       "RMSE": 0.4689,
       "prediction_minus_actual_bias": 0.061
     },
     "decomposed_FP": {
-      "MAE": 7.1196,
-      "RMSE": 8.9225,
-      "prediction_minus_actual_bias": 1.5256
+      "MAE": 7.1179,
+      "RMSE": 8.9217,
+      "prediction_minus_actual_bias": 1.5262
     },
     "direct_FP": {
-      "MAE": 7.1189,
-      "RMSE": 8.9207,
-      "prediction_minus_actual_bias": 1.6433
+      "MAE": 7.1172,
+      "RMSE": 8.9198,
+      "prediction_minus_actual_bias": 1.6438
     },
     "direct_minus_decomposed_FP_MAE": -0.0007,
     "frozen_historical_error_bands": {
@@ -131,19 +131,19 @@
           "prediction_minus_actual_bias": 0.4368
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3237,
+          "MAE": 0.3236,
           "RMSE": 0.4681,
           "prediction_minus_actual_bias": 0.1016
         },
         "decomposed_FP": {
-          "MAE": 6.9702,
-          "RMSE": 8.5707,
-          "prediction_minus_actual_bias": 1.6613
+          "MAE": 6.9679,
+          "RMSE": 8.5691,
+          "prediction_minus_actual_bias": 1.6635
         },
         "direct_FP": {
-          "MAE": 6.9703,
-          "RMSE": 8.5831,
-          "prediction_minus_actual_bias": 1.7569
+          "MAE": 6.9681,
+          "RMSE": 8.5813,
+          "prediction_minus_actual_bias": 1.7591
         },
         "direct_minus_decomposed_FP_MAE": 0.0001,
         "frozen_historical_error_bands": {
@@ -179,18 +179,18 @@
           "prediction_minus_actual_bias": 1.0161
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3341,
+          "MAE": 0.3338,
           "RMSE": 0.5706,
           "prediction_minus_actual_bias": 0.0052
         },
         "decomposed_FP": {
-          "MAE": 6.8187,
-          "RMSE": 8.7162,
+          "MAE": 6.8133,
+          "RMSE": 8.7143,
           "prediction_minus_actual_bias": 0.9093
         },
         "direct_FP": {
-          "MAE": 6.7827,
-          "RMSE": 8.6409,
+          "MAE": 6.7773,
+          "RMSE": 8.6388,
           "prediction_minus_actual_bias": 0.9319
         },
         "direct_minus_decomposed_FP_MAE": -0.036,
@@ -351,19 +351,19 @@
         "prediction_minus_actual_bias": 1.3082
       },
       "predicted_FP_per_minute": {
-        "MAE": 0.3115,
+        "MAE": 0.3114,
         "RMSE": 0.4454,
-        "prediction_minus_actual_bias": 0.0639
+        "prediction_minus_actual_bias": 0.064
       },
       "decomposed_FP": {
-        "MAE": 7.0133,
-        "RMSE": 8.7809,
-        "prediction_minus_actual_bias": 1.5097
+        "MAE": 7.0105,
+        "RMSE": 8.7796,
+        "prediction_minus_actual_bias": 1.5106
       },
       "direct_FP": {
-        "MAE": 6.9982,
-        "RMSE": 8.7603,
-        "prediction_minus_actual_bias": 1.6585
+        "MAE": 6.9955,
+        "RMSE": 8.7589,
+        "prediction_minus_actual_bias": 1.6594
       },
       "direct_minus_decomposed_FP_MAE": -0.0151,
       "frozen_historical_error_bands": {
@@ -1243,19 +1243,19 @@
           "prediction_minus_actual_bias": 1.7558
         },
         "predicted_FP_per_minute": {
-          "MAE": 0.3481,
-          "RMSE": 0.5653,
-          "prediction_minus_actual_bias": 0.0571
+          "MAE": 0.3473,
+          "RMSE": 0.5652,
+          "prediction_minus_actual_bias": 0.0574
         },
         "decomposed_FP": {
-          "MAE": 7.077,
-          "RMSE": 8.9413,
-          "prediction_minus_actual_bias": 1.3626
+          "MAE": 7.0575,
+          "RMSE": 8.9325,
+          "prediction_minus_actual_bias": 1.3691
         },
         "direct_FP": {
-          "MAE": 7.0218,
-          "RMSE": 8.8842,
-          "prediction_minus_actual_bias": 1.4795
+          "MAE": 7.0023,
+          "RMSE": 8.8741,
+          "prediction_minus_actual_bias": 1.486
         },
         "direct_minus_decomposed_FP_MAE": -0.0553,
         "frozen_historical_error_bands": {
@@ -49140,8 +49140,8 @@
       "postgame_first_seen_at_utc": "2026-11-19T09:56:42Z",
       "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910009",
       "actual_minutes": 26.0,
-      "actual_fp_reconstructed": 11.0,
-      "actual_rate": 0.42307692,
+      "actual_fp_reconstructed": 12.0,
+      "actual_rate": 0.46153846,
       "predicted_minutes": 27.8294,
       "predicted_rate": 0.547721,
       "predicted_decomposed_fp": 15.24274,
@@ -49290,8 +49290,8 @@
       "postgame_first_seen_at_utc": "2026-11-19T09:56:42Z",
       "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910009",
       "actual_minutes": 18.0,
-      "actual_fp_reconstructed": 12.0,
-      "actual_rate": 0.66666667,
+      "actual_fp_reconstructed": 11.0,
+      "actual_rate": 0.61111111,
       "predicted_minutes": 15.80335,
       "predicted_rate": 0.577383,
       "predicted_decomposed_fp": 9.12458,
@@ -50430,8 +50430,8 @@
       "postgame_first_seen_at_utc": "2026-11-19T09:56:42Z",
       "source_url": "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event=401910012",
       "actual_minutes": 38.0,
-      "actual_fp_reconstructed": 19.0,
-      "actual_rate": 0.5,
+      "actual_fp_reconstructed": 18.0,
+      "actual_rate": 0.47368421,
       "predicted_minutes": 27.3854,
       "predicted_rate": 0.454574,
       "predicted_decomposed_fp": 12.44869,
@@ -60434,12 +60434,12 @@
       1.4524
     ],
     "mean_predicted_minus_actual_FP_95pct_exploratory": [
-      1.2939,
-      1.9776
+      1.2952,
+      1.9782
     ],
     "direct_FP_MAE_95pct_exploratory": [
-      6.8837,
-      7.3119
+      6.8817,
+      7.3108
     ],
     "direct_minus_decomposed_FP_MAE_95pct_exploratory": [
       -0.0338,
