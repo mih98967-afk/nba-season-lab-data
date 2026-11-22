@@ -660,3 +660,30 @@ button.primary:not(:disabled):active,.button:not(:disabled):active{transform:tra
  .planner-statebar>span{flex-basis:auto}
  .planner-statebar .planner-quota{flex-basis:100%}
 }
+
+
+/* v6.25: independent three-week schedule filters in the existing warm UI. */
+.market-week-controls{display:grid;grid-template-columns:auto repeat(3,minmax(116px,1fr));align-items:end;gap:10px;
+ background:#f7faf8;border:1px solid #e2ebe6;border-radius:9px;padding:11px 12px;margin:3px 0 12px}
+.market-week-controls label{min-width:0;font-size:11px;font-weight:650;color:#536b63}
+.market-week-controls label select{width:100%;margin-top:5px;max-width:100%;font-weight:500}
+.market-week-caption{font-size:12px;color:#31574a;font-weight:740;align-self:center}
+.market-week-counts{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.market-week-counts span{display:inline-flex;gap:4px;font-size:10px;padding:2px 5px;
+ border:1px solid #e0eae4;border-radius:5px;background:#f5f9f6;color:#536e62}
+.market-week-counts b{font-size:10px;color:#245c48;font-variant-numeric:tabular-nums}
+.market-main-controls input[type=date],.market-main-controls input[type=number]{max-width:100%;min-width:0}
+@media(max-width:690px){
+ .market-week-controls{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:9px 8px}
+ .market-week-caption{grid-column:1/-1}
+ .market-week-controls label{font-size:10px}
+ .market-week-controls select{font-size:11px;padding:7px 3px}
+ .market-week-counts{gap:3px}
+ .market-week-counts span{font-size:9px;padding:1px 4px}
+ .market-item .market-stat:nth-child(3){display:flex}
+ .market-item{grid-template-columns:minmax(99px,1fr) 65px 34px;gap:4px}
+ .market-item .market-stat:nth-child(2){display:none}
+ .market-item .market-stat:nth-child(4){grid-column:2;grid-row:1}
+ .market-item .market-stat:nth-child(3){display:none}
+ .market-compare{grid-column:3;grid-row:1}
+}
