@@ -25,6 +25,7 @@ from collect_sources import collect
 HELPER=ROOT/'research_extension/prospective_20261118'
 sys.path.insert(0,str(HELPER))
 from derive_current_supplement import normalize,official_schedule,fixture_match,read_csv,write_csv
+from supplement_reconciliation import reconcile_official_inactive
 
 
 def fetch(url,path,limit=80_000_000):
@@ -98,12 +99,21 @@ def supplemental_source(raw_current,out,snapshot,asof,fetcher=fetch):
             old=sc[scidx[gid]]
             for key in ('game_date','home_team_id','away_team_id','home_team_abbreviation','away_team_abbreviation'):
                 if old[key]!=sr[key]:raise ValueError('SUPPLEMENT_ARCHIVE_IDENTITY_CONFLICT')
-            if any(r['game_id']==gid for r in box+rosters):raise ValueError('SUPPLEMENT_DUPLICATES_ARCHIVE_ROWS')
-            newbox.extend(br);newrosters.extend(ir);sc[scidx[gid]]=sr
-            added.append({'nba_game_id':gid,'calendar_game_id':g['id'],'game_utc':g['utc'],'box_rows':len(br),'explicit_inactive_rows':len(ir)})
+            # NBA archive feeds advance independently. The inactive roster can
+            # already be complete while the game score and player boxscore lag.
+            # Verify exact identities before keeping archived inactive entries;
+            # never duplicate them, and never replace archived boxscore rows.
+            new_inactive,reconciliation=reconcile_official_inactive(gid,box,rosters,br,ir)
+            newbox.extend(br);newrosters.extend(new_inactive);sc[scidx[gid]]=sr
+            added.append({'nba_game_id':gid,'calendar_game_id':g['id'],'game_utc':g['utc'],
+                          'box_rows':len(br),'explicit_inactive_rows':len(new_inactive),
+                          'official_inactive_rows':len(ir),'inactive_reconciliation':reconciliation})
     if added:
         write_csv(current/'player_boxscores_2027.csv',boxfields,box+newbox)
-        write_csv(current/'game_rosters_2027.csv',rosterfields,rosters+newrosters)
+        # Preserve archive bytes and source clock when all official inactive
+        # player-games were already present and verified in the raw archive.
+        if newrosters:
+            write_csv(current/'game_rosters_2027.csv',rosterfields,rosters+newrosters)
         write_csv(current/'nba_schedule_2027.csv.gz',scfields,sc)
     raw_manifest=json.loads((raw_current/'manifest.json').read_text())
     availability=iso(max(utc(r['fetched_at_utc']) for r in raw_manifest+sources))
