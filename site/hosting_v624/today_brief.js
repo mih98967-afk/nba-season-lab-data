@@ -17,6 +17,29 @@
     multi_slot: 'По модели найден план из нескольких замен',
     same_slot_chain: 'По модели найдена цепочка замен'
   };
+  // Read-only interpretation of a *verified* bounded scenario, not an
+  // independent outcome estimate or an independently proven market price.
+  function modelReasons(route, days) {
+    if (!route || !['keep','now','later','multi_slot','same_slot_chain'].includes(route.kind) ||
+        !Array.isArray(route.moves) || !Number.isInteger(days) || ![7,14,21,28].includes(days)) return [];
+    const signed = value => (value > 0 ? '+' : '') + (Math.round(value * 10) / 10).toFixed(1);
+    const count = route.moves.length;
+    if (route.kind === 'keep') {
+      if (count !== 0 || !finite(route.gain) || !finite(route.net) ||
+          Math.abs(route.gain) > 1e-6 || Math.abs(route.net) > 1e-6) return [];
+      return ['KEEP: в ограниченном поиске не найден сценарий выше сохранения состава после условного резерва за ходы.'];
+    }
+    if (count < 1 || count > 4 || !finite(route.gain) || !finite(route.net) ||
+        route.net > route.gain + 1e-6 || !route.moves.every(m => m && finite(m.epoch))) return [];
+    const reserve = route.gain - route.net;
+    return [
+      'Разница с KEEP за ' + days + ' дней: ' + signed(route.gain) +
+        ' модельных FP до условного резерва, не реальные начисления Sports.ru.',
+      count + (count === 1 ? ' замена' : count >= 2 && count <= 4 ? ' замены' : ' замен') +
+        '; условный резерв ' + signed(reserve) + ' FP; оценка после резерва ' +
+        signed(route.net) + ' FP. Это эвристика, не доказанная цена хода.'
+    ];
+  }
   function build(x = {}) {
     const complete = x.rosterCount === 10 && x.rosterValid !== false;
     const fresh = x.feedVerified === true && finite(x.feedAgeHours) && x.feedAgeHours >= 0 && x.feedAgeHours <= 24 && x.feedMode === 'live_sync';
@@ -73,7 +96,12 @@
       reasons.push('Актуальность официальных NBA Injury Reports не подтверждена: проверь статусы перед покупкой.');
     }
     if (hasResults && state === 'review') {
-      if ((x.bestRoute.kind === 'now' || (x.historicalQuotaTimesUnverified===true && x.bestRoute.moves?.length>0)) && x.marketReady !== true) {
+      // A same-day multi-slot or chain route needs the same owner market
+      // checks as a single NOW move. Deferred LATER remains hypothetical.
+      const hasMove = Array.isArray(x.bestRoute.moves) && x.bestRoute.moves.length > 0;
+      const needsImmediateMarket = hasMove && (x.bestRoute.kind === 'now' ||
+        x.firstMoveSoon === true || x.historicalQuotaTimesUnverified === true);
+      if (needsImmediateMarket && x.marketReady !== true) {
         state = 'market'; title = 'По модели есть замена сейчас — проверь Sports.ru';
         description = 'Потенциальный прирост FP рассчитан, но реальная цена, касса и доступность хода требуют сверки.';
         reasons.unshift(x.marketReason || 'Не подтверждены обе цены и реальный остаток замен.');
@@ -83,13 +111,29 @@
         reasons.unshift('Сравнивались KEEP / NOW / LATER на одном горизонте.');
       }
     }
-    if (hasResults && typeof x.modelCaution === 'string' && x.modelCaution) reasons.unshift(x.modelCaution);
-    if (fresh && shortOK && longOK && !reasons.some(s => s.includes('календар'))) {
+    // Only emit numeric explanations after the original reconciliation gate.
+    // Keep warnings first; the final brief remains at most three reasons.
+    if (hasResults && (state === 'scenario' || state === 'market')) {
+      const numeric = modelReasons(x.bestRoute, x.resultDays);
+      if (numeric.length) reasons.push(...numeric);
+    }
+    if (hasResults && typeof x.modelCaution === 'string' && x.modelCaution)
+      reasons.push(x.modelCaution);
+    if (fresh && shortOK && longOK && !reasons.some(s => s.includes('календар')) &&
+        !hasResults) {
       reasons.push('Расписание на 7 и 21 день доступно; число игр само по себе не означает лёгких соперников.');
     }
     reasons.push('Свободные замены, реальные цены и разблокировки подтверждаются на Sports.ru.');
+    // In numeric cases show the specific FP/transfer trade-off and one safety
+    // caveat; avoid replacing the actionable explanation with boilerplate.
+    const selected = hasResults && (state === 'scenario' || state === 'market') ?
+      [...reasons.filter((v,i) => i===0 && state==='market'),
+       ...reasons.filter(r => r.startsWith('Разница с KEEP') || r.startsWith('KEEP:') ||
+         r.includes('условный резерв')),
+       ...reasons.filter(r => !r.startsWith('Разница с KEEP') && !r.startsWith('KEEP:') &&
+         !r.includes('условный резерв'))] : reasons;
     return {
-      state, title, description, reasons: reasons.slice(0,3),
+      state, title, description, reasons: [...new Set(selected)].slice(0,3),
       action: 'Сравнить KEEP / NOW / LATER',
       hasResults: Boolean(hasResults),
       showForecast: fresh,
