@@ -54,7 +54,9 @@ on:
       - '.github/workflows/nba-sync.yml'
   workflow_dispatch:
   schedule:
-    - cron: '17 */4 * * *'
+    # Four-hour public refresh was too coarse for a daily fantasy dashboard.
+    # GitHub cron is best-effort: expected every 2h, not minute-level live scores.
+    - cron: '17 */2 * * *'
 
 permissions:
   contents: write

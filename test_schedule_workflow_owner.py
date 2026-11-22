@@ -10,7 +10,7 @@ class TestWorkflowOwnership(unittest.TestCase):
   self.assertNotIn('python -m src.schedule_sync',live)
   self.assertIn('git add data/schedule.json',schedule)
   self.assertIn("cron: '7 */4 * * *'",schedule)
-  self.assertIn("cron: '17 */4 * * *'",live)
+  self.assertIn("cron: '17 */2 * * *'",live)
   self.assertLess(live.index('python -m src.sync'),live.index('python -m src.espn_roster_pit'))
   self.assertLess(live.index('python -m src.espn_roster_pit'),
                   live.index('python -m src.p_play_shadow_research', live.index('python -m src.espn_roster_pit')))
