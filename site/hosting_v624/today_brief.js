@@ -99,8 +99,8 @@
       // A same-day multi-slot or chain route needs the same owner market
       // checks as a single NOW move. Deferred LATER remains hypothetical.
       const hasMove = Array.isArray(x.bestRoute.moves) && x.bestRoute.moves.length > 0;
-      const needsImmediateMarket = hasMove && (x.bestRoute.kind === 'now' ||
-        x.firstMoveSoon === true || x.historicalQuotaTimesUnverified === true);
+      const needsImmediateMarket = x.bestRoute.kind === 'now' ||
+        (hasMove && (x.firstMoveSoon === true || x.historicalQuotaTimesUnverified === true));
       if (needsImmediateMarket && x.marketReady !== true) {
         state = 'market'; title = 'По модели есть замена сейчас — проверь Sports.ru';
         description = 'Потенциальный прирост FP рассчитан, но реальная цена, касса и доступность хода требуют сверки.';
