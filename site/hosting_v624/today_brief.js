@@ -127,7 +127,9 @@
     // In numeric cases show the specific FP/transfer trade-off and one safety
     // caveat; avoid replacing the actionable explanation with boilerplate.
     const selected = hasResults && (state === 'scenario' || state === 'market') ?
-      [...reasons.filter((v,i) => i===0 && state==='market'),
+      [...(state === 'market' ? reasons.slice(0,1) : []),
+       ...reasons.filter(r => r.includes('Injury Reports') ||
+         r.includes('неофициальных сигналов') || r === x.modelCaution),
        ...reasons.filter(r => r.startsWith('Разница с KEEP') || r.startsWith('KEEP:') ||
          r.includes('условный резерв')),
        ...reasons.filter(r => !r.startsWith('Разница с KEEP') && !r.startsWith('KEEP:') &&
