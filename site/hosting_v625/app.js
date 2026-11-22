@@ -175,7 +175,7 @@ let MODEL_FORECASTS=null,FORECAST_STORE=null,DIFFICULTY_FEED=null,DIFFICULTY_STO
 const researchRequested=()=>S.modelMode==='research'||((S.modelMode||'current')==='current'&&MODEL_FORECASTS?.model_policy?.site_default===true);
 const researchForGame=(p,g)=>researchRequested()?window.NBAForecastRuntime?.usable(FORECAST_STORE,p,g,now(),true)||null:null;
 
-let UI={search:'',position:'all',club:'all',sort:'week',compare:[],window:7,calendarStart:'',calendarEnd:'',calendarDays:14,calendarOwn:false,calendarMode:'tours',calendarTour:0,calendarTourCount:3,calendarTourSort:'games',playerId:null,histSeason:'all',histOpponent:'all',histLimit:25,plannerOut:null,plannerIn:null,plannerWhen:null,plannerSell:null,plannerBuy:null,quickPreview:null,chainDays:21,chainPenalty:4,chainResult:null,multiDays:7,multiPenalty:4,multiMoves:3,multiFocus:'all',multiResult:null,budgetPosition:'all',budgetTarget:null,budgetOut:'auto',budgetBuy:null,budgetDays:14,budgetPenalty:4,budgetMoves:3,budgetResult:null,retroOpen:false,retroRows:[],retroPreview:null,plannerTask:'advice',plannerTaskListOpen:false,plannerAdvanced:false,plannerSequenceTool:'none',plannerManualOpen:false,plannerDetail:false,multiOptions:false,multiCalculatedAt:null,todayResult:null,todayCalculatedAt:null,todayAutoAttempt:null,todayAutoError:null,teamView:'court',marketView:'candidates',marketAdvanced:false,marketLimit:50,marketFocusPlayer:null,calendarQuick:'team',calendarTeamDays:7,difficultyShowAll:false,calendarFocusPlayer:null,statusScope:'mine',sportsOpen:false,sportsResult:null,sportsInputs:{fp:'',cash:'',remaining:''},creditDecisionAt:null,creditPanelOpen:false,journalPanelOpen:false,creditDirty:false,creditPage:0};
+let UI={search:'',position:'all',club:'all',sort:'week',compare:[],window:7,calendarStart:'',calendarEnd:'',calendarDays:14,calendarOwn:false,calendarMode:'tours',calendarTour:0,calendarTourCount:3,calendarTourSort:'games',playerId:null,histSeason:'all',histOpponent:'all',histLimit:25,plannerOut:null,plannerIn:null,plannerWhen:null,plannerSell:null,plannerBuy:null,quickPreview:null,chainDays:21,chainPenalty:4,chainResult:null,multiDays:7,multiPenalty:4,multiMoves:3,multiFocus:'all',multiResult:null,budgetPosition:'all',budgetTarget:null,budgetOut:'auto',budgetBuy:null,budgetDays:14,budgetPenalty:4,budgetMoves:3,budgetResult:null,retroOpen:false,retroRows:[],retroPreview:null,plannerTask:'advice',plannerTaskListOpen:false,plannerAdvanced:false,plannerSequenceTool:'none',plannerManualOpen:false,plannerDetail:false,multiOptions:false,multiCalculatedAt:null,todayResult:null,todayCalculatedAt:null,todayAutoAttempt:null,todayAutoError:null,teamView:'court',marketView:'candidates',marketAdvanced:false,marketPeriod:'preset',marketDays:10,marketFrom:'',marketTo:'',marketWeekFilters:['any','any','any'],marketLimit:50,marketFocusPlayer:null,calendarQuick:'team',calendarTeamDays:7,difficultyShowAll:false,calendarFocusPlayer:null,statusScope:'mine',sportsOpen:false,sportsResult:null,sportsInputs:{fp:'',cash:'',remaining:''},creditDecisionAt:null,creditPanelOpen:false,journalPanelOpen:false,creditDirty:false,creditPage:0};
 const root=document.getElementById('root');
 function save(){UI.todayResult=null;UI.todayCalculatedAt=null;UI.todayAutoAttempt=null;UI.sportsResult=null;UI.sportsInputs={fp:'',cash:'',remaining:''};UI.chainResult=null;UI.multiResult=null;UI.budgetResult=null;S.v=5;S.lastUpdate=new Date().toISOString();try{localStorage.setItem(KEY,JSON.stringify(S));}catch{notice='Браузер не разрешил локальное сохранение. Используйте экспорт резервной копии.';}window.nbaCloudSave?.(JSON.parse(JSON.stringify(S)));}
 function applyState(remote){if(!remote||!Array.isArray(remote.roster))return;UI.todayResult=null;UI.todayCalculatedAt=null;UI.todayAutoAttempt=null;UI.sportsResult=null;UI.sportsInputs={fp:'',cash:'',remaining:''};UI.chainResult=null;UI.multiResult=null;UI.budgetResult=null;S={...defaults(),...remote,v:5};saveLocalOnly();tab='today';view();}
@@ -821,8 +821,11 @@ function overview(){
  const remainingMean=projectionPeriod(S.roster,enddays),free=S.cash;
  const ng=normalizedGames().filter(g=>g.epoch>now()&&(S.roster||[]).some(id=>P[id]?.team===g.home||P[id]?.team===g.away)).slice(0,5);
  const stale=(now()-Date.parse(LIVE.updated_at_utc||0))>24*3600e3||LIVE.mode==='schedule_sync_only';
+ const recentNBA=marketRecentRosterFP();
+ const dayStamp=recentNBA?recentNBA.date.slice(8)+'.'+recentNBA.date.slice(5):'—';
  return header('Команда','Мой состав','Десять игроков, календарь и ближайшее решение. Состав на Sports.ru изменяется только вручную.')+rosterWarnings()+
  `<div class="grid metrics">${cardMetric(ownerLast?'Sports.ru · ваша запись':'NBA boxscore · не Sports.ru',ownerLast?sportsAmt(ownerLast.fp)+' FP':(Number.isFinite(at.fp)?round(at.fp)+' FP':bounds?.available?round(bounds.minimum)+'–'+round(bounds.maximum)+' FP':'н/д'),ownerLast?'На '+ownerLast.asOfDateMoscow+' МСК · не текущий онлайн-счётчик':at.complete?at.matches+' сыгранных игроко-матчей':bounds?.available?'Диапазон по датам замен · НЕ зачёт Sports.ru':'Данные NBA FP неполны; см. проверку ниже')}
+ ${cardMetric('Последний день NBA · текущая десятка',recentNBA&&!recentNBA.partial?round(recentNBA.fp)+' FP':'н/д',recentNBA?dayStamp+' ET · '+recentNBA.played+' сыгранных игроков · не зачёт Sports.ru':'Нет проверенных сыгранных строк')}
  ${cardMetric('До конца недели · модель',Number.isFinite(remainingMean)?approx(remainingMean)+' FP':'н/д',Number.isFinite(remainingMean)?'Ожидаемые FP, не зачёт':'Календарь недостаточно полон')}
  ${cardMetric(SRU.cashTile,round(free),SRU.cashTileNote)}
  ${cardMetric(SRU.quotaTile,quotaText,SRU.quotaTileNote)}</div>
@@ -845,6 +848,74 @@ function canReplaceWith(p){
   return hardCheck(alt).valid;
  });
 }
+// Player-market windows are separate from optimizer/forecast weights.
+// All week boundaries use Moscow calendar days (UTC+03:00), not NBA ET dates.
+const MARKET_DAY=86400000,MARKET_MSK=3*3600000;
+function marketISO(ms){return new Date(ms+MARKET_MSK).toISOString().slice(0,10);}
+function marketMidnight(day){
+ if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(day||'')))return NaN;
+ const t=Date.parse(day+'T00:00:00+03:00');
+ return Number.isFinite(t)&&marketISO(t)===day?t:NaN;
+}
+function marketWeeks(tick=now()){
+ const d=new Date(tick+MARKET_MSK),day=d.getUTCDay();
+ const first=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())-MARKET_MSK-
+  ((day+6)%7)*MARKET_DAY;
+ return [0,1,2].map(i=>({start:Math.max(tick,first+i*7*MARKET_DAY),
+  end:first+(i+1)*7*MARKET_DAY,calendarStart:first+i*7*MARKET_DAY}));
+}
+function marketWindowSpec(tick=now()){
+ const mode=UI.marketPeriod||'preset';
+ let start=tick,end=tick+UI.window*MARKET_DAY;
+ if(mode==='days'){
+  const d=Number(UI.marketDays);
+  if(!Number.isInteger(d)||d<1||d>28)return {ok:false,reason:'Количество дней: от 1 до 28.'};
+  end=tick+d*MARKET_DAY;
+ }else if(mode==='dates'){
+  const from=marketMidnight(UI.marketFrom),to=marketMidnight(UI.marketTo);
+  if(!Number.isFinite(from)||!Number.isFinite(to)||to<from)
+   return {ok:false,reason:'Укажи корректные даты начала и окончания.'};
+  start=Math.max(tick,from);end=to+MARKET_DAY;
+  if(end<=start||end-start>28*MARKET_DAY||start>tick+28*MARKET_DAY)
+   return {ok:false,reason:'Выбери будущий диапазон до 28 дней (дата окончания включена).'};
+ }else if(mode!=='preset'||![7,14,28].includes(UI.window))
+  return {ok:false,reason:'Неизвестный период.'};
+ const days=(end-start-1)/MARKET_DAY;
+ return {ok:true,start,end,days,mode,coverage:calendarCoverage(start,days),
+  label:mode==='dates'?UI.marketFrom+' — '+UI.marketTo:Math.ceil((end-start)/MARKET_DAY)+' дн.'};
+}
+function marketKnownGames(p,start,end,tick=now()){
+ if(!p||!Number.isFinite(start)||!Number.isFinite(end)||end<=start)return null;
+ // Unknown NBA Cup fixtures must not silently become a known zero game count.
+ const coverage=calendarCoverage(start,(end-start-1)/MARKET_DAY);
+ if(!coverage.ok)return null;
+ return normalizedGames().filter(g=>g.epoch>=Math.max(tick,start)&&g.epoch<end&&g.status!=='final'&&
+  (g.home===p.team||g.away===p.team)).length;
+}
+function marketWeekMatch(count,rule){
+ if(rule==='any')return true;
+ if(count===null)return false;
+ if(/^eq:[0-6]$/.test(rule))return count===Number(rule.slice(3));
+ if(/^min:[1-6]$/.test(rule))return count>=Number(rule.slice(4));
+ return false;
+}
+function marketRecentRosterFP(){
+ if(!publicFeedValidated||LIVE?.mode!=='live_sync'||S.roster.length!==10)return null;
+ const games=(LIVE.games||[]).filter(g=>g.status==='final'&&g.et_date&&g.epoch<=now());
+ if(!games.length)return null;
+ const date=games.reduce((a,g)=>g.et_date>a?g.et_date:a,'');
+ const ids=new Set(games.filter(g=>g.et_date===date).map(g=>String(g.id)));
+ const roster=new Set(S.roster),seen=new Set();let value=0,played=0;
+ for(const row of LIVE.rows||[]){
+  const key=String(row.game_id)+'|'+String(row.id);
+  if(!ids.has(String(row.game_id))||!roster.has(row.id)||row.played!==true)continue;
+  if(seen.has(key)||!Number.isFinite(row.fp))return null;
+  seen.add(key);value+=row.fp;played++;
+ }
+ return {date,fp:value,played,updatedAt:LIVE.updated_at_utc,
+  // A partial day or incomplete team coverage is never an official zero.
+  partial:played===0};
+}
 function playerList(){
  let rows=BASE.players.filter(p=>(UI.position==='all'||p.pos===UI.position)&&(UI.club==='all'||p.team===UI.club));
  const q=UI.search.trim().toLocaleLowerCase('ru-RU');
@@ -859,14 +930,16 @@ function playerList(){
     hardCheck(S.roster.map(id=>id===focus.id?p.id:id)).valid);
   }
  }
- const days=UI.window;
+ const spec=marketWindowSpec(),weeks=marketWeeks();
+ rows=rows.filter(p=>weeks.every((w,i)=>marketWeekMatch(
+   marketKnownGames(p,w.start,w.end),UI.marketWeekFilters?.[i]||'any')));
  function key(p){
   if(UI.sort==='price')return prices(p.id);
   if(UI.sort==='expert')return p.expert_pop??-1;
   if(UI.sort==='historic')return p.history.at(-1)?.fp_avg??-1;
   if(UI.sort==='minutes')return p.minutes_projection??-1;
-  if(UI.sort==='games')return futureGames(p.id,now(),days).length;
-  const f=prediction(p.id,now(),days);
+  if(UI.sort==='games')return spec.ok?marketKnownGames(p,spec.start,spec.end)??-1:-1;
+  const f=spec.ok&&spec.coverage.ok?prediction(p.id,spec.start,spec.days):{available:false};
   return f.available&&Number.isFinite(f.fp)?f.fp:-1e12;
  }
  const keys=new Map(rows.map(p=>[p.id,key(p)]));
@@ -877,26 +950,42 @@ function playersPage(){
  const options=POS.map(p=>`<option value="${p}" ${UI.position===p?'selected':''}>${p} — ${esc(POSRU[p])}</option>`).join('');
  const clubs=[...new Set(BASE.players.map(x=>x.team))].sort().map(x=>`<option value="${esc(x)}" ${UI.club===x?'selected':''}>${esc(x)}</option>`).join('');
  const full=S.roster.length===10;
+ const spec=marketWindowSpec(),weeks=marketWeeks();
+ const initialDate=marketISO(now()),endDate=marketISO(now()+6*MARKET_DAY);
  const rows=playerList(),visible=rows.slice(0,UI.marketLimit);
  const cards=visible.map(p=>{
-  const forecast=prediction(p.id,now(),UI.window);
-  const count=forecast.available?forecast.games:null;
+  const forecast=spec.ok&&spec.coverage.ok?prediction(p.id,spec.start,spec.days):{available:false};
+  const count=spec.ok?marketKnownGames(p,spec.start,spec.end):null;
+  const weekly=weeks.map(w=>marketKnownGames(p,w.start,w.end));
   const mine=S.roster.includes(p.id);
-  return `<article class="market-item ${mine?'market-owned':''}"><div class="market-identity"><button class="ghost personname" data-player="${esc(p.id)}">${esc(p.name)}</button><span class="market-club">${esc(p.team)} · ${esc(p.pos)}</span></div>
+  return `<article class="market-item ${mine?'market-owned':''}"><div class="market-identity"><button class="ghost personname" data-player="${esc(p.id)}">${esc(p.name)}</button><span class="market-club">${esc(p.team)} · ${esc(p.pos)}</span><span class="market-week-counts" title="Известные оставшиеся матчи: текущая неделя и следующие две, по московскому календарю">${weekly.map((n,i)=>`<span title="Неделя ${i+1}: ${n===null?'календарь неполный':n+' матчей'}">Н${i+1} <b>${n===null?'н/д':n}</b></span>`).join('')}</span></div>
    <div class="market-stat"><b>${round(prices(p.id))}</b><small>цена*</small></div>
-   <div class="market-stat"><b>${count===null?'н/д':count}</b><small>игры / ${UI.window} дн.</small></div>
+   <div class="market-stat"><b>${count===null?'н/д':count}</b><small>игры / период</small></div>
    <div class="market-stat market-projected"><b>${forecast.available?round(forecast.fp,1):'н/д'}</b><small>прогноз FP</small></div>
    <button class="market-compare" aria-label="${UI.compare.includes(p.id)?'Убрать из сравнения':'Добавить в сравнение'} ${esc(p.name)}" data-compare="${esc(p.id)}">${UI.compare.includes(p.id)?'✓':'+'}</button></article>`;
  }).join('');
- return header('Игроки','Найти кандидата','Сначала выберите, кого смотреть. Подробная статистика открывается нажатием на имя.')+
+ return header('Игроки','Найти кандидата','Количество матчей — по календарю МСК; прогноз FP — только для доступного подтверждённого окна.')+
  `<div class="card"><div class="market-quick-filters" role="group" aria-label="Кого показывать">
  <button data-market-view="candidates" ${!full?'disabled':''} class="${UI.marketView==='candidates'&&full?'selected':''}" aria-pressed="${UI.marketView==='candidates'&&full}">Возможные замены</button>
  <button data-market-view="mine" ${!full?'disabled':''} class="${UI.marketView==='mine'&&full?'selected':''}" aria-pressed="${UI.marketView==='mine'&&full}">Моя десятка</button>
  <button data-market-view="all" class="${UI.marketView==='all'||!full?'selected':''}" aria-pressed="${UI.marketView==='all'||!full}">Все игроки</button></div>
  ${UI.marketFocusPlayer&&S.roster.includes(UI.marketFocusPlayer)?`<div class="intent-context"><span>Подбор для <b>${esc(P[UI.marketFocusPlayer]?.name||UI.marketFocusPlayer)}</b> · ${esc(P[UI.marketFocusPlayer]?.pos||'')}</span><button type="button" class="button" data-player-intent="replace" data-intent-player="${esc(UI.marketFocusPlayer)}">К расчёту замены</button><button type="button" class="ghost" data-clear-intent="players">Сбросить</button></div>`:''}
  <div class="toolbar market-main-controls"><label class="market-search">Поиск<input id="search" type="search" placeholder="Имя игрока или клуб" value="${esc(UI.search)}"></label>
- <label>Период<select id="window">${[7,14,28].map(d=>`<option value="${d}" ${UI.window===d?'selected':''}>${d} дней</option>`).join('')}</select></label>
+ <label>Период<select id="market-period"><option value="preset" ${UI.marketPeriod==='preset'?'selected':''}>Быстрый период</option><option value="days" ${UI.marketPeriod==='days'?'selected':''}>Количество дней</option><option value="dates" ${UI.marketPeriod==='dates'?'selected':''}>По датам</option></select></label>
+ ${UI.marketPeriod==='preset'? `<label>Дней<select id="window">${[7,14,28].map(d=>`<option value="${d}" ${UI.window===d?'selected':''}>${d} дней</option>`).join('')}</select></label>`:
+ UI.marketPeriod==='days'?`<label>Дней (1–28)<input id="market-days" type="number" min="1" max="28" step="1" value="${UI.marketDays}"></label>`:
+ `<label>От<input id="market-from" type="date" min="${initialDate}" value="${UI.marketFrom||initialDate}"></label><label>До (включительно)<input id="market-to" type="date" min="${initialDate}" value="${UI.marketTo||endDate}"></label>`}
  <label>Ранжировать<select id="sort"><option value="week" ${UI.sort==='week'?'selected':''}>По прогнозу FP</option><option value="games" ${UI.sort==='games'?'selected':''}>По числу игр</option><option value="price" ${UI.sort==='price'?'selected':''}>По цене</option><option value="historic" ${UI.sort==='historic'?'selected':''}>По FP/матч 25/26</option></select></label></div>
+ <div class="market-week-controls" role="group" aria-label="Матчи по трём календарным неделям">
+ <span class="market-week-caption">Матчи по неделям (МСК)</span>
+ ${weeks.map((w,i)=>`<label>Н${i+1} · ${marketISO(w.calendarStart).slice(5)}–${marketISO(w.end-MARKET_DAY).slice(5)}
+ <select id="market-week-${i}"><option value="any" ${UI.marketWeekFilters[i]==='any'?'selected':''}>Любое число</option>
+ ${[0,1,2,3,4,5,6].map(n=>`<option value="eq:${n}" ${UI.marketWeekFilters[i]==='eq:'+n?'selected':''}>Ровно ${n}</option>`).join('')}
+ ${[1,2,3,4,5,6].map(n=>`<option value="min:${n}" ${UI.marketWeekFilters[i]==='min:'+n?'selected':''}>От ${n}</option>`).join('')}</select></label>`).join('')}
+ </div>
+ ${!spec.ok?`<div class="info warning" role="status">${esc(spec.reason)}</div>`:
+ !spec.coverage.ok?`<div class="info warning" role="status">Прогноз FP и количество матчей за период: ${esc(spec.coverage.reason)}. Не подменяем пропуски календаря нулями.</div>`:''}
+ ${weeks.some(w=>!calendarCoverage(w.start,(w.end-w.start-1)/MARKET_DAY).ok)?'<p class="small">Некоторые недели содержат незакреплённые игры NBA Cup либо данные календаря устарели. Для них показывается «н/д», не ноль матчей.</p>':''}
  <button type="button" class="ghost market-advanced-toggle" data-action="market-advanced" aria-expanded="${UI.marketAdvanced}">${UI.marketAdvanced?'Скрыть фильтры':'Фильтры по позиции и клубу'}</button>
  ${UI.marketAdvanced?`<div class="toolbar market-advanced"><label>Позиция<select id="pos"><option value="all">Любая позиция</option>${options}</select></label><label>Клуб<select id="club"><option value="all">Все клубы</option>${clubs}</select></label></div>`:''}
  ${full&&UI.marketView==='candidates'?'<p class="small">Показаны игроки, которых можно условно приобрести, продав одного игрока той же позиции при текущей кассе и расчётных ценах. Блокировки, статус и реальную стоимость нужно проверить на Sports.ru.</p>':''}
@@ -2134,7 +2223,9 @@ function dataPage(){
  const teamsHtml=S.roster.map(id=>`<div class="donut"><span>${esc(P[id]?.name||id)}</span><select class="teamedit" data-team-id="${esc(id)}" aria-label="Клуб ${esc(P[id]?.name||id)}" style="max-width:155px"><option value="auto" ${!(S.teamOverrides||{})[id]?'selected':''}>Авто · ${esc(P[id]?.team||'')}</option>${Object.keys(CLUBS).sort().map(t=>`<option value="${esc(t)}" ${S.teamOverrides?.[id]===t?'selected':''}>${esc(t)}</option>`).join('')}</select></div>`).join('');
  return header('Данные','Данные и цены','Сначала актуальность и ваша касса. Сложную техническую диагностику можно раскрыть отдельно.')+
  `<div class="grid columns"><div><section class="card"><div class="titledetail"><h2>Обновление статистики</h2><span class="pill ${age>24||partial?'warn':'good'}">${esc(currentStatus())}</span></div>
- <p>Статистика NBA обновляется через публичный GitHub. Источник: <b>${esc(liveSource)}</b>.</p>
+ <p>Срез NBA: <b>${esc(LIVE.updated_at_utc?dateText(Date.parse(LIVE.updated_at_utc))+' МСК':'н/д')}</b>. Источник: <b>${esc(liveSource)}</b>.</p>
+ <p class="small">Прогноз модели: ${esc(FORECAST_STORE?.ok?dateText(FORECAST_STORE.issued)+' МСК':'не загружен')}; ${esc(window.NBAForecastRuntime?.freshness(FORECAST_STORE,now())?.ok?'действует':'нет свежего подтверждения')}. Последний результат ET: ${esc((LIVE.games||[]).filter(g=>g.status==='final').map(g=>g.et_date).sort().at(-1)||'н/д')}.</p>
+ <p class="small">Обновление на сервере — по GitHub Actions (планово каждые 2–4 часа, возможны задержки), браузер проверяет новые срезы каждые 15 минут. Официальные FP Sports.ru и ваши ручные замены не синхронизируются автоматически.</p>
  ${onlineError?`<p class="warntext">${esc(onlineError)}</p>`:''}<button class="primary" data-action="refresh">Проверить свежие данные</button>
  <p class="small">Это не обновление цен Sports.ru и не прямой эфир.</p></section>
  <section class="card"><h2>Цены моей команды</h2><p>Укажите фактические значения Sports.ru. Без ручной проверки модельные цены могут быть неточными.</p>
@@ -2339,6 +2430,10 @@ document.addEventListener('change',e=>{const el=e.target;if(!el)return;
  if(el.id==='medical'){S.medical[el.dataset.id]=el.value;save();view();return;}
  if(el.classList.contains('teamedit')){if(!S.teamOverrides)S.teamOverrides={};if(el.value==='auto')delete S.teamOverrides[el.dataset.teamId];else if(CLUBS[el.value])S.teamOverrides[el.dataset.teamId]=el.value;save();view();return;}
  if(el.classList.contains('priceedit')){const v=num(el.value);if(Number.isFinite(v)&&v>=0)S.prices[el.dataset.priceId]=v;save();view();return;}
+ if(el.id==='market-period'){UI.marketPeriod=['preset','days','dates'].includes(el.value)?el.value:'preset';if(UI.marketPeriod==='dates'&&!UI.marketFrom){UI.marketFrom=marketISO(now());UI.marketTo=marketISO(now()+6*MARKET_DAY);}UI.marketLimit=50;view();return;}
+ if(el.id==='market-days'){const n=Number(el.value);if(!Number.isInteger(n)||n<1||n>28)return showMsg('Период: целое число дней от 1 до 28');UI.marketDays=n;UI.marketLimit=50;view();return;}
+ if(el.id==='market-from'||el.id==='market-to'){if(!Number.isFinite(marketMidnight(el.value)))return showMsg('Некорректная дата');if(el.id==='market-from')UI.marketFrom=el.value;else UI.marketTo=el.value;UI.marketLimit=50;view();return;}
+ if(/^market-week-[012]$/.test(el.id)){const i=Number(el.id.slice(-1)),value=el.value;if(value!=='any'&&!/^(eq:[0-6]|min:[1-6])$/.test(value))return;UI.marketWeekFilters[i]=value;UI.marketLimit=50;view();return;}
  if(el.id==='hist-player'){UI.playerId=el.value;UI.histSeason='all';UI.histOpponent='all';UI.histLimit=25;view();return;}if(el.id==='hist-season'){UI.histSeason=el.value;UI.histLimit=25;view();return;}if(el.id==='hist-opponent'){UI.histOpponent=el.value;UI.histLimit=25;view();return;}if(el.id==='hist-limit'){UI.histLimit=Number(el.value);view();return;}if(el.id==='pos'){UI.position=el.value;UI.marketLimit=50;view();return;}if(el.id==='club'){UI.club=el.value;UI.marketLimit=50;view();return;}if(el.id==='sort'){UI.sort=el.value;UI.marketLimit=50;view();return;}if(el.id==='window'){UI.window=Number(el.value);UI.marketLimit=50;view();return;}
  if(el.id==='cal-view'){UI.calendarMode=el.value==='window'?'window':'tours';view();return;}if(el.id==='cal-tour-first'){UI.calendarTour=Number(el.value);view();return;}if(el.id==='cal-tour-count'){UI.calendarTourCount=Number(el.value);view();return;}if(el.id==='cal-tour-sort'){UI.calendarTourSort=el.value;view();return;}
  if(el.id==='cal-start'){const T=window.NBACalendarTours;const key=el.value;if(key<T.FIRST_DATE||key>T.LAST_DATE)return showMsg('Дата вне регулярного сезона');UI.calendarStart=key;UI.calendarDays=clamp(UI.calendarDays,1,T.daysBetween(key,T.LAST_DATE)+1);UI.calendarEnd=T.addDays(key,UI.calendarDays-1);view();return;}
