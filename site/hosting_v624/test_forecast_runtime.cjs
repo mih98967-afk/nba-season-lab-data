@@ -1,0 +1,65 @@
+const assert=require('node:assert/strict');
+const model=require('./forecast_runtime.js');
+const difficulty=require('./schedule_difficulty.js');
+const tick=Date.parse('2026-11-18T12:00:00Z'),epoch=tick+86400000;
+const row={player_id:'n1',nba_id:'1',game_id:'espn_1',nba_game_id:'0022600001',team:'BOS',opponent:'DAL',home:true,game_utc:new Date(epoch).toISOString(),lock_utc:new Date(epoch-1800000).toISOString(),p_play:.4,mean_if_play:-2,expected_fp:-.8,model_id:'near_latest',support:'exact_lead',actual_horizon_days:1,interval_status:'historically_calibrated_exact_lead',conditional_intervals:{50:[-4,2],80:[-8,7],95:[-12,13]},unconditional_intervals:{50:[0,0],80:[-3,4],95:[-8,10]},eligible_for_decision:true,reasons:['Недавние минуты известны'],warnings:[]};
+const feed={schema_version:1,kind:'nba_per_game_model_forecasts',issued_at_utc:new Date(tick-60000).toISOString(),source_capture_completed_at_utc:new Date(tick-120000).toISOString(),valid_until_utc:new Date(tick+3600000).toISOString(),status:'ready',rows:[row]};
+const player={id:'n1',team:'BOS'},game={id:'espn_1',home:'BOS',away:'DAL',epoch};
+let store=model.prepare(feed);assert.equal(store.ok,true);
+assert.equal(model.usable(store,player,game,tick).expected_fp,-.8,'Negative FP are valid, not clamped');
+assert.equal(model.usable(store,player,{...game,epoch:epoch+3600000},tick),null,'Rescheduled game cannot reuse old-time prediction');
+assert.equal(model.usable(store,{...player,team:'NYK'},game,tick),null,'Team change cannot use old-team forecast');
+assert.equal(model.usable(store,player,game,tick+3600001),null,'Expiry checked on every use');
+assert.equal(model.usable(model.prepare({...feed,status:'stale_inputs'}),player,game,tick),null);
+assert.equal(model.prepare({...feed,rows:[row,row]}).ok,false);
+assert.equal(model.prepare({...feed,rows:[{...row,expected_fp:2}]}).ok,false,'No double P(play) multiplication or incompatible output');
+assert.equal(model.prepare({...feed,rows:[{...row,p_play:NaN}]}).ok,false);
+assert.equal(model.prepare({...feed,rows:[{...row,p_play:1.5}]}).ok,false);
+assert.equal(model.prepare({...feed,rows:[{...row,conditional_intervals:{50:[-4,2],80:[-2,1],95:[-12,13]}}]}).ok,false);
+assert.equal(model.prepare({...feed,source_capture_completed_at_utc:new Date(tick+1000).toISOString()}).ok,false);
+assert.equal(model.freshness(store,tick-600000).ok,false,'No future issuance');
+const lockedFeed={...feed,valid_until_utc:new Date(epoch+3600000).toISOString()};
+const locked=model.prepare(lockedFeed);
+assert.equal(model.usable(locked,player,game,epoch-600000,true),null,'Locked game never eligible for a new decision');
+assert.ok(model.usable(locked,player,game,epoch-600000,false),'Pre-lock frozen value remains readable');
+const aggregate=model.aggregate([row,null]);assert.equal(aggregate.expected_fp,null);assert.equal(aggregate.known_games_expected_fp,-.8);assert.equal(aggregate.predictive_intervals,null);
+assert.equal(model.aggregate([row,row]).expected_fp,-1.6);
+const changed=model.gameCard(store,player,game,{tick,active:true,probability:1,mean:-2});
+assert.match(changed,/не рассчитан/);assert.match(changed,/Применён ваш сценарий/);
+assert.doesNotMatch(model.gameCard(store,player,game,{tick}),/undefined|NaN/);
+const escaped=model.gameCard(model.prepare({...feed,rows:[{...row,reasons:['<script>bad</script>']}]}),player,game,{tick});assert.doesNotMatch(escaped,/<script>/);
+const status={status:'out',exact_player_team_game_time:true,deterministic_out_overlay:true,nba_player_id:'1',nba_game_id:'0022600001',calendar_game_id:'espn_1',team:'BOS',home:'BOS',away:'DAL',tipoff_utc:row.game_utc,report_at_utc:new Date(tick-180000).toISOString(),available_at_utc:new Date(tick-120000).toISOString(),source_sha256:'a'.repeat(64),source_url:'https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-11-18_06_30AM.pdf'};
+const outStore=model.prepare({...feed,rows:[{...row,official_status:status}]});
+assert.equal(model.officialStatus(outStore,player,game,tick).status,'out');
+assert.equal(model.effective(outStore,player,game,tick).expected_fp,0);
+assert.equal(outStore.index.get('n1|espn_1').p_play,.4,'Official overlay cannot rewrite the immutable model output');
+assert.deepEqual(model.effective(outStore,player,game,tick).unconditional_intervals['95'],[0,0]);
+for(const missing of [undefined,null,'']){
+ const noIdentity=model.prepare({...feed,rows:[{...row,nba_id:missing,nba_game_id:missing,official_status:{...status,nba_player_id:missing,nba_game_id:missing}}]});
+ assert.equal(model.officialStatus(noIdentity,player,game,tick),null,'Two absent IDs never establish identity');
+ assert.equal(model.effective(noIdentity,player,game,tick).p_play,.4);
+}
+const latestAvailable={...model.officialStatus(outStore,player,game,tick),status:'available',reportEpoch:tick-90000};
+assert.equal(model.effective(outStore,player,game,tick,latestAvailable).p_play,.4,'Newer verified status removes the old OUT overlay');
+const currentCard=model.gameCard(model.prepare({...feed,rows:[{...row,official_status:status,reasons:['Свежий официальный отчёт: OUT','Недавние минуты известны']}]}),player,game,{tick,officialStatus:latestAvailable,active:true,probability:.4,mean:-2});
+assert.match(currentCard,/AVAILABLE/);
+assert.doesNotMatch(currentCard,/официальный OUT|отчёт: OUT|не рассчитан/,'Status, numbers and interval explanation must agree');
+assert.deepEqual(model.effective(outStore,player,game,tick,latestAvailable).unconditional_intervals,row.unconditional_intervals);
+for(const broken of [{nba_player_id:'2'},{calendar_game_id:'espn_2'},{team:'DAL'},{tipoff_utc:new Date(epoch+3600000).toISOString()},{available_at_utc:new Date(tick+1000).toISOString()},{report_at_utc:new Date(tick-37*3600000).toISOString()},{source_url:'https://example.com/injury.pdf'},{source_sha256:'bad'}]){
+ const bad=model.prepare({...feed,rows:[{...row,official_status:{...status,...broken}}]});
+ assert.equal(model.officialStatus(bad,player,game,tick),null,'Reject mismatched/stale/future/unofficial OUT');
+ assert.equal(model.effective(bad,player,game,tick).p_play,.4);
+}
+assert.equal(model.usable(model.prepare({...feed,rows:[{...row,eligible_for_decision:false}]}),player,game,tick,true),null,'Display-only rows cannot enter advice');
+
+const opp={general_delta_fp:.5,position_extra_fp:.2,total_delta_fp:.7,effect_interval95:[-.2,1.4],effective_games:50,n_games:20,n_players:30,predictive_validated:false,status:'experimental'};
+const diff=difficulty.prepare({schema:'nba_matchup_difficulty_v1',as_of_utc:new Date(tick-60000).toISOString(),latest_outcome_date:'2026-11-17',opponents:{DAL:{ALL:opp,PG:opp}}});
+assert.equal(diff.ok,true);assert.equal(difficulty.effect(diff,'DAL','PG',tick).tone,'neutral','Uncertain direction must not be decisive green/red');
+assert.equal(difficulty.effect(diff,'DAL','C',tick),null,'Missing position does not silently use ALL');
+assert.equal(difficulty.effect(diff,'DAL','PG',tick+4*86400000),null);
+const list=[game,{...game,id:'espn_alias'}, {...game,id:'espn_2',away:'NYK',epoch:epoch+1000}, {...game,id:'espn_3',epoch:tick+7*86400000}];
+const summary=difficulty.describe(diff,list,'BOS','PG',tick,7);
+assert.equal(summary.count,2,'Deduplicate same fixture; end boundary excluded');assert.equal(summary.covered,1);assert.equal(summary.average,null,'Incomplete difficulty cannot look complete');assert.equal(summary.known_average,.7);assert.equal(summary.effect_interval95,null,'Do not sum effect uncertainty');
+const rendered=difficulty.panel(diff,{games:list,teams:['BOS'],clubs:{BOS:'Boston'},position:'PG',tick,days:7,calendarComplete:false,calendarReason:'Есть неизвестные матчи'});
+assert.match(rendered,/Есть неизвестные матчи/);assert.match(rendered,/не полный итог/);assert.match(rendered,/не меняет модель FP/);assert.doesNotMatch(rendered,/NaN|undefined/);
+console.log('PASS forecast/difficulty contracts: identity, expiry, missing values, negative FP, overrides, ranges and schedule boundaries');
