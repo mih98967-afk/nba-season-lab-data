@@ -20,6 +20,10 @@ on:
     workflows: ['NBA public data sync', 'Official injury rows isolated research']
     types: [completed]
     branches: [main]
+  schedule:
+    # Daily safety-net when an upstream workflow_run notification was cancelled.
+    # Reuses the existing cheap content/TTL gate and frozen inference, no fit.
+    - cron: '37 12 * * *'
   workflow_dispatch:
     inputs:
       full_research:
@@ -96,7 +100,8 @@ jobs:
     needs: research
     if: >-
       ${{ always() && (needs.research.result == 'success' || needs.research.result == 'skipped') &&
-          ((github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+          ((github.event_name == 'schedule' && github.ref == 'refs/heads/main') ||
+           (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
            (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.refresh_forecasts) ||
            (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' &&
             github.event.workflow_run.head_branch == 'main' &&
