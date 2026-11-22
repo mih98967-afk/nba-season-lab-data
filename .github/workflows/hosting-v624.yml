@@ -48,7 +48,7 @@ jobs:
                     'decision_journal.js','price_evidence.js','sports_reconciliation.js',
                     'score_audit.js','official_status.js','budget_package.js'):
               assert hashlib.sha256((old/f).read_bytes()).digest()==hashlib.sha256((new/f).read_bytes()).digest(),f
-          print('PASS core immutable vs published v6.22')
+          print('PASS computational engines immutable vs owner-published v6.23')
           PY
       - name: Full JavaScript regressions and static source integrity
         run: |
@@ -83,20 +83,20 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Check compact planner with fixture and real public data
         run: |
-          python scripts/test_hosting_v622_browser.py --site-dir site/hosting_v624 --data-root data --output browser-qa-v623-fixture --mode fixture
-          python scripts/test_hosting_v622_browser.py --site-dir site/hosting_v624 --data-root data --output browser-qa-v623-actual --mode actual
+          python scripts/test_hosting_v622_browser.py --site-dir site/hosting_v624 --data-root data --output browser-qa-v624-fixture --mode fixture
+          python scripts/test_hosting_v622_browser.py --site-dir site/hosting_v624 --data-root data --output browser-qa-v624-actual --mode actual
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: nba-v624-browser-actual
-          path: browser-qa-v623-actual/
+          path: browser-qa-v624-actual/
           retention-days: 3
           if-no-files-found: warn
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: nba-v624-browser-fixture
-          path: browser-qa-v623-fixture/
+          path: browser-qa-v624-fixture/
           retention-days: 3
           if-no-files-found: warn
   release:
@@ -111,17 +111,17 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: nba-v624-browser-actual
-          path: browser-qa-v623-actual
+          path: browser-qa-v624-actual
       - name: Reverify exact public model bytes against frozen inference proof
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -eu
-          mkdir -p "$RUNNER_TEMP/v623-parity"
+          mkdir -p "$RUNNER_TEMP/v624-parity"
           matched=0
           for id in $(gh run list --repo "$GITHUB_REPOSITORY" --workflow match-context-distribution.yml --branch main --status success --limit 20 --json databaseId --jq '.[].databaseId'); do
-            if gh run download "$id" --repo "$GITHUB_REPOSITORY" --name nba-frozen-inference-reproducibility --dir "$RUNNER_TEMP/v623-parity" >/dev/null 2>&1; then
-              if python - "$RUNNER_TEMP/v623-parity/inference/RELEASE_QA.json" <<'PY'
+            if gh run download "$id" --repo "$GITHUB_REPOSITORY" --name nba-frozen-inference-reproducibility --dir "$RUNNER_TEMP/v624-parity" >/dev/null 2>&1; then
+              if python - "$RUNNER_TEMP/v624-parity/inference/RELEASE_QA.json" <<'PY'
           import hashlib,json,pathlib,sys
           path=pathlib.Path(sys.argv[1])
           current=pathlib.Path('data/model_forecasts_v1.json')
@@ -141,8 +141,8 @@ jobs:
         run: |
           python scripts/build_hosting_v624.py --write-source-manifest --verify-source-only
           python scripts/build_hosting_v624.py --data-root data \
-            --release-qa "$RUNNER_TEMP/v623-parity/inference/RELEASE_QA.json" \
-            --browser-qa browser-qa-v623-actual/BROWSER_QA.json \
+            --release-qa "$RUNNER_TEMP/v624-parity/inference/RELEASE_QA.json" \
+            --browser-qa browser-qa-v624-actual/BROWSER_QA.json \
             --output nba-season-lab-v6.24-hosting.zip
       - uses: actions/upload-artifact@v4
         with:
