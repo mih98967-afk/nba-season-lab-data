@@ -66,10 +66,12 @@ class SourceReconciliationRegressionTests(unittest.TestCase):
             reconcile_official_inactive(GID, [], [], self.official_box,
                                         self.official_inactive + [inactive('1627759')])
 
-    def test_archive_boxscore_is_still_fail_closed(self):
-        with self.assertRaisesRegex(ValueError, 'SUPPLEMENT_DUPLICATES_ARCHIVE_ROWS'):
-            reconcile_official_inactive(GID, [box('1627759')], [],
-                                        self.official_box, self.official_inactive)
+    def test_inactive_reconciliation_does_not_modify_boxscore(self):
+        existing=[box('1627759')]
+        to_add, ledger = reconcile_official_inactive(GID, existing, [],
+                                                     self.official_box, self.official_inactive)
+        self.assertEqual(len(to_add), 3)
+        self.assertEqual(existing, [box('1627759')])
 
     def test_official_box_identity_is_verified(self):
         with self.assertRaisesRegex(ValueError, 'SUPPLEMENT_DUPLICATE_OFFICIAL_BOXSCORE_PLAYER'):
