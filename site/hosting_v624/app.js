@@ -725,6 +725,10 @@ function todayPage(){
   fp7:forecast7,fp21:forecast21,games7,games21,
   resultFresh:!!best,bestRoute:best,bestExplanationVerified:verifiedExplanation,resultDays:result?.horizonDays,
   marketReady:ownerMarket?.ready===true&&!quotaHistoryTimeUnknown(tick),
+  // Multi-slot and chained plans that start at today's decision time require
+  // the same manual Sports.ru quote/quota gate as a single NOW proposal.
+  firstMoveSoon:!!best?.moves?.some(m=>Number.isFinite(m.epoch)&&
+    m.epoch>=tick-60000&&m.epoch<=tick+30*60000),
   historicalQuotaTimesUnverified:quotaHistoryTimeUnknown(tick),
   marketReason:quotaHistoryTimeUnknown(tick)?'В прошлых заменах известны только даты: сверь остаток ходов на Sports.ru.':ownerMarket?.reasons?.[0],
   modelCaution:fragileBest?`У ${fragileBest.name} мало матчей в сезоне 2025/26: прогноз менее устойчив.`:null})||{state:'blocked',title:'Не удалось загрузить модуль решений',description:'Проверь источники и повтори после обновления.',reasons:['Расчётные показатели временно недоступны.'],shortFP:null,longFP:null,games7:null,games21:null};
