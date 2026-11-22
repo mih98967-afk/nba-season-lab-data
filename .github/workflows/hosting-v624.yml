@@ -1,0 +1,152 @@
+name: NBA v6.24 frozen minutes research and full Hosting QA
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'site/hosting_v624/**'
+      - 'scripts/*v624.py'
+      - 'docs/NBA_MINUTES_FUTURE_PREREG_20261120.json'
+      - '.github/workflows/hosting-v624.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'site/hosting_v624/**'
+      - 'scripts/*v624.py'
+      - 'docs/NBA_MINUTES_FUTURE_PREREG_20261120.json'
+      - '.github/workflows/hosting-v624.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Frozen future-only minutes and unchanged prereg tests
+        run: |
+          python -m unittest -v scripts/test_audit_minutes_readiness_v623.py scripts/test_evaluate_minutes_prereg_v623.py
+          python scripts/audit_minutes_readiness_v623.py --data-root data --output minutes-audit-v623.json
+          python scripts/evaluate_minutes_prereg_v623.py --data-root data --output prereg-future-minutes-v623.json
+      - name: Immutable prediction and transaction engines
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          old=Path('site/hosting_v623'); new=Path('site/hosting_v624')
+          # Only Today interpretation and its integration may change.
+          # Immutable: production prediction/transfer/credit engines.
+          for f in ('forecast_runtime.js','multi_planner.js','chain_planner.js',
+                    'transfer_guard.js','schedule_difficulty.js','decision_breakdown.js',
+                    'decision_journal.js','price_evidence.js','sports_reconciliation.js',
+                    'score_audit.js','official_status.js','budget_package.js'):
+              assert hashlib.sha256((old/f).read_bytes()).digest()==hashlib.sha256((new/f).read_bytes()).digest(),f
+          print('PASS computational engines immutable vs owner-published v6.23')
+          PY
+      - name: Full JavaScript regressions and static source integrity
+        run: |
+          cd site/hosting_v624
+          for f in *.js; do node --check "$f"; done
+          for f in test_*.cjs; do node "$f"; done
+          cd ../..
+          python scripts/build_hosting_v624.py --write-source-manifest --verify-source-only
+          python scripts/build_hosting_v624.py --verify-source-only
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-v624-frozen-minutes-audit
+          path: |
+            minutes-audit-v623.json
+            prereg-future-minutes-v623.json
+          retention-days: 3
+          if-no-files-found: error
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 13
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned real Chromium
+        run: |
+          python -m pip install --only-binary=:all: 'playwright==1.62.0'
+          python -m playwright install --with-deps chromium
+      - name: Check compact planner with fixture and real public data
+        run: |
+          python scripts/test_hosting_v622_browser.py --site-dir site/hosting_v624 --data-root data --output browser-qa-v624-fixture --mode fixture
+          python scripts/test_hosting_v622_browser.py --site-dir site/hosting_v624 --data-root data --output browser-qa-v624-actual --mode actual
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-v624-browser-actual
+          path: browser-qa-v624-actual/
+          retention-days: 3
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-v624-browser-fixture
+          path: browser-qa-v624-fixture/
+          retention-days: 3
+          if-no-files-found: warn
+  release:
+    needs: [source,browser]
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: nba-v624-browser-actual
+          path: browser-qa-v624-actual
+      - name: Reverify exact public model bytes against frozen inference proof
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/v624-parity"
+          matched=0
+          for id in $(gh run list --repo "$GITHUB_REPOSITORY" --workflow match-context-distribution.yml --branch main --status success --limit 20 --json databaseId --jq '.[].databaseId'); do
+            if gh run download "$id" --repo "$GITHUB_REPOSITORY" --name nba-frozen-inference-reproducibility --dir "$RUNNER_TEMP/v624-parity" >/dev/null 2>&1; then
+              if python - "$RUNNER_TEMP/v624-parity/inference/RELEASE_QA.json" <<'PY'
+          import hashlib,json,pathlib,sys
+          path=pathlib.Path(sys.argv[1])
+          current=pathlib.Path('data/model_forecasts_v1.json')
+          if not path.exists():sys.exit(1)
+          report=json.loads(path.read_text())
+          if report.get('status')!='PASS' or report.get('feed_sha256')!=hashlib.sha256(current.read_bytes()).hexdigest():sys.exit(1)
+          print('PASS exact snapshot parity')
+          PY
+              then
+                matched=1
+                break
+              fi
+            fi
+          done
+          test "$matched" -eq 1 || { echo 'No exact frozen parity proof; refuse release'; exit 1; }
+      - name: Full immutable, unexpired v6.24 Hosting ZIP
+        run: |
+          python scripts/build_hosting_v624.py --write-source-manifest --verify-source-only
+          python scripts/build_hosting_v624.py --data-root data \
+            --release-qa "$RUNNER_TEMP/v624-parity/inference/RELEASE_QA.json" \
+            --browser-qa browser-qa-v624-actual/BROWSER_QA.json \
+            --output nba-season-lab-v6.24-hosting.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nba-season-lab-v6.24-verified-hosting
+          path: nba-season-lab-v6.24-hosting.zip
+          retention-days: 3
+          if-no-files-found: error
