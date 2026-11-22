@@ -853,7 +853,7 @@ function canReplaceWith(p){
 const MARKET_DAY=86400000,MARKET_MSK=3*3600000;
 function marketISO(ms){return new Date(ms+MARKET_MSK).toISOString().slice(0,10);}
 function marketMidnight(day){
- if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(day||'')))return NaN;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(String(day||'')))return NaN;
  const t=Date.parse(day+'T00:00:00+03:00');
  return Number.isFinite(t)&&marketISO(t)===day?t:NaN;
 }
