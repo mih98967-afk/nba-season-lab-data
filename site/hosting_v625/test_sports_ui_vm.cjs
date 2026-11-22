@@ -151,3 +151,25 @@ saved.set(journalApi.KEY,'{invalid json');
 click('owner-economics-export');
 assert.equal(capturedPackets.length,1);
 console.log('VM PASS: private economic packet, pricing-as-of, no execution, fail-closed corrupt input');
+
+
+// v6.25: market navigation and custom filters must never change owner state.
+// Public model/calendar are intentionally not injected: absent data stays n/d.
+const ownerBeforeMarket=JSON.stringify(window.PythosNBA.getState());
+handlers['nav:click']({target:{closest:()=>({dataset:{tab:'players'}})}});
+assert.match(view.innerHTML,/market-period/);
+assert.match(view.innerHTML,/market-week-0/);
+assert.match(view.innerHTML,/market-week-1/);
+assert.match(view.innerHTML,/market-week-2/);
+handlers.change[0]({target:{id:'market-period',value:'days'}});
+assert.match(view.innerHTML,/market-days/);
+handlers.change[0]({target:{id:'market-days',value:'21'}});
+assert.match(view.innerHTML,/Н1/);
+handlers.change[0]({target:{id:'market-week-0',value:'min:3'}});
+assert.match(view.innerHTML,/Показано 0 из 0/,'unknown schedule cannot be treated as three confirmed fixtures');
+handlers.change[0]({target:{id:'market-week-0',value:'any'}});
+handlers.change[0]({target:{id:'market-period',value:'dates'}});
+assert.match(view.innerHTML,/market-from/);
+assert.match(view.innerHTML,/market-to/);
+assert.equal(JSON.stringify(window.PythosNBA.getState()),ownerBeforeMarket,'Market browsing must not write roster or money');
+console.log('VM PASS v6.25: market filters, safe unknowns, read-only owner state');
