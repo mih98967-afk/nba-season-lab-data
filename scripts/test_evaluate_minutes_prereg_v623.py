@@ -39,4 +39,16 @@ class FutureMinuteTests(unittest.TestCase):
  def test_duplicate_outcome_rejected(self):
   r=fixture();r["observed"].append(copy.deepcopy(r["observed"][0]))
   with self.assertRaisesRegex(ValueError,"duplicate"):mod.evaluate(r,CONTRACT)
+ def test_unverified_source_first_seen_is_rejected(self):
+  r=fixture();r["issued"][0]["source_all_current_minutes_first_seen_pre_issue"]=False
+  with self.assertRaisesRegex(ValueError,"pre-issue source proof"):mod.evaluate(r,CONTRACT)
+ def test_zero_minutes_outcome_not_scored_as_played(self):
+  r=fixture();r["observed"][0]["actual_minutes"]=0
+  with self.assertRaisesRegex(ValueError,"only positive-minute"):mod.evaluate(r,CONTRACT)
+ def test_duplicate_prelock_issue_rejected(self):
+  r=fixture();r["issued"].append(copy.deepcopy(r["issued"][0]))
+  with self.assertRaisesRegex(ValueError,"duplicate issue"):mod.evaluate(r,CONTRACT)
+ def test_observed_player_team_switch_cannot_match_issue(self):
+  r=fixture();r["observed"][0]["team"]="DAL"
+  with self.assertRaisesRegex(ValueError,"identity mismatch"):mod.evaluate(r,CONTRACT)
 if __name__=="__main__":unittest.main()
