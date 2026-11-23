@@ -19,8 +19,12 @@ const games=[
 ];
 const S={roster:Array.from({length:10},(_,i)=>'n'+i)};
 const LIVE={mode:'live_sync',updated_at_utc:'2026-11-22T17:00:00Z',
- games:[{id:'z',et_date:'2026-11-21',status:'final',epoch:frozen-5000}],
- rows:[{id:'n0',game_id:'z',played:true,fp:22.5},{id:'n1',game_id:'z',played:true,fp:-2}]};
+ schedule:[{id:'z',et_date:'2026-11-21',home:'BOS',away:'NYK',status:'final'}],
+ games:[{id:'z',et_date:'2026-11-21',status:'final',home:'BOS',away:'NYK',epoch:frozen-5000}],
+ rows:[{id:'n0',game_id:'z',team:'BOS',played:true,fp:22.5},
+       {id:'n1',game_id:'z',team:'NYK',played:true,fp:-2},
+       ...Array.from({length:4},(_,i)=>({id:'otherB'+i,game_id:'z',team:'BOS',played:true,fp:1})),
+       ...Array.from({length:4},(_,i)=>({id:'otherN'+i,game_id:'z',team:'NYK',played:true,fp:1}))]};
 const ctx={UI,S,LIVE,publicFeedValidated:true,Date,Math,Number,String,Set,Map,
  MARKET_DAY:undefined,
  now:()=>frozen,calendarCoverage:(start,days)=>({ok:true,reason:'complete'}),
@@ -58,7 +62,7 @@ assert.equal(get('marketKnownGames({team:"BOS"},marketWeeks()[1].start,marketWee
 assert.equal(get('marketWeekMatch(null,"min:3")'),false);
 ctx.calendarCoverage=()=>({ok:true});
 const recent=get('marketRecentRosterFP()');
-assert.equal(recent.date,'2026-11-21');assert.equal(recent.fp,20.5);assert.equal(recent.played,2);
+assert.equal(recent.date,'2026-11-21');assert.equal(recent.fp,20.5);assert.equal(recent.played,2);assert.equal(recent.complete,true);assert.equal(recent.confirmed,1);
 ctx.publicFeedValidated=false;assert.equal(get('marketRecentRosterFP()'),null);
 assert(!app.includes('S.roster=BASE.players'),'market cannot touch owner roster');
 console.log('PASS v6.25: 3 Moscow weeks, future custom dates, unknown Cup exclusions and read-only NBA team day');
