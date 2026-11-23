@@ -791,7 +791,7 @@ function todayPage(){
  <ol class="today-reasons">${reasons}</ol>
  <div class="today-actions">${primary}${secondary}</div>
  <p class="today-disclaimer">Сценарный совет не доказывает реальную выгоду. Трансферы выполняются только на Sports.ru.</p></section>
- <aside class="today-aside"><section class="card today-why"><h3>Надёжность данных</h3><div class="today-proof"><span>Статистика NBA</span><b>${valid.feedReady?'Проверена · '+Math.floor(valid.feedAgeHours)+' ч назад':'Не подтверждена'}</b></div><div class="today-proof"><span>Календарь · 7 дней</span><b>${short.ok?'Доступен':'Не подтверждён'}</b></div><div class="today-proof"><span>Календарь · 21 день</span><b>${long.ok?'Доступен':'Не подтверждён'}</b></div><div class="today-proof"><span>Модель FP</span><b>Точность решений не доказана</b></div><div class="today-proof"><span>Замены по журналу</span><b>${quotaText}</b></div><p>Счётчики по двум гипотезам сброса. Фактический остаток — на Sports.ru.</p></section></aside></div>
+ <aside class="today-aside"><section class="card today-why"><h3>Надёжность данных</h3><div class="today-proof"><span>Статистика NBA</span><b>${valid.feedReady?'Проверена · '+Math.floor(valid.feedAgeHours)+' ч назад':'Не подтверждена'}</b></div><div class="today-proof"><span>Игры последнего ET дня</span><b>${(()=>{const n=marketNightStatus(tick);return n?n.confirmed+'/'+n.expected+' · '+(n.complete?'полный':'неполный'):'нет сверенного дня';})()}</b></div><div class="today-proof"><span>Свежесть прогноза</span><b>${esc(window.NBAForecastRuntime?.freshness(FORECAST_STORE,tick)?.ok?'Действует до '+dateText(FORECAST_STORE.validUntil)+' МСК':'Нет свежего модельного среза')}</b></div><div class="today-proof"><span>Календарь · 7 дней</span><b>${short.ok?'Доступен':'Не подтверждён'}</b></div><div class="today-proof"><span>Календарь · 21 день</span><b>${long.ok?'Доступен':'Не подтверждён'}</b></div><div class="today-proof"><span>Модель FP</span><b>Точность решений не доказана</b></div><div class="today-proof"><span>Замены по журналу</span><b>${quotaText}</b></div><p>Счётчики по двум гипотезам сброса. Фактический остаток — на Sports.ru.</p></section></aside></div>
  <details class="today-research-toggle"><summary>Зафиксировать решение для последующей проверки</summary>${evidencePanel}</details>
  <section class="today-section" aria-label="Короткий и длинный горизонт"><div class="today-section-title"><h2>Ближайшая неделя и три недели</h2><span>FP — очки в Fantasy NBA</span></div><div class="today-windows">${fact(brief.shortFP,brief.games7,7)}${fact(brief.longFP,brief.games21,21)}</div><p class="today-footnote">Это модельные ожидания по текущему составу, а не очки, начисленные Sports.ru. Сложность соперников пока не оценена достоверно: число матчей не равно их качеству.</p></section>
  ${official.length?'<section class="card today-alerts" aria-label="Статусы перед матчем">'+
@@ -825,7 +825,10 @@ function overview(){
  const dayStamp=recentNBA?recentNBA.date.slice(8)+'.'+recentNBA.date.slice(5):'—';
  return header('Команда','Мой состав','Десять игроков, календарь и ближайшее решение. Состав на Sports.ru изменяется только вручную.')+rosterWarnings()+
  `<div class="grid metrics">${cardMetric(ownerLast?'Sports.ru · ваша запись':'NBA boxscore · не Sports.ru',ownerLast?sportsAmt(ownerLast.fp)+' FP':(Number.isFinite(at.fp)?round(at.fp)+' FP':bounds?.available?round(bounds.minimum)+'–'+round(bounds.maximum)+' FP':'н/д'),ownerLast?'На '+ownerLast.asOfDateMoscow+' МСК · не текущий онлайн-счётчик':at.complete?at.matches+' сыгранных игроко-матчей':bounds?.available?'Диапазон по датам замен · НЕ зачёт Sports.ru':'Данные NBA FP неполны; см. проверку ниже')}
- ${cardMetric('Последний день NBA · текущая десятка',recentNBA&&!recentNBA.partial?round(recentNBA.fp)+' FP':'н/д',recentNBA?dayStamp+' ET · '+recentNBA.played+' сыгранных игроков · не зачёт Sports.ru':'Нет проверенных сыгранных строк')}
+ ${cardMetric('Последний день NBA · текущая десятка',recentNBA?.complete?round(recentNBA.fp)+' FP':'н/д',recentNBA?
+   dayStamp+' ET · '+recentNBA.confirmed+'/'+recentNBA.expected+' игр сверено'+
+   (recentNBA.complete?' · '+recentNBA.played+' сыгранных в текущей десятке':' · день ещё неполный')+
+   ' · не зачёт Sports.ru':'Нет подтверждённой полной игровой даты')}
  ${cardMetric('До конца недели · модель',Number.isFinite(remainingMean)?approx(remainingMean)+' FP':'н/д',Number.isFinite(remainingMean)?'Ожидаемые FP, не зачёт':'Календарь недостаточно полон')}
  ${cardMetric(SRU.cashTile,round(free),SRU.cashTileNote)}
  ${cardMetric(SRU.quotaTile,quotaText,SRU.quotaTileNote)}</div>
@@ -899,23 +902,53 @@ function marketWeekMatch(count,rule){
  if(/^min:[1-6]$/.test(rule))return count>=Number(rule.slice(4));
  return false;
 }
-function marketRecentRosterFP(){
- if(!publicFeedValidated||LIVE?.mode!=='live_sync'||S.roster.length!==10)return null;
- const games=(LIVE.games||[]).filter(g=>g.status==='final'&&g.et_date&&g.epoch<=now());
- if(!games.length)return null;
- const date=games.reduce((a,g)=>g.et_date>a?g.et_date:a,'');
- const ids=new Set(games.filter(g=>g.et_date===date).map(g=>String(g.id)));
- const roster=new Set(S.roster),seen=new Set();let value=0,played=0;
- for(const row of LIVE.rows||[]){
-  const key=String(row.game_id)+'|'+String(row.id);
-  if(!ids.has(String(row.game_id))||!roster.has(row.id)||row.played!==true)continue;
-  if(seen.has(key)||!Number.isFinite(row.fp))return null;
-  seen.add(key);value+=row.fp;played++;
+// A verified NBA daily total is not an official personal Sports.ru credit.
+// Never label the most recently observed final as a complete ET game day.
+function marketNightStatus(tick=now()){
+ if(!publicFeedValidated||LIVE?.mode!=='live_sync'||
+    !Array.isArray(LIVE.schedule)||!Array.isArray(LIVE.games)||
+    !Array.isArray(LIVE.rows)||S.roster.length!==10)return null;
+ const eligible=(LIVE.games||[]).filter(g=>g?.status==='final'&&
+    /^\d{4}-\d{2}-\d{2}$/.test(g.et_date||'')&&Number.isFinite(g.epoch)&&g.epoch<=tick);
+ if(!eligible.length)return null;
+ const latest=eligible.reduce((d,g)=>g.et_date>d?g.et_date:d,'');
+ const expected=LIVE.schedule.filter(g=>g?.et_date===latest&&g.id);
+ if(!expected.length)return null;
+ const uniqueSchedule=new Set(expected.map(g=>String(g.id)));
+ if(uniqueSchedule.size!==expected.length)return null;
+ const byId=new Map(eligible.filter(g=>g.et_date===latest).map(g=>[String(g.id),g]));
+ const seen=new Set(),teamsForGame=new Map(),fpRows=[];
+ let duplicate=false;
+ for(const row of LIVE.rows){
+  const gid=String(row?.game_id||''),id=String(row?.id||'');
+  if(!byId.has(gid)||!id)continue;
+  const key=gid+'|'+id;
+  if(seen.has(key)){duplicate=true;break;}
+  seen.add(key);
+  if(row.played!==true)continue;
+  if(!Number.isFinite(row.fp)||!row.team){duplicate=true;break;}
+  const t=teamsForGame.get(gid)||new Map();
+  t.set(row.team,(t.get(row.team)||0)+1);teamsForGame.set(gid,t);
+  fpRows.push(row);
  }
- return {date,fp:value,played,updatedAt:LIVE.updated_at_utc,
-  // A partial day or incomplete team coverage is never an official zero.
-  partial:played===0};
+ if(duplicate)return {date:latest,complete:false,reason:'Дубли или некорректные FP',expected:expected.length,confirmed:0,played:0,fp:null};
+ let confirmed=0;
+ for(const g of expected){
+  const key=String(g.id),final=byId.get(key),members=teamsForGame.get(key);
+  if(final?.status!=='final'||final.home!==g.home||final.away!==g.away||
+    !members||members.get(g.home)<5||members.get(g.away)<5)continue;
+  confirmed++;
+ }
+ const complete=confirmed===expected.length;
+ const roster=new Set(S.roster);
+ const included=fpRows.filter(row=>roster.has(row.id)&&uniqueSchedule.has(String(row.game_id)));
+ const result={date:latest,complete,reason:complete?'Игровой день полностью сверён':'Не все игры завершены и сверены',
+  expected:expected.length,confirmed,played:included.length,
+  fp:complete?included.reduce((sum,row)=>sum+row.fp,0):null,
+  updatedAt:LIVE.updated_at_utc,creditedBySportsRu:false};
+ return result;
 }
+function marketRecentRosterFP(){return marketNightStatus();}
 function playerList(){
  let rows=BASE.players.filter(p=>(UI.position==='all'||p.pos===UI.position)&&(UI.club==='all'||p.team===UI.club));
  const q=UI.search.trim().toLocaleLowerCase('ru-RU');
@@ -2225,7 +2258,8 @@ function dataPage(){
  `<div class="grid columns"><div><section class="card"><div class="titledetail"><h2>Обновление статистики</h2><span class="pill ${age>24||partial?'warn':'good'}">${esc(currentStatus())}</span></div>
  <p>Срез NBA: <b>${esc(LIVE.updated_at_utc?dateText(Date.parse(LIVE.updated_at_utc))+' МСК':'н/д')}</b>. Источник: <b>${esc(liveSource)}</b>.</p>
  <p class="small">Прогноз модели: ${esc(FORECAST_STORE?.ok?dateText(FORECAST_STORE.issued)+' МСК':'не загружен')}; ${esc(window.NBAForecastRuntime?.freshness(FORECAST_STORE,now())?.ok?'действует':'нет свежего подтверждения')}. Последний результат ET: ${esc((LIVE.games||[]).filter(g=>g.status==='final').map(g=>g.et_date).sort().at(-1)||'н/д')}.</p>
- <p class="small">Обновление на сервере — по GitHub Actions (планово каждые 2–4 часа, возможны задержки), браузер проверяет новые срезы каждые 15 минут. Официальные FP Sports.ru и ваши ручные замены не синхронизируются автоматически.</p>
+ <p class="small">Сбор NBA/ESPN — по GitHub Actions, планово каждые 2 часа. Frozen inference запускается после успешной синхронизации с резервным ежедневным запуском. GitHub Actions может задерживаться: текущие источники не равны онлайн-счёту на минуту.</p>
+ <p class="small">Полнота последнего ET дня: ${(()=>{const n=marketNightStatus();return n?n.confirmed+'/'+n.expected+' игр · '+(n.complete?'завершён':'идёт сверка либо игры не закончились'):'нет подтверждённого игрового дня';})()}. Подтверждённые FP NBA — не официальный личный зачёт Sports.ru. Реальные замены и историю начислений сохраняешь вручную.</p>
  ${onlineError?`<p class="warntext">${esc(onlineError)}</p>`:''}<button class="primary" data-action="refresh">Проверить свежие данные</button>
  <p class="small">Это не обновление цен Sports.ru и не прямой эфир.</p></section>
  <section class="card"><h2>Цены моей команды</h2><p>Укажите фактические значения Sports.ru. Без ручной проверки модельные цены могут быть неточными.</p>
