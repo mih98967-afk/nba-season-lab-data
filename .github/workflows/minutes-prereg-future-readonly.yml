@@ -1,0 +1,62 @@
+name: NBA future-only minutes preregistration daily audit
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/future_minutes_readonly_report_v628.py'
+      - 'scripts/test_future_minutes_readonly_report_v628.py'
+      - 'scripts/evaluate_minutes_prereg_v623.py'
+      - 'scripts/test_evaluate_minutes_prereg_v623.py'
+      - 'docs/NBA_MINUTES_FUTURE_PREREG_20261120.json'
+      - '.github/workflows/minutes-prereg-future-readonly.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/future_minutes_readonly_report_v628.py'
+      - 'scripts/test_future_minutes_readonly_report_v628.py'
+      - '.github/workflows/minutes-prereg-future-readonly.yml'
+  schedule:
+    - cron: '43 11 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nba-future-minutes-readonly
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Frozen evaluator and ET-date coverage regressions
+        run: |
+          python -m unittest -v scripts/test_evaluate_minutes_prereg_v623.py scripts/test_future_minutes_readonly_report_v628.py
+          python scripts/evaluate_minutes_prereg_v623.py --data-root data --contract docs/NBA_MINUTES_FUTURE_PREREG_20261120.json --output future-minutes-original.json
+          python -m scripts.future_minutes_readonly_report_v628 --data-root data --contract docs/NBA_MINUTES_FUTURE_PREREG_20261120.json --output future-minutes-progress.json
+      - name: Verify frozen model metrics and no adoption
+        run: |
+          python - <<'PY'
+          import json
+          a=json.load(open('future-minutes-original.json'))
+          b=json.load(open('future-minutes-progress.json'))
+          assert a['site_adoption_allowed'] is False and a['change_FP_or_P_play_allowed'] is False
+          assert b['limits']['adopt_on_site'] is False and b['limits']['change_FP_or_P_play'] is False
+          assert a['cohort']==b['cohort'] and a['status']==b['status']
+          assert b['bootstrap95_only_after_predeclared_gates']==a['ET_date_bootstrap95']
+          print('PASS original protocol, immutable evidence and read-only progress')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: nba-future-minutes-readonly-progress
+          path: |
+            future-minutes-original.json
+            future-minutes-progress.json
+          retention-days: 3
+          if-no-files-found: error
