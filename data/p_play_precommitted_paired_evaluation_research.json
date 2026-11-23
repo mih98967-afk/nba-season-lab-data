@@ -3,7 +3,7 @@
   "status": "research_only_not_deployed",
   "model_status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-11-23T00:56:03Z",
+  "updated_at_utc": "2026-11-23T00:58:47Z",
   "protocol_frozen_before_first_historical_paired_outcome": true,
   "model_selection_frozen_season": "2024/25",
   "historical_source_holdout": "2025/26",
@@ -12,36 +12,36 @@
   "target": "positive_minutes_vs_explicit_ESPN_DNP_in_selected_prospective_population",
   "population": "historical_same_club_high_ESPN_ID_overlap_NOT_full_fantasy_roster",
   "p_play_first_issued_total": 4808,
-  "historical_prelock_overlapping_issued_total": 2381,
-  "overlap_fraction_of_issued": 0.495216,
+  "historical_prelock_overlapping_issued_total": 2521,
+  "overlap_fraction_of_issued": 0.524334,
   "paired_cohort": {
-    "issued": 2381,
-    "awaiting_finished_checked_game": 99,
+    "issued": 2521,
+    "awaiting_finished_checked_game": 239,
     "final_game_not_independently_DNP_checked": 13,
     "finished_checked": 2269,
-    "verified_pairs": 1982,
+    "verified_pairs": 1995,
     "outcome_UNKNOWN": 274,
-    "waiting_historical_reconciliation": 13,
-    "label_missing_or_waiting_fraction": 0.126487,
-    "known_positive": 1814,
-    "known_explicit_DNP": 168
+    "waiting_historical_reconciliation": 0,
+    "label_missing_or_waiting_fraction": 0.120758,
+    "known_positive": 1825,
+    "known_explicit_DNP": 170
   },
   "by_first_issue_injury_status": {
     "no_observed_official_status": {
-      "issued": 2334,
-      "awaiting_finished_checked_game": 99,
+      "issued": 2465,
+      "awaiting_finished_checked_game": 230,
       "final_game_not_independently_DNP_checked": 13,
       "finished_checked": 2222,
-      "verified_pairs": 1965,
+      "verified_pairs": 1978,
       "outcome_UNKNOWN": 244,
-      "waiting_historical_reconciliation": 13,
-      "label_missing_or_waiting_fraction": 0.115662,
-      "known_positive": 1800,
-      "known_explicit_DNP": 165
+      "waiting_historical_reconciliation": 0,
+      "label_missing_or_waiting_fraction": 0.109811,
+      "known_positive": 1811,
+      "known_explicit_DNP": 167
     },
     "out": {
-      "issued": 26,
-      "awaiting_finished_checked_game": 0,
+      "issued": 32,
+      "awaiting_finished_checked_game": 6,
       "final_game_not_independently_DNP_checked": 0,
       "finished_checked": 26,
       "verified_pairs": 2,
@@ -52,8 +52,8 @@
       "known_explicit_DNP": 2
     },
     "probable": {
-      "issued": 3,
-      "awaiting_finished_checked_game": 0,
+      "issued": 6,
+      "awaiting_finished_checked_game": 3,
       "final_game_not_independently_DNP_checked": 0,
       "finished_checked": 3,
       "verified_pairs": 2,
@@ -786,10 +786,42 @@
       "awaiting_finished_checked_game": 99,
       "final_game_not_independently_DNP_checked": 0,
       "finished_checked": 17,
-      "verified_pairs": 0,
+      "verified_pairs": 13,
       "outcome_UNKNOWN": 4,
-      "waiting_historical_reconciliation": 13,
-      "label_missing_or_waiting_fraction": 1.0,
+      "waiting_historical_reconciliation": 0,
+      "label_missing_or_waiting_fraction": 0.235294,
+      "known_positive": 11,
+      "known_explicit_DNP": 2,
+      "verified_only_loss": {
+        "scope": "strict_same_game_same_person_verified_selected_only",
+        "verified_player_games": 13,
+        "verified_ET_dates": 1,
+        "verified_NBA_games": 1,
+        "mean_proper_losses": {
+          "Brier": {
+            "current_baseline": 0.131252,
+            "current_candidate": 0.081189,
+            "frozen_historical_appearance_proxy": 0.114438
+          },
+          "logloss": {
+            "current_baseline": 0.434026,
+            "current_candidate": 0.243057,
+            "frozen_historical_appearance_proxy": 0.377407
+          }
+        },
+        "not_population_p_play_calibration": true,
+        "cannot_ignore_unknown_for_adoption": true
+      }
+    },
+    "2026-11-23": {
+      "issued": 140,
+      "awaiting_finished_checked_game": 140,
+      "final_game_not_independently_DNP_checked": 0,
+      "finished_checked": 0,
+      "verified_pairs": 0,
+      "outcome_UNKNOWN": 0,
+      "waiting_historical_reconciliation": 0,
+      "label_missing_or_waiting_fraction": null,
       "known_positive": 0,
       "known_explicit_DNP": 0,
       "verified_only_loss": null
@@ -797,19 +829,19 @@
   },
   "verified_only_matched_proper_scores": {
     "scope": "strict_same_game_same_person_verified_selected_only",
-    "verified_player_games": 1982,
-    "verified_ET_dates": 22,
-    "verified_NBA_games": 152,
+    "verified_player_games": 1995,
+    "verified_ET_dates": 23,
+    "verified_NBA_games": 153,
     "mean_proper_losses": {
       "Brier": {
-        "current_baseline": 0.079624,
-        "current_candidate": 0.064617,
-        "frozen_historical_appearance_proxy": 0.144251
+        "current_baseline": 0.07996,
+        "current_candidate": 0.064725,
+        "frozen_historical_appearance_proxy": 0.144057
       },
       "logloss": {
-        "current_baseline": 0.300271,
-        "current_candidate": 0.238321,
-        "frozen_historical_appearance_proxy": 0.448875
+        "current_baseline": 0.301143,
+        "current_candidate": 0.238352,
+        "frozen_historical_appearance_proxy": 0.448409
       }
     },
     "not_population_p_play_calibration": true,
@@ -817,45 +849,45 @@
   },
   "sharp_unknown_label_sensitivity": {
     "completed_checked_pair_denominator": 2269,
-    "verified_pairs": 1982,
-    "unknown_or_pending_labels": 287,
+    "verified_pairs": 1995,
+    "unknown_or_pending_labels": 274,
     "sharp_missing_label_gain_range": {
       "Brier": {
         "current_candidate_over_current_baseline": {
-          "lower_gain": 0.004405,
+          "lower_gain": 0.005305,
           "upper_gain": 0.017817,
           "positive_favors": "current_candidate",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
-          "lower_gain": -0.089023,
-          "upper_gain": -0.029206,
+          "lower_gain": -0.088916,
+          "upper_gain": -0.030236,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
-          "lower_gain": -0.076056,
-          "upper_gain": -0.019951,
+          "lower_gain": -0.075561,
+          "upper_gain": -0.020468,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         }
       },
       "logloss": {
         "current_candidate_over_current_baseline": {
-          "lower_gain": 0.007015,
+          "lower_gain": 0.011891,
           "upper_gain": 0.071296,
           "positive_favors": "current_candidate",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
-          "lower_gain": -0.24074,
-          "upper_gain": -0.052535,
+          "lower_gain": -0.240448,
+          "upper_gain": -0.057163,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
-          "lower_gain": -0.189709,
-          "upper_gain": -0.025256,
+          "lower_gain": -0.187386,
+          "upper_gain": -0.027038,
           "positive_favors": "frozen_historical_appearance_proxy",
           "both_labels_allowed_for_each_UNKNOWN": true
         }
@@ -865,8 +897,8 @@
     "does_not_correct_unissued_player_selection": true
   },
   "ET_date_cluster_bootstrap_if_sufficient": {
-    "ET_dates_resampled": 22,
-    "known_player_games": 1982,
+    "ET_dates_resampled": 23,
+    "known_player_games": 1995,
     "draws": 1000,
     "fixed_seed": 20261027,
     "resampling_unit": "entire_NBA_ET_date",
@@ -875,22 +907,22 @@
       "Brier": {
         "current_candidate_over_current_baseline": {
           "95pct_date_cluster_interval": [
-            0.011963,
-            0.018399
+            0.012208,
+            0.018408
           ],
           "positive_favors": "current_candidate"
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
           "95pct_date_cluster_interval": [
-            -0.086529,
-            -0.071458
+            -0.086141,
+            -0.071497
           ],
           "positive_favors": "frozen_historical_appearance_proxy"
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
           "95pct_date_cluster_interval": [
-            -0.071612,
-            -0.056925
+            -0.071563,
+            -0.055858
           ],
           "positive_favors": "frozen_historical_appearance_proxy"
         }
@@ -898,22 +930,22 @@
       "logloss": {
         "current_candidate_over_current_baseline": {
           "95pct_date_cluster_interval": [
-            0.051349,
-            0.076209
+            0.05194,
+            0.076267
           ],
           "positive_favors": "current_candidate"
         },
         "frozen_historical_appearance_proxy_over_current_candidate": {
           "95pct_date_cluster_interval": [
-            -0.228783,
-            -0.192774
+            -0.228511,
+            -0.191818
           ],
           "positive_favors": "frozen_historical_appearance_proxy"
         },
         "frozen_historical_appearance_proxy_over_current_baseline": {
           "95pct_date_cluster_interval": [
-            -0.168653,
-            -0.128926
+            -0.166886,
+            -0.126062
           ],
           "positive_favors": "frozen_historical_appearance_proxy"
         }
