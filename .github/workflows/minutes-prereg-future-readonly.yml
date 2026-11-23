@@ -38,7 +38,7 @@ jobs:
         run: |
           python -m unittest -v scripts/test_evaluate_minutes_prereg_v623.py scripts/test_future_minutes_readonly_report_v628.py
           python scripts/evaluate_minutes_prereg_v623.py --data-root data --contract docs/NBA_MINUTES_FUTURE_PREREG_20261120.json --output future-minutes-original.json
-          python scripts/future_minutes_readonly_report_v628.py --data-root data --contract docs/NBA_MINUTES_FUTURE_PREREG_20261120.json --output future-minutes-progress.json
+          python -m scripts.future_minutes_readonly_report_v628 --data-root data --contract docs/NBA_MINUTES_FUTURE_PREREG_20261120.json --output future-minutes-progress.json
       - name: Verify frozen model metrics and no adoption
         run: |
           python - <<'PY'
