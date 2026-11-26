@@ -2,28 +2,28 @@
   "schema_version": 1,
   "status": "research_only_not_deployed",
   "adopt_on_site": false,
-  "updated_at_utc": "2026-11-25T17:14:52Z",
+  "updated_at_utc": "2026-11-26T01:48:39Z",
   "target": "short_minutes_given_verified_positive_minutes_only",
   "summary": {
     "issued": 2872,
-    "played_verified": 2154,
-    "explicit_DNP_excluded": 210,
-    "UNKNOWN_not_imputed": 349,
-    "awaiting_or_unchecked": 159,
-    "distinct_ET_dates_scored": 24,
-    "distinct_NBA_games_scored": 168
+    "played_verified": 2165,
+    "explicit_DNP_excluded": 213,
+    "UNKNOWN_not_imputed": 351,
+    "awaiting_or_unchecked": 143,
+    "distinct_ET_dates_scored": 25,
+    "distinct_NBA_games_scored": 169
   },
   "conditional_played_only_metrics": {
-    "n": 2154,
-    "Brier_global": 0.086208,
-    "Brier_group": 0.083294,
-    "logloss_global": 0.314859,
-    "logloss_group": 0.311028,
-    "band_coverage_global": 0.857474,
-    "band_coverage_group": 0.858403,
-    "actual_under_10": 205,
-    "paired_global_minus_group_Brier_gain": 0.002914,
-    "paired_global_minus_group_logloss_gain": 0.003831
+    "n": 2165,
+    "Brier_global": 0.086556,
+    "Brier_group": 0.083504,
+    "logloss_global": 0.315803,
+    "logloss_group": 0.311388,
+    "band_coverage_global": 0.858199,
+    "band_coverage_group": 0.858661,
+    "actual_under_10": 207,
+    "paired_global_minus_group_Brier_gain": 0.003052,
+    "paired_global_minus_group_logloss_gain": 0.004415
   },
   "by_ET_date": {
     "2026-10-28": {
@@ -313,56 +313,68 @@
       "actual_under_10": 13,
       "paired_global_minus_group_Brier_gain": 0.053086,
       "paired_global_minus_group_logloss_gain": 0.070164
+    },
+    "2026-11-25": {
+      "n": 11,
+      "Brier_global": 0.15468,
+      "Brier_group": 0.124598,
+      "logloss_global": 0.50064,
+      "logloss_group": 0.381827,
+      "band_coverage_global": 1.0,
+      "band_coverage_group": 0.909091,
+      "actual_under_10": 2,
+      "paired_global_minus_group_Brier_gain": 0.030082,
+      "paired_global_minus_group_logloss_gain": 0.118814
     }
   },
   "by_predicted_minutes": {
     "15_to_under_25": {
-      "n": 726,
-      "Brier_global": 0.090459,
-      "Brier_group": 0.090953,
-      "logloss_global": 0.326393,
-      "logloss_group": 0.329583,
-      "band_coverage_global": 0.826446,
-      "band_coverage_group": 0.833333,
-      "actual_under_10": 73,
-      "paired_global_minus_group_Brier_gain": -0.000494,
-      "paired_global_minus_group_logloss_gain": -0.00319
+      "n": 729,
+      "Brier_global": 0.091216,
+      "Brier_group": 0.091762,
+      "logloss_global": 0.328447,
+      "logloss_group": 0.331951,
+      "band_coverage_global": 0.82716,
+      "band_coverage_group": 0.834019,
+      "actual_under_10": 74,
+      "paired_global_minus_group_Brier_gain": -0.000546,
+      "paired_global_minus_group_logloss_gain": -0.003504
     },
     "25_to_under_35": {
-      "n": 1089,
-      "Brier_global": 0.053088,
-      "Brier_group": 0.0521,
-      "logloss_global": 0.224995,
-      "logloss_group": 0.245933,
-      "band_coverage_global": 0.87787,
-      "band_coverage_group": 0.853994,
+      "n": 1094,
+      "Brier_global": 0.052896,
+      "Brier_group": 0.051863,
+      "logloss_global": 0.224473,
+      "logloss_group": 0.244866,
+      "band_coverage_global": 0.878428,
+      "band_coverage_group": 0.853748,
       "actual_under_10": 58,
-      "paired_global_minus_group_Brier_gain": 0.000988,
-      "paired_global_minus_group_logloss_gain": -0.020938
+      "paired_global_minus_group_Brier_gain": 0.001033,
+      "paired_global_minus_group_logloss_gain": -0.020393
     },
     "35_plus": {
-      "n": 93,
+      "n": 94,
       "Brier_global": 0.011,
       "Brier_group": 0.000542,
       "logloss_global": 0.110799,
       "logloss_group": 0.023557,
-      "band_coverage_global": 0.967742,
-      "band_coverage_group": 0.913978,
+      "band_coverage_global": 0.968085,
+      "band_coverage_group": 0.914894,
       "actual_under_10": 0,
       "paired_global_minus_group_Brier_gain": 0.010458,
       "paired_global_minus_group_logloss_gain": 0.087242
     },
     "under_15": {
-      "n": 246,
-      "Brier_global": 0.248714,
-      "Brier_group": 0.230067,
-      "logloss_global": 0.75578,
-      "logloss_group": 0.653112,
-      "band_coverage_global": 0.817073,
-      "band_coverage_group": 0.930894,
-      "actual_under_10": 74,
-      "paired_global_minus_group_Brier_gain": 0.018647,
-      "paired_global_minus_group_logloss_gain": 0.102668
+      "n": 248,
+      "Brier_global": 0.249983,
+      "Brier_group": 0.230255,
+      "logloss_global": 0.759225,
+      "logloss_group": 0.653491,
+      "band_coverage_global": 0.818548,
+      "band_coverage_group": 0.931452,
+      "actual_under_10": 75,
+      "paired_global_minus_group_Brier_gain": 0.019728,
+      "paired_global_minus_group_logloss_gain": 0.105734
     }
   },
   "outcome_audit": [
@@ -3604,82 +3616,82 @@
     {
       "game_id": "espn_401909317",
       "player_id": "n014",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n020",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "UNKNOWN"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n032",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n087",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n120",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n140",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n173",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n274",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "explicit_DNP"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n292",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n347",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "explicit_DNP"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n360",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "UNKNOWN"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n378",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n381",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "explicit_DNP"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n384",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n403",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909317",
       "player_id": "n451",
-      "outcome": "awaiting_or_unchecked"
+      "outcome": "played"
     },
     {
       "game_id": "espn_401909318",
@@ -14740,16 +14752,16 @@
     "resampling_unit": "NBA_ET_date_with_all_verified_played_player_games",
     "fixed_seed": 20261028,
     "resamples": 2000,
-    "independent_ET_dates": 24,
-    "distinct_NBA_games": 168,
-    "scored_played_player_games": 2154,
+    "independent_ET_dates": 25,
+    "distinct_NBA_games": 169,
+    "scored_played_player_games": 2165,
     "paired_global_minus_group_Brier_gain_95pct_exploratory": [
-      -0.000821,
-      0.007493
+      -0.000679,
+      0.007845
     ],
     "paired_global_minus_group_logloss_gain_95pct_exploratory": [
-      -0.013359,
-      0.021691
+      -0.01174,
+      0.02214
     ],
     "positive_gain_favors_group_model": true,
     "descriptive_bootstrap_not_confirmatory_inference": true,
