@@ -17,7 +17,7 @@
     "unknown_is_not_DNP_or_FP_zero": true,
     "adopt_on_site": false
   },
-  "updated_at_utc": "2026-11-26T10:55:12Z",
+  "updated_at_utc": "2026-11-26T21:33:45Z",
   "issued": [
     {
       "game_id": "espn_401909893",
@@ -201165,14 +201165,28 @@
       "latest_row_sha256": "a746e82e57365e7c4e4cc28dbd4998cbe2c467b90ff23c1048cffb71def06f08",
       "latest_version_observed_at_utc": "2026-11-25T17:14:21Z",
       "adopt_on_site": false
+    },
+    {
+      "game_id": "espn_401909322",
+      "player_id": "n154",
+      "original_outcome_sha256": "bb3dae325c506a99323c6c690e2ce9257b721d14cf316c6754984b0ee8661c29",
+      "previous_actual_minutes": 31.0,
+      "previous_actual_fp_reconstructed": 32.0,
+      "latest_actual_minutes": 31.0,
+      "latest_actual_fp_reconstructed": 33.0,
+      "previous_row_sha256": "fb0a4ba2a5650284739ab19610f14805ae1a9f12f9f57b780af64c59b6971f43",
+      "previous_version_observed_at_utc": "2026-11-26T10:54:56Z",
+      "latest_row_sha256": "4ee7455db36cecae77ee579717f1238cc6448455e0a899ffa00d115f2f41bc52",
+      "latest_version_observed_at_utc": "2026-11-26T21:33:32Z",
+      "adopt_on_site": false
     }
   ],
   "summary": {
     "issued_total": 2274,
     "new_issued_this_run": 0,
     "played_verified": 1856,
-    "independently_versioned_correction_events": 22,
-    "corrected_player_games": 22,
+    "independently_versioned_correction_events": 23,
+    "corrected_player_games": 23,
     "explicit_DNP_excluded": 155,
     "UNKNOWN_not_imputed": 249,
     "awaiting_or_unchecked": 14,
@@ -201182,7 +201196,8 @@
   },
   "issuance_QA": {
     "already_immutable": 2274,
-    "original_opportunity_already_locked_no_backfill": 660
+    "original_opportunity_already_locked_no_backfill": 660,
+    "await_near_lock_window": 180
   },
   "played_only_paired_metrics": {
     "scored_positive_played": 1856,
